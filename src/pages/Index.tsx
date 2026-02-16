@@ -1,19 +1,21 @@
-import Navbar from "@/components/Navbar";
-import HeroSection from "@/components/HeroSection";
-import ServicesSection from "@/components/ServicesSection";
+import SiteHeader from "@/components/SiteHeader";
+import HeroBanner from "@/components/HeroBanner";
+import PopularCategories from "@/components/PopularCategories";
+import ProductsSection from "@/components/ProductsSection";
+import PortfolioSection from "@/components/PortfolioSection";
 import AboutSection from "@/components/AboutSection";
-import ContactSection from "@/components/ContactSection";
-import Footer from "@/components/Footer";
+import SiteFooter from "@/components/SiteFooter";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
-      <HeroSection />
-      <ServicesSection />
+      <SiteHeader />
+      <HeroBanner />
+      <PopularCategories />
+      <ProductsSection />
+      <PortfolioSection />
       <AboutSection />
-      <ContactSection />
-      <Footer />
+      <SiteFooter />
     </div>
   );
 };

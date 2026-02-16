@@ -2,44 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 @layer base {
   :root {
-    --background: 210 20% 98%;
-    --foreground: 215 25% 12%;
+    --background: 0 0% 100%;
+    --foreground: 220 15% 20%;
 
     --card: 0 0% 100%;
-    --card-foreground: 215 25% 12%;
+    --card-foreground: 220 15% 20%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 215 25% 12%;
+    --popover-foreground: 220 15% 20%;
 
-    --primary: 215 80% 22%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 222 85% 56%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 190 80% 42%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 220 15% 20%;
 
-    --muted: 210 20% 95%;
-    --muted-foreground: 215 15% 46%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 10% 50%;
 
-    --accent: 190 80% 42%;
+    --accent: 222 85% 56%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214 20% 90%;
-    --input: 214 20% 90%;
-    --ring: 215 80% 22%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 222 85% 56%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
-    --hero-gradient: linear-gradient(135deg, hsl(215 80% 15%) 0%, hsl(215 80% 22%) 50%, hsl(200 70% 30%) 100%);
-    --card-shadow: 0 4px 24px -4px hsl(215 80% 22% / 0.08);
-    --card-shadow-hover: 0 12px 32px -8px hsl(215 80% 22% / 0.15);
-    --glow: 0 0 40px hsl(190 80% 42% / 0.3);
+    --header-bg: 0 0% 100%;
+    --nav-bg: 0 0% 100%;
+    --badge-blue: 222 85% 56%;
+    --sale-red: 0 72% 51%;
+    --star-yellow: 45 93% 58%;
+    --success-green: 142 71% 45%;
+    --section-gray: 220 14% 96%;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -52,25 +55,25 @@
   }
 
   .dark {
-    --background: 215 25% 8%;
-    --foreground: 210 40% 98%;
-    --card: 215 25% 12%;
-    --card-foreground: 210 40% 98%;
-    --popover: 215 25% 12%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 190 80% 50%;
-    --primary-foreground: 215 25% 8%;
-    --secondary: 215 60% 30%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 215 25% 15%;
-    --muted-foreground: 215 20% 65%;
-    --accent: 190 80% 50%;
-    --accent-foreground: 215 25% 8%;
+    --background: 220 15% 8%;
+    --foreground: 0 0% 95%;
+    --card: 220 15% 12%;
+    --card-foreground: 0 0% 95%;
+    --popover: 220 15% 12%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 222 85% 56%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 15% 15%;
+    --secondary-foreground: 0 0% 95%;
+    --muted: 220 15% 15%;
+    --muted-foreground: 220 10% 60%;
+    --accent: 222 85% 56%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 215 25% 20%;
-    --input: 215 25% 20%;
-    --ring: 190 80% 50%;
+    --destructive-foreground: 0 0% 95%;
+    --border: 220 15% 20%;
+    --input: 220 15% 20%;
+    --ring: 222 85% 56%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -88,40 +91,13 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-background text-foreground antialiased;
     font-family: 'Inter', sans-serif;
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Space Grotesk', sans-serif;
   }
 }
 
 @layer utilities {
-  .text-gradient {
-    @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(190 80% 50%), hsl(215 80% 50%));
-  }
-
-  .hero-bg {
-    background: var(--hero-gradient);
-  }
-
-  .glass {
-    @apply bg-card/80 backdrop-blur-md border border-border/50;
-  }
-
-  .card-hover {
-    box-shadow: var(--card-shadow);
-    transition: all 0.3s ease;
-  }
-
-  .card-hover:hover {
-    box-shadow: var(--card-shadow-hover);
-    transform: translateY(-4px);
-  }
-
-  .glow {
-    box-shadow: var(--glow);
+  .badge-discount {
+    @apply bg-destructive text-destructive-foreground;
   }
 }
