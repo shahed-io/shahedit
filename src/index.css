@@ -7,19 +7,19 @@
 @layer base {
   :root {
     --background: 210 20% 98%;
-    --foreground: 220 25% 10%;
+    --foreground: 225 30% 8%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 25% 10%;
+    --card-foreground: 225 30% 8%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 25% 10%;
+    --popover-foreground: 225 30% 8%;
 
     --primary: 245 58% 51%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 210 20% 95%;
-    --secondary-foreground: 220 25% 10%;
+    --secondary-foreground: 225 30% 8%;
 
     --muted: 210 15% 94%;
     --muted-foreground: 220 10% 45%;
@@ -36,12 +36,9 @@
 
     --radius: 0.75rem;
 
-    --hero-gradient-start: 245 58% 51%;
-    --hero-gradient-end: 280 60% 45%;
     --sale-red: 0 72% 51%;
     --star-yellow: 45 93% 58%;
     --success-green: 155 70% 40%;
-    --section-alt: 210 20% 96%;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -103,13 +100,106 @@
   .badge-discount {
     @apply bg-destructive text-destructive-foreground;
   }
-  
+
   .gradient-text {
     @apply bg-clip-text text-transparent;
     background-image: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
   }
 
   .glass-card {
-    @apply bg-card/80 backdrop-blur-xl border border-border/50;
+    background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .glossy-card {
+    @apply bg-card relative overflow-hidden;
+    box-shadow:
+      0 1px 2px rgba(0,0,0,0.04),
+      0 4px 12px rgba(0,0,0,0.04),
+      inset 0 1px 0 rgba(255,255,255,0.8);
+  }
+
+  .glossy-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 100%);
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  .glossy-card:hover {
+    box-shadow:
+      0 2px 4px rgba(0,0,0,0.06),
+      0 8px 24px hsl(var(--primary) / 0.1),
+      inset 0 1px 0 rgba(255,255,255,0.9);
+  }
+
+  .glossy-btn {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .glossy-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 100%);
+    pointer-events: none;
+  }
+
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .shimmer::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      115deg,
+      transparent 30%,
+      rgba(255,255,255,0.15) 45%,
+      rgba(255,255,255,0.3) 50%,
+      rgba(255,255,255,0.15) 55%,
+      transparent 70%
+    );
+    animation: shimmer-sweep 3s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes shimmer-sweep {
+    0% { transform: translateX(-100%) rotate(15deg); }
+    100% { transform: translateX(100%) rotate(15deg); }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .float-anim {
+    animation: float 4s ease-in-out infinite;
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% { box-shadow: 0 0 15px hsl(var(--primary) / 0.2), 0 0 30px hsl(var(--primary) / 0.1); }
+    50% { box-shadow: 0 0 25px hsl(var(--primary) / 0.4), 0 0 50px hsl(var(--primary) / 0.2); }
+  }
+
+  .glow-pulse {
+    animation: glow-pulse 3s ease-in-out infinite;
   }
 }
