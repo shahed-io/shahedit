@@ -2,47 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 220 15% 20%;
+    --background: 210 20% 98%;
+    --foreground: 220 25% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 15% 20%;
+    --card-foreground: 220 25% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 15% 20%;
+    --popover-foreground: 220 25% 10%;
 
-    --primary: 222 85% 56%;
+    --primary: 245 58% 51%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 14% 96%;
-    --secondary-foreground: 220 15% 20%;
+    --secondary: 210 20% 95%;
+    --secondary-foreground: 220 25% 10%;
 
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 10% 50%;
+    --muted: 210 15% 94%;
+    --muted-foreground: 220 10% 45%;
 
-    --accent: 222 85% 56%;
+    --accent: 170 80% 40%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 222 85% 56%;
+    --border: 220 13% 90%;
+    --input: 220 13% 90%;
+    --ring: 245 58% 51%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
-    --header-bg: 0 0% 100%;
-    --nav-bg: 0 0% 100%;
-    --badge-blue: 222 85% 56%;
+    --hero-gradient-start: 245 58% 51%;
+    --hero-gradient-end: 280 60% 45%;
     --sale-red: 0 72% 51%;
     --star-yellow: 45 93% 58%;
-    --success-green: 142 71% 45%;
-    --section-gray: 220 14% 96%;
+    --success-green: 155 70% 40%;
+    --section-alt: 210 20% 96%;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -55,25 +54,25 @@
   }
 
   .dark {
-    --background: 220 15% 8%;
+    --background: 225 25% 6%;
     --foreground: 0 0% 95%;
-    --card: 220 15% 12%;
+    --card: 225 25% 10%;
     --card-foreground: 0 0% 95%;
-    --popover: 220 15% 12%;
+    --popover: 225 25% 10%;
     --popover-foreground: 0 0% 95%;
-    --primary: 222 85% 56%;
+    --primary: 245 58% 60%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 220 15% 15%;
+    --secondary: 225 20% 14%;
     --secondary-foreground: 0 0% 95%;
-    --muted: 220 15% 15%;
-    --muted-foreground: 220 10% 60%;
-    --accent: 222 85% 56%;
+    --muted: 225 20% 14%;
+    --muted-foreground: 220 10% 55%;
+    --accent: 170 80% 45%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 95%;
-    --border: 220 15% 20%;
-    --input: 220 15% 20%;
-    --ring: 222 85% 56%;
+    --border: 225 15% 18%;
+    --input: 225 15% 18%;
+    --ring: 245 58% 60%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -92,12 +91,25 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', sans-serif;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
   }
 }
 
 @layer utilities {
   .badge-discount {
     @apply bg-destructive text-destructive-foreground;
+  }
+  
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+  }
+
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-xl border border-border/50;
   }
 }

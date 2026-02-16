@@ -1,47 +1,51 @@
-import catWebDev from "@/assets/cat-web-dev.jpg";
-import catFacebook from "@/assets/cat-facebook.jpg";
-import catDigitalMarketing from "@/assets/cat-digital-marketing.jpg";
-import catGraphics from "@/assets/cat-graphics.jpg";
-import catMaintenance from "@/assets/cat-maintenance.jpg";
-import catBusiness from "@/assets/cat-business.jpg";
+import { motion } from "framer-motion";
+import { Code, Facebook, BarChart3, Palette, Wrench, Briefcase } from "lucide-react";
 
 const categories = [
-  { name: "Web Development", products: 6, image: catWebDev },
-  { name: "Facebook Services", products: 0, image: catFacebook },
-  { name: "Digital Marketing", products: 0, image: catDigitalMarketing },
-  { name: "Graphics Design", products: 0, image: catGraphics },
-  { name: "Website Maintenance", products: 4, image: catMaintenance },
-  { name: "Business Solutions", products: 3, image: catBusiness },
+  { name: "Web Development", products: 6, icon: Code, color: "from-primary to-primary/70" },
+  { name: "Facebook Services", products: 0, icon: Facebook, color: "from-blue-500 to-blue-400" },
+  { name: "Digital Marketing", products: 0, icon: BarChart3, color: "from-accent to-accent/70" },
+  { name: "Graphics Design", products: 0, icon: Palette, color: "from-pink-500 to-pink-400" },
+  { name: "Website Maintenance", products: 4, icon: Wrench, color: "from-amber-500 to-amber-400" },
+  { name: "Business Solutions", products: 3, icon: Briefcase, color: "from-violet-500 to-violet-400" },
 ];
 
 const PopularCategories = () => {
   return (
-    <section className="py-12 bg-background">
+    <section className="py-16 bg-background">
       <div className="container mx-auto px-4">
-        <h2 className="text-xl md:text-2xl font-bold text-foreground mb-8">
-          Popular Categories
-        </h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {categories.map((cat) => (
-            <a
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-12"
+        >
+          <span className="text-accent text-sm font-semibold uppercase tracking-widest">Browse</span>
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mt-2">
+            Popular Categories
+          </h2>
+        </motion.div>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
+          {categories.map((cat, i) => (
+            <motion.a
               key={cat.name}
               href="#"
-              className="group flex flex-col items-center p-4 rounded-lg bg-muted hover:shadow-md transition-all"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.08 }}
+              className="group flex flex-col items-center p-6 rounded-2xl bg-card border border-border hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300"
             >
-              <div className="w-20 h-20 rounded-full bg-card overflow-hidden mb-3 group-hover:scale-105 transition-transform">
-                <img
-                  src={cat.image}
-                  alt={cat.name}
-                  className="w-full h-full object-cover"
-                />
+              <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${cat.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+                <cat.icon size={24} className="text-primary-foreground" />
               </div>
-              <h3 className="text-sm font-semibold text-foreground text-center">
+              <h3 className="text-sm font-semibold text-foreground text-center leading-tight">
                 {cat.name}
               </h3>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-muted-foreground mt-1">
                 {cat.products} products
               </p>
-            </a>
+            </motion.a>
           ))}
         </div>
       </div>
