@@ -2,32 +2,76 @@ import { Phone, Mail, ArrowRight, ArrowUp, Zap, MapPin, MessageCircle } from "lu
 import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
-const footerLinks = [
-{ title: "Services", items: [
-  { label: "Web Development", href: "/services" },
-  { label: "Graphics Design", href: "/services" },
-  { label: "Digital Marketing", href: "/services" },
-  { label: "IT Support", href: "/services" },
-  { label: "Facebook Marketing", href: "/services" }]
-},
-{ title: "Company", items: [
-  { label: "About Us", href: "/about" },
-  { label: "Portfolio", href: "/portfolio" },
-  { label: "Blog", href: "/blog" },
-  { label: "Careers", href: "/careers" },
-  { label: "Contact", href: "/contact" }]
-},
-{ title: "Resources", items: [
-  { label: "FAQs", href: "/faq" },
-  { label: "Pricing", href: "/pricing" },
-  { label: "Get a Quote", href: "/get-quote" },
-  { label: "Privacy Policy", href: "#" },
-  { label: "Terms of Service", href: "#" }]
-}];
+interface MenuItem {
+  id: string;
+  label: string;
+  target: string | null;
+}
 
+interface FooterColumn {
+  title: string;
+  items: MenuItem[];
+}
+
+const defaultFooterLinks: FooterColumn[] = [
+  { title: "Services", items: [
+    { id: "1", label: "Web Development", target: "/services" },
+    { id: "2", label: "Graphics Design", target: "/services" },
+    { id: "3", label: "Digital Marketing", target: "/services" },
+    { id: "4", label: "IT Support", target: "/services" },
+    { id: "5", label: "Facebook Marketing", target: "/services" },
+  ]},
+  { title: "Company", items: [
+    { id: "6", label: "About Us", target: "/about" },
+    { id: "7", label: "Portfolio", target: "/portfolio" },
+    { id: "8", label: "Blog", target: "/blog" },
+    { id: "9", label: "Careers", target: "/careers" },
+    { id: "10", label: "Contact", target: "/contact" },
+  ]},
+  { title: "Resources", items: [
+    { id: "11", label: "FAQs", target: "/faq" },
+    { id: "12", label: "Pricing", target: "/pricing" },
+    { id: "13", label: "Get a Quote", target: "/get-quote" },
+    { id: "14", label: "Privacy Policy", target: "#" },
+    { id: "15", label: "Terms of Service", target: "#" },
+  ]},
+];
 
 const SiteFooter = () => {
+  const [footerColumns, setFooterColumns] = useState<FooterColumn[]>(defaultFooterLinks);
+
+  useEffect(() => {
+    // Fetch footer menus from DB
+    supabase
+      .from("cms_menus")
+      .select("id, name, location")
+      .eq("location", "footer")
+      .then(async ({ data: menus }) => {
+        if (!menus || menus.length === 0) return;
+
+        const columns: FooterColumn[] = await Promise.all(
+          menus.map(async (menu) => {
+            const { data: items } = await supabase
+              .from("menu_items")
+              .select("id, label, target")
+              .eq("menu_id", menu.id)
+              .is("parent_id", null)
+              .order("sort_order");
+            return {
+              title: menu.name,
+              items: (items ?? []) as MenuItem[],
+            };
+          })
+        );
+
+        const nonEmpty = columns.filter(c => c.items.length > 0);
+        if (nonEmpty.length > 0) setFooterColumns(nonEmpty);
+      });
+  }, []);
+
   return (
     <footer className="relative overflow-hidden">
       {/* Top gradient line */}
@@ -37,14 +81,11 @@ const SiteFooter = () => {
         className="relative"
         style={{ background: 'linear-gradient(180deg, hsl(220,42%,4%) 0%, hsl(222,45%,3%) 100%)' }}>
 
-        {/* Grid bg */}
         <div className="absolute inset-0 tech-grid-bg opacity-25" />
-
-        {/* Orbs */}
         <div className="absolute top-10 right-10 w-[400px] h-[300px] rounded-full"
-        style={{ background: 'radial-gradient(ellipse, hsl(258,90%,66%) 0%, transparent 65%)', filter: 'blur(120px)', opacity: 0.07 }} />
+          style={{ background: 'radial-gradient(ellipse, hsl(258,90%,66%) 0%, transparent 65%)', filter: 'blur(120px)', opacity: 0.07 }} />
         <div className="absolute bottom-10 left-10 w-[350px] h-[250px] rounded-full"
-        style={{ background: 'radial-gradient(ellipse, hsl(185,100%,48%) 0%, transparent 65%)', filter: 'blur(100px)', opacity: 0.06 }} />
+          style={{ background: 'radial-gradient(ellipse, hsl(185,100%,48%) 0%, transparent 65%)', filter: 'blur(100px)', opacity: 0.06 }} />
 
         <div className="container mx-auto px-4 pt-16 pb-8 relative">
           <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-10 mb-14">
@@ -59,7 +100,7 @@ const SiteFooter = () => {
               <Link to="/">
                 <div className="flex items-center gap-2.5 mb-5">
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-                  style={{ background: 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))' }}>
+                    style={{ background: 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))' }}>
                     <Zap size={20} className="text-white" fill="white" />
                   </div>
                   <span className="text-2xl font-black" style={{ fontFamily: "'Syne', sans-serif" }}>
@@ -73,32 +114,32 @@ const SiteFooter = () => {
               </p>
               <div className="space-y-3 text-sm">
                 <motion.a whileHover={{ x: 4 }} href="tel:+8801820060046"
-                className="flex items-center gap-3 text-foreground/45 hover:text-primary transition-all group">
+                  className="flex items-center gap-3 text-foreground/45 hover:text-primary transition-all group">
                   <span className="w-8 h-8 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors"
-                  style={{ background: 'rgba(139,92,246,0.12)', border: '1px solid rgba(139,92,246,0.20)' }}>
+                    style={{ background: 'rgba(139,92,246,0.12)', border: '1px solid rgba(139,92,246,0.20)' }}>
                     <Phone size={13} style={{ color: 'hsl(258,90%,66%)' }} />
                   </span>
                   01820-060046
                 </motion.a>
                 <motion.a whileHover={{ x: 4 }} href="https://wa.me/8801820060046" target="_blank"
-                className="flex items-center gap-3 text-foreground/45 hover:text-accent transition-all group">
+                  className="flex items-center gap-3 text-foreground/45 hover:text-accent transition-all group">
                   <span className="w-8 h-8 rounded-lg flex items-center justify-center group-hover:bg-green-500/20 transition-colors"
-                  style={{ background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.20)' }}>
+                    style={{ background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.20)' }}>
                     <MessageCircle size={13} style={{ color: 'hsl(155,70%,50%)' }} />
                   </span>
                   WhatsApp Chat
                 </motion.a>
                 <motion.a whileHover={{ x: 4 }} href="mailto:info@shahedit.com"
-                className="flex items-center gap-3 text-foreground/45 hover:text-accent transition-all group">
+                  className="flex items-center gap-3 text-foreground/45 hover:text-accent transition-all group">
                   <span className="w-8 h-8 rounded-lg flex items-center justify-center group-hover:bg-accent/20 transition-colors"
-                  style={{ background: 'rgba(6,182,212,0.12)', border: '1px solid rgba(6,182,212,0.20)' }}>
+                    style={{ background: 'rgba(6,182,212,0.12)', border: '1px solid rgba(6,182,212,0.20)' }}>
                     <Mail size={13} style={{ color: 'hsl(185,100%,48%)' }} />
                   </span>
                   info@shahedit.com
                 </motion.a>
                 <div className="flex items-center gap-3 text-foreground/35">
                   <span className="w-8 h-8 rounded-lg flex items-center justify-center"
-                  style={{ background: 'rgba(234,179,8,0.12)', border: '1px solid rgba(234,179,8,0.20)' }}>
+                    style={{ background: 'rgba(234,179,8,0.12)', border: '1px solid rgba(234,179,8,0.20)' }}>
                     <MapPin size={13} style={{ color: 'hsl(45,93%,58%)' }} />
                   </span>
                   Dhaka, Bangladesh
@@ -106,31 +147,30 @@ const SiteFooter = () => {
               </div>
             </motion.div>
 
-            {/* Link columns */}
-            {footerLinks.map((col, ci) =>
-            <motion.div
-              key={col.title}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: ci * 0.1 }}>
+            {/* Dynamic Link columns */}
+            {footerColumns.map((col, ci) =>
+              <motion.div
+                key={col.title}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: ci * 0.1 }}>
 
                 <h4 className="font-bold text-foreground/80 mb-5 text-sm uppercase tracking-[0.15em]">{col.title}</h4>
                 <ul className="space-y-3 text-sm">
                   {col.items.map((item) =>
-                <li key={item.label}>
-                      <Link to={item.href}>
+                    <li key={item.id}>
+                      <Link to={item.target ?? "#"}>
                         <motion.span
-                      whileHover={{ x: 4 }}
-                      className="text-foreground/40 hover:text-foreground/80 transition-all duration-300 flex items-center gap-1.5 group cursor-pointer">
-
+                          whileHover={{ x: 4 }}
+                          className="text-foreground/40 hover:text-foreground/80 transition-all duration-300 flex items-center gap-1.5 group cursor-pointer">
                           <span className="w-0 h-px group-hover:w-3 transition-all duration-300 rounded-full"
-                      style={{ background: 'linear-gradient(90deg, hsl(258,90%,66%), hsl(185,100%,48%))' }} />
+                            style={{ background: 'linear-gradient(90deg, hsl(258,90%,66%), hsl(185,100%,48%))' }} />
                           {item.label}
                         </motion.span>
                       </Link>
                     </li>
-                )}
+                  )}
                 </ul>
               </motion.div>
             )}
@@ -143,7 +183,6 @@ const SiteFooter = () => {
             viewport={{ once: true }}
             className="rounded-2xl p-6 mb-10 flex flex-col md:flex-row items-center gap-5 justify-between"
             style={{ background: 'linear-gradient(135deg, rgba(139,92,246,0.10), rgba(6,182,212,0.06))', border: '1px solid rgba(139,92,246,0.18)' }}>
-
             <div>
               <h4 className="font-bold text-foreground/85 mb-1">Stay updated with Shahed IT</h4>
               <p className="text-xs text-foreground/40">Get news, tips and special offers in your inbox.</p>
@@ -153,13 +192,11 @@ const SiteFooter = () => {
                 placeholder="Your email address"
                 type="email"
                 className="text-sm h-11 rounded-xl border-white/10 bg-white/5 text-foreground placeholder:text-foreground/30 focus-visible:ring-primary/40 min-w-[220px]" />
-
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="h-11 w-11 rounded-xl flex items-center justify-center shrink-0 glossy-btn"
                 style={{ background: 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))' }}>
-
                 <ArrowRight size={16} className="text-white" />
               </motion.button>
             </div>
@@ -200,8 +237,8 @@ const SiteFooter = () => {
           </div>
         </div>
       </div>
-    </footer>);
-
+    </footer>
+  );
 };
 
 export default SiteFooter;

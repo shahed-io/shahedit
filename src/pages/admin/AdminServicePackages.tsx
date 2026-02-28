@@ -22,7 +22,9 @@ interface ServicePackage {
   title: string;
   description: string | null;
   price: number | null;
+  original_price: number | null;
   currency: string;
+  badge: string | null;
   features: string[] | null;
   image_url: string | null;
   is_published: boolean;
@@ -34,7 +36,9 @@ const emptyForm = (): Omit<ServicePackage, "id" | "service_id"> => ({
   title: "",
   description: "",
   price: null,
+  original_price: null,
   currency: "BDT",
+  badge: null,
   features: [],
   image_url: "",
   is_published: true,
@@ -131,7 +135,9 @@ export default function AdminServicePackages() {
       title: pkg.title,
       description: pkg.description ?? "",
       price: pkg.price,
+      original_price: pkg.original_price,
       currency: pkg.currency,
+      badge: pkg.badge,
       features: pkg.features ?? [],
       image_url: pkg.image_url ?? "",
       is_published: pkg.is_published,
@@ -308,24 +314,49 @@ export default function AdminServicePackages() {
                             </div>
                             <div className="grid grid-cols-2 gap-2">
                               <div className="space-y-1">
-                                <label className="text-slate-400 text-xs">মূল্য</label>
+                                <label className="text-slate-400 text-xs">বর্তমান মূল্য</label>
                                 <Input
                                   type="number"
                                   value={form.price ?? ""}
                                   onChange={e => setForm(f => ({ ...f, price: e.target.value ? Number(e.target.value) : null }))}
-                                  placeholder="5000"
+                                  placeholder="9999"
                                   className="bg-slate-900 border-slate-700 text-white"
                                 />
                               </div>
                               <div className="space-y-1">
-                                <label className="text-slate-400 text-xs">মুদ্রা</label>
+                                <label className="text-slate-400 text-xs">আসল মূল্য (স্ট্রাইক)</label>
                                 <Input
-                                  value={form.currency}
-                                  onChange={e => setForm(f => ({ ...f, currency: e.target.value }))}
-                                  placeholder="BDT"
+                                  type="number"
+                                  value={form.original_price ?? ""}
+                                  onChange={e => setForm(f => ({ ...f, original_price: e.target.value ? Number(e.target.value) : null }))}
+                                  placeholder="40000"
                                   className="bg-slate-900 border-slate-700 text-white"
                                 />
                               </div>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-1">
+                              <label className="text-slate-400 text-xs">মুদ্রা</label>
+                              <Input
+                                value={form.currency}
+                                onChange={e => setForm(f => ({ ...f, currency: e.target.value }))}
+                                placeholder="BDT"
+                                className="bg-slate-900 border-slate-700 text-white"
+                              />
+                            </div>
+                            <div className="space-y-1">
+                              <label className="text-slate-400 text-xs">Badge (HOT/NEW)</label>
+                              <select
+                                value={form.badge ?? ""}
+                                onChange={e => setForm(f => ({ ...f, badge: e.target.value || null }))}
+                                className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-sm focus:outline-none focus:border-purple-500"
+                              >
+                                <option value="">কোনো ব্যাজ নেই</option>
+                                <option value="hot">🔥 HOT</option>
+                                <option value="new">✨ NEW</option>
+                              </select>
                             </div>
                           </div>
 
