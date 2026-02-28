@@ -30,17 +30,18 @@ serve(async (req) => {
     let verifyMessage = "";
 
     if (method.includes("বিকাশ") || method.includes("bkash")) {
+      // bKash verification
       if (!BKASH_APP_KEY || !BKASH_APP_SECRET || !BKASH_USERNAME || !BKASH_PASSWORD) {
-        return new Response(JSON.stringify({
-          success: false,
-          error: "bKash API credentials কনফিগার করা নেই। Admin Settings → bKash API-তে যোগ করুন।",
-          needs_config: true
+        return new Response(JSON.stringify({ 
+          success: false, 
+          error: "bKash API credentials not configured. Please add them in admin settings.",
+          needs_config: true 
         }), { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       }
 
       try {
-        // Step 1: Get bKash token (production endpoint)
-        const tokenRes = await fetch("https://tokenized.pay.bka.sh/v1.2.0-beta/tokenized/checkout/token/grant", {
+        // Step 1: Get bKash token
+        const tokenRes = await fetch("https://tokenized.sandbox.bka.sh/v1.2.0-beta/tokenized/checkout/token/grant", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -52,10 +53,10 @@ serve(async (req) => {
         const tokenData = await tokenRes.json();
 
         if (!tokenData.id_token) {
-          verifyMessage = `bKash token তৈরি ব্যর্থ: ${tokenData.statusMessage || "অজানা ত্রুটি"}`;
+          verifyMessage = "bKash token generation failed";
         } else {
-          // Step 2: Query transaction (production endpoint)
-          const queryRes = await fetch(`https://tokenized.pay.bka.sh/v1.2.0-beta/tokenized/checkout/general/searchTransaction?trxID=${transaction_id}`, {
+          // Step 2: Query transaction
+          const queryRes = await fetch(`https://tokenized.sandbox.bka.sh/v1.2.0-beta/tokenized/checkout/general/searchTransaction?trxID=${transaction_id}`, {
             method: "GET",
             headers: {
               "Authorization": tokenData.id_token,
@@ -66,21 +67,22 @@ serve(async (req) => {
 
           if (queryData.transactionStatus === "Completed") {
             verified = true;
-            verifyMessage = `✅ bKash লেনদেন সফল — পরিমাণ: ৳${queryData.amount} | TrxID: ${queryData.trxID}`;
+            verifyMessage = `bKash লেনদেন সফল — পরিমাণ: ${queryData.amount} ৳`;
           } else {
-            verifyMessage = `bKash লেনদেন স্ট্যাটাস: ${queryData.transactionStatus || queryData.statusMessage || "পাওয়া যায়নি"}`;
+            verifyMessage = `bKash লেনদেন স্ট্যাটাস: ${queryData.transactionStatus || "পাওয়া যায়নি"}`;
           }
         }
       } catch (e) {
-        verifyMessage = `bKash API সংযোগে সমস্যা: ${String(e)}`;
+        verifyMessage = "bKash API সংযোগে সমস্যা হয়েছে";
       }
 
     } else if (method.includes("নগদ") || method.includes("nagad")) {
+      // Nagad verification
       if (!NAGAD_MERCHANT_ID || !NAGAD_API_KEY) {
-        return new Response(JSON.stringify({
-          success: false,
-          error: "Nagad API credentials কনফিগার করা নেই।",
-          needs_config: true
+        return new Response(JSON.stringify({ 
+          success: false, 
+          error: "Nagad API credentials not configured. Please add them in admin settings.",
+          needs_config: true 
         }), { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       }
 
@@ -98,15 +100,16 @@ serve(async (req) => {
 
         if (nagadData.status === "Success") {
           verified = true;
-          verifyMessage = `✅ নগদ লেনদেন সফল — পরিমাণ: ৳${nagadData.amount}`;
+          verifyMessage = `নগদ লেনদেন সফল — পরিমাণ: ${nagadData.amount} ৳`;
         } else {
           verifyMessage = `নগদ লেনদেন পাওয়া যায়নি`;
         }
       } catch (e) {
-        verifyMessage = `Nagad API সংযোগে সমস্যা: ${String(e)}`;
+        verifyMessage = "Nagad API সংযোগে সমস্যা হয়েছে";
       }
 
     } else {
+      // Rocket/Upay — manual fallback
       verifyMessage = "এই পেমেন্ট মেথডের জন্য ম্যানুয়াল ভেরিফিকেশন প্রয়োজন";
     }
 
