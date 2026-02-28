@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle, ArrowRight, ArrowLeft, Send } from "lucide-react";
@@ -9,8 +9,6 @@ import { toast } from "sonner";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import WhatsAppButton from "@/components/WhatsAppButton";
-
-const services = ["Web Development", "Mobile App", "E-Commerce", "Digital Marketing", "UI/UX Design", "SEO Services", "ERP System", "Custom Software"];
 const budgets = ["Under ৳50,000", "৳50,000 - ৳1,00,000", "৳1,00,000 - ৳5,00,000", "৳5,00,000+", "Let's Discuss"];
 const timelines = ["ASAP", "1-2 Months", "3-6 Months", "6+ Months", "Not Sure"];
 
@@ -18,6 +16,7 @@ const steps = ["Service", "Details", "Contact", "Confirm"];
 
 const GetQuotePage = () => {
   const [step, setStep] = useState(0);
+  const [services, setServices] = useState<string[]>([]);
   const [form, setForm] = useState({
     service_interested: "",
     budget_range: "",
@@ -30,6 +29,21 @@ const GetQuotePage = () => {
   });
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    supabase
+      .from("services")
+      .select("title")
+      .eq("is_published", true)
+      .order("sort_order")
+      .then(({ data }) => {
+        if (data && data.length > 0) {
+          setServices(data.map(s => s.title));
+        } else {
+          setServices(["Web Development", "Mobile App", "E-Commerce", "Digital Marketing", "UI/UX Design", "SEO Services", "ERP System", "Custom Software"]);
+        }
+      });
+  }, []);
 
   const next = () => setStep(s => Math.min(s + 1, steps.length - 1));
   const prev = () => setStep(s => Math.max(s - 1, 0));
