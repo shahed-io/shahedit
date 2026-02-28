@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { Phone, Mail, Menu, X, ChevronRight, ChevronDown, Globe, Wrench, Palette, Facebook, TrendingUp, Building2, LogIn } from "lucide-react";
-import logoImg from "@/assets/logo.png";
+import logoImg from "@/assets/logo-glossy.png";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
