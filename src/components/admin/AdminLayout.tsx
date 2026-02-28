@@ -26,6 +26,7 @@ const navItems = [
   { label: "FAQ", icon: HelpCircle, href: "/admin/faq" },
   { label: "Careers", icon: Users, href: "/admin/careers" },
   { label: "AI Support", icon: MessageSquare, href: "/admin/ai-support" },
+  { label: "Admin Users", icon: Shield, href: "/admin/users" },
   { label: "Site Settings", icon: Settings, href: "/admin/settings" },
 ];
 
