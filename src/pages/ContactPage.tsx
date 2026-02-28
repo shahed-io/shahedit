@@ -27,10 +27,10 @@ const ContactPage = () => {
   };
 
   const info = [
-    { icon: MapPin, label: "Address", value: "Dhaka, Bangladesh" },
-    { icon: Phone, label: "Phone", value: "+880 1820-060046" },
-    { icon: Mail, label: "Email", value: "info@shahedit.com" },
-    { icon: MessageCircle, label: "WhatsApp", value: "+880 1820-060046" },
+    { icon: MapPin, label: "ঠিকানা", value: "Dhaka, Bangladesh" },
+    { icon: Phone, label: "মোবাইল", value: "01820-060046" },
+    { icon: Mail, label: "ইমেইল", value: "info@shahedit.com" },
+    { icon: MessageCircle, label: "WhatsApp", value: "01820-060046" },
   ];
 
   return (
@@ -39,9 +39,9 @@ const ContactPage = () => {
       <section className="py-20">
         <div className="container mx-auto px-4">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-16">
-            <span className="text-primary text-sm font-semibold uppercase tracking-widest">Get In Touch</span>
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground mt-3 mb-4">Contact <span className="gradient-text">Us</span></h1>
-            <p className="text-muted-foreground max-w-xl mx-auto">Have a project in mind? Let's talk!</p>
+          <span className="text-primary text-sm font-semibold uppercase tracking-widest">যোগাযোগ করুন</span>
+            <h1 className="text-4xl md:text-5xl font-bold text-foreground mt-3 mb-4">আমাদের সাথে <span className="gradient-text">যোগাযোগ</span></h1>
+            <p className="text-muted-foreground max-w-xl mx-auto">ফোন, ইমেইল অথবা WhatsApp-এর মাধ্যমে আমাদের সাথে যোগাযোগ করুন। সাপোর্ট সময়: সকাল ১০:০০ – রাত ১০:০০</p>
           </motion.div>
 
           <div className="grid lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
