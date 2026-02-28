@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard, Settings, Users, Briefcase, FolderOpen, FileText,
   MessageSquare, Star, UserCheck, Building2, DollarSign, HelpCircle,
-  Inbox, ChevronLeft, Menu, LogOut, Bell, Shield, Cpu, Package
+  Inbox, ChevronLeft, Menu, LogOut, Bell, Shield, Cpu, Package, CreditCard
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -14,6 +14,7 @@ import { toast } from "sonner";
 const navItems = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/admin" },
   { label: "Leads", icon: Inbox, href: "/admin/leads" },
+  { label: "Payments", icon: CreditCard, href: "/admin/payments" },
   { label: "Services", icon: Briefcase, href: "/admin/services" },
   { label: "Service Packages", icon: Package, href: "/admin/service-packages" },
   { label: "Portfolio", icon: FolderOpen, href: "/admin/portfolio" },
