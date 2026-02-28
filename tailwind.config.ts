@@ -7,8 +7,10 @@ export default {
   theme: {
     container: {
       center: true,
-      padding: { DEFAULT: "1.25rem", sm: "1.5rem", lg: "2rem" },
-      screens: { "2xl": "1280px" },
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
     },
     extend: {
       colors: {
@@ -20,8 +22,6 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
-          light: "hsl(var(--primary-light))",
-          glow: "hsl(var(--primary-glow))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -38,7 +38,6 @@ export default {
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
-          light: "hsl(var(--accent-light))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
@@ -59,40 +58,32 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
       },
-      fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
-        heading: ["Plus Jakarta Sans", "sans-serif"],
-      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
-        xl: "calc(var(--radius) + 4px)",
-        "2xl": "calc(var(--radius) + 8px)",
-      },
-      spacing: {
-        "18": "4.5rem",
-        "22": "5.5rem",
       },
       keyframes: {
-        "accordion-down": { from: { height: "0" }, to: { height: "var(--radix-accordion-content-height)" } },
-        "accordion-up":   { from: { height: "var(--radix-accordion-content-height)" }, to: { height: "0" } },
-        "fade-up":        { from: { opacity: "0", transform: "translateY(20px)" }, to: { opacity: "1", transform: "translateY(0)" } },
-        "fade-in":        { from: { opacity: "0" }, to: { opacity: "1" } },
-        "slide-in-right": { from: { opacity: "0", transform: "translateX(20px)" }, to: { opacity: "1", transform: "translateX(0)" } },
+        "accordion-down": {
+          from: {
+            height: "0",
+          },
+          to: {
+            height: "var(--radix-accordion-content-height)",
+          },
+        },
+        "accordion-up": {
+          from: {
+            height: "var(--radix-accordion-content-height)",
+          },
+          to: {
+            height: "0",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up":   "accordion-up 0.2s ease-out",
-        "fade-up":        "fade-up 0.5s ease forwards",
-        "fade-in":        "fade-in 0.4s ease forwards",
-        "slide-in-right": "slide-in-right 0.4s ease forwards",
-      },
-      boxShadow: {
-        card:     "0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.04)",
-        "card-hover": "0 4px 6px rgba(0,0,0,0.04), 0 10px 30px rgba(79,70,229,0.08)",
-        soft:     "0 2px 8px rgba(0,0,0,0.06), 0 16px 40px rgba(0,0,0,0.06)",
-        "primary-glow": "0 4px 16px hsl(243 75% 59% / 0.3)",
+        "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
   },

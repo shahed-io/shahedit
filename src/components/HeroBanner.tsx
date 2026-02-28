@@ -1,144 +1,164 @@
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, Sparkles, Zap } from "lucide-react";
 import { motion } from "framer-motion";
-import { ArrowRight, CheckCircle, Star, Users, FolderOpen } from "lucide-react";
+import heroBg from "@/assets/hero-bg.jpg";
 
-const stats = [
-  { icon: Users,      value: "500+", label: "Happy Clients" },
-  { icon: FolderOpen, value: "1000+", label: "Projects Done" },
-  { icon: Star,       value: "4.9",  label: "Average Rating" },
-];
+const HeroBanner = () => {
+  const [countdown, setCountdown] = useState({ days: 0, hours: 0, mins: 0, secs: 0 });
 
-const HeroBanner = () => (
-  <section
-    className="relative overflow-hidden hero-gradient"
-    aria-labelledby="hero-heading"
-  >
-    {/* Subtle grid overlay */}
-    <div className="absolute inset-0 subtle-grid opacity-60" aria-hidden="true" />
+  useEffect(() => {
+    const target = new Date();
+    target.setDate(target.getDate() + 7);
+    const interval = setInterval(() => {
+      const now = new Date();
+      const diff = target.getTime() - now.getTime();
+      if (diff <= 0) return;
+      setCountdown({
+        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+        mins: Math.floor((diff / (1000 * 60)) % 60),
+        secs: Math.floor((diff / 1000) % 60),
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
-    {/* Gradient blobs */}
-    <div
-      className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full opacity-30 float-anim"
-      style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.3), transparent 70%)" }}
-      aria-hidden="true"
-    />
-    <div
-      className="absolute -bottom-24 -left-24 w-[380px] h-[380px] rounded-full opacity-20 float-anim"
-      style={{ background: "radial-gradient(circle, hsl(var(--accent) / 0.4), transparent 70%)", animationDelay: "2.5s" }}
-      aria-hidden="true"
-    />
+  const pad = (n: number) => String(n).padStart(2, "0");
 
-    <div className="container mx-auto px-4 relative z-10">
-      <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center min-h-[600px] py-20 md:py-28">
+  return (
+    <section className="relative overflow-hidden min-h-[560px]">
+      {/* Background */}
+      <img src={heroBg} alt="" className="absolute inset-0 w-full h-full object-cover scale-105" />
+      <div className="absolute inset-0 bg-gradient-to-br from-foreground/95 via-foreground/80 to-[hsl(var(--primary)/0.3)]" />
 
-        {/* Left: Text */}
-        <div>
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <span className="section-label mb-4 block">🇧🇩 Bangladesh's Leading IT Agency</span>
-          </motion.div>
+      {/* Floating orbs */}
+      <div className="absolute top-20 right-[20%] w-64 h-64 bg-primary/20 rounded-full blur-[100px] float-anim" />
+      <div className="absolute bottom-10 left-[10%] w-48 h-48 bg-accent/20 rounded-full blur-[80px] float-anim" style={{ animationDelay: "2s" }} />
 
-          <motion.h1
-            id="hero-heading"
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.1 }}
-            className="font-heading font-bold leading-tight mb-5"
-          >
-            We Build
-            <br />
-            <span className="gradient-text">Digital Solutions</span>
-            <br />
-            That Scale
-          </motion.h1>
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="grid lg:grid-cols-[1.4fr_1fr] gap-8 items-center min-h-[520px] py-16">
+          {/* Left content */}
+          <div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card mb-6 shimmer"
+            >
+              <Sparkles size={14} className="text-accent" />
+              <span className="text-xs font-medium text-primary-foreground/90">Professional Web Development</span>
+            </motion.div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-muted-foreground text-lg leading-relaxed mb-8 max-w-lg"
-          >
-            From web apps to mobile platforms — we craft high-performance digital products that help businesses grow faster and smarter.
-          </motion.p>
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.35 }}
+              className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight mb-5"
+            >
+              Build Your
+              <br />
+              <span className="bg-gradient-to-r from-[hsl(var(--accent))] via-[hsl(var(--primary))] to-[hsl(var(--accent))] bg-clip-text text-transparent bg-[length:200%_auto] animate-[gradient-shift_4s_ease_infinite]">
+                Digital Presence
+              </span>
+            </motion.h1>
 
-          {/* Key points */}
-          <motion.ul
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="space-y-2 mb-8"
-            role="list"
-          >
-            {["On-time delivery, always", "Transparent pricing, no surprises", "Dedicated support team"].map((point) => (
-              <li key={point} className="flex items-center gap-2.5 text-sm text-muted-foreground">
-                <CheckCircle size={16} className="text-accent flex-shrink-0" aria-hidden="true" />
-                {point}
-              </li>
-            ))}
-          </motion.ul>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              className="text-primary-foreground/60 text-lg mb-8 max-w-lg"
+            >
+              Professional web development & graphic design services for modern businesses and growing brands.
+            </motion.p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="flex flex-col sm:flex-row gap-3"
-          >
-            <Link to="/get-quote" className="btn-primary text-base px-6 py-3">
-              Get Free Quote
-              <ArrowRight size={17} aria-hidden="true" />
-            </Link>
-            <Link to="/portfolio" className="btn-secondary text-base px-6 py-3">
-              View Our Work
-            </Link>
-          </motion.div>
-        </div>
-
-        {/* Right: Stats + Visual */}
-        <motion.div
-          initial={{ opacity: 0, x: 30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="hidden lg:block"
-        >
-          {/* Main visual card */}
-          <div className="tech-card rounded-2xl p-8 mb-4">
-            <div className="flex items-center gap-3 mb-5">
-              <div
-                className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
-                style={{ background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)))" }}
-                aria-hidden="true"
-              >
-                <span className="text-white text-xl">💻</span>
-              </div>
-              <div>
-                <p className="font-semibold text-foreground">Full Stack Development</p>
-                <p className="text-xs text-muted-foreground">React, Node.js, Laravel & More</p>
-              </div>
-            </div>
-            <div className="grid grid-cols-3 gap-3">
-              {["React", "Node.js", "Laravel", "Flutter", "Next.js", "MySQL"].map((tech) => (
-                <div key={tech} className="bg-secondary rounded-lg px-2.5 py-2 text-xs font-medium text-center text-foreground">{tech}</div>
+            {/* Countdown */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.65 }}
+              className="flex gap-3 mb-8"
+            >
+              {[
+                { val: countdown.days, label: "Days" },
+                { val: countdown.hours, label: "Hours" },
+                { val: countdown.mins, label: "Min" },
+                { val: countdown.secs, label: "Sec" },
+              ].map((item, i) => (
+                <motion.div
+                  key={item.label}
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 0.7 + i * 0.1, type: "spring" }}
+                  className="glass-card rounded-xl px-4 py-3 text-center min-w-[68px] glow-pulse"
+                  style={{ animationDelay: `${i * 0.5}s` }}
+                >
+                  <div className="text-xl font-bold text-primary-foreground">{pad(item.val)}</div>
+                  <div className="text-[10px] text-primary-foreground/40 uppercase tracking-wider">{item.label}</div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.8 }}
+              className="flex gap-3"
+            >
+              <Button
+                size="lg"
+                className="bg-gradient-to-r from-primary to-accent text-primary-foreground hover:opacity-90 rounded-full px-8 shadow-lg shadow-primary/30 glossy-btn group"
+              >
+                <Zap size={16} className="mr-1.5 group-hover:animate-bounce" /> Buy Now
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="rounded-full px-8 border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10 backdrop-blur-sm"
+              >
+                View Details <ArrowRight size={16} className="ml-1.5" />
+              </Button>
+            </motion.div>
           </div>
 
-          {/* Stats row */}
-          <div className="grid grid-cols-3 gap-3">
-            {stats.map(({ icon: Icon, value, label }) => (
-              <div key={label} className="tech-card rounded-xl p-4 text-center">
-                <Icon size={18} className="text-primary mx-auto mb-2" aria-hidden="true" />
-                <p className="text-xl font-bold font-heading text-foreground">{value}</p>
-                <p className="text-xs text-muted-foreground mt-0.5">{label}</p>
-              </div>
+          {/* Right side cards */}
+          <div className="hidden lg:grid grid-rows-2 gap-4">
+            {[
+              { tag: "Shop Now", title: "Latest Services", desc: "Explore our newest offerings", delay: 0.4 },
+              { tag: "Pre-Order", title: "Upcoming Projects", desc: "Reserve your spot early", delay: 0.6 },
+            ].map((card) => (
+              <motion.div
+                key={card.title}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: card.delay }}
+                whileHover={{ scale: 1.03, y: -4 }}
+                className="glass-card rounded-2xl p-7 flex flex-col justify-center cursor-pointer group shimmer"
+              >
+                <p className="text-accent text-sm font-semibold mb-1 group-hover:translate-x-1 transition-transform duration-300">{card.tag}</p>
+                <p className="font-bold text-primary-foreground text-lg">{card.title}</p>
+                <p className="text-primary-foreground/40 text-sm mt-1">{card.desc}</p>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="mt-4 w-fit rounded-full border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10 group-hover:border-accent/40 transition-all duration-300"
+                >
+                  View Details <ArrowRight size={14} className="ml-1 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </motion.div>
             ))}
           </div>
-        </motion.div>
+        </div>
       </div>
-    </div>
-  </section>
-);
+
+      <style>{`
+        @keyframes gradient-shift {
+          0%, 100% { background-position: 0% center; }
+          50% { background-position: 100% center; }
+        }
+      `}</style>
+    </section>
+  );
+};
 
 export default HeroBanner;
