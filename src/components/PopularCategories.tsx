@@ -12,9 +12,12 @@ const categories = [
 
 const PopularCategories = () => {
   return (
-    <section className="py-20 bg-background relative overflow-hidden">
-      {/* Subtle bg glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-primary/5 rounded-full blur-[120px]" />
+    <section className="py-20 relative overflow-hidden section-glow">
+      {/* Dot grid bg */}
+      <div className="absolute inset-0 dot-grid opacity-40" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[hsl(222,45%,5%,0.5)] to-transparent" />
+      {/* Center glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] rounded-full" style={{ background: 'radial-gradient(ellipse, hsl(245,80%,65%) 0%, transparent 70%)', filter: 'blur(120px)', opacity: 0.07 }} />
 
       <div className="container mx-auto px-4 relative">
         <motion.div

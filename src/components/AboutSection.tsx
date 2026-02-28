@@ -11,9 +11,11 @@ const highlights = [
 
 const AboutSection = () => {
   return (
-    <section id="about" className="py-20 bg-secondary/30 relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-[500px] h-[400px] bg-primary/5 rounded-full blur-[120px]" />
-      <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-accent/5 rounded-full blur-[100px]" />
+    <section id="about" className="py-20 relative overflow-hidden">
+      {/* Dot grid */}
+      <div className="absolute inset-0 dot-grid opacity-25" />
+      <div className="absolute top-0 right-0 w-[600px] h-[400px] rounded-full" style={{ background: 'radial-gradient(ellipse, hsl(245,80%,65%) 0%, transparent 70%)', filter: 'blur(120px)', opacity: 0.09 }} />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[300px] rounded-full" style={{ background: 'radial-gradient(ellipse, hsl(170,80%,45%) 0%, transparent 70%)', filter: 'blur(100px)', opacity: 0.08 }} />
 
       <div className="container mx-auto px-4 relative">
         <div className="grid lg:grid-cols-2 gap-14 items-center">
