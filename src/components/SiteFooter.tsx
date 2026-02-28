@@ -39,7 +39,6 @@ const defaultFooterLinks: FooterColumn[] = [
     { id: "16", label: "Refund Policy", target: "/refund-policy" },
     { id: "17", label: "Delivery Policy", target: "/delivery-policy" },
     { id: "18", label: "Complaint Policy", target: "/complaint-policy" },
-    { id: "19", label: "Payment", target: "/payment" },
   ]},
 ];
 

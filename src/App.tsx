@@ -21,6 +21,7 @@ import {
 } from "./pages/admin/AdminCrud";
 import AdminPayments from "./pages/admin/AdminPayments";
 import AdminUsers from "./pages/admin/AdminUsers";
+import AdminFooterEditor from "./pages/admin/AdminFooterEditor";
 
 // Auth pages
 import LoginPage from "./pages/LoginPage";
@@ -91,6 +92,7 @@ const AdminRoutes = () => (
         <Route path="ai-support" element={<AdminAISupport />} />
         <Route path="settings" element={<AdminSettings />} />
         <Route path="users" element={<AdminUsers />} />
+        <Route path="footer" element={<AdminFooterEditor />} />
       </Routes>
     </AdminLayout>
   </ProtectedRoute>
