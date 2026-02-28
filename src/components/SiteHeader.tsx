@@ -1,7 +1,8 @@
 import { useState, useRef } from "react";
-import { Phone, Mail, Menu, X, Zap, ChevronRight, ChevronDown, Globe, Wrench, Palette, Facebook, TrendingUp, Building2 } from "lucide-react";
+import { Phone, Mail, Menu, X, Zap, ChevronRight, ChevronDown, Globe, Wrench, Palette, Facebook, TrendingUp, Building2, User, LogIn } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 import catWebDev from "@/assets/cat-web-dev.jpg";
 import catMaintenance from "@/assets/cat-maintenance.jpg";
@@ -30,6 +31,7 @@ const navLinks = [
 ];
 
 const SiteHeader = () => {
+  const { user } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
@@ -196,6 +198,27 @@ const SiteHeader = () => {
 
           {/* CTA */}
           <div className="hidden md:flex items-center gap-3">
+            {user ? (
+              <Link to="/profile">
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all"
+                  style={{ background: 'rgba(139,92,246,0.12)', border: '1px solid rgba(139,92,246,0.25)', color: 'hsl(258,90%,75%)' }}>
+                  <div className="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-black text-white"
+                    style={{ background: 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))' }}>
+                    {user.email?.[0].toUpperCase()}
+                  </div>
+                  প্রোফাইল
+                </motion.div>
+              </Link>
+            ) : (
+              <Link to="/login">
+                <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all"
+                  style={{ background: 'rgba(139,92,246,0.10)', border: '1px solid rgba(139,92,246,0.22)', color: 'hsl(258,90%,75%)' }}>
+                  <LogIn size={14} /> লগইন
+                </motion.button>
+              </Link>
+            )}
             <Link to="/get-quote">
               <motion.button
                 whileHover={{ scale: 1.05, y: -1 }}

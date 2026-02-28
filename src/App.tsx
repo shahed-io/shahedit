@@ -20,6 +20,12 @@ import {
   AdminClients, AdminPricing, AdminFAQ, AdminCareers
 } from "./pages/admin/AdminCrud";
 
+// Auth pages
+import LoginPage from "./pages/LoginPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
+import ProfilePage from "./pages/ProfilePage";
+
 // Public pages
 import ServicesPage from "./pages/ServicesPage";
 import PortfolioPage from "./pages/PortfolioPage";
@@ -104,6 +110,11 @@ const AppWithAnalytics = () => {
   useAnalyticsInjection();
   return (
     <Routes>
+      {/* Auth Routes */}
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+      <Route path="/reset-password" element={<ResetPasswordPage />} />
+      <Route path="/profile" element={<ProfilePage />} />
       {/* Public Routes */}
       <Route path="/" element={<Index />} />
       <Route path="/services" element={<ServicesPage />} />
