@@ -28,9 +28,9 @@ const ContactPage = () => {
 
   const info = [
     { icon: MapPin, label: "Address", value: "Dhaka, Bangladesh" },
-    { icon: Phone, label: "Phone", value: "+880 1840-099853" },
+    { icon: Phone, label: "Phone", value: "+880 1820-060046" },
     { icon: Mail, label: "Email", value: "info@shahedit.com" },
-    { icon: MessageCircle, label: "WhatsApp", value: "+880 1840-099853" },
+    { icon: MessageCircle, label: "WhatsApp", value: "+880 1820-060046" },
   ];
 
   return (

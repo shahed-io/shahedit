@@ -34,9 +34,9 @@ const SiteHeader = () => {
             transition={{ delay: 0.3 }}
             className="flex items-center gap-6"
           >
-            <a href="tel:+8801840099853" className="flex items-center gap-1.5 hover:text-accent transition-colors duration-300">
+            <a href="tel:+8801820060046" className="flex items-center gap-1.5 hover:text-accent transition-colors duration-300">
               <Phone size={12} />
-              <span>01840-099853</span>
+              <span>01820-060046</span>
             </a>
             <a href="mailto:info@shahedit.com" className="hidden sm:flex items-center gap-1.5 hover:text-accent transition-colors duration-300">
               <Mail size={12} />
