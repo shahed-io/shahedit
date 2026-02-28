@@ -766,6 +766,7 @@ export type Database = {
           features: string[] | null
           id: string
           image_url: string | null
+          is_featured: boolean | null
           is_published: boolean | null
           price: number | null
           service_id: string
@@ -780,6 +781,7 @@ export type Database = {
           features?: string[] | null
           id?: string
           image_url?: string | null
+          is_featured?: boolean | null
           is_published?: boolean | null
           price?: number | null
           service_id: string
@@ -794,6 +796,7 @@ export type Database = {
           features?: string[] | null
           id?: string
           image_url?: string | null
+          is_featured?: boolean | null
           is_published?: boolean | null
           price?: number | null
           service_id?: string
