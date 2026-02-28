@@ -23,6 +23,7 @@ const navItems = [
   { label: "Pricing", icon: DollarSign, href: "/admin/pricing" },
   { label: "FAQ", icon: HelpCircle, href: "/admin/faq" },
   { label: "Careers", icon: Users, href: "/admin/careers" },
+  { label: "AI Support", icon: MessageSquare, href: "/admin/ai-support" },
   { label: "Site Settings", icon: Settings, href: "/admin/settings" },
 ];
 

@@ -9,6 +9,7 @@ import TechStack from "@/components/TechStack";
 import AboutSection from "@/components/AboutSection";
 import SiteFooter from "@/components/SiteFooter";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import AISupportChat from "@/components/AISupportChat";
 
 const Index = () => {
   return (
@@ -52,6 +53,7 @@ const Index = () => {
         <AboutSection />
         <SiteFooter />
         <WhatsAppButton />
+        <AISupportChat />
       </div>
     </div>
   );

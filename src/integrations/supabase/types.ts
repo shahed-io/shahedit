@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_support_settings: {
+        Row: {
+          bot_name: string
+          collect_contact_info: boolean
+          greeting_message: string
+          human_handoff_message: string
+          id: number
+          is_enabled: boolean
+          system_prompt: string
+          updated_at: string
+        }
+        Insert: {
+          bot_name?: string
+          collect_contact_info?: boolean
+          greeting_message?: string
+          human_handoff_message?: string
+          id?: number
+          is_enabled?: boolean
+          system_prompt?: string
+          updated_at?: string
+        }
+        Update: {
+          bot_name?: string
+          collect_contact_info?: boolean
+          greeting_message?: string
+          human_handoff_message?: string
+          id?: number
+          is_enabled?: boolean
+          system_prompt?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       audit_logs: {
         Row: {
           action: string
@@ -809,6 +842,42 @@ export type Database = {
           type?: string | null
           updated_at?: string
           value?: string | null
+        }
+        Relationships: []
+      }
+      support_chats: {
+        Row: {
+          created_at: string
+          id: string
+          messages: Json
+          session_id: string
+          status: string
+          updated_at: string
+          visitor_email: string | null
+          visitor_name: string | null
+          visitor_phone: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          messages?: Json
+          session_id: string
+          status?: string
+          updated_at?: string
+          visitor_email?: string | null
+          visitor_name?: string | null
+          visitor_phone?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          messages?: Json
+          session_id?: string
+          status?: string
+          updated_at?: string
+          visitor_email?: string | null
+          visitor_name?: string | null
+          visitor_phone?: string | null
         }
         Relationships: []
       }
