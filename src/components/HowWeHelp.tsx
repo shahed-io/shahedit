@@ -34,8 +34,11 @@ const steps = [
 
 const HowWeHelp = () => {
   return (
-    <section className="py-20 bg-background relative overflow-hidden">
-      <div className="absolute top-1/2 right-0 w-[400px] h-[400px] bg-accent/5 rounded-full blur-[120px] -translate-y-1/2" />
+    <section className="py-20 relative overflow-hidden section-glow">
+      {/* Tech dot grid */}
+      <div className="absolute inset-0 dot-grid opacity-30" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[hsl(222,47%,6%)] via-transparent to-[hsl(222,47%,6%)]" />
+      <div className="absolute top-1/2 right-0 w-[500px] h-[500px] rounded-full -translate-y-1/2" style={{ background: 'radial-gradient(circle, hsl(170,80%,45%) 0%, transparent 65%)', filter: 'blur(120px)', opacity: 0.08 }} />
 
       <div className="container mx-auto px-4 relative">
         <motion.div

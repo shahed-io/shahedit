@@ -27,14 +27,23 @@ const HeroBanner = () => {
   const pad = (n: number) => String(n).padStart(2, "0");
 
   return (
-    <section className="relative overflow-hidden min-h-[560px]">
-      {/* Background */}
-      <img src={heroBg} alt="" className="absolute inset-0 w-full h-full object-cover scale-105" />
-      <div className="absolute inset-0 bg-gradient-to-br from-foreground/95 via-foreground/80 to-[hsl(var(--primary)/0.3)]" />
+    <section className="relative overflow-hidden min-h-[600px]">
+      {/* Dark tech background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[hsl(222,50%,5%)] via-[hsl(230,45%,7%)] to-[hsl(245,40%,8%)]" />
 
-      {/* Floating orbs */}
-      <div className="absolute top-20 right-[20%] w-64 h-64 bg-primary/20 rounded-full blur-[100px] float-anim" />
-      <div className="absolute bottom-10 left-[10%] w-48 h-48 bg-accent/20 rounded-full blur-[80px] float-anim" style={{ animationDelay: "2s" }} />
+      {/* Subtle photo overlay */}
+      <img src={heroBg} alt="" className="absolute inset-0 w-full h-full object-cover scale-105 opacity-10 mix-blend-luminosity" />
+
+      {/* Tech grid */}
+      <div className="absolute inset-0 tech-grid-bg opacity-60" />
+
+      {/* Animated glow orbs */}
+      <div className="absolute top-0 left-0 w-[500px] h-[500px] rounded-full float-anim" style={{ background: 'radial-gradient(circle, hsl(245,80%,65%) 0%, transparent 65%)', filter: 'blur(100px)', opacity: 0.15, animationDuration: '7s' }} />
+      <div className="absolute top-10 right-[10%] w-[400px] h-[400px] rounded-full float-anim" style={{ background: 'radial-gradient(circle, hsl(170,80%,45%) 0%, transparent 65%)', filter: 'blur(80px)', opacity: 0.12, animationDelay: '2s', animationDuration: '9s' }} />
+      <div className="absolute bottom-0 left-[30%] w-[300px] h-[300px] rounded-full float-anim" style={{ background: 'radial-gradient(circle, hsl(210,100%,60%) 0%, transparent 65%)', filter: 'blur(70px)', opacity: 0.10, animationDelay: '4s', animationDuration: '6s' }} />
+
+      {/* Scan line effect */}
+      <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(99,102,241,0.015) 3px, rgba(99,102,241,0.015) 4px)' }} />
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid lg:grid-cols-[1.4fr_1fr] gap-8 items-center min-h-[520px] py-16">

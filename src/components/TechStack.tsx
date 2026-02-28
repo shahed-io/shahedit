@@ -19,10 +19,12 @@ const techs = [
 
 const TechStack = () => {
   return (
-    <section className="py-20 bg-foreground text-background relative overflow-hidden">
-      {/* Background orbs */}
-      <div className="absolute top-10 left-10 w-[300px] h-[300px] bg-primary/10 rounded-full blur-[100px]" />
-      <div className="absolute bottom-10 right-10 w-[200px] h-[200px] bg-accent/10 rounded-full blur-[80px]" />
+    <section className="py-20 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, hsl(222,50%,7%) 0%, hsl(230,50%,9%) 50%, hsl(245,40%,8%) 100%)' }}>
+      {/* Tech grid overlay */}
+      <div className="absolute inset-0 tech-grid-bg opacity-50" />
+      {/* Glow orbs */}
+      <div className="absolute top-10 left-10 w-[400px] h-[400px] rounded-full float-anim" style={{ background: 'radial-gradient(circle, hsl(245,80%,65%) 0%, transparent 65%)', filter: 'blur(100px)', opacity: 0.12 }} />
+      <div className="absolute bottom-10 right-10 w-[300px] h-[300px] rounded-full float-anim" style={{ background: 'radial-gradient(circle, hsl(170,80%,45%) 0%, transparent 65%)', filter: 'blur(80px)', opacity: 0.10, animationDelay: '3s' }} />
 
       <div className="container mx-auto px-4 relative">
         <div className="grid lg:grid-cols-2 gap-14 items-center">
@@ -40,10 +42,10 @@ const TechStack = () => {
               </span>
             </h2>
             <div className="w-16 h-1 rounded-full bg-gradient-to-r from-primary to-accent mb-6" />
-            <p className="text-background/50 leading-relaxed mb-4">
+            <p className="text-muted-foreground leading-relaxed mb-4">
               We leverage the latest and most powerful technologies to build scalable, high-performance solutions for your business. Our tech stack is carefully selected to deliver reliability, speed, and flexibility.
             </p>
-            <p className="text-background/50 leading-relaxed mb-8">
+            <p className="text-muted-foreground leading-relaxed mb-8">
               From frontend frameworks to backend infrastructure, we use industry-leading tools that ensure your project is built on a solid foundation ready for growth.
             </p>
             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
@@ -77,7 +79,7 @@ const TechStack = () => {
                 >
                   {tech.name.charAt(0)}
                 </div>
-                <span className="text-xs font-medium text-background/60 group-hover:text-background transition-colors text-center">
+                <span className="text-xs font-medium text-muted-foreground group-hover:text-foreground transition-colors text-center">
                   {tech.name}
                 </span>
               </motion.div>
