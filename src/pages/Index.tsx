@@ -9,7 +9,7 @@ import PortfolioSection from "@/components/PortfolioSection";
 import TechStack from "@/components/TechStack";
 import AboutSection from "@/components/AboutSection";
 import FaqSection from "@/components/FaqSection";
-import PaymentSection from "@/components/PaymentSection";
+
 import SiteFooter from "@/components/SiteFooter";
 import FloatingContactButton from "@/components/FloatingContactButton";
 import AISupportChat from "@/components/AISupportChat";
@@ -49,7 +49,7 @@ const Index = () => {
         <PortfolioSection />
         <TechStack />
         <AboutSection />
-        <PaymentSection />
+        
         <FaqSection />
         <SiteFooter />
         <FloatingContactButton onOpenAI={() => setAiOpen(true)} />
