@@ -103,11 +103,11 @@ const SiteFooter = () => {
               <Link to="/">
                 <div className="flex items-center gap-2.5 mb-5">
                   <div className="w-12 h-12 rounded-xl overflow-hidden shrink-0"
-                    style={{ filter: 'drop-shadow(0 4px 12px hsl(185,100%,48%,0.4))' }}>
+                    style={{ filter: 'drop-shadow(0 6px 18px hsl(185,100%,48%,0.5))' }}>
                     <img src={logoImg} alt="Shahed IT" className="w-full h-full object-contain" />
                   </div>
                   <span className="text-2xl font-black" style={{ fontFamily: "'Syne', sans-serif" }}>
-                    <span className="gradient-text">Shahed</span>
+                    <span style={{ background: 'linear-gradient(135deg, hsl(185,100%,48%), hsl(165,80%,45%))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Shahed</span>
                     <span className="text-foreground"> IT</span>
                   </span>
                 </div>
