@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, Bot, X, Sparkles, Phone } from "lucide-react";
+import { MessageCircle, Bot, X, Headphones } from "lucide-react";
 
 interface FloatingContactProps {
   onOpenAI: () => void;
@@ -114,7 +114,7 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
               exit={{ rotate: -90, opacity: 0 }}
               transition={{ duration: 0.18 }}
             >
-              <Phone size={20} className="text-white" fill="white" />
+              <Headphones size={22} className="text-white" />
             </motion.span>
           )}
         </AnimatePresence>
