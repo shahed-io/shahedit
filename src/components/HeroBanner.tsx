@@ -195,7 +195,7 @@ const HeroBanner = () => {
             {/* Two info cards */}
             {[
               { tag: "🚀 Featured", title: "Web Development", desc: "Custom websites that convert visitors into customers", color: "hsl(258,90%,66%)" },
-              { tag: "⚡ Popular", title: "Digital Marketing", desc: "Grow your online presence with proven strategies", color: "hsl(185,100%,48%)" },
+              { tag: "⚡ Popular", title: "Graphics Design", desc: "Creative logos, branding & visuals that make you stand out", color: "hsl(315,80%,65%)" },
             ].map((card, i) => (
               <motion.div
                 key={card.title}
