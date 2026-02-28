@@ -1,13 +1,13 @@
 import { motion } from "framer-motion";
-import { Code, Facebook, BarChart3, Palette, Wrench, Briefcase } from "lucide-react";
+import { Code2, Smartphone, Palette, BarChart3, Cloud, ShieldCheck } from "lucide-react";
 
 const categories = [
-  { name: "Web Development", products: 6, icon: Code, color: "hsl(258,90%,66%)", bg: "rgba(139,92,246,0.12)", border: "rgba(139,92,246,0.25)" },
-  { name: "Facebook Services", products: 0, icon: Facebook, color: "hsl(217,89%,61%)", bg: "rgba(59,130,246,0.12)", border: "rgba(59,130,246,0.25)" },
-  { name: "Digital Marketing", products: 0, icon: BarChart3, color: "hsl(185,100%,48%)", bg: "rgba(6,182,212,0.12)", border: "rgba(6,182,212,0.25)" },
-  { name: "Graphics Design", products: 0, icon: Palette, color: "hsl(315,80%,65%)", bg: "rgba(236,72,153,0.12)", border: "rgba(236,72,153,0.25)" },
-  { name: "Website Maintenance", products: 4, icon: Wrench, color: "hsl(45,93%,58%)", bg: "rgba(234,179,8,0.12)", border: "rgba(234,179,8,0.25)" },
-  { name: "Business Solutions", products: 3, icon: Briefcase, color: "hsl(270,80%,65%)", bg: "rgba(147,51,234,0.12)", border: "rgba(147,51,234,0.25)" },
+  { name: "Web Design & Development", sub: "বিজনেস · ই-কমার্স · WordPress", icon: Code2, color: "hsl(258,90%,66%)", bg: "rgba(139,92,246,0.12)", border: "rgba(139,92,246,0.25)" },
+  { name: "App Development", sub: "Android · iOS · Flutter", icon: Smartphone, color: "hsl(217,89%,61%)", bg: "rgba(59,130,246,0.12)", border: "rgba(59,130,246,0.25)" },
+  { name: "Graphic Design", sub: "Logo · Branding · Video", icon: Palette, color: "hsl(315,80%,65%)", bg: "rgba(236,72,153,0.12)", border: "rgba(236,72,153,0.25)" },
+  { name: "Digital Marketing", sub: "Facebook · Google · SEO", icon: BarChart3, color: "hsl(185,100%,48%)", bg: "rgba(6,182,212,0.12)", border: "rgba(6,182,212,0.25)" },
+  { name: "Cloud & Hosting", sub: "Domain · Hosting · VPS", icon: Cloud, color: "hsl(45,93%,58%)", bg: "rgba(234,179,8,0.12)", border: "rgba(234,179,8,0.25)" },
+  { name: "IT Support & Security", sub: "Cyber · Network · Repair", icon: ShieldCheck, color: "hsl(160,80%,55%)", bg: "rgba(34,197,94,0.12)", border: "rgba(34,197,94,0.25)" },
 ];
 
 const PopularCategories = () => {
@@ -72,8 +72,8 @@ const PopularCategories = () => {
               <h3 className="text-sm font-bold text-foreground/85 text-center leading-tight group-hover:text-foreground transition-colors duration-300">
                 {cat.name}
               </h3>
-              <p className="text-xs mt-1.5 font-medium transition-colors duration-300" style={{ color: cat.color }}>
-                {cat.products > 0 ? `${cat.products} plans` : "Available"}
+              <p className="text-xs mt-1.5 font-medium text-center transition-colors duration-300" style={{ color: cat.color }}>
+                {cat.sub}
               </p>
             </motion.a>
           ))}
