@@ -31,7 +31,7 @@ const Index = () => {
           style={{
             width: 300, height: 300,
             top: '25%', left: '45%',
-            background: 'radial-gradient(circle, hsl(174,80%,40%) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, hsl(245,80%,65%) 0%, transparent 70%)',
             opacity: 0.06,
             filter: 'blur(60px)',
             animation: 'float 8s ease-in-out infinite',

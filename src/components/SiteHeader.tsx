@@ -48,7 +48,7 @@ const SiteHeader = () => {
       {/* Top bar */}
       <div
         className="relative overflow-hidden"
-        style={{ background: 'linear-gradient(90deg, hsl(196,60%,8%) 0%, hsl(196,40%,5%) 50%, hsl(174,50%,10%) 100%)' }}
+        style={{ background: 'linear-gradient(90deg, hsl(258,90%,20%) 0%, hsl(220,40%,8%) 50%, hsl(185,60%,15%) 100%)' }}
       >
         {/* Moving gradient line */}
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary to-transparent opacity-60" />
@@ -85,7 +85,7 @@ const SiteHeader = () => {
       >
         {/* Subtle top glow line */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-px opacity-50"
-          style={{ background: 'linear-gradient(90deg, transparent, hsl(174,80%,40%), hsl(155,70%,45%), transparent)' }} />
+          style={{ background: 'linear-gradient(90deg, transparent, hsl(258,90%,66%), hsl(185,100%,48%), transparent)' }} />
 
         <div className="container mx-auto px-4 py-4 flex items-center justify-between gap-6">
           {/* Logo */}
@@ -202,9 +202,9 @@ const SiteHeader = () => {
               <Link to="/dashboard">
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
                   className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all"
-                  style={{ background: 'rgba(0,168,150,0.12)', border: '1px solid rgba(0,168,150,0.25)', color: 'hsl(174,80%,60%)' }}>
+                  style={{ background: 'rgba(139,92,246,0.12)', border: '1px solid rgba(139,92,246,0.25)', color: 'hsl(258,90%,75%)' }}>
                   <div className="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-black text-white"
-                    style={{ background: 'linear-gradient(135deg, hsl(174,80%,40%), hsl(155,70%,45%))' }}>
+                    style={{ background: 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))' }}>
                     {user.email?.[0].toUpperCase()}
                   </div>
                   ড্যাশবোর্ড
@@ -214,7 +214,7 @@ const SiteHeader = () => {
               <Link to="/login">
                 <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
                   className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all"
-                  style={{ background: 'rgba(0,168,150,0.10)', border: '1px solid rgba(0,168,150,0.22)', color: 'hsl(174,80%,60%)' }}>
+                  style={{ background: 'rgba(139,92,246,0.10)', border: '1px solid rgba(139,92,246,0.22)', color: 'hsl(258,90%,75%)' }}>
                   <LogIn size={14} /> লগইন
                 </motion.button>
               </Link>
@@ -224,7 +224,7 @@ const SiteHeader = () => {
                 whileHover={{ scale: 1.05, y: -1 }}
                 whileTap={{ scale: 0.95 }}
                 className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white glossy-btn relative overflow-hidden group"
-                style={{ background: 'linear-gradient(135deg, hsl(174,80%,40%), hsl(155,70%,38%))', boxShadow: '0 4px 20px hsl(174,80%,40%,0.4), 0 0 40px hsl(174,80%,40%,0.15)' }}
+                style={{ background: 'linear-gradient(135deg, hsl(258,90%,66%), hsl(258,90%,55%))', boxShadow: '0 4px 20px hsl(258,90%,66%,0.35), 0 0 40px hsl(258,90%,66%,0.12)' }}
               >
                 <span>Get a Quote</span>
                 <ChevronRight size={14} className="group-hover:translate-x-0.5 transition-transform" />

@@ -12,9 +12,9 @@ const stats = [
 ];
 
 const floatingIcons = [
-  { icon: Code2, x: "10%", y: "20%", delay: 0, color: "hsl(174,80%,40%)" },
-  { icon: Globe, x: "85%", y: "15%", delay: 0.5, color: "hsl(155,70%,45%)" },
-  { icon: Smartphone, x: "90%", y: "70%", delay: 1, color: "hsl(185,100%,48%)" },
+  { icon: Code2, x: "10%", y: "20%", delay: 0, color: "hsl(258,90%,66%)" },
+  { icon: Globe, x: "85%", y: "15%", delay: 0.5, color: "hsl(185,100%,48%)" },
+  { icon: Smartphone, x: "90%", y: "70%", delay: 1, color: "hsl(315,80%,65%)" },
   { icon: Zap, x: "5%", y: "75%", delay: 1.5, color: "hsl(45,93%,58%)" },
 ];
 
@@ -43,15 +43,15 @@ const HeroBanner = () => {
   return (
     <section className="relative overflow-hidden min-h-[700px] flex items-center">
       {/* Background layers */}
-      <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, hsl(196,42%,4%) 0%, hsl(174,30%,7%) 50%, hsl(196,40%,4%) 100%)' }} />
+      <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, hsl(220,42%,5%) 0%, hsl(258,30%,8%) 50%, hsl(220,40%,5%) 100%)' }} />
 
       {/* Cross grid */}
       <div className="absolute inset-0 cross-grid opacity-60" />
 
       {/* Big glowing orbs */}
-      <div className="absolute -top-32 -left-32 w-[700px] h-[700px] rounded-full float-anim" style={{ background: 'radial-gradient(circle, hsl(174,80%,40%) 0%, transparent 65%)', filter: 'blur(100px)', opacity: 0.18, animationDuration: '8s' }} />
-      <div className="absolute -top-20 right-[5%] w-[500px] h-[500px] rounded-full float-anim" style={{ background: 'radial-gradient(circle, hsl(155,70%,45%) 0%, transparent 65%)', filter: 'blur(90px)', opacity: 0.13, animationDelay: '3s', animationDuration: '10s' }} />
-      <div className="absolute bottom-0 left-[35%] w-[400px] h-[400px] rounded-full" style={{ background: 'radial-gradient(circle, hsl(185,100%,48%) 0%, transparent 65%)', filter: 'blur(80px)', opacity: 0.10 }} />
+      <div className="absolute -top-32 -left-32 w-[700px] h-[700px] rounded-full float-anim" style={{ background: 'radial-gradient(circle, hsl(258,90%,66%) 0%, transparent 65%)', filter: 'blur(100px)', opacity: 0.18, animationDuration: '8s' }} />
+      <div className="absolute -top-20 right-[5%] w-[500px] h-[500px] rounded-full float-anim" style={{ background: 'radial-gradient(circle, hsl(185,100%,48%) 0%, transparent 65%)', filter: 'blur(90px)', opacity: 0.13, animationDelay: '3s', animationDuration: '10s' }} />
+      <div className="absolute bottom-0 left-[35%] w-[400px] h-[400px] rounded-full" style={{ background: 'radial-gradient(circle, hsl(315,80%,65%) 0%, transparent 65%)', filter: 'blur(80px)', opacity: 0.10 }} />
 
       {/* Floating tech icons */}
       {floatingIcons.map((item, i) => (
@@ -67,7 +67,7 @@ const HeroBanner = () => {
       ))}
 
       {/* Scan line */}
-      <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 4px, rgba(0,168,150,0.012) 4px, rgba(0,168,150,0.012) 5px)' }} />
+      <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 4px, rgba(139,92,246,0.012) 4px, rgba(139,92,246,0.012) 5px)' }} />
 
       <div className="container mx-auto px-4 relative z-10 py-20">
         <div className="grid lg:grid-cols-[1.3fr_1fr] gap-12 items-center">
@@ -171,7 +171,7 @@ const HeroBanner = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3, type: "spring" }}
               className="rounded-2xl p-6"
-              style={{ background: 'rgba(0,168,150,0.08)', border: '1px solid rgba(0,168,150,0.22)', backdropFilter: 'blur(16px)' }}
+              style={{ background: 'rgba(139,92,246,0.08)', border: '1px solid rgba(139,92,246,0.22)', backdropFilter: 'blur(16px)' }}
             >
               <p className="text-xs text-foreground/40 uppercase tracking-widest mb-4 flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" /> Special Offer Ends In
@@ -184,7 +184,7 @@ const HeroBanner = () => {
                   { val: countdown.secs, label: "Secs" },
                 ].map((item, i) => (
                   <div key={item.label} className="flex-1 rounded-xl p-3 text-center"
-                    style={{ background: 'rgba(0,168,150,0.12)', border: '1px solid rgba(0,168,150,0.20)' }}>
+                    style={{ background: 'rgba(139,92,246,0.12)', border: '1px solid rgba(139,92,246,0.20)' }}>
                     <div className="text-2xl font-black gradient-text">{pad(item.val)}</div>
                     <div className="text-[10px] text-foreground/35 uppercase tracking-wider mt-0.5">{item.label}</div>
                   </div>
@@ -194,8 +194,8 @@ const HeroBanner = () => {
 
             {/* Two info cards */}
             {[
-              { tag: "🚀 Featured", title: "Web Development", desc: "Custom websites that convert visitors into customers", color: "hsl(174,80%,40%)" },
-              { tag: "⚡ Popular", title: "Digital Marketing", desc: "Grow your online presence with proven strategies", color: "hsl(155,70%,45%)" },
+              { tag: "🚀 Featured", title: "Web Development", desc: "Custom websites that convert visitors into customers", color: "hsl(258,90%,66%)" },
+              { tag: "⚡ Popular", title: "Digital Marketing", desc: "Grow your online presence with proven strategies", color: "hsl(185,100%,48%)" },
             ].map((card, i) => (
               <motion.div
                 key={card.title}
