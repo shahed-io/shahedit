@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
-import { Phone, Mail, Menu, X, Zap, ChevronRight, ChevronDown, Globe, Wrench, Palette, Facebook, TrendingUp, Building2, User, LogIn } from "lucide-react";
+import { Phone, Mail, Menu, X, ChevronRight, ChevronDown, Globe, Wrench, Palette, Facebook, TrendingUp, Building2, LogIn } from "lucide-react";
+import logoImg from "@/assets/logo.png";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -90,10 +91,9 @@ const SiteHeader = () => {
           {/* Logo */}
           <Link to="/">
             <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }} className="flex items-center gap-2.5 shrink-0">
-              <div className="w-9 h-9 rounded-xl flex items-center justify-center relative overflow-hidden"
-                style={{ background: 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))' }}>
-                <Zap size={18} className="text-white" fill="white" />
-                <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.25) 0%, transparent 60%)' }} />
+              <div className="w-10 h-10 rounded-xl overflow-hidden shrink-0 shadow-lg"
+                style={{ boxShadow: '0 4px 20px hsl(185,100%,48%,0.35)' }}>
+                <img src={logoImg} alt="Shahed IT Logo" className="w-full h-full object-contain" />
               </div>
               <span className="text-xl font-bold tracking-tight" style={{ fontFamily: "'Syne', sans-serif" }}>
                 <span className="gradient-text">Shahed</span>
