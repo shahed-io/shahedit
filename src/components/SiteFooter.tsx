@@ -1,130 +1,183 @@
-import { Phone, Mail, ArrowRight, ArrowUp } from "lucide-react";
+import { Phone, Mail, ArrowRight, ArrowUp, Zap, MapPin, MessageCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+
+const footerLinks = [
+  { title: "Services", items: [
+    { label: "Web Development", href: "/services" },
+    { label: "Graphics Design", href: "/services" },
+    { label: "Digital Marketing", href: "/services" },
+    { label: "IT Support", href: "/services" },
+    { label: "Facebook Marketing", href: "/services" },
+  ]},
+  { title: "Company", items: [
+    { label: "About Us", href: "/about" },
+    { label: "Portfolio", href: "/portfolio" },
+    { label: "Blog", href: "/blog" },
+    { label: "Careers", href: "/careers" },
+    { label: "Contact", href: "/contact" },
+  ]},
+  { title: "Resources", items: [
+    { label: "FAQs", href: "/faq" },
+    { label: "Pricing", href: "/pricing" },
+    { label: "Get a Quote", href: "/get-quote" },
+    { label: "Privacy Policy", href: "#" },
+    { label: "Terms of Service", href: "#" },
+  ]},
+];
 
 const SiteFooter = () => {
   return (
     <footer className="relative overflow-hidden">
-      {/* Gradient top line */}
-      <div className="h-1 bg-gradient-to-r from-primary via-accent to-primary" />
+      {/* Top gradient line */}
+      <div className="h-px" style={{ background: 'linear-gradient(90deg, transparent, hsl(258,90%,66%), hsl(185,100%,48%), transparent)' }} />
 
-      <div className="relative" style={{ background: 'linear-gradient(180deg, hsl(222,50%,5%) 0%, hsl(225,55%,4%) 100%)' }}>
-        {/* Background orbs */}
-        <div className="absolute top-10 right-10 w-[400px] h-[300px] rounded-full" style={{ background: 'radial-gradient(ellipse, hsl(245,80%,65%) 0%, transparent 70%)', filter: 'blur(100px)', opacity: 0.07 }} />
-        <div className="absolute bottom-10 left-10 w-[300px] h-[250px] rounded-full" style={{ background: 'radial-gradient(ellipse, hsl(170,80%,45%) 0%, transparent 70%)', filter: 'blur(80px)', opacity: 0.06 }} />
-        {/* Tech grid */}
-        <div className="absolute inset-0 tech-grid-bg opacity-20" />
+      <div
+        className="relative"
+        style={{ background: 'linear-gradient(180deg, hsl(220,42%,4%) 0%, hsl(222,45%,3%) 100%)' }}
+      >
+        {/* Grid bg */}
+        <div className="absolute inset-0 tech-grid-bg opacity-25" />
+
+        {/* Orbs */}
+        <div className="absolute top-10 right-10 w-[400px] h-[300px] rounded-full"
+          style={{ background: 'radial-gradient(ellipse, hsl(258,90%,66%) 0%, transparent 65%)', filter: 'blur(120px)', opacity: 0.07 }} />
+        <div className="absolute bottom-10 left-10 w-[350px] h-[250px] rounded-full"
+          style={{ background: 'radial-gradient(ellipse, hsl(185,100%,48%) 0%, transparent 65%)', filter: 'blur(100px)', opacity: 0.06 }} />
 
         <div className="container mx-auto px-4 pt-16 pb-8 relative">
-          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
+          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-10 mb-14">
+
             {/* Brand */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="lg:col-span-1"
+              className="lg:col-span-2"
             >
-              <h3 className="text-xl font-bold mb-4">
-                <span className="bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">Shahed</span>
-                <span className="text-background"> IT</span>
-              </h3>
-              <p className="text-muted-foreground text-sm mb-5">
-                Professional digital service agency for web development and graphic design.
+              <Link to="/">
+                <div className="flex items-center gap-2.5 mb-5">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+                    style={{ background: 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))' }}>
+                    <Zap size={20} className="text-white" fill="white" />
+                  </div>
+                  <span className="text-2xl font-black" style={{ fontFamily: "'Syne', sans-serif" }}>
+                    <span className="gradient-text">Shahed</span>
+                    <span className="text-foreground"> IT</span>
+                  </span>
+                </div>
+              </Link>
+              <p className="text-foreground/40 text-sm mb-6 leading-relaxed max-w-xs">
+                Professional IT agency delivering premium web development, graphic design & digital marketing solutions from Bangladesh.
               </p>
               <div className="space-y-3 text-sm">
-                <motion.a
-                  whileHover={{ x: 4 }}
-                  href="tel:+8801820060046"
-                  className="flex items-center gap-2.5 text-muted-foreground hover:text-accent transition-all duration-300"
-                >
-                  <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <Phone size={14} className="text-primary" />
-                  </div>
-                  <span>01820-060046</span>
+                <motion.a whileHover={{ x: 4 }} href="tel:+8801820060046"
+                  className="flex items-center gap-3 text-foreground/45 hover:text-primary transition-all group">
+                  <span className="w-8 h-8 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors"
+                    style={{ background: 'rgba(139,92,246,0.12)', border: '1px solid rgba(139,92,246,0.20)' }}>
+                    <Phone size={13} style={{ color: 'hsl(258,90%,66%)' }} />
+                  </span>
+                  01820-060046
                 </motion.a>
-                <motion.a
-                  whileHover={{ x: 4 }}
-                  href="mailto:info@shahedit.com"
-                  className="flex items-center gap-2.5 text-muted-foreground hover:text-accent transition-all duration-300"
-                >
-                  <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
-                    <Mail size={14} className="text-accent" />
-                  </div>
-                  <span>info@shahedit.com</span>
+                <motion.a whileHover={{ x: 4 }} href="https://wa.me/8801820060046" target="_blank"
+                  className="flex items-center gap-3 text-foreground/45 hover:text-accent transition-all group">
+                  <span className="w-8 h-8 rounded-lg flex items-center justify-center group-hover:bg-green-500/20 transition-colors"
+                    style={{ background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.20)' }}>
+                    <MessageCircle size={13} style={{ color: 'hsl(155,70%,50%)' }} />
+                  </span>
+                  WhatsApp Chat
                 </motion.a>
+                <motion.a whileHover={{ x: 4 }} href="mailto:info@shahedit.com"
+                  className="flex items-center gap-3 text-foreground/45 hover:text-accent transition-all group">
+                  <span className="w-8 h-8 rounded-lg flex items-center justify-center group-hover:bg-accent/20 transition-colors"
+                    style={{ background: 'rgba(6,182,212,0.12)', border: '1px solid rgba(6,182,212,0.20)' }}>
+                    <Mail size={13} style={{ color: 'hsl(185,100%,48%)' }} />
+                  </span>
+                  info@shahedit.com
+                </motion.a>
+                <div className="flex items-center gap-3 text-foreground/35">
+                  <span className="w-8 h-8 rounded-lg flex items-center justify-center"
+                    style={{ background: 'rgba(234,179,8,0.12)', border: '1px solid rgba(234,179,8,0.20)' }}>
+                    <MapPin size={13} style={{ color: 'hsl(45,93%,58%)' }} />
+                  </span>
+                  Dhaka, Bangladesh
+                </div>
               </div>
             </motion.div>
 
             {/* Link columns */}
-            {[
-              { title: "Services", items: ["Web Development", "Graphics Design", "UI/UX Design", "Digital Marketing", "IT Support", "Facebook"] },
-              { title: "Information", items: ["About Us", "Our Services", "Portfolio", "Blog", "FAQs", "Contact Us"] },
-              { title: "Policies", items: ["Privacy Policy", "Terms & Conditions", "Refund Policy", "Support Center", "Delivery Policy", "Order & Cancellation"] },
-            ].map((col, ci) => (
+            {footerLinks.map((col, ci) => (
               <motion.div
                 key={col.title}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: ci * 0.1 }}
               >
-                <h4 className="font-semibold text-foreground mb-4 text-sm uppercase tracking-wider">{col.title}</h4>
-                <ul className="space-y-2.5 text-sm">
+                <h4 className="font-bold text-foreground/80 mb-5 text-sm uppercase tracking-[0.15em]">{col.title}</h4>
+                <ul className="space-y-3 text-sm">
                   {col.items.map((item) => (
-                    <li key={item}>
-                      <motion.a
-                        whileHover={{ x: 4 }}
-                        href="#"
-                        className="text-muted-foreground hover:text-accent transition-all duration-300 flex items-center gap-1.5"
-                      >
-                        <span className="w-0 h-px bg-accent group-hover:w-3 transition-all" />
-                        {item}
-                      </motion.a>
+                    <li key={item.label}>
+                      <Link to={item.href}>
+                        <motion.span
+                          whileHover={{ x: 4 }}
+                          className="text-foreground/40 hover:text-foreground/80 transition-all duration-300 flex items-center gap-1.5 group cursor-pointer"
+                        >
+                          <span className="w-0 h-px group-hover:w-3 transition-all duration-300 rounded-full"
+                            style={{ background: 'linear-gradient(90deg, hsl(258,90%,66%), hsl(185,100%,48%))' }} />
+                          {item.label}
+                        </motion.span>
+                      </Link>
                     </li>
                   ))}
                 </ul>
               </motion.div>
             ))}
-
-            {/* Newsletter */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-            >
-              <h4 className="font-semibold text-foreground mb-4 text-sm uppercase tracking-wider">
-                Subscribe for Updates
-              </h4>
-              <p className="text-xs text-muted-foreground mb-4">
-                Will be used in accordance with our{" "}
-                <a href="#" className="text-accent hover:underline">Privacy Policy</a>
-              </p>
-              <div className="flex gap-2">
-                <Input
-                  placeholder="Your email"
-                  type="email"
-                  className="text-sm bg-secondary border-border text-foreground placeholder:text-muted-foreground rounded-full h-10"
-                />
-                <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                  <Button size="icon" className="bg-gradient-to-r from-accent to-primary text-accent-foreground rounded-full h-10 w-10 shrink-0 glossy-btn shadow-lg shadow-accent/20">
-                    <ArrowRight size={16} />
-                  </Button>
-                </motion.div>
-              </div>
-            </motion.div>
           </div>
 
-          <div className="border-t border-border pt-6 flex items-center justify-between">
-            <p className="text-xs text-muted-foreground">© 2026 Shahed IT. All rights reserved.</p>
+          {/* Newsletter */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="rounded-2xl p-6 mb-10 flex flex-col md:flex-row items-center gap-5 justify-between"
+            style={{ background: 'linear-gradient(135deg, rgba(139,92,246,0.10), rgba(6,182,212,0.06))', border: '1px solid rgba(139,92,246,0.18)' }}
+          >
+            <div>
+              <h4 className="font-bold text-foreground/85 mb-1">Stay updated with Shahed IT</h4>
+              <p className="text-xs text-foreground/40">Get news, tips and special offers in your inbox.</p>
+            </div>
+            <div className="flex gap-2 w-full md:w-auto">
+              <Input
+                placeholder="Your email address"
+                type="email"
+                className="text-sm h-11 rounded-xl border-white/10 bg-white/5 text-foreground placeholder:text-foreground/30 focus-visible:ring-primary/40 min-w-[220px]"
+              />
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="h-11 w-11 rounded-xl flex items-center justify-center shrink-0 glossy-btn"
+                style={{ background: 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))' }}
+              >
+                <ArrowRight size={16} className="text-white" />
+              </motion.button>
+            </div>
+          </motion.div>
+
+          {/* Bottom bar */}
+          <div className="flex items-center justify-between pt-6" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+            <p className="text-xs text-foreground/30">
+              © 2026 <span className="gradient-text font-semibold">Shahed IT</span>. All rights reserved.
+            </p>
             <motion.button
               whileHover={{ y: -3, scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center glossy-btn shadow-lg shadow-primary/20"
+              className="w-10 h-10 rounded-xl flex items-center justify-center glossy-btn"
+              style={{ background: 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))' }}
             >
-              <ArrowUp size={16} className="text-primary-foreground" />
+              <ArrowUp size={16} className="text-white" />
             </motion.button>
           </div>
         </div>

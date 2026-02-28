@@ -2,62 +2,74 @@ import { ShoppingCart, UtensilsCrossed, Building2, Monitor, Ticket, FileText, Se
 import { motion } from "framer-motion";
 
 const solutions = [
-  { icon: ShoppingCart, title: "Ecommerce", desc: "Powerful online store platforms tailored for growth and sales optimization.", gradient: "from-primary to-accent" },
-  { icon: UtensilsCrossed, title: "Restaurant", desc: "Digital menu, ordering, and kitchen management systems for hospitality.", gradient: "from-orange-500 to-amber-400" },
-  { icon: Building2, title: "ERP Systems", desc: "Integrated management of main business processes to streamline operations.", gradient: "from-violet-500 to-purple-400" },
-  { icon: Monitor, title: "POS Solutions", desc: "Reliable and fast Point of Sale systems for modern retail environments.", gradient: "from-cyan-500 to-blue-400" },
-  { icon: Ticket, title: "Ticketing", desc: "Efficient booking, reservation, and event management tools.", gradient: "from-pink-500 to-rose-400" },
-  { icon: FileText, title: "Content Platforms", desc: "Custom blogs and dynamic content management systems for publishers.", gradient: "from-emerald-500 to-green-400" },
-  { icon: Settings, title: "Management Solutions", desc: "Bespoke software to optimize complex workflows and team productivity.", gradient: "from-amber-500 to-yellow-400" },
-  { icon: Smartphone, title: "Mobile Apps", desc: "High-performance iOS and Android applications for seamless experiences.", gradient: "from-indigo-500 to-blue-400" },
+  { icon: ShoppingCart, title: "Ecommerce", desc: "Powerful online store platforms for growth.", color: "hsl(258,90%,66%)", bg: "rgba(139,92,246,0.10)", border: "rgba(139,92,246,0.22)" },
+  { icon: UtensilsCrossed, title: "Restaurant", desc: "Digital menus & ordering management.", color: "hsl(25,95%,60%)", bg: "rgba(249,115,22,0.10)", border: "rgba(249,115,22,0.22)" },
+  { icon: Building2, title: "ERP Systems", desc: "Integrated management for business ops.", color: "hsl(270,80%,65%)", bg: "rgba(147,51,234,0.10)", border: "rgba(147,51,234,0.22)" },
+  { icon: Monitor, title: "POS Solutions", desc: "Fast & reliable point-of-sale systems.", color: "hsl(195,100%,50%)", bg: "rgba(0,188,212,0.10)", border: "rgba(0,188,212,0.22)" },
+  { icon: Ticket, title: "Ticketing", desc: "Booking, reservation & event tools.", color: "hsl(315,80%,65%)", bg: "rgba(236,72,153,0.10)", border: "rgba(236,72,153,0.22)" },
+  { icon: FileText, title: "Content CMS", desc: "Custom blogs & content management.", color: "hsl(155,70%,45%)", bg: "rgba(34,197,94,0.10)", border: "rgba(34,197,94,0.22)" },
+  { icon: Settings, title: "Management", desc: "Bespoke workflow optimization tools.", color: "hsl(45,93%,58%)", bg: "rgba(234,179,8,0.10)", border: "rgba(234,179,8,0.22)" },
+  { icon: Smartphone, title: "Mobile Apps", desc: "iOS & Android high-performance apps.", color: "hsl(210,100%,62%)", bg: "rgba(59,130,246,0.10)", border: "rgba(59,130,246,0.22)" },
 ];
 
 const IndustrySolutions = () => {
   return (
-    <section className="py-20 bg-secondary/30 relative overflow-hidden">
-      <div className="absolute top-0 left-1/3 w-[500px] h-[300px] bg-primary/5 rounded-full blur-[120px]" />
+    <section className="py-24 relative overflow-hidden">
+      <div className="absolute inset-0 dot-grid opacity-30" />
+      <div className="absolute left-0 top-1/3 w-[500px] h-[500px] rounded-full"
+        style={{ background: 'radial-gradient(circle, hsl(258,90%,66%) 0%, transparent 65%)', filter: 'blur(120px)', opacity: 0.08 }} />
 
       <div className="container mx-auto px-4 relative">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-14"
+          className="text-center mb-16"
         >
-          <span className="text-accent text-sm font-semibold uppercase tracking-widest">Solutions</span>
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mt-2">
-            Comprehensive IT Solutions for Every Industry
+          <motion.span
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] px-4 py-2 rounded-full mb-4"
+            style={{ background: 'rgba(6,182,212,0.10)', border: '1px solid rgba(6,182,212,0.25)', color: 'hsl(185,100%,55%)' }}
+          >
+            ◈ Industry Solutions
+          </motion.span>
+          <h2 className="text-4xl md:text-5xl font-black text-foreground mt-2">
+            Solutions for <span className="gradient-text-cyan">Every Industry</span>
           </h2>
-          <p className="text-muted-foreground mt-3 max-w-2xl mx-auto">
-            We deliver robust, scalable, and innovative technology services tailored to modernize your business operations across various sectors.
+          <p className="text-foreground/45 mt-4 max-w-2xl mx-auto">
+            Robust, scalable & innovative technology services to modernize your business across all sectors.
           </p>
-          <div className="mt-4 mx-auto w-16 h-1 rounded-full bg-gradient-to-r from-primary to-accent" />
+          <div className="mt-5 mx-auto w-20 h-1 rounded-full" style={{ background: 'linear-gradient(90deg, hsl(185,100%,48%), hsl(258,90%,66%))' }} />
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {solutions.map((sol, i) => (
             <motion.div
               key={sol.title}
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.92 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.08, type: "spring", stiffness: 120 }}
+              transition={{ delay: i * 0.07, type: "spring", stiffness: 130 }}
               whileHover={{ y: -8, scale: 1.03 }}
-              className="glossy-card rounded-2xl border border-border p-6 group hover:border-primary/20 transition-all duration-500 cursor-pointer"
+              className="group relative rounded-2xl p-6 cursor-pointer overflow-hidden transition-all duration-500"
+              style={{ background: sol.bg, border: `1px solid ${sol.border}` }}
             >
+              {/* Top glow line */}
+              <div className="absolute top-0 left-4 right-4 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                style={{ background: `linear-gradient(90deg, transparent, ${sol.color}, transparent)` }} />
+
               <motion.div
-                whileHover={{ rotate: 360 }}
+                whileHover={{ rotate: 360, scale: 1.15 }}
                 transition={{ duration: 0.6 }}
-                className={`w-14 h-14 rounded-xl bg-gradient-to-br ${sol.gradient} flex items-center justify-center mb-4 shadow-lg shimmer`}
+                className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 shimmer"
+                style={{ background: `linear-gradient(135deg, ${sol.color}22, ${sol.color}08)`, boxShadow: `0 0 20px ${sol.color}20` }}
               >
-                <sol.icon size={24} className="text-primary-foreground drop-shadow-md" />
+                <sol.icon size={22} style={{ color: sol.color, filter: `drop-shadow(0 0 6px ${sol.color})` }} />
               </motion.div>
-              <h3 className="font-bold text-foreground text-base mb-2 group-hover:text-primary transition-colors duration-300">
-                {sol.title}
-              </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {sol.desc}
-              </p>
+              <h3 className="font-bold text-foreground/90 mb-2 group-hover:text-white transition-colors">{sol.title}</h3>
+              <p className="text-xs text-foreground/45 leading-relaxed group-hover:text-foreground/60 transition-colors">{sol.desc}</p>
             </motion.div>
           ))}
         </div>

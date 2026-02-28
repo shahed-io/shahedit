@@ -1,85 +1,92 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const techs = [
-  { name: "React", color: "#61DAFB" },
-  { name: "Next.js", color: "#000000" },
-  { name: "Node.js", color: "#339933" },
-  { name: "TypeScript", color: "#3178C6" },
-  { name: "WordPress", color: "#21759B" },
-  { name: "PHP", color: "#777BB4" },
-  { name: "Laravel", color: "#FF2D20" },
-  { name: "MongoDB", color: "#47A248" },
-  { name: "MySQL", color: "#4479A1" },
-  { name: "Figma", color: "#F24E1E" },
-  { name: "Flutter", color: "#02569B" },
-  { name: "Python", color: "#3776AB" },
+  { name: "React", color: "#61DAFB", symbol: "⚛" },
+  { name: "Next.js", color: "#a0aec0", symbol: "N" },
+  { name: "Node.js", color: "#68D391", symbol: "⬡" },
+  { name: "TypeScript", color: "#63B3ED", symbol: "TS" },
+  { name: "WordPress", color: "#63AEDE", symbol: "W" },
+  { name: "PHP", color: "#A78BFA", symbol: "<?>" },
+  { name: "Laravel", color: "#FC8181", symbol: "L" },
+  { name: "MongoDB", color: "#68D391", symbol: "M" },
+  { name: "MySQL", color: "#63B3ED", symbol: "⊏" },
+  { name: "Figma", color: "#F6AD55", symbol: "▣" },
+  { name: "Flutter", color: "#63B3ED", symbol: "◇" },
+  { name: "Python", color: "#F6E05E", symbol: "🐍" },
 ];
 
 const TechStack = () => {
   return (
-    <section className="py-20 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, hsl(222,50%,7%) 0%, hsl(230,50%,9%) 50%, hsl(245,40%,8%) 100%)' }}>
-      {/* Tech grid overlay */}
-      <div className="absolute inset-0 tech-grid-bg opacity-50" />
-      {/* Glow orbs */}
-      <div className="absolute top-10 left-10 w-[400px] h-[400px] rounded-full float-anim" style={{ background: 'radial-gradient(circle, hsl(245,80%,65%) 0%, transparent 65%)', filter: 'blur(100px)', opacity: 0.12 }} />
-      <div className="absolute bottom-10 right-10 w-[300px] h-[300px] rounded-full float-anim" style={{ background: 'radial-gradient(circle, hsl(170,80%,45%) 0%, transparent 65%)', filter: 'blur(80px)', opacity: 0.10, animationDelay: '3s' }} />
+    <section className="py-24 relative overflow-hidden">
+      <div className="absolute inset-0 cross-grid opacity-40" />
+      <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(139,92,246,0.05) 0%, transparent 50%, rgba(6,182,212,0.05) 100%)' }} />
+      <div className="absolute top-10 left-10 w-[500px] h-[400px] rounded-full float-anim"
+        style={{ background: 'radial-gradient(ellipse, hsl(258,90%,66%) 0%, transparent 65%)', filter: 'blur(120px)', opacity: 0.10 }} />
+      <div className="absolute bottom-10 right-10 w-[400px] h-[350px] rounded-full float-anim"
+        style={{ background: 'radial-gradient(ellipse, hsl(185,100%,48%) 0%, transparent 65%)', filter: 'blur(100px)', opacity: 0.09, animationDelay: '3s' }} />
 
       <div className="container mx-auto px-4 relative">
-        <div className="grid lg:grid-cols-2 gap-14 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <span className="text-accent text-sm font-semibold uppercase tracking-widest">Our Stack</span>
-            <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-4">
-              Powered by{" "}
-              <span className="bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">
-                Best-in-Class Technology
-              </span>
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          {/* Left */}
+          <motion.div initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
+            <motion.span
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] px-4 py-2 rounded-full mb-6"
+              style={{ background: 'rgba(139,92,246,0.10)', border: '1px solid rgba(139,92,246,0.25)', color: 'hsl(258,90%,75%)' }}
+            >
+              ◈ Our Tech Stack
+            </motion.span>
+
+            <h2 className="text-4xl md:text-5xl font-black text-foreground mb-5">
+              Powered by<br />
+              <span className="gradient-text">Best-in-Class</span><br />
+              Technology
             </h2>
-            <div className="w-16 h-1 rounded-full bg-gradient-to-r from-primary to-accent mb-6" />
-            <p className="text-muted-foreground leading-relaxed mb-4">
-              We leverage the latest and most powerful technologies to build scalable, high-performance solutions for your business. Our tech stack is carefully selected to deliver reliability, speed, and flexibility.
+            <div className="w-20 h-1 rounded-full mb-7" style={{ background: 'linear-gradient(90deg, hsl(258,90%,66%), hsl(185,100%,48%))' }} />
+
+            <p className="text-foreground/50 leading-relaxed mb-4 text-base">
+              We leverage the latest and most powerful technologies to build scalable, high-performance solutions. Our tech stack is carefully selected for reliability, speed, and flexibility.
             </p>
-            <p className="text-muted-foreground leading-relaxed mb-8">
-              From frontend frameworks to backend infrastructure, we use industry-leading tools that ensure your project is built on a solid foundation ready for growth.
+            <p className="text-foreground/50 leading-relaxed mb-9 text-base">
+              From cutting-edge frontend frameworks to robust backend infrastructure — your project is built on a solid foundation ready for the future.
             </p>
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-              <Button className="bg-gradient-to-r from-accent to-primary text-primary-foreground rounded-full px-8 glossy-btn shadow-lg shadow-accent/20 group">
-                Explore Our Tech <ArrowRight size={16} className="ml-1.5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </motion.div>
+
+            <Link to="/services">
+              <motion.button
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center gap-2.5 px-7 py-3.5 rounded-2xl text-base font-bold text-hsl group glossy-btn"
+                style={{ background: 'linear-gradient(135deg, hsl(185,100%,48%), hsl(210,100%,55%))', boxShadow: '0 6px 25px rgba(6,182,212,0.40)', color: 'hsl(220,40%,5%)' }}
+              >
+                Explore Our Services <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+              </motion.button>
+            </Link>
           </motion.div>
 
-          {/* Tech grid */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="grid grid-cols-3 sm:grid-cols-4 gap-4"
+          {/* Right - Tech grid */}
+          <motion.div initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
+            className="grid grid-cols-3 sm:grid-cols-4 gap-3"
           >
             {techs.map((tech, i) => (
               <motion.div
                 key={tech.name}
-                initial={{ opacity: 0, scale: 0.8 }}
+                initial={{ opacity: 0, scale: 0.85 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.06, type: "spring" }}
+                transition={{ delay: i * 0.06, type: "spring", stiffness: 130 }}
                 whileHover={{ y: -6, scale: 1.08 }}
-                className="glass-card rounded-2xl p-5 flex flex-col items-center gap-3 cursor-pointer group hover:border-accent/40 transition-all duration-300"
+                className="rounded-2xl p-4 flex flex-col items-center gap-3 cursor-pointer group transition-all duration-300"
+                style={{ background: `${tech.color}10`, border: `1px solid ${tech.color}25` }}
               >
-                <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bold shimmer"
-                  style={{ backgroundColor: `${tech.color}20`, color: tech.color }}
-                >
-                  {tech.name.charAt(0)}
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center text-lg font-black shimmer"
+                  style={{ background: `${tech.color}18`, color: tech.color, boxShadow: `0 0 15px ${tech.color}20`, filter: `drop-shadow(0 0 4px ${tech.color}40)` }}>
+                  {tech.symbol}
                 </div>
-                <span className="text-xs font-medium text-muted-foreground group-hover:text-foreground transition-colors text-center">
+                <span className="text-xs font-semibold text-foreground/55 group-hover:text-foreground transition-colors text-center">
                   {tech.name}
                 </span>
               </motion.div>
