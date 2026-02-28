@@ -372,9 +372,16 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
   );
 };
 
+interface ServiceGroup {
+  service_id: string;
+  service_title: string;
+  packages: ServicePackageRow[];
+}
+
 // ─── Products Section ────────────────────────────────────────────────────────
 const ProductsSection = () => {
-  const [packages, setPackages] = useState<ServicePackageRow[]>([]);
+  const [groups, setGroups] = useState<ServiceGroup[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     supabase
@@ -382,19 +389,50 @@ const ProductsSection = () => {
       .select("*, services(title)")
       .eq("is_published", true)
       .order("sort_order")
-      .limit(10)
       .then(({ data }) => {
-        if (data) setPackages(data as ServicePackageRow[]);
+        if (data) {
+          const map = new Map<string, ServiceGroup>();
+          (data as ServicePackageRow[]).forEach(pkg => {
+            const sid = pkg.service_id;
+            const stitle = pkg.services?.title ?? "Other";
+            if (!map.has(sid)) map.set(sid, { service_id: sid, service_title: stitle, packages: [] });
+            map.get(sid)!.packages.push(pkg);
+          });
+          setGroups(Array.from(map.values()));
+        }
+        setLoading(false);
       });
   }, []);
+
+  if (loading) return (
+    <section className="py-24">
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          {[...Array(5)].map((_, i) => (
+            <div key={i} className="h-72 rounded-2xl animate-pulse" style={{ background: 'rgba(139,92,246,0.06)', border: '1px solid rgba(139,92,246,0.12)' }} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+
+  if (groups.length === 0) return null;
+
+  const sectionColors = [
+    { accent: 'hsl(258,90%,66%)', glow: 'rgba(139,92,246,0.08)' },
+    { accent: 'hsl(185,100%,48%)', glow: 'rgba(6,182,212,0.08)' },
+    { accent: 'hsl(315,80%,65%)', glow: 'rgba(236,72,153,0.08)' },
+    { accent: 'hsl(45,93%,58%)', glow: 'rgba(234,179,8,0.08)' },
+    { accent: 'hsl(142,76%,55%)', glow: 'rgba(34,197,94,0.08)' },
+    { accent: 'hsl(21,90%,60%)', glow: 'rgba(249,115,22,0.08)' },
+  ];
 
   return (
     <section id="services" className="py-24 relative overflow-hidden">
       <div className="absolute inset-0 dot-grid opacity-20" />
-      <div className="absolute bottom-0 right-0 w-[600px] h-[400px] rounded-full"
-        style={{ background: 'radial-gradient(ellipse, hsl(185,100%,48%) 0%, transparent 65%)', filter: 'blur(120px)', opacity: 0.08 }} />
 
       <div className="container mx-auto px-4 relative">
+        {/* Section Header */}
         <div className="flex items-end justify-between mb-16">
           <motion.div initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
             <motion.span
@@ -402,12 +440,12 @@ const ProductsSection = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] px-4 py-2 rounded-full mb-4"
-              style={{ background: 'rgba(45,93%,58%,0.10)', border: '1px solid rgba(234,179,8,0.25)', color: 'hsl(45,93%,65%)' }}
+              style={{ background: 'rgba(234,179,8,0.10)', border: '1px solid rgba(234,179,8,0.25)', color: 'hsl(45,93%,65%)' }}
             >
               ◈ Pricing Plans
             </motion.span>
             <h2 className="text-4xl md:text-5xl font-black text-foreground mt-2">
-              Web <span className="gradient-text">Development</span> Plans
+              আমাদের <span className="gradient-text">সার্ভিস</span> প্যাকেজ
             </h2>
             <div className="mt-4 w-20 h-1 rounded-full" style={{ background: 'linear-gradient(90deg, hsl(258,90%,66%), hsl(45,93%,58%))' }} />
           </motion.div>
@@ -423,19 +461,36 @@ const ProductsSection = () => {
           </motion.a>
         </div>
 
-        {packages.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {packages.map((pkg, i) => (
-              <ProductCard key={pkg.id} pkg={pkg} index={i} />
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {[...Array(5)].map((_, i) => (
-              <div key={i} className="h-72 rounded-2xl animate-pulse" style={{ background: 'rgba(139,92,246,0.06)', border: '1px solid rgba(139,92,246,0.12)' }} />
-            ))}
-          </div>
-        )}
+        {/* Per-service groups */}
+        <div className="space-y-20">
+          {groups.map((group, gi) => {
+            const sc = sectionColors[gi % sectionColors.length];
+            return (
+              <motion.div
+                key={group.service_id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.5 }}
+              >
+                {/* Group heading */}
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="h-px flex-1 max-w-8 rounded-full" style={{ background: sc.accent }} />
+                  <h3 className="text-xl md:text-2xl font-black" style={{ color: sc.accent }}>
+                    {group.service_title}
+                  </h3>
+                  <div className="h-px flex-1 rounded-full" style={{ background: `linear-gradient(90deg, ${sc.accent}50, transparent)` }} />
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                  {group.packages.map((pkg, i) => (
+                    <ProductCard key={pkg.id} pkg={pkg} index={i} />
+                  ))}
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
     </section>
   );
