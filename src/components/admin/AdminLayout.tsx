@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard, Settings, Users, Briefcase, FolderOpen, FileText,
   MessageSquare, Star, UserCheck, Building2, DollarSign, HelpCircle,
-  Inbox, ChevronLeft, Menu, LogOut, Bell, Shield, Cpu, Package, CreditCard
+  Inbox, ChevronLeft, Menu, LogOut, Bell, Shield, Cpu, Package, CreditCard, LayoutTemplate
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -27,6 +27,7 @@ const navItems = [
   { label: "Careers", icon: Users, href: "/admin/careers" },
   { label: "AI Support", icon: MessageSquare, href: "/admin/ai-support" },
   { label: "Admin Users", icon: Shield, href: "/admin/users" },
+  { label: "Footer Editor", icon: LayoutTemplate, href: "/admin/footer" },
   { label: "Site Settings", icon: Settings, href: "/admin/settings" },
 ];
 
