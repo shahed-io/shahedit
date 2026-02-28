@@ -5,7 +5,7 @@ import type { Variants } from "framer-motion";
 import {
   LayoutDashboard, User, FileText, Clock, CheckCircle2,
   AlertCircle, MessageSquare, Star, Zap, ArrowRight,
-  TrendingUp, Package, LogOut, ChevronRight, Calendar, Mail
+  TrendingUp, Package, LogOut, ChevronRight, Calendar, Mail, Shield
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -50,15 +50,21 @@ export default function DashboardPage() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"overview" | "quotes">("overview");
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     if (!user) { navigate("/login"); return; }
     Promise.all([
       supabase.from("profiles").select("full_name,username,avatar_url").eq("user_id", user.id).single(),
       supabase.from("leads").select("*").eq("email", user.email ?? "").order("created_at", { ascending: false }),
-    ]).then(([profileRes, leadsRes]) => {
+      supabase.from("user_roles").select("role").eq("user_id", user.id),
+    ]).then(([profileRes, leadsRes, rolesRes]) => {
       if (profileRes.data) setProfile(profileRes.data);
       if (leadsRes.data) setLeads(leadsRes.data as Lead[]);
+      if (rolesRes.data && rolesRes.data.length > 0) {
+        const adminRoles = ["super_admin", "admin", "editor"];
+        setIsAdmin(rolesRes.data.some(r => adminRoles.includes(r.role)));
+      }
       setLoading(false);
     });
   }, [user, navigate]);
@@ -121,6 +127,15 @@ export default function DashboardPage() {
               </div>
             </div>
             <div className="flex items-center gap-2">
+              {isAdmin && (
+                <Link to="/admin">
+                  <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all"
+                    style={{ background: 'linear-gradient(135deg, hsl(258,90%,60%), hsl(185,100%,42%))', color: 'white', boxShadow: '0 4px 15px hsl(258,90%,60%,0.3)' }}>
+                    <Shield size={14} /> অ্যাডমিন প্যানেল
+                  </motion.button>
+                </Link>
+              )}
               <Link to="/profile">
                 <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
                   className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all"
