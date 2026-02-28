@@ -1,8 +1,9 @@
-import { Star, ArrowRight, Zap } from "lucide-react";
-import { motion } from "framer-motion";
+import { Star, ArrowRight, Zap, CreditCard, MessageCircle, X, Copy, Smartphone, Send, CheckCircle } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 interface ServicePackageRow {
   id: string;
@@ -18,6 +19,14 @@ interface ServicePackageRow {
   services?: { title: string } | null;
 }
 
+const paymentMethods = [
+  { id: "bkash_send", label: "বিকাশ", sublabel: "Send Money", number: "01820060046", color: "#E2136E", short: "bK" },
+  { id: "nagad_send", label: "নগদ", sublabel: "Send Money", number: "01840099853", color: "#F6821F", short: "NG" },
+  { id: "rocket_send", label: "রকেট", sublabel: "Send Money", number: "01840099853", color: "#8B1FA8", short: "RK" },
+  { id: "upay_send", label: "উপায়", sublabel: "Send Money", number: "01840099853", color: "#00A651", short: "UP" },
+  { id: "bkash_merchant", label: "বিকাশ মার্চেন্ট", sublabel: "Merchant", number: "01840099853", color: "#E2136E", short: "bM" },
+];
+
 const formatPrice = (price: number) => `৳ ${price.toLocaleString("en-BD")}`;
 
 const cardColors = [
@@ -28,104 +37,331 @@ const cardColors = [
   { color: "hsl(45,93%,58%)", bg: "rgba(234,179,8,0.10)", border: "rgba(234,179,8,0.22)" },
 ];
 
+// ─── Payment Modal ───────────────────────────────────────────────────────────
+const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose: () => void }) => {
+  const [step, setStep] = useState<"method" | "form" | "done">("method");
+  const [selected, setSelected] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState({
+    name: "", phone: "", email: "", transaction_id: "", note: "",
+  });
+
+  const selectedMethod = paymentMethods.find(m => m.id === selected);
+  const price = pkg.price ?? 0;
+  const serviceName = `${pkg.services?.title ?? ""} — ${pkg.title}`;
+
+  const copyNumber = (num: string) => {
+    navigator.clipboard.writeText(num);
+    toast.success("নম্বর কপি হয়েছে!");
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selected) { toast.error("পেমেন্ট মেথড বেছে নিন"); return; }
+    if (!form.transaction_id.trim()) { toast.error("Transaction ID দিন"); return; }
+    setLoading(true);
+    const { error } = await supabase.from("payment_submissions" as any).insert({
+      name: form.name,
+      phone: form.phone,
+      email: form.email || null,
+      service: serviceName,
+      amount: price,
+      payment_method: selectedMethod?.label,
+      transaction_id: form.transaction_id,
+      note: form.note || null,
+      status: "pending",
+    });
+    setLoading(false);
+    if (error) { toast.error("সমস্যা হয়েছে, আবার চেষ্টা করুন"); return; }
+    setStep("done");
+  };
+
+  return (
+    <div className="fixed inset-0 z-[999] flex items-center justify-center p-4" onClick={onClose}>
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+      <motion.div
+        initial={{ opacity: 0, scale: 0.92, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.92, y: 20 }}
+        transition={{ type: "spring", stiffness: 300, damping: 25 }}
+        className="relative w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl max-h-[90vh] overflow-y-auto"
+        style={{ background: 'hsl(222,45%,6%)', border: '1px solid rgba(139,92,246,0.25)' }}
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-5 border-b border-white/8">
+          <div>
+            <p className="text-xs text-foreground/40 uppercase tracking-widest mb-1">পেমেন্ট করুন</p>
+            <h3 className="font-black text-foreground text-lg leading-tight">{pkg.title}</h3>
+            {price > 0 && (
+              <span className="text-2xl font-black mt-1 block" style={{ color: 'hsl(185,100%,55%)' }}>
+                {formatPrice(price)}
+              </span>
+            )}
+          </div>
+          <button onClick={onClose} className="w-9 h-9 rounded-xl flex items-center justify-center text-foreground/50 hover:text-foreground hover:bg-white/8 transition-all">
+            <X size={18} />
+          </button>
+        </div>
+
+        <div className="px-6 py-5">
+          {step === "done" ? (
+            <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-center py-8">
+              <div className="w-16 h-16 bg-green-500/15 rounded-full flex items-center justify-center mx-auto mb-4">
+                <CheckCircle size={32} className="text-green-400" />
+              </div>
+              <h4 className="text-xl font-bold text-foreground mb-2">সফলভাবে জমা হয়েছে! ✅</h4>
+              <p className="text-foreground/50 text-sm mb-1">আপনার পেমেন্ট তথ্য পাওয়া গেছে।</p>
+              <p className="text-foreground/40 text-xs">২৪ ঘন্টার মধ্যে WhatsApp/Email-এ কনফার্মেশন পাবেন।</p>
+              <button onClick={onClose} className="mt-6 px-6 py-2.5 rounded-xl text-sm font-bold text-white glossy-btn"
+                style={{ background: 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))' }}>
+                বন্ধ করুন
+              </button>
+            </motion.div>
+          ) : step === "method" ? (
+            <>
+              <p className="text-sm font-semibold text-foreground/70 mb-4">পেমেন্ট মেথড বেছে নিন</p>
+              <div className="grid grid-cols-5 gap-2 mb-6">
+                {paymentMethods.map(m => (
+                  <motion.button
+                    key={m.id}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setSelected(m.id)}
+                    className={`rounded-2xl p-3 text-center transition-all border ${selected === m.id ? "border-primary shadow-lg shadow-primary/20 bg-primary/10" : "border-white/8 bg-white/4 hover:border-white/20"}`}
+                  >
+                    <div className="w-9 h-9 rounded-xl mx-auto mb-1.5 flex items-center justify-center text-white text-xs font-bold"
+                      style={{ background: m.color }}>
+                      {m.short}
+                    </div>
+                    <p className="text-[10px] font-semibold text-foreground/70 leading-tight">{m.label}</p>
+                    <p className="text-[9px] text-foreground/40">{m.sublabel}</p>
+                  </motion.button>
+                ))}
+              </div>
+
+              {selectedMethod && (
+                <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+                  className="rounded-2xl border border-primary/25 p-4 flex items-center justify-between gap-3 mb-5"
+                  style={{ background: 'rgba(139,92,246,0.08)' }}>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm"
+                      style={{ background: selectedMethod.color }}>
+                      <Smartphone size={18} />
+                    </div>
+                    <div>
+                      <p className="text-xs text-foreground/45">{selectedMethod.label} · {selectedMethod.sublabel}</p>
+                      <p className="text-lg font-black text-foreground tracking-wide">{selectedMethod.number}</p>
+                    </div>
+                  </div>
+                  <button onClick={() => copyNumber(selectedMethod.number)}
+                    className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border border-white/12 text-foreground/60 hover:text-foreground hover:bg-white/8 transition-all">
+                    <Copy size={12} /> কপি
+                  </button>
+                </motion.div>
+              )}
+
+              <motion.button
+                whileHover={{ scale: selected ? 1.02 : 1 }}
+                whileTap={{ scale: selected ? 0.98 : 1 }}
+                onClick={() => selected && setStep("form")}
+                disabled={!selected}
+                className={`w-full py-3 rounded-2xl text-sm font-bold text-white transition-all ${selected ? "glossy-btn" : "opacity-40 cursor-not-allowed"}`}
+                style={{ background: selected ? 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))' : 'rgba(255,255,255,0.08)' }}>
+                পরের ধাপ →
+              </motion.button>
+            </>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="rounded-2xl border border-primary/20 p-3 mb-2 flex items-center gap-3"
+                style={{ background: 'rgba(6,182,212,0.07)' }}>
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs font-bold"
+                  style={{ background: selectedMethod?.color }}>
+                  {selectedMethod?.short}
+                </div>
+                <div>
+                  <p className="text-xs text-foreground/45">{selectedMethod?.label}</p>
+                  <p className="text-sm font-black text-foreground">{selectedMethod?.number}</p>
+                </div>
+                <button type="button" onClick={() => setStep("method")} className="ml-auto text-xs text-foreground/40 hover:text-foreground/70 underline">পরিবর্তন</button>
+              </div>
+
+              <p className="text-xs text-foreground/50 -mt-1 mb-2">
+                উপরের নম্বরে <strong className="text-foreground/80">{price > 0 ? formatPrice(price) : "পরিমাণ"}</strong> পাঠান, তারপর নিচের ফর্ম পূরণ করুন।
+              </p>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-xs font-semibold text-foreground/60 mb-1 block">নাম *</label>
+                  <input required value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                    placeholder="পূর্ণ নাম"
+                    className="w-full rounded-xl px-3 py-2.5 text-sm bg-white/5 border border-white/10 text-foreground placeholder:text-foreground/30 focus:outline-none focus:border-primary/50" />
+                </div>
+                <div>
+                  <label className="text-xs font-semibold text-foreground/60 mb-1 block">মোবাইল *</label>
+                  <input required value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
+                    placeholder="01XXXXXXXXX"
+                    className="w-full rounded-xl px-3 py-2.5 text-sm bg-white/5 border border-white/10 text-foreground placeholder:text-foreground/30 focus:outline-none focus:border-primary/50" />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-xs font-semibold text-foreground/60 mb-1 block">Transaction ID *</label>
+                <input required value={form.transaction_id} onChange={e => setForm(f => ({ ...f, transaction_id: e.target.value }))}
+                  placeholder="যেমন: 8JK2FT1X9P"
+                  className="w-full rounded-xl px-3 py-2.5 text-sm bg-white/5 border border-white/10 text-foreground placeholder:text-foreground/30 focus:outline-none focus:border-primary/50" />
+              </div>
+
+              <div>
+                <label className="text-xs font-semibold text-foreground/60 mb-1 block">ইমেইল (ঐচ্ছিক)</label>
+                <input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                  placeholder="example@email.com"
+                  className="w-full rounded-xl px-3 py-2.5 text-sm bg-white/5 border border-white/10 text-foreground placeholder:text-foreground/30 focus:outline-none focus:border-primary/50" />
+              </div>
+
+              <div>
+                <label className="text-xs font-semibold text-foreground/60 mb-1 block">বিশেষ নোট (ঐচ্ছিক)</label>
+                <input value={form.note} onChange={e => setForm(f => ({ ...f, note: e.target.value }))}
+                  placeholder="কোনো বিশেষ তথ্য..."
+                  className="w-full rounded-xl px-3 py-2.5 text-sm bg-white/5 border border-white/10 text-foreground placeholder:text-foreground/30 focus:outline-none focus:border-primary/50" />
+              </div>
+
+              <button type="submit" disabled={loading}
+                className="w-full py-3 rounded-2xl text-sm font-bold text-white glossy-btn flex items-center justify-center gap-2"
+                style={{ background: 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))' }}>
+                {loading ? "জমা হচ্ছে..." : <><Send size={15} /> পেমেন্ট জমা দিন</>}
+              </button>
+              <p className="text-[10px] text-foreground/35 text-center">পেমেন্ট যাচাই হলে ২৪ ঘন্টার মধ্যে কনফার্মেশন পাবেন।</p>
+            </form>
+          )}
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
+// ─── Product Card ────────────────────────────────────────────────────────────
 const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) => {
   const c = cardColors[index % cardColors.length];
   const discount = pkg.original_price && pkg.price
     ? Math.round((1 - pkg.price / pkg.original_price) * 100)
     : null;
+  const [showPayment, setShowPayment] = useState(false);
+
+  const waMessage = encodeURIComponent(
+    `হ্যালো! আমি "${pkg.title}" প্যাকেজটি অর্ডার করতে চাই।${pkg.price ? ` মূল্য: ৳${pkg.price.toLocaleString()}` : ""} অনুগ্রহ করে আরও তথ্য দিন।`
+  );
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.1, type: "spring", stiffness: 120 }}
-      whileHover={{ y: -8 }}
-      className="group rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 flex flex-col"
-      style={{ background: c.bg, border: `1px solid ${c.border}` }}
-    >
-      {/* Top visual area */}
-      <div className="relative h-36 flex items-center justify-center overflow-hidden"
-        style={{ background: `linear-gradient(135deg, ${c.color}15, ${c.color}05)` }}>
-        <motion.div
-          whileHover={{ scale: 1.2, rotate: 10 }}
-          className="text-7xl font-black select-none"
-          style={{ color: `${c.color}20`, fontFamily: "'Syne', sans-serif" }}
-        >
-          {pkg.title.charAt(0)}
-        </motion.div>
-
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-14 h-14 rounded-2xl flex items-center justify-center"
-            style={{ background: `${c.color}18`, border: `1px solid ${c.color}30`, boxShadow: `0 0 25px ${c.color}20` }}>
-            <Zap size={22} style={{ color: c.color }} />
-          </div>
-        </div>
-
-        {discount && discount > 0 && (
-          <div className="absolute top-3 left-3 px-2.5 py-1 text-xs font-black rounded-full text-white"
-            style={{ background: 'linear-gradient(135deg, hsl(0,84%,60%), hsl(15,90%,55%))', boxShadow: '0 0 12px rgba(239,68,68,0.4)' }}>
-            -{discount}%
-          </div>
-        )}
-        {pkg.badge === "hot" && (
-          <div className="absolute top-3 right-3 px-2.5 py-1 text-xs font-black rounded-full text-white badge-hot">
-            🔥 HOT
-          </div>
-        )}
-        {pkg.badge === "new" && (
-          <div className="absolute top-3 right-3 px-2.5 py-1 text-xs font-black rounded-full badge-new">
-            ✨ NEW
-          </div>
-        )}
-      </div>
-
-      {/* Content */}
-      <div className="p-5 flex flex-col flex-1">
-        <p className="text-xs text-foreground/40 mb-1.5 font-medium">
-          {pkg.services?.title ?? ""}
-        </p>
-        <h3 className="font-bold text-foreground/90 text-sm mb-2.5 group-hover:text-white transition-colors">
-          {pkg.title}
-        </h3>
-
-        <div className="flex items-center gap-0.5 mb-2.5">
-          {[...Array(5)].map((_, i) => (
-            <Star key={i} size={11} style={{ color: 'hsl(45,93%,58%)' }} fill="hsl(45,93%,58%)" />
-          ))}
-        </div>
-
-        <p className="text-xs font-semibold mb-3 flex items-center gap-1.5" style={{ color: 'hsl(155,70%,50%)' }}>
-          <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: 'hsl(155,70%,50%)' }} />
-          In Stock
-        </p>
-
-        <div className="flex items-baseline gap-2 mb-4 mt-auto">
-          {pkg.original_price && (
-            <span className="text-xs text-foreground/35 line-through">{formatPrice(pkg.original_price)}</span>
-          )}
-          {pkg.price ? (
-            <span className="text-lg font-black" style={{ color: c.color }}>{formatPrice(pkg.price)}</span>
-          ) : (
-            <span className="text-sm font-semibold text-foreground/50">Contact us</span>
-          )}
-        </div>
-
-        <Link to="/get-quote">
-          <motion.button
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            className="w-full py-2.5 rounded-xl text-xs font-bold text-white glossy-btn transition-all duration-300"
-            style={{ background: `linear-gradient(135deg, ${c.color}, ${c.color}BB)`, boxShadow: `0 4px 15px ${c.color}35` }}
+    <>
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ delay: index * 0.1, type: "spring", stiffness: 120 }}
+        whileHover={{ y: -6, scale: 1.01 }}
+        className="group rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 flex flex-col"
+        style={{ background: c.bg, border: `1px solid ${c.border}` }}
+      >
+        {/* Top visual area */}
+        <div className="relative h-32 flex items-center justify-center overflow-hidden"
+          style={{ background: `linear-gradient(135deg, ${c.color}15, ${c.color}05)` }}>
+          <motion.div
+            whileHover={{ scale: 1.2, rotate: 10 }}
+            className="text-7xl font-black select-none"
+            style={{ color: `${c.color}20`, fontFamily: "'Syne', sans-serif" }}
           >
-            {pkg.price ? "Get Started" : "Get a Quote"}
-          </motion.button>
-        </Link>
-      </div>
-    </motion.div>
+            {pkg.title.charAt(0)}
+          </motion.div>
+
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-2xl flex items-center justify-center"
+              style={{ background: `${c.color}18`, border: `1px solid ${c.color}30`, boxShadow: `0 0 25px ${c.color}20` }}>
+              <Zap size={20} style={{ color: c.color }} />
+            </div>
+          </div>
+
+          {discount && discount > 0 && (
+            <div className="absolute top-3 left-3 px-2.5 py-1 text-xs font-black rounded-full text-white"
+              style={{ background: 'linear-gradient(135deg, hsl(0,84%,60%), hsl(15,90%,55%))' }}>
+              -{discount}%
+            </div>
+          )}
+          {pkg.badge === "hot" && (
+            <div className="absolute top-3 right-3 px-2.5 py-1 text-xs font-black rounded-full text-white badge-hot">
+              🔥 HOT
+            </div>
+          )}
+          {pkg.badge === "new" && (
+            <div className="absolute top-3 right-3 px-2.5 py-1 text-xs font-black rounded-full badge-new">
+              ✨ NEW
+            </div>
+          )}
+        </div>
+
+        {/* Content */}
+        <div className="p-4 flex flex-col flex-1">
+          <p className="text-xs text-foreground/40 mb-1 font-medium">{pkg.services?.title ?? ""}</p>
+          <h3 className="font-bold text-foreground/90 text-sm mb-2 group-hover:text-white transition-colors leading-tight">
+            {pkg.title}
+          </h3>
+
+          <div className="flex items-center gap-0.5 mb-2">
+            {[...Array(5)].map((_, i) => (
+              <Star key={i} size={10} style={{ color: 'hsl(45,93%,58%)' }} fill="hsl(45,93%,58%)" />
+            ))}
+          </div>
+
+          <div className="flex items-baseline gap-2 mb-4 mt-auto">
+            {pkg.original_price && (
+              <span className="text-xs text-foreground/35 line-through">{formatPrice(pkg.original_price)}</span>
+            )}
+            {pkg.price ? (
+              <span className="text-lg font-black" style={{ color: c.color }}>{formatPrice(pkg.price)}</span>
+            ) : (
+              <span className="text-sm font-semibold text-foreground/50">যোগাযোগ করুন</span>
+            )}
+          </div>
+
+          {/* Action buttons */}
+          <div className="flex gap-2">
+            {/* Payment button */}
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => setShowPayment(true)}
+              className="flex-1 py-2.5 rounded-xl text-xs font-bold text-white glossy-btn flex items-center justify-center gap-1.5 transition-all duration-300"
+              style={{ background: `linear-gradient(135deg, ${c.color}, ${c.color}BB)`, boxShadow: `0 4px 15px ${c.color}35` }}
+            >
+              <CreditCard size={13} /> পেমেন্ট
+            </motion.button>
+
+            {/* WhatsApp button */}
+            <motion.a
+              href={`https://wa.me/8801820060046?text=${waMessage}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-all"
+              style={{ background: 'rgba(37,211,102,0.15)', border: '1px solid rgba(37,211,102,0.35)', color: '#25D366' }}
+              title="WhatsApp-এ অর্ডার করুন"
+            >
+              <MessageCircle size={16} />
+            </motion.a>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Payment Modal */}
+      <AnimatePresence>
+        {showPayment && <PaymentModal pkg={pkg} onClose={() => setShowPayment(false)} />}
+      </AnimatePresence>
+    </>
   );
 };
 
+// ─── Products Section ────────────────────────────────────────────────────────
 const ProductsSection = () => {
   const [packages, setPackages] = useState<ServicePackageRow[]>([]);
 
