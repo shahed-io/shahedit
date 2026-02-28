@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { useAnalyticsInjection } from "@/hooks/useAnalyticsInjection";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
@@ -62,6 +63,7 @@ const AdminRoutes = () => (
         <Route path="" element={<AdminDashboard />} />
         <Route path="leads" element={<AdminLeads />} />
         <Route path="services" element={<AdminServices />} />
+        <Route path="service-packages" element={<AdminServicePackages />} />
         <Route path="portfolio" element={<AdminPortfolio />} />
         <Route path="blog" element={<AdminBlog />} />
         <Route path="testimonials" element={<AdminTestimonials />} />
@@ -71,7 +73,6 @@ const AdminRoutes = () => (
         <Route path="faq" element={<AdminFAQ />} />
         <Route path="careers" element={<AdminCareers />} />
         <Route path="ai-support" element={<AdminAISupport />} />
-        <Route path="service-packages" element={<AdminServicePackages />} />
         <Route path="settings" element={<AdminSettings />} />
       </Routes>
     </AdminLayout>
@@ -98,6 +99,36 @@ const CmsRoutes = () => (
   </ProtectedRoute>
 );
 
+// Root component that injects analytics on every page load
+const AppWithAnalytics = () => {
+  useAnalyticsInjection();
+  return (
+    <Routes>
+      {/* Public Routes */}
+      <Route path="/" element={<Index />} />
+      <Route path="/services" element={<ServicesPage />} />
+      <Route path="/portfolio" element={<PortfolioPage />} />
+      <Route path="/blog" element={<BlogPage />} />
+      <Route path="/about" element={<AboutPage />} />
+      <Route path="/contact" element={<ContactPage />} />
+      <Route path="/faq" element={<FAQPage />} />
+      <Route path="/pricing" element={<PricingPage />} />
+      <Route path="/careers" element={<CareersPage />} />
+      <Route path="/get-quote" element={<GetQuotePage />} />
+      {/* CMS Public Routes */}
+      <Route path="/cms-blog" element={<CmsBlogPublicPage />} />
+      <Route path="/post/:slug" element={<PublicContentPage type="post" />} />
+      <Route path="/page/:slug" element={<PublicContentPage type="page" />} />
+      {/* Admin Routes */}
+      <Route path="/admin/login" element={<AdminLogin />} />
+      <Route path="/admin/*" element={<AdminRoutes />} />
+      {/* CMS Routes */}
+      <Route path="/cms/*" element={<CmsRoutes />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -105,29 +136,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<Index />} />
-            <Route path="/services" element={<ServicesPage />} />
-            <Route path="/portfolio" element={<PortfolioPage />} />
-            <Route path="/blog" element={<BlogPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/faq" element={<FAQPage />} />
-            <Route path="/pricing" element={<PricingPage />} />
-            <Route path="/careers" element={<CareersPage />} />
-            <Route path="/get-quote" element={<GetQuotePage />} />
-            {/* CMS Public Routes */}
-            <Route path="/cms-blog" element={<CmsBlogPublicPage />} />
-            <Route path="/post/:slug" element={<PublicContentPage type="post" />} />
-            <Route path="/page/:slug" element={<PublicContentPage type="page" />} />
-            {/* Admin Routes */}
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/admin/*" element={<AdminRoutes />} />
-            {/* CMS Routes */}
-            <Route path="/cms/*" element={<CmsRoutes />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <AppWithAnalytics />
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
