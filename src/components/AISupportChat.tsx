@@ -18,8 +18,15 @@ const getSessionId = () => {
 
 const SUPPORT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/ai-support`;
 
-export default function AISupportChat() {
-  const [open, setOpen] = useState(false);
+interface AISupportChatProps {
+  externalOpen?: boolean;
+  onExternalOpenChange?: (v: boolean) => void;
+}
+
+export default function AISupportChat({ externalOpen, onExternalOpenChange }: AISupportChatProps = {}) {
+  const [internalOpen, setInternalOpen] = useState(false);
+  const open = externalOpen ?? internalOpen;
+  const setOpen = (v: boolean) => { setInternalOpen(v); onExternalOpenChange?.(v); };
   const [minimized, setMinimized] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
@@ -131,7 +138,7 @@ export default function AISupportChat() {
   ];
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+    <div className="fixed bottom-24 right-6 z-50 flex flex-col items-end gap-3">
       {/* Chat Window */}
       <AnimatePresence>
         {open && !minimized && (
@@ -290,45 +297,6 @@ export default function AISupportChat() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Floating Button */}
-      <motion.button
-        onClick={() => { setOpen(v => !v); setMinimized(false); }}
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ delay: 2, type: "spring", stiffness: 200 }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        title="AI Support"
-        className="relative w-14 h-14 rounded-full flex items-center justify-center shadow-2xl"
-        style={{
-          background: "linear-gradient(135deg, hsl(258,90%,58%), hsl(258,70%,42%))",
-          boxShadow: "0 8px 32px rgba(139,92,246,0.4)"
-        }}
-      >
-        <AnimatePresence mode="wait">
-          {open ? (
-            <motion.span key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.18 }}>
-              <X size={22} className="text-white" />
-            </motion.span>
-          ) : (
-            <motion.span key="bot" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.18 }}>
-              <MessageSquare size={22} className="text-white" fill="white" />
-            </motion.span>
-          )}
-        </AnimatePresence>
-
-        {!open && (
-          <span className="absolute inset-0 rounded-full animate-ping"
-            style={{ background: "rgba(139,92,246,0.3)" }} />
-        )}
-
-        {!open && unread > 0 && (
-          <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 border-2 border-black flex items-center justify-center">
-            <span className="text-[9px] text-white font-bold">{unread}</span>
-          </span>
-        )}
-      </motion.button>
     </div>
   );
 }

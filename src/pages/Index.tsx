@@ -1,3 +1,4 @@
+import { useState } from "react";
 import SiteHeader from "@/components/SiteHeader";
 import HeroBanner from "@/components/HeroBanner";
 import PopularCategories from "@/components/PopularCategories";
@@ -8,26 +9,21 @@ import PortfolioSection from "@/components/PortfolioSection";
 import TechStack from "@/components/TechStack";
 import AboutSection from "@/components/AboutSection";
 import SiteFooter from "@/components/SiteFooter";
-import WhatsAppButton from "@/components/WhatsAppButton";
+import FloatingContactButton from "@/components/FloatingContactButton";
 import AISupportChat from "@/components/AISupportChat";
 
 const Index = () => {
+  const [aiOpen, setAiOpen] = useState(false);
+
   return (
     <div className="min-h-screen relative overflow-x-hidden">
       {/* Animated background orbs */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        {/* Top-left primary orb */}
         <div className="orb orb-primary absolute" style={{ width: 600, height: 600, top: '-150px', left: '-150px', opacity: 0.12 }} />
-        {/* Top-right accent orb */}
         <div className="orb orb-accent absolute" style={{ width: 500, height: 500, top: '-100px', right: '-150px', opacity: 0.10 }} />
-        {/* Mid blue orb */}
         <div className="orb orb-blue absolute" style={{ width: 400, height: 400, top: '40%', left: '60%', opacity: 0.08 }} />
-        {/* Bottom-left orb */}
         <div className="orb orb-primary absolute" style={{ width: 500, height: 500, bottom: '10%', left: '-100px', opacity: 0.09 }} />
-        {/* Bottom-right accent */}
         <div className="orb orb-accent absolute" style={{ width: 350, height: 350, bottom: '-50px', right: '5%', opacity: 0.08 }} />
-
-        {/* Subtle animated moving orb */}
         <div
           className="absolute rounded-full"
           style={{
@@ -52,8 +48,8 @@ const Index = () => {
         <TechStack />
         <AboutSection />
         <SiteFooter />
-        <WhatsAppButton />
-        <AISupportChat />
+        <FloatingContactButton onOpenAI={() => setAiOpen(true)} />
+        <AISupportChat externalOpen={aiOpen} onExternalOpenChange={setAiOpen} />
       </div>
     </div>
   );
