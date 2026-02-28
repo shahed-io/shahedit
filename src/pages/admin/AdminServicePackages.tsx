@@ -1,0 +1,450 @@
+import { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "sonner";
+import { Plus, Pencil, Trash2, Package, ChevronDown, ChevronRight, ImagePlus, X, GripVertical, ToggleLeft, ToggleRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+
+interface Service {
+  id: string;
+  title: string;
+  slug: string;
+  icon: string | null;
+  image_url: string | null;
+}
+
+interface ServicePackage {
+  id: string;
+  service_id: string;
+  title: string;
+  description: string | null;
+  price: number | null;
+  currency: string;
+  features: string[] | null;
+  image_url: string | null;
+  is_published: boolean;
+  sort_order: number;
+}
+
+const emptyForm = (): Omit<ServicePackage, "id" | "service_id"> => ({
+  title: "",
+  description: "",
+  price: null,
+  currency: "BDT",
+  features: [],
+  image_url: "",
+  is_published: true,
+  sort_order: 0,
+});
+
+export default function AdminServicePackages() {
+  const qc = useQueryClient();
+  const [expandedService, setExpandedService] = useState<string | null>(null);
+  const [editingPackage, setEditingPackage] = useState<ServicePackage | null>(null);
+  const [addingFor, setAddingFor] = useState<string | null>(null);
+  const [form, setForm] = useState(emptyForm());
+  const [featureInput, setFeatureInput] = useState("");
+  const [uploading, setUploading] = useState(false);
+
+  const { data: services = [] } = useQuery<Service[]>({
+    queryKey: ["admin-services-list"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("services")
+        .select("id, title, slug, icon, image_url")
+        .order("sort_order");
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const { data: packages = [] } = useQuery<ServicePackage[]>({
+    queryKey: ["admin-service-packages"],
+    queryFn: async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { data, error } = await (supabase as any)
+        .from("service_packages")
+        .select("*")
+        .order("sort_order");
+      if (error) throw error;
+      return data as ServicePackage[];
+    },
+  });
+
+  const upsertMutation = useMutation({
+    mutationFn: async ({ pkg, serviceId }: { pkg: Partial<ServicePackage>; serviceId: string }) => {
+      if (pkg.id) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const { error } = await (supabase as any).from("service_packages").update({ ...pkg }).eq("id", pkg.id);
+        if (error) throw error;
+      } else {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const { error } = await (supabase as any).from("service_packages").insert({ ...pkg, service_id: serviceId });
+        if (error) throw error;
+      }
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-service-packages"] });
+      toast.success("প্যাকেজ সংরক্ষিত হয়েছে");
+      resetForm();
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: string) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { error } = await (supabase as any).from("service_packages").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-service-packages"] });
+      toast.success("প্যাকেজ মুছে ফেলা হয়েছে");
+    },
+  });
+
+  const togglePublish = useMutation({
+    mutationFn: async ({ id, is_published }: { id: string; is_published: boolean }) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { error } = await (supabase as any).from("service_packages").update({ is_published }).eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-service-packages"] }),
+  });
+
+  const resetForm = () => {
+    setForm(emptyForm());
+    setEditingPackage(null);
+    setAddingFor(null);
+    setFeatureInput("");
+  };
+
+  const handleEdit = (pkg: ServicePackage) => {
+    setEditingPackage(pkg);
+    setAddingFor(pkg.service_id);
+    setForm({
+      title: pkg.title,
+      description: pkg.description ?? "",
+      price: pkg.price,
+      currency: pkg.currency,
+      features: pkg.features ?? [],
+      image_url: pkg.image_url ?? "",
+      is_published: pkg.is_published,
+      sort_order: pkg.sort_order,
+    });
+    setExpandedService(pkg.service_id);
+  };
+
+  const handleSubmit = (serviceId: string) => {
+    if (!form.title.trim()) return toast.error("শিরোনাম দিন");
+    upsertMutation.mutate({
+      pkg: editingPackage ? { ...form, id: editingPackage.id } : form,
+      serviceId,
+    });
+  };
+
+  const addFeature = () => {
+    if (!featureInput.trim()) return;
+    setForm(f => ({ ...f, features: [...(f.features ?? []), featureInput.trim()] }));
+    setFeatureInput("");
+  };
+
+  const removeFeature = (i: number) => {
+    setForm(f => ({ ...f, features: f.features?.filter((_, idx) => idx !== i) ?? [] }));
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    const ext = file.name.split(".").pop();
+    const path = `packages/${Date.now()}.${ext}`;
+    const { error } = await supabase.storage.from("cms-media").upload(path, file);
+    if (error) { toast.error("আপলোড ব্যর্থ"); setUploading(false); return; }
+    const { data: { publicUrl } } = supabase.storage.from("cms-media").getPublicUrl(path);
+    setForm(f => ({ ...f, image_url: publicUrl }));
+    setUploading(false);
+    toast.success("ছবি আপলোড হয়েছে");
+  };
+
+  const packagesForService = (serviceId: string) =>
+    packages.filter(p => p.service_id === serviceId);
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-white text-2xl font-bold">সার্ভিস প্যাকেজ</h1>
+          <p className="text-slate-400 text-sm mt-1">প্রতিটা সার্ভিসের জন্য প্যাকেজ/পণ্য যোগ করুন</p>
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        {services.map(service => {
+          const pkgs = packagesForService(service.id);
+          const isExpanded = expandedService === service.id;
+          const isAddingHere = addingFor === service.id;
+
+          return (
+            <div key={service.id} className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+              {/* Service header */}
+              <button
+                className="w-full flex items-center justify-between px-5 py-4 hover:bg-slate-800/50 transition-colors"
+                onClick={() => setExpandedService(isExpanded ? null : service.id)}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-purple-600/20 flex items-center justify-center">
+                    <Package size={16} className="text-purple-400" />
+                  </div>
+                  <div className="text-left">
+                    <p className="text-white font-semibold">{service.title}</p>
+                    <p className="text-slate-500 text-xs">{pkgs.length} টি প্যাকেজ</p>
+                  </div>
+                </div>
+                {isExpanded ? <ChevronDown size={18} className="text-slate-400" /> : <ChevronRight size={18} className="text-slate-400" />}
+              </button>
+
+              <AnimatePresence>
+                {isExpanded && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="overflow-hidden border-t border-slate-800"
+                  >
+                    <div className="p-5 space-y-4">
+                      {/* Package list */}
+                      {pkgs.length > 0 && (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                          {pkgs.map(pkg => (
+                            <div key={pkg.id} className="bg-slate-800 rounded-xl p-4 border border-slate-700 group relative">
+                              {pkg.image_url && (
+                                <img src={pkg.image_url} alt={pkg.title} className="w-full h-28 object-cover rounded-lg mb-3" />
+                              )}
+                              <div className="flex items-start justify-between gap-2">
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-white font-medium text-sm truncate">{pkg.title}</p>
+                                  {pkg.price !== null && (
+                                    <p className="text-purple-400 text-xs font-semibold mt-0.5">
+                                      {pkg.currency} {pkg.price?.toLocaleString()}
+                                    </p>
+                                  )}
+                                  {pkg.description && (
+                                    <p className="text-slate-400 text-xs mt-1 line-clamp-2">{pkg.description}</p>
+                                  )}
+                                  {pkg.features && pkg.features.length > 0 && (
+                                    <ul className="mt-2 space-y-0.5">
+                                      {pkg.features.slice(0, 3).map((f, i) => (
+                                        <li key={i} className="text-slate-400 text-xs flex items-center gap-1">
+                                          <span className="w-1 h-1 rounded-full bg-teal-400 shrink-0" />
+                                          {f}
+                                        </li>
+                                      ))}
+                                      {pkg.features.length > 3 && (
+                                        <li className="text-slate-500 text-xs">+{pkg.features.length - 3} আরও...</li>
+                                      )}
+                                    </ul>
+                                  )}
+                                </div>
+                              </div>
+                              {/* Actions */}
+                              <div className="flex items-center gap-2 mt-3 pt-3 border-t border-slate-700">
+                                <button
+                                  onClick={() => togglePublish.mutate({ id: pkg.id, is_published: !pkg.is_published })}
+                                  className={`flex items-center gap-1 text-xs px-2 py-1 rounded-lg transition-colors ${
+                                    pkg.is_published ? "bg-green-500/20 text-green-400" : "bg-slate-700 text-slate-400"
+                                  }`}
+                                >
+                                  {pkg.is_published ? <ToggleRight size={13} /> : <ToggleLeft size={13} />}
+                                  {pkg.is_published ? "Published" : "Draft"}
+                                </button>
+                                <button
+                                  onClick={() => handleEdit(pkg)}
+                                  className="flex items-center gap-1 text-xs px-2 py-1 rounded-lg bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors"
+                                >
+                                  <Pencil size={12} /> এডিট
+                                </button>
+                                <button
+                                  onClick={() => { if (confirm("মুছে ফেলতে চান?")) deleteMutation.mutate(pkg.id); }}
+                                  className="flex items-center gap-1 text-xs px-2 py-1 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-colors ml-auto"
+                                >
+                                  <Trash2 size={12} />
+                                </button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Add/Edit form */}
+                      {isAddingHere ? (
+                        <div className="bg-slate-800/60 rounded-xl border border-slate-700 p-5 space-y-4">
+                          <h3 className="text-white font-semibold text-sm">
+                            {editingPackage ? "প্যাকেজ এডিট করুন" : "নতুন প্যাকেজ যোগ করুন"}
+                          </h3>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-1">
+                              <label className="text-slate-400 text-xs">শিরোনাম *</label>
+                              <Input
+                                value={form.title}
+                                onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
+                                placeholder="যেমন: Basic Package"
+                                className="bg-slate-900 border-slate-700 text-white"
+                              />
+                            </div>
+                            <div className="grid grid-cols-2 gap-2">
+                              <div className="space-y-1">
+                                <label className="text-slate-400 text-xs">মূল্য</label>
+                                <Input
+                                  type="number"
+                                  value={form.price ?? ""}
+                                  onChange={e => setForm(f => ({ ...f, price: e.target.value ? Number(e.target.value) : null }))}
+                                  placeholder="5000"
+                                  className="bg-slate-900 border-slate-700 text-white"
+                                />
+                              </div>
+                              <div className="space-y-1">
+                                <label className="text-slate-400 text-xs">মুদ্রা</label>
+                                <Input
+                                  value={form.currency}
+                                  onChange={e => setForm(f => ({ ...f, currency: e.target.value }))}
+                                  placeholder="BDT"
+                                  className="bg-slate-900 border-slate-700 text-white"
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="space-y-1">
+                            <label className="text-slate-400 text-xs">বিবরণ</label>
+                            <Textarea
+                              value={form.description ?? ""}
+                              onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
+                              placeholder="প্যাকেজের সংক্ষিপ্ত বিবরণ..."
+                              rows={3}
+                              className="bg-slate-900 border-slate-700 text-white resize-none"
+                            />
+                          </div>
+
+                          {/* Features */}
+                          <div className="space-y-2">
+                            <label className="text-slate-400 text-xs">ফিচার সমূহ</label>
+                            <div className="flex gap-2">
+                              <Input
+                                value={featureInput}
+                                onChange={e => setFeatureInput(e.target.value)}
+                                onKeyDown={e => e.key === "Enter" && (e.preventDefault(), addFeature())}
+                                placeholder="ফিচার লিখুন এবং Enter চাপুন"
+                                className="bg-slate-900 border-slate-700 text-white flex-1"
+                              />
+                              <Button onClick={addFeature} size="sm" variant="outline" className="border-slate-600 text-slate-300">
+                                <Plus size={14} />
+                              </Button>
+                            </div>
+                            {form.features && form.features.length > 0 && (
+                              <div className="flex flex-wrap gap-2 mt-2">
+                                {form.features.map((f, i) => (
+                                  <span key={i} className="flex items-center gap-1 bg-purple-600/20 text-purple-300 text-xs px-2.5 py-1 rounded-lg border border-purple-500/20">
+                                    {f}
+                                    <button onClick={() => removeFeature(i)} className="hover:text-red-400 ml-1">
+                                      <X size={10} />
+                                    </button>
+                                  </span>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Image */}
+                          <div className="space-y-2">
+                            <label className="text-slate-400 text-xs">ছবি</label>
+                            <div className="flex items-center gap-3">
+                              {form.image_url ? (
+                                <div className="relative">
+                                  <img src={form.image_url} alt="" className="w-20 h-16 object-cover rounded-lg border border-slate-700" />
+                                  <button
+                                    onClick={() => setForm(f => ({ ...f, image_url: "" }))}
+                                    className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center"
+                                  >
+                                    <X size={10} className="text-white" />
+                                  </button>
+                                </div>
+                              ) : (
+                                <label className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-dashed border-slate-600 text-slate-400 text-sm cursor-pointer hover:border-purple-500 hover:text-purple-400 transition-colors">
+                                  <ImagePlus size={16} />
+                                  {uploading ? "আপলোড হচ্ছে..." : "ছবি আপলোড করুন"}
+                                  <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} disabled={uploading} />
+                                </label>
+                              )}
+                              <div className="flex-1">
+                                <Input
+                                  value={form.image_url ?? ""}
+                                  onChange={e => setForm(f => ({ ...f, image_url: e.target.value }))}
+                                  placeholder="অথবা URL দিন"
+                                  className="bg-slate-900 border-slate-700 text-white text-xs"
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-3">
+                            <div className="space-y-1">
+                              <label className="text-slate-400 text-xs">ক্রম নম্বর</label>
+                              <Input
+                                type="number"
+                                value={form.sort_order}
+                                onChange={e => setForm(f => ({ ...f, sort_order: Number(e.target.value) }))}
+                                className="bg-slate-900 border-slate-700 text-white"
+                              />
+                            </div>
+                            <div className="flex items-end pb-0.5">
+                              <label className="flex items-center gap-2 cursor-pointer">
+                                <div
+                                  onClick={() => setForm(f => ({ ...f, is_published: !f.is_published }))}
+                                  className={`w-10 h-5 rounded-full transition-colors relative cursor-pointer ${form.is_published ? "bg-green-500" : "bg-slate-600"}`}
+                                >
+                                  <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${form.is_published ? "translate-x-5" : "translate-x-0.5"}`} />
+                                </div>
+                                <span className="text-slate-300 text-sm">Published</span>
+                              </label>
+                            </div>
+                          </div>
+
+                          <div className="flex gap-3 pt-2">
+                            <Button
+                              onClick={() => handleSubmit(service.id)}
+                              disabled={upsertMutation.isPending}
+                              className="bg-purple-600 hover:bg-purple-700 text-white"
+                            >
+                              {upsertMutation.isPending ? "সংরক্ষণ হচ্ছে..." : editingPackage ? "আপডেট করুন" : "যোগ করুন"}
+                            </Button>
+                            <Button onClick={resetForm} variant="outline" className="border-slate-600 text-slate-300">
+                              বাতিল
+                            </Button>
+                          </div>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => { setAddingFor(service.id); setEditingPackage(null); setForm(emptyForm()); }}
+                          className="flex items-center gap-2 text-sm text-purple-400 hover:text-purple-300 border border-dashed border-purple-500/30 hover:border-purple-500/60 rounded-xl px-4 py-3 w-full justify-center transition-all"
+                        >
+                          <Plus size={16} />
+                          নতুন প্যাকেজ যোগ করুন
+                        </button>
+                      )}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}

@@ -758,6 +758,59 @@ export type Database = {
           },
         ]
       }
+      service_packages: {
+        Row: {
+          created_at: string
+          currency: string | null
+          description: string | null
+          features: string[] | null
+          id: string
+          image_url: string | null
+          is_published: boolean | null
+          price: number | null
+          service_id: string
+          sort_order: number | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          currency?: string | null
+          description?: string | null
+          features?: string[] | null
+          id?: string
+          image_url?: string | null
+          is_published?: boolean | null
+          price?: number | null
+          service_id: string
+          sort_order?: number | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          currency?: string | null
+          description?: string | null
+          features?: string[] | null
+          id?: string
+          image_url?: string | null
+          is_published?: boolean | null
+          price?: number | null
+          service_id?: string
+          sort_order?: number | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_packages_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       services: {
         Row: {
           created_at: string
