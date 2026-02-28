@@ -91,12 +91,12 @@ const SiteHeader = () => {
           {/* Logo */}
           <Link to="/">
             <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }} className="flex items-center gap-2.5 shrink-0">
-              <div className="w-10 h-10 rounded-xl overflow-hidden shrink-0 shadow-lg"
-                style={{ boxShadow: '0 4px 20px hsl(185,100%,48%,0.35)' }}>
+              <div className="w-10 h-10 rounded-xl overflow-hidden shrink-0"
+                style={{ filter: 'drop-shadow(0 4px 16px hsl(185,100%,48%,0.5))' }}>
                 <img src={logoImg} alt="Shahed IT Logo" className="w-full h-full object-contain" />
               </div>
               <span className="text-xl font-bold tracking-tight" style={{ fontFamily: "'Syne', sans-serif" }}>
-                <span className="gradient-text">Shahed</span>
+                <span style={{ background: 'linear-gradient(135deg, hsl(185,100%,48%), hsl(165,80%,45%))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Shahed</span>
                 <span className="text-foreground"> IT</span>
               </span>
             </motion.div>
