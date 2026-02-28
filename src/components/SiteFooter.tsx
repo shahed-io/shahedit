@@ -33,8 +33,6 @@ const defaultFooterLinks: FooterColumn[] = [
   ]},
   { title: "Resources", items: [
     { id: "11", label: "FAQs", target: "/faq" },
-    { id: "12", label: "Pricing", target: "/pricing" },
-    { id: "13", label: "Get a Quote", target: "/get-quote" },
     { id: "14", label: "Terms & Conditions", target: "/terms" },
     { id: "15", label: "Privacy Policy", target: "/privacy-policy" },
     { id: "16", label: "Refund Policy", target: "/refund-policy" },
