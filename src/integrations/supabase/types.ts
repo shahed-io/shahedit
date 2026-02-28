@@ -572,6 +572,51 @@ export type Database = {
           },
         ]
       }
+      payment_submissions: {
+        Row: {
+          amount: number
+          created_at: string
+          email: string | null
+          id: string
+          name: string
+          note: string | null
+          payment_method: string
+          phone: string
+          service: string | null
+          status: string
+          transaction_id: string
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          email?: string | null
+          id?: string
+          name: string
+          note?: string | null
+          payment_method: string
+          phone: string
+          service?: string | null
+          status?: string
+          transaction_id: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string
+          note?: string | null
+          payment_method?: string
+          phone?: string
+          service?: string | null
+          status?: string
+          transaction_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       pricing_plans: {
         Row: {
           created_at: string
