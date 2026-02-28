@@ -166,17 +166,35 @@ const SiteFooter = () => {
           </motion.div>
 
           {/* Bottom bar */}
-          <div className="flex items-center justify-between pt-6" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-            <p className="text-xs text-foreground/30">© 2026 Shahed IT. All Rights Reserved. Designed & Developed By Shahed IT.
-
-
-
-              <span className="gradient-text font-semibold">Shahed IT</span>. All rights reserved.
-            </p>
-            <motion.button whileHover={{ y: -3, scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="w-10 h-10 rounded-xl flex items-center justify-center glossy-btn"
-            style={{ background: 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))' }}>
-
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-6" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="flex flex-wrap items-center justify-center sm:justify-start gap-x-2 gap-y-1"
+            >
+              <span className="text-xs text-foreground/35">© 2026</span>
+              <span className="text-xs font-bold gradient-text tracking-wide">Shahed IT</span>
+              <span className="text-xs text-foreground/20 hidden sm:inline">·</span>
+              <span className="text-xs text-foreground/30">All Rights Reserved.</span>
+              <span className="text-xs text-foreground/20 hidden sm:inline">·</span>
+              <span className="flex items-center gap-1 text-xs text-foreground/30">
+                Designed &amp; Developed by
+                <span className="relative ml-1 font-semibold text-xs"
+                  style={{ background: 'linear-gradient(90deg, hsl(258,90%,70%), hsl(185,100%,55%))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                  Shahed IT
+                  <span className="absolute -bottom-0.5 left-0 w-full h-px rounded-full"
+                    style={{ background: 'linear-gradient(90deg, hsl(258,90%,66%), hsl(185,100%,48%))' }} />
+                </span>
+              </span>
+            </motion.div>
+            <motion.button
+              whileHover={{ y: -3, scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              className="w-10 h-10 rounded-xl flex items-center justify-center glossy-btn shrink-0"
+              style={{ background: 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))' }}
+            >
               <ArrowUp size={16} className="text-white" />
             </motion.button>
           </div>
