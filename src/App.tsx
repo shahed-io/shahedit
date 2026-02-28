@@ -19,6 +19,7 @@ import {
   AdminPortfolio, AdminBlog, AdminTestimonials, AdminTeam,
   AdminClients, AdminPricing, AdminFAQ, AdminCareers
 } from "./pages/admin/AdminCrud";
+import AdminPayments from "./pages/admin/AdminPayments";
 
 // Auth pages
 import LoginPage from "./pages/LoginPage";
@@ -75,6 +76,7 @@ const AdminRoutes = () => (
       <Routes>
         <Route path="" element={<AdminDashboard />} />
         <Route path="leads" element={<AdminLeads />} />
+        <Route path="payments" element={<AdminPayments />} />
         <Route path="services" element={<AdminServices />} />
         <Route path="service-packages" element={<AdminServicePackages />} />
         <Route path="portfolio" element={<AdminPortfolio />} />
