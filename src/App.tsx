@@ -38,6 +38,10 @@ import PricingPage from "./pages/PricingPage";
 import CareersPage from "./pages/CareersPage";
 import GetQuotePage from "./pages/GetQuotePage";
 import TermsPage from "./pages/TermsPage";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
+import RefundPolicyPage from "./pages/RefundPolicyPage";
+import DeliveryPolicyPage from "./pages/DeliveryPolicyPage";
+import ComplaintPolicyPage from "./pages/ComplaintPolicyPage";
 
 // CMS Admin Pages
 import CmsDashboard from "./pages/cms/CmsDashboard";
@@ -130,6 +134,10 @@ const AppWithAnalytics = () => {
       <Route path="/careers" element={<CareersPage />} />
       <Route path="/get-quote" element={<GetQuotePage />} />
       <Route path="/terms" element={<TermsPage />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+      <Route path="/refund-policy" element={<RefundPolicyPage />} />
+      <Route path="/delivery-policy" element={<DeliveryPolicyPage />} />
+      <Route path="/complaint-policy" element={<ComplaintPolicyPage />} />
       {/* CMS Public Routes */}
       <Route path="/cms-blog" element={<CmsBlogPublicPage />} />
       <Route path="/post/:slug" element={<PublicContentPage type="post" />} />

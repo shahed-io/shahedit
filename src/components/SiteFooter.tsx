@@ -35,8 +35,11 @@ const defaultFooterLinks: FooterColumn[] = [
     { id: "11", label: "FAQs", target: "/faq" },
     { id: "12", label: "Pricing", target: "/pricing" },
     { id: "13", label: "Get a Quote", target: "/get-quote" },
-    { id: "14", label: "Privacy Policy", target: "/terms" },
-    { id: "15", label: "Terms of Service", target: "/terms" },
+    { id: "14", label: "Terms & Conditions", target: "/terms" },
+    { id: "15", label: "Privacy Policy", target: "/privacy-policy" },
+    { id: "16", label: "Refund Policy", target: "/refund-policy" },
+    { id: "17", label: "Delivery Policy", target: "/delivery-policy" },
+    { id: "18", label: "Complaint Policy", target: "/complaint-policy" },
   ]},
 ];
 
