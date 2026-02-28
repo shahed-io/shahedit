@@ -1,11 +1,27 @@
-import { useState } from "react";
-import { Phone, Mail, Menu, X, Zap, ChevronRight } from "lucide-react";
+import { useState, useRef } from "react";
+import { Phone, Mail, Menu, X, Zap, ChevronRight, ChevronDown, Globe, Wrench, Palette, Facebook, TrendingUp, Building2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 
+import catWebDev from "@/assets/cat-web-dev.jpg";
+import catMaintenance from "@/assets/cat-maintenance.jpg";
+import catGraphics from "@/assets/cat-graphics.jpg";
+import catFacebook from "@/assets/cat-facebook.jpg";
+import catDigitalMarketing from "@/assets/cat-digital-marketing.jpg";
+import catBusiness from "@/assets/cat-business.jpg";
+
+const serviceCategories = [
+  { label: "Web Development", href: "/services#web-development", icon: Globe, img: catWebDev, color: "hsl(258,90%,66%)" },
+  { label: "Website Maintenance", href: "/services#maintenance", icon: Wrench, img: catMaintenance, color: "hsl(210,80%,60%)" },
+  { label: "Graphics Design", href: "/services#graphics", icon: Palette, img: catGraphics, color: "hsl(320,80%,60%)" },
+  { label: "Facebook Services", href: "/services#facebook", icon: Facebook, img: catFacebook, color: "hsl(220,90%,55%)" },
+  { label: "Digital Marketing", href: "/services#digital-marketing", icon: TrendingUp, img: catDigitalMarketing, color: "hsl(145,70%,45%)" },
+  { label: "Business Solutions", href: "/services#business", icon: Building2, img: catBusiness, color: "hsl(35,90%,55%)" },
+];
+
 const navLinks = [
   { label: "Home", href: "/" },
-  { label: "Services", href: "/services" },
+  { label: "Services", href: "/services", hasDropdown: true },
   { label: "Portfolio", href: "/portfolio" },
   { label: "Blog", href: "/blog" },
   { label: "Pricing", href: "/pricing" },
@@ -15,7 +31,9 @@ const navLinks = [
 
 const SiteHeader = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const servicesTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   return (
     <motion.header
@@ -84,20 +102,96 @@ const SiteHeader = () => {
 
           {/* Nav links - desktop */}
           <nav className="hidden lg:flex items-center gap-1">
-            {navLinks.map((link, i) => (
-              <Link key={link.label} to={link.href}>
-                <motion.span
-                  initial={{ opacity: 0, y: -8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 + i * 0.07 }}
-                  className="relative px-4 py-2 text-sm font-medium text-foreground/65 hover:text-foreground transition-all duration-300 group flex items-center rounded-lg hover:bg-white/5"
+            {navLinks.map((link, i) =>
+              link.hasDropdown ? (
+                <div
+                  key={link.label}
+                  className="relative"
+                  onMouseEnter={() => {
+                    if (servicesTimeout.current) clearTimeout(servicesTimeout.current);
+                    setServicesOpen(true);
+                  }}
+                  onMouseLeave={() => {
+                    servicesTimeout.current = setTimeout(() => setServicesOpen(false), 150);
+                  }}
                 >
-                  {link.label}
-                  <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-0.5 w-0 group-hover:w-3/4 rounded-full transition-all duration-300"
-                    style={{ background: 'linear-gradient(90deg, hsl(258,90%,66%), hsl(185,100%,48%))' }} />
-                </motion.span>
-              </Link>
-            ))}
+                  <Link to={link.href}>
+                    <motion.span
+                      initial={{ opacity: 0, y: -8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.1 + i * 0.07 }}
+                      className="relative px-4 py-2 text-sm font-medium text-foreground/65 hover:text-foreground transition-all duration-300 group flex items-center gap-1 rounded-lg hover:bg-white/5 cursor-pointer"
+                    >
+                      {link.label}
+                      <ChevronDown size={13} className={`transition-transform duration-200 ${servicesOpen ? "rotate-180" : ""}`} />
+                      <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-0.5 w-0 group-hover:w-3/4 rounded-full transition-all duration-300"
+                        style={{ background: 'linear-gradient(90deg, hsl(258,90%,66%), hsl(185,100%,48%))' }} />
+                    </motion.span>
+                  </Link>
+
+                  {/* Dropdown */}
+                  <AnimatePresence>
+                    {servicesOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 8, scale: 0.97 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 8, scale: 0.97 }}
+                        transition={{ duration: 0.18, ease: "easeOut" }}
+                        className="absolute top-full left-0 mt-2 w-64 rounded-2xl shadow-2xl overflow-hidden z-50"
+                        style={{
+                          background: "rgba(14, 11, 28, 0.97)",
+                          backdropFilter: "blur(20px)",
+                          border: "1px solid rgba(255,255,255,0.08)",
+                          boxShadow: "0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(139,92,246,0.1)",
+                        }}
+                      >
+                        <div className="p-2">
+                          {serviceCategories.map((cat) => (
+                            <Link
+                              key={cat.label}
+                              to={cat.href}
+                              onClick={() => setServicesOpen(false)}
+                              className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition-all duration-200 group"
+                            >
+                              {/* Thumbnail */}
+                              <div className="w-9 h-9 rounded-lg overflow-hidden shrink-0 ring-1 ring-white/10">
+                                <img src={cat.img} alt={cat.label} className="w-full h-full object-cover" />
+                              </div>
+                              <span className="text-sm font-medium text-foreground/70 group-hover:text-foreground transition-colors">
+                                {cat.label}
+                              </span>
+                              <ChevronRight size={12} className="ml-auto opacity-0 group-hover:opacity-60 transition-opacity text-primary" />
+                            </Link>
+                          ))}
+                        </div>
+                        {/* Footer link */}
+                        <div className="px-3 pb-3">
+                          <Link to="/services" onClick={() => setServicesOpen(false)}>
+                            <div className="text-center py-2 text-xs font-semibold rounded-xl transition-all"
+                              style={{ background: "linear-gradient(135deg, hsl(258,90%,66%,0.15), hsl(185,100%,48%,0.15))", color: "hsl(258,90%,75%)", border: "1px solid hsl(258,90%,66%,0.2)" }}>
+                              সকল সার্ভিস দেখুন →
+                            </div>
+                          </Link>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ) : (
+                <Link key={link.label} to={link.href}>
+                  <motion.span
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 + i * 0.07 }}
+                    className="relative px-4 py-2 text-sm font-medium text-foreground/65 hover:text-foreground transition-all duration-300 group flex items-center rounded-lg hover:bg-white/5"
+                  >
+                    {link.label}
+                    <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-0.5 w-0 group-hover:w-3/4 rounded-full transition-all duration-300"
+                      style={{ background: 'linear-gradient(90deg, hsl(258,90%,66%), hsl(185,100%,48%))' }} />
+                  </motion.span>
+                </Link>
+              )
+            )}
           </nav>
 
           {/* CTA */}
@@ -133,19 +227,55 @@ const SiteHeader = () => {
             style={{ background: 'rgba(10, 8, 20, 0.97)', backdropFilter: 'blur(24px)' }}
           >
             <div className="px-4 py-5 space-y-1">
-              {navLinks.map((link, i) => (
-                <Link key={link.label} to={link.href} onClick={() => setMobileOpen(false)}>
-                  <motion.div
-                    initial={{ opacity: 0, x: -16 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.05 }}
-                    className="flex items-center justify-between py-3 px-4 text-sm font-medium text-foreground/70 hover:text-foreground hover:bg-white/5 rounded-xl transition-all group"
-                  >
-                    {link.label}
-                    <ChevronRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity text-primary" />
-                  </motion.div>
-                </Link>
-              ))}
+              {navLinks.map((link, i) =>
+                link.hasDropdown ? (
+                  <div key={link.label}>
+                    <motion.div
+                      initial={{ opacity: 0, x: -16 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.05 }}
+                      onClick={() => setMobileServicesOpen(v => !v)}
+                      className="flex items-center justify-between py-3 px-4 text-sm font-medium text-foreground/70 hover:text-foreground hover:bg-white/5 rounded-xl transition-all cursor-pointer"
+                    >
+                      {link.label}
+                      <ChevronDown size={14} className={`text-primary transition-transform ${mobileServicesOpen ? "rotate-180" : ""}`} />
+                    </motion.div>
+                    <AnimatePresence>
+                      {mobileServicesOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          className="ml-3 mt-1 space-y-0.5 overflow-hidden"
+                        >
+                          {serviceCategories.map((cat) => (
+                            <Link key={cat.label} to={cat.href} onClick={() => { setMobileOpen(false); setMobileServicesOpen(false); }}>
+                              <div className="flex items-center gap-3 py-2.5 px-4 rounded-xl hover:bg-white/5 transition-all">
+                                <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0 ring-1 ring-white/10">
+                                  <img src={cat.img} alt={cat.label} className="w-full h-full object-cover" />
+                                </div>
+                                <span className="text-sm text-foreground/65">{cat.label}</span>
+                              </div>
+                            </Link>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ) : (
+                  <Link key={link.label} to={link.href} onClick={() => setMobileOpen(false)}>
+                    <motion.div
+                      initial={{ opacity: 0, x: -16 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.05 }}
+                      className="flex items-center justify-between py-3 px-4 text-sm font-medium text-foreground/70 hover:text-foreground hover:bg-white/5 rounded-xl transition-all group"
+                    >
+                      {link.label}
+                      <ChevronRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity text-primary" />
+                    </motion.div>
+                  </Link>
+                )
+              )}
               <Link to="/get-quote" className="block mt-3" onClick={() => setMobileOpen(false)}>
                 <div className="text-center py-3 px-4 text-sm font-bold text-white rounded-xl"
                   style={{ background: 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%,0.8))' }}>
