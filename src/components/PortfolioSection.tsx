@@ -1,22 +1,26 @@
 import { motion } from "framer-motion";
 import { ExternalLink, ArrowRight } from "lucide-react";
-import portfolio1 from "@/assets/portfolio-1.jpg";
-import portfolio2 from "@/assets/portfolio-2.jpg";
-import portfolio3 from "@/assets/portfolio-3.jpg";
-import portfolio4 from "@/assets/portfolio-4.jpg";
-import portfolio5 from "@/assets/portfolio-5.jpg";
-import portfolio6 from "@/assets/portfolio-6.jpg";
-
-const samples = [
-  { image: portfolio1, alt: "Vegetables Store", tag: "E-Commerce" },
-  { image: portfolio2, alt: "T-Shirts Store", tag: "Fashion" },
-  { image: portfolio3, alt: "Electronics Marketplace", tag: "Electronics" },
-  { image: portfolio4, alt: "Accessories Store", tag: "Accessories" },
-  { image: portfolio5, alt: "Gaming Store", tag: "Gaming" },
-  { image: portfolio6, alt: "Organic Food Store", tag: "Food & Health" },
-];
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import type { Project } from "@/lib/supabase-types";
 
 const PortfolioSection = () => {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    supabase
+      .from("projects")
+      .select("*")
+      .eq("is_published", true)
+      .order("sort_order")
+      .limit(6)
+      .then(({ data }) => {
+        setProjects(data ?? []);
+        setLoading(false);
+      });
+  }, []);
+
   return (
     <section id="portfolio" className="py-24 relative overflow-hidden">
       <div className="absolute inset-0 tech-grid-bg opacity-35" />
@@ -54,55 +58,74 @@ const PortfolioSection = () => {
           </motion.a>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {samples.map((sample, i) => (
-            <motion.a
-              key={i}
-              href="/portfolio"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.09, type: "spring", stiffness: 120 }}
-              whileHover={{ y: -6 }}
-              className="group relative rounded-2xl overflow-hidden cursor-pointer"
-              style={{ border: '1px solid rgba(255,255,255,0.07)' }}
-            >
-              <div className="aspect-[4/3] overflow-hidden">
-                <motion.img
-                  src={sample.image}
-                  alt={sample.alt}
-                  className="w-full h-full object-cover"
-                  whileHover={{ scale: 1.08 }}
-                  transition={{ duration: 0.5 }}
-                />
-              </div>
-
-              {/* Tag */}
-              <div className="absolute top-3 left-3 px-3 py-1 text-xs font-bold rounded-full"
-                style={{ background: 'rgba(10,8,20,0.80)', border: '1px solid rgba(139,92,246,0.30)', color: 'hsl(258,90%,75%)', backdropFilter: 'blur(10px)' }}>
-                {sample.tag}
-              </div>
-
-              {/* Hover overlay */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-400 flex items-end p-5"
-                style={{ background: 'linear-gradient(to top, rgba(10,8,20,0.92) 0%, rgba(10,8,20,0.50) 50%, transparent 100%)' }}>
-                <div className="flex items-center justify-between w-full">
-                  <div>
-                    <p className="text-xs text-foreground/50 mb-1">{sample.tag}</p>
-                    <span className="text-white font-bold">{sample.alt}</span>
-                  </div>
-                  <motion.div
-                    whileHover={{ scale: 1.2, rotate: 45 }}
-                    className="w-10 h-10 rounded-xl flex items-center justify-center"
-                    style={{ background: 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))' }}
-                  >
-                    <ExternalLink size={15} className="text-white" />
-                  </motion.div>
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="aspect-[4/3] rounded-2xl animate-pulse"
+                style={{ background: 'rgba(139,92,246,0.06)', border: '1px solid rgba(139,92,246,0.12)' }} />
+            ))}
+          </div>
+        ) : projects.length === 0 ? (
+          <div className="text-center py-20">
+            <p className="text-foreground/40">কোনো প্রজেক্ট নেই। Admin থেকে যোগ করুন।</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {projects.map((project, i) => (
+              <motion.a
+                key={project.id}
+                href={project.project_url ?? "/portfolio"}
+                target={project.project_url ? "_blank" : undefined}
+                rel={project.project_url ? "noopener noreferrer" : undefined}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.09, type: "spring", stiffness: 120 }}
+                whileHover={{ y: -6 }}
+                className="group relative rounded-2xl overflow-hidden cursor-pointer"
+                style={{ border: '1px solid rgba(255,255,255,0.07)' }}
+              >
+                <div className="aspect-[4/3] overflow-hidden bg-gradient-to-br from-primary/10 to-accent/10">
+                  {project.image_url ? (
+                    <motion.img
+                      src={project.image_url}
+                      alt={project.title}
+                      className="w-full h-full object-cover"
+                      whileHover={{ scale: 1.08 }}
+                      transition={{ duration: 0.5 }}
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-5xl">🖥️</div>
+                  )}
                 </div>
-              </div>
-            </motion.a>
-          ))}
-        </div>
+
+                {project.category && (
+                  <div className="absolute top-3 left-3 px-3 py-1 text-xs font-bold rounded-full"
+                    style={{ background: 'rgba(10,8,20,0.80)', border: '1px solid rgba(139,92,246,0.30)', color: 'hsl(258,90%,75%)', backdropFilter: 'blur(10px)' }}>
+                    {project.category}
+                  </div>
+                )}
+
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-400 flex items-end p-5"
+                  style={{ background: 'linear-gradient(to top, rgba(10,8,20,0.92) 0%, rgba(10,8,20,0.50) 50%, transparent 100%)' }}>
+                  <div className="flex items-center justify-between w-full">
+                    <div>
+                      <p className="text-xs text-foreground/50 mb-1">{project.category}</p>
+                      <span className="text-white font-bold">{project.title}</span>
+                    </div>
+                    <motion.div
+                      whileHover={{ scale: 1.2, rotate: 45 }}
+                      className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                      style={{ background: 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))' }}
+                    >
+                      <ExternalLink size={15} className="text-white" />
+                    </motion.div>
+                  </div>
+                </div>
+              </motion.a>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

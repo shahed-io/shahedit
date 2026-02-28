@@ -760,6 +760,7 @@ export type Database = {
       }
       service_packages: {
         Row: {
+          badge: string | null
           created_at: string
           currency: string | null
           description: string | null
@@ -768,6 +769,7 @@ export type Database = {
           image_url: string | null
           is_featured: boolean | null
           is_published: boolean | null
+          original_price: number | null
           price: number | null
           service_id: string
           sort_order: number | null
@@ -775,6 +777,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          badge?: string | null
           created_at?: string
           currency?: string | null
           description?: string | null
@@ -783,6 +786,7 @@ export type Database = {
           image_url?: string | null
           is_featured?: boolean | null
           is_published?: boolean | null
+          original_price?: number | null
           price?: number | null
           service_id: string
           sort_order?: number | null
@@ -790,6 +794,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          badge?: string | null
           created_at?: string
           currency?: string | null
           description?: string | null
@@ -798,6 +803,7 @@ export type Database = {
           image_url?: string | null
           is_featured?: boolean | null
           is_published?: boolean | null
+          original_price?: number | null
           price?: number | null
           service_id?: string
           sort_order?: number | null
