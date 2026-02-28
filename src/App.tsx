@@ -20,6 +20,7 @@ import {
   AdminClients, AdminPricing, AdminFAQ, AdminCareers
 } from "./pages/admin/AdminCrud";
 import AdminPayments from "./pages/admin/AdminPayments";
+import AdminUsers from "./pages/admin/AdminUsers";
 
 // Auth pages
 import LoginPage from "./pages/LoginPage";
@@ -89,6 +90,7 @@ const AdminRoutes = () => (
         <Route path="careers" element={<AdminCareers />} />
         <Route path="ai-support" element={<AdminAISupport />} />
         <Route path="settings" element={<AdminSettings />} />
+        <Route path="users" element={<AdminUsers />} />
       </Routes>
     </AdminLayout>
   </ProtectedRoute>

@@ -16,6 +16,7 @@ interface ServicePackageRow {
   is_featured: boolean;
   sort_order: number;
   service_id: string;
+  image_url: string | null;
   services?: { title: string } | null;
 }
 
@@ -266,20 +267,30 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
         {/* Top visual area */}
         <div className="relative h-32 flex items-center justify-center overflow-hidden"
           style={{ background: `linear-gradient(135deg, ${c.color}15, ${c.color}05)` }}>
-          <motion.div
-            whileHover={{ scale: 1.2, rotate: 10 }}
-            className="text-7xl font-black select-none"
-            style={{ color: `${c.color}20`, fontFamily: "'Syne', sans-serif" }}
-          >
-            {pkg.title.charAt(0)}
-          </motion.div>
-
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-12 h-12 rounded-2xl flex items-center justify-center"
-              style={{ background: `${c.color}18`, border: `1px solid ${c.color}30`, boxShadow: `0 0 25px ${c.color}20` }}>
-              <Zap size={20} style={{ color: c.color }} />
-            </div>
-          </div>
+          {pkg.image_url ? (
+            <img
+              src={pkg.image_url}
+              alt={pkg.title}
+              className="w-full h-full object-cover absolute inset-0"
+              onError={e => { (e.target as HTMLImageElement).style.display = "none"; }}
+            />
+          ) : (
+            <>
+              <motion.div
+                whileHover={{ scale: 1.2, rotate: 10 }}
+                className="text-7xl font-black select-none"
+                style={{ color: `${c.color}20`, fontFamily: "'Syne', sans-serif" }}
+              >
+                {pkg.title.charAt(0)}
+              </motion.div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center"
+                  style={{ background: `${c.color}18`, border: `1px solid ${c.color}30`, boxShadow: `0 0 25px ${c.color}20` }}>
+                  <Zap size={20} style={{ color: c.color }} />
+                </div>
+              </div>
+            </>
+          )}
 
           {discount && discount > 0 && (
             <div className="absolute top-3 left-3 px-2.5 py-1 text-xs font-black rounded-full text-white"
