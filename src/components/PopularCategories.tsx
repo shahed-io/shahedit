@@ -2,65 +2,86 @@ import { motion } from "framer-motion";
 import { Code, Facebook, BarChart3, Palette, Wrench, Briefcase } from "lucide-react";
 
 const categories = [
-  { name: "Web Development", products: 6, icon: Code, gradient: "from-primary via-primary/80 to-accent" },
-  { name: "Facebook Services", products: 0, icon: Facebook, gradient: "from-blue-500 via-blue-400 to-blue-300" },
-  { name: "Digital Marketing", products: 0, icon: BarChart3, gradient: "from-accent via-accent/80 to-emerald-400" },
-  { name: "Graphics Design", products: 0, icon: Palette, gradient: "from-pink-500 via-rose-400 to-pink-300" },
-  { name: "Website Maintenance", products: 4, icon: Wrench, gradient: "from-amber-500 via-amber-400 to-yellow-300" },
-  { name: "Business Solutions", products: 3, icon: Briefcase, gradient: "from-violet-500 via-purple-400 to-violet-300" },
+  { name: "Web Development", products: 6, icon: Code, color: "hsl(258,90%,66%)", bg: "rgba(139,92,246,0.12)", border: "rgba(139,92,246,0.25)" },
+  { name: "Facebook Services", products: 0, icon: Facebook, color: "hsl(217,89%,61%)", bg: "rgba(59,130,246,0.12)", border: "rgba(59,130,246,0.25)" },
+  { name: "Digital Marketing", products: 0, icon: BarChart3, color: "hsl(185,100%,48%)", bg: "rgba(6,182,212,0.12)", border: "rgba(6,182,212,0.25)" },
+  { name: "Graphics Design", products: 0, icon: Palette, color: "hsl(315,80%,65%)", bg: "rgba(236,72,153,0.12)", border: "rgba(236,72,153,0.25)" },
+  { name: "Website Maintenance", products: 4, icon: Wrench, color: "hsl(45,93%,58%)", bg: "rgba(234,179,8,0.12)", border: "rgba(234,179,8,0.25)" },
+  { name: "Business Solutions", products: 3, icon: Briefcase, color: "hsl(270,80%,65%)", bg: "rgba(147,51,234,0.12)", border: "rgba(147,51,234,0.25)" },
 ];
 
 const PopularCategories = () => {
   return (
-    <section className="py-20 relative overflow-hidden section-glow">
-      {/* Dot grid bg */}
-      <div className="absolute inset-0 dot-grid opacity-40" />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[hsl(222,45%,5%,0.5)] to-transparent" />
-      {/* Center glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] rounded-full" style={{ background: 'radial-gradient(ellipse, hsl(245,80%,65%) 0%, transparent 70%)', filter: 'blur(120px)', opacity: 0.07 }} />
+    <section className="py-24 relative overflow-hidden">
+      {/* Section divider top */}
+      <div className="absolute top-0 left-0 right-0 section-divider" />
+
+      {/* Background */}
+      <div className="absolute inset-0 dot-grid opacity-25" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full"
+        style={{ background: 'radial-gradient(ellipse, hsl(258,90%,66%) 0%, transparent 70%)', filter: 'blur(120px)', opacity: 0.07 }} />
 
       <div className="container mx-auto px-4 relative">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-14"
+          className="text-center mb-16"
         >
-          <span className="text-accent text-sm font-semibold uppercase tracking-widest">Browse</span>
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mt-2">
-            Popular Categories
+          <motion.span
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] px-4 py-2 rounded-full mb-4"
+            style={{ background: 'rgba(6,182,212,0.10)', border: '1px solid rgba(6,182,212,0.25)', color: 'hsl(185,100%,55%)' }}
+          >
+            ◈ Our Services
+          </motion.span>
+          <h2 className="text-4xl md:text-5xl font-black text-foreground mt-2">
+            Popular <span className="gradient-text">Categories</span>
           </h2>
-          <div className="mt-3 mx-auto w-16 h-1 rounded-full bg-gradient-to-r from-primary to-accent" />
+          <div className="mt-4 mx-auto w-20 h-1 rounded-full" style={{ background: 'linear-gradient(90deg, hsl(258,90%,66%), hsl(185,100%,48%))' }} />
         </motion.div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
+
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {categories.map((cat, i) => (
             <motion.a
               key={cat.name}
-              href="#"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              href="/services"
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1, type: "spring", stiffness: 120 }}
-              whileHover={{ y: -8, scale: 1.03 }}
-              className="group glossy-card flex flex-col items-center p-6 rounded-2xl border border-border hover:border-primary/30 transition-all duration-500"
+              transition={{ delay: i * 0.08, type: "spring", stiffness: 130 }}
+              whileHover={{ y: -10, scale: 1.04 }}
+              className="group flex flex-col items-center p-6 rounded-2xl cursor-pointer relative overflow-hidden transition-all duration-500"
+              style={{ background: cat.bg, border: `1px solid ${cat.border}` }}
             >
+              {/* Hover glow */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"
+                style={{ background: `radial-gradient(circle at 50% 0%, ${cat.color}20, transparent 70%)` }} />
+
               <motion.div
-                whileHover={{ rotate: [0, -10, 10, 0], scale: 1.15 }}
+                whileHover={{ rotate: [0, -8, 8, 0], scale: 1.15 }}
                 transition={{ duration: 0.5 }}
-                className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${cat.gradient} flex items-center justify-center mb-4 shadow-lg shimmer`}
+                className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4 relative shimmer"
+                style={{ background: `linear-gradient(135deg, ${cat.color}25, ${cat.color}10)`, border: `1px solid ${cat.color}30`, boxShadow: `0 0 20px ${cat.color}20` }}
               >
-                <cat.icon size={26} className="text-primary-foreground drop-shadow-md" />
+                <cat.icon size={26} style={{ color: cat.color, filter: `drop-shadow(0 0 8px ${cat.color}60)` }} />
               </motion.div>
-              <h3 className="text-sm font-semibold text-foreground text-center leading-tight group-hover:text-primary transition-colors duration-300">
+
+              <h3 className="text-sm font-bold text-foreground/85 text-center leading-tight group-hover:text-foreground transition-colors duration-300">
                 {cat.name}
               </h3>
-              <p className="text-xs text-muted-foreground mt-1.5 group-hover:text-accent transition-colors duration-300">
-                {cat.products} products
+              <p className="text-xs mt-1.5 font-medium transition-colors duration-300" style={{ color: cat.color }}>
+                {cat.products > 0 ? `${cat.products} plans` : "Available"}
               </p>
             </motion.a>
           ))}
         </div>
       </div>
+
+      {/* Section divider bottom */}
+      <div className="absolute bottom-0 left-0 right-0 section-divider" />
     </section>
   );
 };
