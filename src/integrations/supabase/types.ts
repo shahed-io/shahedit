@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      audit_logs: {
+        Row: {
+          action: string
+          actor_id: string
+          created_at: string
+          entity: string
+          entity_id: string | null
+          id: string
+          meta: Json | null
+        }
+        Insert: {
+          action: string
+          actor_id: string
+          created_at?: string
+          entity: string
+          entity_id?: string | null
+          id?: string
+          meta?: Json | null
+        }
+        Update: {
+          action?: string
+          actor_id?: string
+          created_at?: string
+          entity?: string
+          entity_id?: string | null
+          id?: string
+          meta?: Json | null
+        }
+        Relationships: []
+      }
       blog_categories: {
         Row: {
           created_at: string
@@ -181,6 +211,160 @@ export type Database = {
         }
         Relationships: []
       }
+      cms_menus: {
+        Row: {
+          created_at: string
+          id: string
+          location: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          location?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          location?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      cms_site_settings: {
+        Row: {
+          favicon_media_id: string | null
+          id: number
+          logo_media_id: string | null
+          primary_color: string | null
+          site_tagline: string | null
+          site_title: string
+          updated_at: string
+        }
+        Insert: {
+          favicon_media_id?: string | null
+          id?: number
+          logo_media_id?: string | null
+          primary_color?: string | null
+          site_tagline?: string | null
+          site_title?: string
+          updated_at?: string
+        }
+        Update: {
+          favicon_media_id?: string | null
+          id?: number
+          logo_media_id?: string | null
+          primary_color?: string | null
+          site_tagline?: string | null
+          site_title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cms_site_settings_favicon_media_id_fkey"
+            columns: ["favicon_media_id"]
+            isOneToOne: false
+            referencedRelation: "media_assets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cms_site_settings_logo_media_id_fkey"
+            columns: ["logo_media_id"]
+            isOneToOne: false
+            referencedRelation: "media_assets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      content_items: {
+        Row: {
+          author_id: string
+          created_at: string
+          excerpt: string | null
+          featured_media_id: string | null
+          id: string
+          published_at: string | null
+          slug: string
+          status: string
+          title: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          author_id: string
+          created_at?: string
+          excerpt?: string | null
+          featured_media_id?: string | null
+          id?: string
+          published_at?: string | null
+          slug: string
+          status?: string
+          title: string
+          type?: string
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string
+          created_at?: string
+          excerpt?: string | null
+          featured_media_id?: string | null
+          id?: string
+          published_at?: string | null
+          slug?: string
+          status?: string
+          title?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_featured_media"
+            columns: ["featured_media_id"]
+            isOneToOne: false
+            referencedRelation: "media_assets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      content_versions: {
+        Row: {
+          body_html: string | null
+          content_id: string
+          created_at: string
+          created_by: string
+          editor_state_json: Json | null
+          id: string
+          version_no: number
+        }
+        Insert: {
+          body_html?: string | null
+          content_id: string
+          created_at?: string
+          created_by: string
+          editor_state_json?: Json | null
+          id?: string
+          version_no?: number
+        }
+        Update: {
+          body_html?: string | null
+          content_id?: string
+          created_at?: string
+          created_by?: string
+          editor_state_json?: Json | null
+          id?: string
+          version_no?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_versions_content_id_fkey"
+            columns: ["content_id"]
+            isOneToOne: false
+            referencedRelation: "content_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       faqs: {
         Row: {
           answer: string
@@ -267,6 +451,93 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      media_assets: {
+        Row: {
+          alt_text: string | null
+          created_at: string
+          file_size: number | null
+          file_type: string
+          file_url: string
+          height: number | null
+          id: string
+          title: string | null
+          uploaded_by: string
+          width: number | null
+        }
+        Insert: {
+          alt_text?: string | null
+          created_at?: string
+          file_size?: number | null
+          file_type: string
+          file_url: string
+          height?: number | null
+          id?: string
+          title?: string | null
+          uploaded_by: string
+          width?: number | null
+        }
+        Update: {
+          alt_text?: string | null
+          created_at?: string
+          file_size?: number | null
+          file_type?: string
+          file_url?: string
+          height?: number | null
+          id?: string
+          title?: string | null
+          uploaded_by?: string
+          width?: number | null
+        }
+        Relationships: []
+      }
+      menu_items: {
+        Row: {
+          created_at: string
+          id: string
+          item_type: string
+          label: string
+          menu_id: string
+          parent_id: string | null
+          sort_order: number
+          target: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          item_type?: string
+          label: string
+          menu_id: string
+          parent_id?: string | null
+          sort_order?: number
+          target?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          item_type?: string
+          label?: string
+          menu_id?: string
+          parent_id?: string | null
+          sort_order?: number
+          target?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "menu_items_menu_id_fkey"
+            columns: ["menu_id"]
+            isOneToOne: false
+            referencedRelation: "cms_menus"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "menu_items_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "menu_items"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       pricing_plans: {
         Row: {
@@ -406,6 +677,54 @@ export type Database = {
         }
         Relationships: []
       }
+      seo_meta: {
+        Row: {
+          canonical_url: string | null
+          content_id: string
+          meta_desc: string | null
+          meta_title: string | null
+          og_image_id: string | null
+          robots: string | null
+          schema_json: Json | null
+          updated_at: string
+        }
+        Insert: {
+          canonical_url?: string | null
+          content_id: string
+          meta_desc?: string | null
+          meta_title?: string | null
+          og_image_id?: string | null
+          robots?: string | null
+          schema_json?: Json | null
+          updated_at?: string
+        }
+        Update: {
+          canonical_url?: string | null
+          content_id?: string
+          meta_desc?: string | null
+          meta_title?: string | null
+          og_image_id?: string | null
+          robots?: string | null
+          schema_json?: Json | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "seo_meta_content_id_fkey"
+            columns: ["content_id"]
+            isOneToOne: true
+            referencedRelation: "content_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "seo_meta_og_image_id_fkey"
+            columns: ["og_image_id"]
+            isOneToOne: false
+            referencedRelation: "media_assets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       services: {
         Row: {
           created_at: string
@@ -493,6 +812,27 @@ export type Database = {
         }
         Relationships: []
       }
+      taxonomies: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          slug: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          slug: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          slug?: string
+        }
+        Relationships: []
+      }
       team_members: {
         Row: {
           avatar_url: string | null
@@ -537,6 +877,78 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      term_relations: {
+        Row: {
+          content_id: string
+          term_id: string
+        }
+        Insert: {
+          content_id: string
+          term_id: string
+        }
+        Update: {
+          content_id?: string
+          term_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "term_relations_content_id_fkey"
+            columns: ["content_id"]
+            isOneToOne: false
+            referencedRelation: "content_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "term_relations_term_id_fkey"
+            columns: ["term_id"]
+            isOneToOne: false
+            referencedRelation: "terms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      terms: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          parent_id: string | null
+          slug: string
+          taxonomy_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          parent_id?: string | null
+          slug: string
+          taxonomy_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          parent_id?: string | null
+          slug?: string
+          taxonomy_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "terms_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "terms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "terms_taxonomy_id_fkey"
+            columns: ["taxonomy_id"]
+            isOneToOne: false
+            referencedRelation: "taxonomies"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       testimonials: {
         Row: {

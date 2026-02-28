@@ -28,6 +28,22 @@ import PricingPage from "./pages/PricingPage";
 import CareersPage from "./pages/CareersPage";
 import GetQuotePage from "./pages/GetQuotePage";
 
+// CMS Admin Pages
+import CmsDashboard from "./pages/cms/CmsDashboard";
+import ContentListPage from "./pages/cms/ContentListPage";
+import ContentEditorPage from "./pages/cms/ContentEditorPage";
+import MediaLibraryPage from "./pages/cms/MediaLibraryPage";
+import TaxonomyPage from "./pages/cms/TaxonomyPage";
+import MenusPage from "./pages/cms/MenusPage";
+import SeoManagerPage from "./pages/cms/SeoManagerPage";
+import CmsSettingsPage from "./pages/cms/CmsSettingsPage";
+import CmsUsersPage from "./pages/cms/CmsUsersPage";
+import AuditLogsPage from "./pages/cms/AuditLogsPage";
+
+// CMS Public Pages
+import CmsBlogPublicPage from "./pages/cms/CmsBlogPublicPage";
+import PublicContentPage from "./pages/cms/PublicContentPage";
+
 const queryClient = new QueryClient();
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -58,6 +74,26 @@ const AdminRoutes = () => (
   </ProtectedRoute>
 );
 
+const CmsRoutes = () => (
+  <ProtectedRoute>
+    <Routes>
+      <Route path="" element={<CmsDashboard />} />
+      <Route path="posts" element={<ContentListPage type="post" />} />
+      <Route path="posts/:id" element={<ContentEditorPage type="post" />} />
+      <Route path="pages" element={<ContentListPage type="page" />} />
+      <Route path="pages/:id" element={<ContentEditorPage type="page" />} />
+      <Route path="media" element={<MediaLibraryPage />} />
+      <Route path="categories" element={<TaxonomyPage taxonomySlug="category" />} />
+      <Route path="tags" element={<TaxonomyPage taxonomySlug="tag" />} />
+      <Route path="menus" element={<MenusPage />} />
+      <Route path="seo" element={<SeoManagerPage />} />
+      <Route path="settings" element={<CmsSettingsPage />} />
+      <Route path="users" element={<CmsUsersPage />} />
+      <Route path="audit" element={<AuditLogsPage />} />
+    </Routes>
+  </ProtectedRoute>
+);
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -77,9 +113,15 @@ const App = () => (
             <Route path="/pricing" element={<PricingPage />} />
             <Route path="/careers" element={<CareersPage />} />
             <Route path="/get-quote" element={<GetQuotePage />} />
+            {/* CMS Public Routes */}
+            <Route path="/cms-blog" element={<CmsBlogPublicPage />} />
+            <Route path="/post/:slug" element={<PublicContentPage type="post" />} />
+            <Route path="/page/:slug" element={<PublicContentPage type="page" />} />
             {/* Admin Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/*" element={<AdminRoutes />} />
+            {/* CMS Routes */}
+            <Route path="/cms/*" element={<CmsRoutes />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
