@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2, Package, ChevronDown, ChevronRight, ImagePlus, X, GripVertical, ToggleLeft, ToggleRight } from "lucide-react";
+import { Plus, Pencil, Trash2, Package, ChevronDown, ChevronRight, ImagePlus, X, ToggleLeft, ToggleRight, Settings2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface Service {
@@ -14,6 +14,7 @@ interface Service {
   slug: string;
   icon: string | null;
   image_url: string | null;
+  short_description?: string | null;
 }
 
 interface ServicePackage {
@@ -55,12 +56,17 @@ export default function AdminServicePackages() {
   const [featureInput, setFeatureInput] = useState("");
   const [uploading, setUploading] = useState(false);
 
+  // Service management state
+  const [showServiceForm, setShowServiceForm] = useState(false);
+  const [editingService, setEditingService] = useState<Service | null>(null);
+  const [serviceForm, setServiceForm] = useState<{ title: string; slug: string; short_description?: string; icon: string }>({ title: "", slug: "", short_description: "", icon: "🔧" });
+
   const { data: services = [] } = useQuery<Service[]>({
     queryKey: ["admin-services-list"],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("services")
-        .select("id, title, slug, icon, image_url")
+        .select("id, title, slug, icon, image_url, short_description")
         .order("sort_order");
       if (error) throw error;
       return data;
@@ -182,6 +188,51 @@ export default function AdminServicePackages() {
   const packagesForService = (serviceId: string) =>
     packages.filter(p => p.service_id === serviceId);
 
+  // Service CRUD mutations
+  const slugify = (t: string) => t.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+
+  const upsertService = useMutation({
+    mutationFn: async (data: typeof serviceForm & { id?: string }) => {
+      const payload = { ...data, slug: data.slug || slugify(data.title) };
+      if (data.id) {
+        const { error } = await supabase.from("services").update(payload).eq("id", data.id);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase.from("services").insert([{ ...payload, is_published: true, sort_order: services.length }]);
+        if (error) throw error;
+      }
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-services-list"] });
+      setShowServiceForm(false);
+      setEditingService(null);
+      setServiceForm({ title: "", slug: "", short_description: "", icon: "🔧" });
+      toast.success(editingService ? "সার্ভিস আপডেট হয়েছে" : "নতুন সার্ভিস যোগ হয়েছে");
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const deleteService = useMutation({
+    mutationFn: async (id: string) => {
+      // Delete related packages first
+      await (supabase as any).from("service_packages").delete().eq("service_id", id);
+      const { error } = await supabase.from("services").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-services-list"] });
+      qc.invalidateQueries({ queryKey: ["admin-service-packages"] });
+      toast.success("সার্ভিস মুছে ফেলা হয়েছে");
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const openServiceEdit = (s: Service) => {
+    setEditingService(s);
+    setServiceForm({ title: s.title, slug: s.slug, short_description: s.short_description ?? "", icon: s.icon ?? "🔧" });
+    setShowServiceForm(true);
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -189,7 +240,100 @@ export default function AdminServicePackages() {
           <h1 className="text-white text-2xl font-bold">সার্ভিস প্যাকেজ</h1>
           <p className="text-slate-400 text-sm mt-1">প্রতিটা সার্ভিসের জন্য প্যাকেজ/পণ্য যোগ করুন</p>
         </div>
+        <Button
+          onClick={() => { setEditingService(null); setServiceForm({ title: "", slug: "", short_description: "", icon: "🔧" }); setShowServiceForm(true); }}
+          className="bg-purple-600 hover:bg-purple-500 text-white gap-2"
+        >
+          <Plus size={15} /> নতুন সার্ভিস যোগ
+        </Button>
       </div>
+
+      {/* Service Add/Edit Modal */}
+      <AnimatePresence>
+        {showServiceForm && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+            onClick={e => { if (e.target === e.currentTarget) setShowServiceForm(false); }}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-slate-900 border border-slate-700 rounded-2xl p-6 w-full max-w-md mx-4 space-y-4"
+            >
+              <div className="flex items-center justify-between">
+                <h3 className="text-white font-bold text-lg">
+                  {editingService ? "সার্ভিস এডিট করুন" : "নতুন সার্ভিস যোগ করুন"}
+                </h3>
+                <button onClick={() => setShowServiceForm(false)} className="text-slate-400 hover:text-white">
+                  <X size={18} />
+                </button>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex gap-2">
+                  <div className="space-y-1 w-16">
+                    <label className="text-slate-400 text-xs">আইকন</label>
+                    <Input
+                      value={serviceForm.icon}
+                      onChange={e => setServiceForm(f => ({ ...f, icon: e.target.value }))}
+                      className="bg-slate-800 border-slate-700 text-white text-center text-xl"
+                      maxLength={4}
+                    />
+                  </div>
+                  <div className="space-y-1 flex-1">
+                    <label className="text-slate-400 text-xs">সার্ভিসের নাম *</label>
+                    <Input
+                      value={serviceForm.title}
+                      onChange={e => setServiceForm(f => ({ ...f, title: e.target.value, slug: slugify(e.target.value) }))}
+                      placeholder="যেমন: Web Development"
+                      className="bg-slate-800 border-slate-700 text-white"
+                      autoFocus
+                    />
+                  </div>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-slate-400 text-xs">Slug (URL)</label>
+                  <Input
+                    value={serviceForm.slug}
+                    onChange={e => setServiceForm(f => ({ ...f, slug: e.target.value }))}
+                    placeholder="web-development"
+                    className="bg-slate-800 border-slate-700 text-white font-mono text-sm"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-slate-400 text-xs">সংক্ষিপ্ত বিবরণ</label>
+                  <Input
+                    value={serviceForm.short_description}
+                    onChange={e => setServiceForm(f => ({ ...f, short_description: e.target.value }))}
+                    placeholder="সার্ভিসের একটি সংক্ষিপ্ত পরিচয়..."
+                    className="bg-slate-800 border-slate-700 text-white"
+                  />
+                </div>
+              </div>
+
+              <div className="flex gap-2 pt-1">
+                <Button
+                  onClick={() => {
+                    if (!serviceForm.title.trim()) return toast.error("সার্ভিসের নাম দিন");
+                    upsertService.mutate(editingService ? { ...serviceForm, id: editingService.id } : serviceForm);
+                  }}
+                  disabled={upsertService.isPending}
+                  className="flex-1 bg-purple-600 hover:bg-purple-500 text-white"
+                >
+                  {upsertService.isPending ? "সংরক্ষণ হচ্ছে..." : editingService ? "আপডেট করুন" : "সার্ভিস যোগ করুন"}
+                </Button>
+                <Button variant="outline" onClick={() => setShowServiceForm(false)} className="border-slate-700 text-slate-300">
+                  বাতিল
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <div className="space-y-3">
         {services.map(service => {
@@ -200,21 +344,42 @@ export default function AdminServicePackages() {
           return (
             <div key={service.id} className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
               {/* Service header */}
-              <button
-                className="w-full flex items-center justify-between px-5 py-4 hover:bg-slate-800/50 transition-colors"
-                onClick={() => setExpandedService(isExpanded ? null : service.id)}
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-purple-600/20 flex items-center justify-center">
-                    <Package size={16} className="text-purple-400" />
+              <div className="w-full flex items-center justify-between px-5 py-4 hover:bg-slate-800/30 transition-colors">
+                <button
+                  className="flex items-center gap-3 flex-1 text-left"
+                  onClick={() => setExpandedService(isExpanded ? null : service.id)}
+                >
+                  <div className="w-8 h-8 rounded-lg bg-purple-600/20 flex items-center justify-center text-lg">
+                    {service.icon || <Package size={16} className="text-purple-400" />}
                   </div>
                   <div className="text-left">
                     <p className="text-white font-semibold">{service.title}</p>
                     <p className="text-slate-500 text-xs">{pkgs.length} টি প্যাকেজ</p>
                   </div>
+                </button>
+                <div className="flex items-center gap-1 ml-2">
+                  <button
+                    onClick={() => openServiceEdit(service)}
+                    className="p-1.5 text-slate-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-colors"
+                    title="এডিট"
+                  >
+                    <Pencil size={14} />
+                  </button>
+                  <button
+                    onClick={() => { if (confirm(`"${service.title}" এবং এর সকল প্যাকেজ মুছে ফেলতে চান?`)) deleteService.mutate(service.id); }}
+                    className="p-1.5 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+                    title="ডিলিট"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                  <button
+                    className="p-1.5 text-slate-400 ml-1"
+                    onClick={() => setExpandedService(isExpanded ? null : service.id)}
+                  >
+                    {isExpanded ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
+                  </button>
                 </div>
-                {isExpanded ? <ChevronDown size={18} className="text-slate-400" /> : <ChevronRight size={18} className="text-slate-400" />}
-              </button>
+              </div>
 
               <AnimatePresence>
                 {isExpanded && (
