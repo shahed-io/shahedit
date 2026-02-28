@@ -22,6 +22,7 @@ import {
 
 // Auth pages
 import LoginPage from "./pages/LoginPage";
+import DashboardPage from "./pages/DashboardPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import ProfilePage from "./pages/ProfilePage";
@@ -115,6 +116,7 @@ const AppWithAnalytics = () => {
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
       <Route path="/profile" element={<ProfilePage />} />
+      <Route path="/dashboard" element={<DashboardPage />} />
       {/* Public Routes */}
       <Route path="/" element={<Index />} />
       <Route path="/services" element={<ServicesPage />} />
