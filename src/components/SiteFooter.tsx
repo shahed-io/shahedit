@@ -1,4 +1,4 @@
-import { Phone, Mail, ArrowRight, ArrowUp, Zap, MapPin, MessageCircle } from "lucide-react";
+import { Phone, ArrowRight, ArrowUp, Zap, MapPin } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -120,22 +120,6 @@ const SiteFooter = () => {
                     <Phone size={13} style={{ color: 'hsl(258,90%,66%)' }} />
                   </span>
                   01820-060046
-                </motion.a>
-                <motion.a whileHover={{ x: 4 }} href="https://wa.me/8801820060046" target="_blank"
-                  className="flex items-center gap-3 text-foreground/45 hover:text-accent transition-all group">
-                  <span className="w-8 h-8 rounded-lg flex items-center justify-center group-hover:bg-green-500/20 transition-colors"
-                    style={{ background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.20)' }}>
-                    <MessageCircle size={13} style={{ color: 'hsl(155,70%,50%)' }} />
-                  </span>
-                  WhatsApp Chat
-                </motion.a>
-                <motion.a whileHover={{ x: 4 }} href="mailto:info@shahedit.com"
-                  className="flex items-center gap-3 text-foreground/45 hover:text-accent transition-all group">
-                  <span className="w-8 h-8 rounded-lg flex items-center justify-center group-hover:bg-accent/20 transition-colors"
-                    style={{ background: 'rgba(6,182,212,0.12)', border: '1px solid rgba(6,182,212,0.20)' }}>
-                    <Mail size={13} style={{ color: 'hsl(185,100%,48%)' }} />
-                  </span>
-                  info@shahedit.com
                 </motion.a>
                 <div className="flex items-center gap-3 text-foreground/35">
                   <span className="w-8 h-8 rounded-lg flex items-center justify-center"
