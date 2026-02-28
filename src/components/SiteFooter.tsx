@@ -35,8 +35,8 @@ const defaultFooterLinks: FooterColumn[] = [
     { id: "11", label: "FAQs", target: "/faq" },
     { id: "12", label: "Pricing", target: "/pricing" },
     { id: "13", label: "Get a Quote", target: "/get-quote" },
-    { id: "14", label: "Privacy Policy", target: "#" },
-    { id: "15", label: "Terms of Service", target: "#" },
+    { id: "14", label: "Privacy Policy", target: "/terms" },
+    { id: "15", label: "Terms of Service", target: "/terms" },
   ]},
 ];
 

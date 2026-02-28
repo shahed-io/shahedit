@@ -37,6 +37,7 @@ import FAQPage from "./pages/FAQPage";
 import PricingPage from "./pages/PricingPage";
 import CareersPage from "./pages/CareersPage";
 import GetQuotePage from "./pages/GetQuotePage";
+import TermsPage from "./pages/TermsPage";
 
 // CMS Admin Pages
 import CmsDashboard from "./pages/cms/CmsDashboard";
@@ -128,6 +129,7 @@ const AppWithAnalytics = () => {
       <Route path="/pricing" element={<PricingPage />} />
       <Route path="/careers" element={<CareersPage />} />
       <Route path="/get-quote" element={<GetQuotePage />} />
+      <Route path="/terms" element={<TermsPage />} />
       {/* CMS Public Routes */}
       <Route path="/cms-blog" element={<CmsBlogPublicPage />} />
       <Route path="/post/:slug" element={<PublicContentPage type="post" />} />
