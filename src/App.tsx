@@ -13,6 +13,7 @@ import AdminLeads from "./pages/admin/AdminLeads";
 import AdminServices from "./pages/admin/AdminServices";
 import AdminSettings from "./pages/admin/AdminSettings";
 import AdminAISupport from "./pages/admin/AdminAISupport";
+import AdminServicePackages from "./pages/admin/AdminServicePackages";
 import {
   AdminPortfolio, AdminBlog, AdminTestimonials, AdminTeam,
   AdminClients, AdminPricing, AdminFAQ, AdminCareers
@@ -70,6 +71,7 @@ const AdminRoutes = () => (
         <Route path="faq" element={<AdminFAQ />} />
         <Route path="careers" element={<AdminCareers />} />
         <Route path="ai-support" element={<AdminAISupport />} />
+        <Route path="service-packages" element={<AdminServicePackages />} />
         <Route path="settings" element={<AdminSettings />} />
       </Routes>
     </AdminLayout>
