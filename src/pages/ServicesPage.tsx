@@ -6,7 +6,20 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import type { Service } from "@/lib/supabase-types";
-import { CheckCircle2, ArrowRight, MessageCircle } from "lucide-react";
+import { CheckCircle2, ArrowRight, MessageCircle, Star, Package } from "lucide-react";
+
+interface ServicePackage {
+  id: string;
+  service_id: string;
+  title: string;
+  description: string | null;
+  price: number | null;
+  currency: string;
+  features: string[] | null;
+  image_url: string | null;
+  is_featured: boolean;
+  sort_order: number;
+}
 
 const emojiColors: Record<string, { bg: string; border: string; glow: string; badge: string }> = {
   "💻": { bg: "rgba(139,92,246,0.10)", border: "rgba(139,92,246,0.25)", glow: "rgba(139,92,246,0.15)", badge: "rgba(139,92,246,0.15)" },
@@ -21,14 +34,23 @@ const defaultColors = { bg: "rgba(139,92,246,0.10)", border: "rgba(139,92,246,0.
 
 const ServicesPage = () => {
   const [services, setServices] = useState<Service[]>([]);
+  const [packages, setPackages] = useState<ServicePackage[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    supabase.from("services").select("*").eq("is_published", true).order("sort_order").then(({ data }) => {
-      setServices(data ?? []);
+    Promise.all([
+      supabase.from("services").select("*").eq("is_published", true).order("sort_order"),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (supabase as any).from("service_packages").select("*").eq("is_published", true).order("sort_order"),
+    ]).then(([{ data: svcs }, { data: pkgs }]) => {
+      setServices(svcs ?? []);
+      setPackages((pkgs ?? []) as ServicePackage[]);
       setLoading(false);
     });
   }, []);
+
+  const packagesFor = (serviceId: string) =>
+    packages.filter(p => p.service_id === serviceId);
 
   return (
     <div className="min-h-screen bg-background">
@@ -120,6 +142,63 @@ const ServicesPage = () => {
                           </li>
                         ))}
                       </ul>
+                    )}
+
+                    {/* Packages */}
+                    {packagesFor(service.id).length > 0 && (
+                      <div className="mt-4 mb-2 space-y-2">
+                        <p className="text-xs font-semibold uppercase tracking-wider text-foreground/35 flex items-center gap-1.5">
+                          <Package size={11} /> প্যাকেজসমূহ
+                        </p>
+                        <div className="grid grid-cols-1 gap-2">
+                          {packagesFor(service.id).map(pkg => (
+                            <div
+                              key={pkg.id}
+                              className={`relative rounded-xl px-4 py-3 border transition-all ${
+                                pkg.is_featured
+                                  ? "border-amber-500/50 bg-amber-500/8"
+                                  : "border-white/8 bg-white/4"
+                              }`}
+                            >
+                              {pkg.is_featured && (
+                                <span className="absolute -top-2.5 right-3 inline-flex items-center gap-1 bg-gradient-to-r from-amber-400 to-orange-500 text-black text-[9px] font-black px-2 py-0.5 rounded-full shadow-lg">
+                                  <Star size={8} fill="currentColor" /> Most Popular
+                                </span>
+                              )}
+                              <div className="flex items-center justify-between gap-2">
+                                <div className="flex items-center gap-2 min-w-0">
+                                  {pkg.image_url && (
+                                    <img src={pkg.image_url} alt={pkg.title} className="w-8 h-8 rounded-lg object-cover shrink-0" />
+                                  )}
+                                  <div className="min-w-0">
+                                    <p className={`text-sm font-semibold truncate ${pkg.is_featured ? "text-amber-300" : "text-foreground/85"}`}>
+                                      {pkg.title}
+                                    </p>
+                                    {pkg.description && (
+                                      <p className="text-foreground/45 text-xs truncate">{pkg.description}</p>
+                                    )}
+                                  </div>
+                                </div>
+                                {pkg.price !== null && (
+                                  <span className={`text-sm font-black shrink-0 ${pkg.is_featured ? "text-amber-400" : "text-foreground/70"}`}>
+                                    {pkg.currency} {pkg.price.toLocaleString()}
+                                  </span>
+                                )}
+                              </div>
+                              {pkg.features && pkg.features.length > 0 && (
+                                <ul className="mt-2 flex flex-wrap gap-x-3 gap-y-0.5">
+                                  {pkg.features.slice(0, 4).map((f, fi) => (
+                                    <li key={fi} className="text-foreground/45 text-[11px] flex items-center gap-1">
+                                      <span className="w-1 h-1 rounded-full bg-current inline-block shrink-0" />
+                                      {f}
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     )}
 
                     {/* CTA */}

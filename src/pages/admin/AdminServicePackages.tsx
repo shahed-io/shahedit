@@ -26,6 +26,7 @@ interface ServicePackage {
   features: string[] | null;
   image_url: string | null;
   is_published: boolean;
+  is_featured: boolean;
   sort_order: number;
 }
 
@@ -37,6 +38,7 @@ const emptyForm = (): Omit<ServicePackage, "id" | "service_id"> => ({
   features: [],
   image_url: "",
   is_published: true,
+  is_featured: false,
   sort_order: 0,
 });
 
@@ -133,6 +135,7 @@ export default function AdminServicePackages() {
       features: pkg.features ?? [],
       image_url: pkg.image_url ?? "",
       is_published: pkg.is_published,
+      is_featured: pkg.is_featured,
       sort_order: pkg.sort_order,
     });
     setExpandedService(pkg.service_id);
@@ -221,9 +224,15 @@ export default function AdminServicePackages() {
                       {pkgs.length > 0 && (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                           {pkgs.map(pkg => (
-                            <div key={pkg.id} className="bg-slate-800 rounded-xl p-4 border border-slate-700 group relative">
+            <div key={pkg.id} className={`rounded-xl p-4 border group relative ${pkg.is_featured ? "bg-gradient-to-br from-amber-950/40 to-slate-800 border-amber-500/40" : "bg-slate-800 border-slate-700"}`}>
+                              {/* Featured badge */}
+                              {pkg.is_featured && (
+                                <div className="absolute -top-2.5 left-4 flex items-center gap-1 bg-gradient-to-r from-amber-500 to-orange-500 text-black text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-lg">
+                                  ⭐ Most Popular
+                                </div>
+                              )}
                               {pkg.image_url && (
-                                <img src={pkg.image_url} alt={pkg.title} className="w-full h-28 object-cover rounded-lg mb-3" />
+                                <img src={pkg.image_url} alt={pkg.title} className="w-full h-28 object-cover rounded-lg mb-3 mt-1" />
                               )}
                               <div className="flex items-start justify-between gap-2">
                                 <div className="flex-1 min-w-0">
@@ -392,7 +401,7 @@ export default function AdminServicePackages() {
                             </div>
                           </div>
 
-                          <div className="grid grid-cols-2 gap-3">
+                          <div className="grid grid-cols-3 gap-3">
                             <div className="space-y-1">
                               <label className="text-slate-400 text-xs">ক্রম নম্বর</label>
                               <Input
@@ -411,6 +420,17 @@ export default function AdminServicePackages() {
                                   <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${form.is_published ? "translate-x-5" : "translate-x-0.5"}`} />
                                 </div>
                                 <span className="text-slate-300 text-sm">Published</span>
+                              </label>
+                            </div>
+                            <div className="flex items-end pb-0.5">
+                              <label className="flex items-center gap-2 cursor-pointer">
+                                <div
+                                  onClick={() => setForm(f => ({ ...f, is_featured: !f.is_featured }))}
+                                  className={`w-10 h-5 rounded-full transition-colors relative cursor-pointer ${form.is_featured ? "bg-amber-500" : "bg-slate-600"}`}
+                                >
+                                  <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${form.is_featured ? "translate-x-5" : "translate-x-0.5"}`} />
+                                </div>
+                                <span className="text-amber-400 text-sm">⭐ Popular</span>
                               </label>
                             </div>
                           </div>

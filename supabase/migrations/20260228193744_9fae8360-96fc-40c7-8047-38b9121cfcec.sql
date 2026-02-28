@@ -1,0 +1,1 @@
+ALTER TABLE public.service_packages ADD COLUMN IF NOT EXISTS is_featured BOOLEAN DEFAULT false;
