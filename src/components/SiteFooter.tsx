@@ -1,5 +1,5 @@
 import { Phone, ArrowRight, ArrowUp, MapPin } from "lucide-react";
-import logoImg from "@/assets/logo.png";
+import logoImg from "@/assets/logo-glossy.png";
 import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
