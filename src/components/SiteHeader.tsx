@@ -199,7 +199,7 @@ const SiteHeader = () => {
           {/* CTA */}
           <div className="hidden md:flex items-center gap-3">
             {user ? (
-              <Link to="/profile">
+              <Link to="/dashboard">
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
                   className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all"
                   style={{ background: 'rgba(139,92,246,0.12)', border: '1px solid rgba(139,92,246,0.25)', color: 'hsl(258,90%,75%)' }}>
@@ -207,7 +207,7 @@ const SiteHeader = () => {
                     style={{ background: 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))' }}>
                     {user.email?.[0].toUpperCase()}
                   </div>
-                  প্রোফাইল
+                  ড্যাশবোর্ড
                 </motion.div>
               </Link>
             ) : (
