@@ -27,7 +27,7 @@ const ContactPage = () => {
   };
 
   const info = [
-    { icon: MapPin, label: "ঠিকানা", value: "Dhaka, Bangladesh" },
+    { icon: MapPin, label: "ঠিকানা", value: "সপুরা, রাজশাহী, বাংলাদেশ" },
     { icon: Phone, label: "মোবাইল", value: "01820-060046" },
     { icon: Mail, label: "ইমেইল", value: "info@shahedit.com" },
     { icon: MessageCircle, label: "WhatsApp", value: "01820-060046" },
