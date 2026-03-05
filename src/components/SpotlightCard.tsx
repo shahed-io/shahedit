@@ -6,6 +6,7 @@ interface SpotlightCardProps extends MotionProps {
   color?: string;
   className?: string;
   style?: React.CSSProperties;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
 const SpotlightCard = ({ children, color = "rgba(139,92,246,0.6)", className = "", style, ...motionProps }: SpotlightCardProps) => {
