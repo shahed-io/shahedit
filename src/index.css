@@ -318,6 +318,54 @@
   }
 
   /* ─── Scroll bar ─── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: hsl(var(--primary)/0.3); border-radius: 9999px; }
+  ::-webkit-scrollbar-thumb:hover { background: hsl(var(--primary)/0.6); }
+
+  /* ─── Rich Description (product details modal) ─── */
+  .rich-description h2 {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: hsl(var(--foreground));
+    margin-top: 0.75rem;
+    margin-bottom: 0.25rem;
+  }
+  .rich-description h3 {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: hsl(var(--foreground)/0.85);
+    margin-top: 0.5rem;
+    margin-bottom: 0.2rem;
+  }
+  .rich-description p { margin-bottom: 0.4rem; }
+  .rich-description ul {
+    list-style: disc;
+    padding-left: 1.2rem;
+    space-y: 0.25rem;
+    margin-bottom: 0.5rem;
+  }
+  .rich-description ol {
+    list-style: decimal;
+    padding-left: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+  .rich-description li { color: hsl(var(--foreground)/0.78); margin-bottom: 0.15rem; }
+  .rich-description strong { color: hsl(var(--foreground)); font-weight: 700; }
+  .rich-description em { font-style: italic; color: hsl(var(--foreground)/0.75); }
+  .rich-description blockquote {
+    border-left: 2px solid hsl(var(--primary));
+    padding-left: 0.75rem;
+    color: hsl(var(--foreground)/0.55);
+    font-style: italic;
+    margin: 0.5rem 0;
+  }
+  .rich-description hr {
+    border-color: hsl(var(--foreground)/0.12);
+    margin: 0.5rem 0;
+  }
+}
+
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: hsl(220, 35%, 7%); }
   ::-webkit-scrollbar-thumb {
