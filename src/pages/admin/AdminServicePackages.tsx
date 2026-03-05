@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { Plus, Pencil, Trash2, Package, ChevronDown, ChevronRight, ImagePlus, X, ToggleLeft, ToggleRight, Settings2 } from "lucide-react";
+import RichDescriptionEditor from "@/components/RichDescriptionEditor";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface Service {
