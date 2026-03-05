@@ -17,6 +17,7 @@ interface ServicePackageRow {
   sort_order: number;
   service_id: string;
   image_url: string | null;
+  features: string[] | null;
   services?: { title: string } | null;
 }
 
