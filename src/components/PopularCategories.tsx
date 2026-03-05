@@ -53,6 +53,7 @@ const PopularCategories = () => {
               viewport={{ once: true }}
               transition={{ delay: i * 0.08, type: "spring", stiffness: 130 }}
               whileHover={{ y: -10, scale: 1.04 }}
+              whileTap={{ scale: 0.92, y: 0, transition: { duration: 0.12 } }}
               className="group flex flex-col items-center p-6 rounded-2xl cursor-pointer relative overflow-hidden transition-all duration-500"
               style={{ background: cat.bg, border: `1px solid ${cat.border}` }}
             >

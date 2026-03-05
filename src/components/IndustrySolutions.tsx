@@ -65,6 +65,7 @@ const IndustrySolutions = () => {
               viewport={{ once: true }}
               transition={{ delay: i * 0.07, duration: 0.5, type: "spring", stiffness: 120 }}
               whileHover={{ y: -10, scale: 1.025 }}
+              whileTap={{ scale: 0.91, y: 0, transition: { duration: 0.12 } }}
               className="group relative rounded-2xl p-6 cursor-pointer overflow-hidden"
               style={{
                 background: `linear-gradient(135deg, rgba(255,255,255,0.055) 0%, rgba(255,255,255,0.02) 100%)`,
