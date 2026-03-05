@@ -2,10 +2,11 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X, Send, Bot, User, Loader2, Minimize2, Maximize2,
-  MessageSquare, Phone, ExternalLink, Sparkles
+  Phone, Sparkles, RefreshCw, ChevronDown
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import ReactMarkdown from "react-markdown";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
@@ -34,8 +35,10 @@ export default function AISupportChat({ externalOpen, onExternalOpenChange }: AI
   const [greeting, setGreeting] = useState("আস্সালামু আলাইকুম! 👋 কীভাবে সাহায্য করতে পারি?");
   const [botName, setBotName] = useState("Shahed AI");
   const [unread, setUnread] = useState(0);
+  const [showScrollBtn, setShowScrollBtn] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     supabase.from("ai_support_settings").select("greeting_message, bot_name")
@@ -53,17 +56,37 @@ export default function AISupportChat({ externalOpen, onExternalOpenChange }: AI
   }, [open, greeting]);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    if (!showScrollBtn) {
+      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages, showScrollBtn]);
 
-  const send = async () => {
-    const text = input.trim();
+  const handleScroll = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const distFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
+    setShowScrollBtn(distFromBottom > 120);
+  };
+
+  const scrollToBottom = () => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    setShowScrollBtn(false);
+  };
+
+  const clearChat = () => {
+    setMessages([{ role: "assistant", content: greeting }]);
+    sessionStorage.removeItem(SESSION_KEY);
+  };
+
+  const send = async (overrideText?: string) => {
+    const text = (overrideText ?? input).trim();
     if (!text || loading) return;
     setInput("");
 
     const newMessages: Msg[] = [...messages, { role: "user", content: text }];
     setMessages(newMessages);
     setLoading(true);
+    setShowScrollBtn(false);
 
     const sessionId = getSessionId();
     let assistantText = "";
@@ -76,14 +99,15 @@ export default function AISupportChat({ externalOpen, onExternalOpenChange }: AI
           Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
         },
         body: JSON.stringify({
-          messages: newMessages,
+          messages: newMessages.slice(-10), // send last 10 msgs for speed
           session_id: sessionId,
         }),
       });
 
       if (!resp.ok) {
         const err = await resp.json();
-        if (resp.status === 429) toast.error("Too many requests. Please wait a moment.");
+        if (resp.status === 429) toast.error("অনেক বেশি অনুরোধ হয়েছে। একটু পরে আবার চেষ্টা করুন।");
+        else if (resp.status === 402) toast.error("AI সেবা সাময়িকভাবে অনুপলব্ধ।");
         throw new Error(err.error ?? "Failed");
       }
 
@@ -124,100 +148,133 @@ export default function AISupportChat({ externalOpen, onExternalOpenChange }: AI
       if (!open) setUnread(u => u + 1);
 
     } catch (e: any) {
-      setMessages(p => [...p, { role: "assistant", content: "দুঃখিত, একটি সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।" }]);
+      setMessages(p => [...p, { role: "assistant", content: "দুঃখিত, একটি সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন অথবা WhatsApp-এ যোগাযোগ করুন।" }]);
     } finally {
       setLoading(false);
+      setTimeout(() => inputRef.current?.focus(), 100);
     }
   };
 
   const quickReplies = [
     "আপনাদের সার্ভিস কী কী?",
     "ওয়েবসাইট তৈরিতে কত খরচ?",
-    "কত দিনে কাজ হয়?",
-    "How can I contact you?",
+    "কত দিনে কাজ শেষ হয়?",
+    "ডিজিটাল মার্কেটিং প্যাকেজ?",
+    "যোগাযোগ করব কীভাবে?",
   ];
 
   return (
     <div className="fixed bottom-24 right-6 z-50 flex flex-col items-end gap-3">
-      {/* Chat Window */}
       <AnimatePresence>
         {open && !minimized && (
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.92 }}
+            initial={{ opacity: 0, y: 24, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.92 }}
-            transition={{ type: "spring", stiffness: 320, damping: 26 }}
+            transition={{ type: "spring", stiffness: 340, damping: 28 }}
             className="w-80 sm:w-96 rounded-2xl overflow-hidden shadow-2xl flex flex-col"
             style={{
-              height: "520px",
-              background: "hsl(220,42%,4%)",
-              border: "1px solid rgba(139,92,246,0.25)"
+              height: "540px",
+              background: "hsl(222,38%,5%)",
+              border: "1px solid rgba(139,92,246,0.22)"
             }}
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3 shrink-0"
-              style={{ background: "linear-gradient(135deg, hsl(258,90%,50%), hsl(258,80%,38%))" }}>
+            <div
+              className="flex items-center justify-between px-4 py-3 shrink-0"
+              style={{ background: "linear-gradient(135deg, hsl(258,90%,48%), hsl(258,80%,36%))" }}
+            >
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center shrink-0">
-                  <Sparkles size={16} className="text-white" />
+                <div className="relative">
+                  <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+                    <Sparkles size={16} className="text-white" />
+                  </div>
+                  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-green-400 border-2 border-purple-900" />
                 </div>
                 <div>
                   <p className="text-white font-bold text-sm leading-tight">{botName}</p>
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                    <p className="text-white/70 text-xs">AI-powered · Always online</p>
-                  </div>
+                  <p className="text-white/60 text-[11px]">⚡ দ্রুত উত্তর · সব সময় অনলাইন</p>
                 </div>
               </div>
               <div className="flex items-center gap-1">
                 <button
+                  onClick={clearChat}
+                  title="Clear chat"
+                  className="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center transition"
+                >
+                  <RefreshCw size={12} className="text-white/70" />
+                </button>
+                <button
                   onClick={() => setMinimized(true)}
                   className="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center transition"
                 >
-                  <Minimize2 size={13} className="text-white" />
+                  <Minimize2 size={12} className="text-white" />
                 </button>
                 <button
                   onClick={() => setOpen(false)}
                   className="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center transition"
                 >
-                  <X size={13} className="text-white" />
+                  <X size={12} className="text-white" />
                 </button>
               </div>
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3 scrollbar-thin">
+            <div
+              ref={scrollRef}
+              onScroll={handleScroll}
+              className="flex-1 overflow-y-auto px-3 py-3 space-y-3"
+              style={{ scrollbarWidth: "thin", scrollbarColor: "rgba(139,92,246,0.2) transparent" }}
+            >
               {messages.map((msg, i) => (
                 <motion.div
                   key={i}
-                  initial={{ opacity: 0, y: 8 }}
+                  initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.18 }}
                   className={`flex gap-2 ${msg.role === "user" ? "flex-row-reverse" : "flex-row"}`}
                 >
-                  <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${
+                  <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-1 ${
                     msg.role === "assistant"
                       ? "bg-purple-600/30 border border-purple-500/30"
                       : "bg-slate-700"
                   }`}>
                     {msg.role === "assistant"
-                      ? <Bot size={13} className="text-purple-400" />
-                      : <User size={13} className="text-slate-300" />
+                      ? <Bot size={12} className="text-purple-400" />
+                      : <User size={12} className="text-slate-300" />
                     }
                   </div>
-                  <div className={`max-w-[75%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${
-                    msg.role === "user"
-                      ? "rounded-tr-sm text-white"
-                      : "rounded-tl-sm text-slate-200"
-                  }`} style={
-                    msg.role === "user"
-                      ? { background: "linear-gradient(135deg, hsl(258,90%,50%), hsl(258,70%,40%))" }
-                      : { background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)" }
-                  }>
-                    {msg.content || (
-                      <span className="flex gap-1 items-center">
-                        <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                        <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                        <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                  <div
+                    className={`max-w-[80%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${
+                      msg.role === "user"
+                        ? "rounded-tr-sm text-white"
+                        : "rounded-tl-sm text-slate-200"
+                    }`}
+                    style={
+                      msg.role === "user"
+                        ? { background: "linear-gradient(135deg, hsl(258,90%,50%), hsl(258,70%,38%))" }
+                        : { background: "rgba(255,255,255,0.055)", border: "1px solid rgba(255,255,255,0.07)" }
+                    }
+                  >
+                    {msg.content ? (
+                      msg.role === "assistant" ? (
+                        <div className="prose prose-sm prose-invert max-w-none
+                          [&>p]:my-1 [&>p]:leading-relaxed
+                          [&>ul]:my-1.5 [&>ul]:pl-4 [&>ul>li]:my-0.5
+                          [&>ol]:my-1.5 [&>ol]:pl-4
+                          [&>strong]:text-purple-300 [&>strong]:font-semibold
+                          [&>h3]:text-white [&>h3]:font-bold [&>h3]:text-sm [&>h3]:mt-2
+                          [&>p>strong]:text-purple-300">
+                          <ReactMarkdown>{msg.content}</ReactMarkdown>
+                        </div>
+                      ) : (
+                        <span>{msg.content}</span>
+                      )
+                    ) : (
+                      <span className="flex gap-1 items-center py-0.5">
+                        <span className="w-1.5 h-1.5 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                        <span className="w-1.5 h-1.5 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: "160ms" }} />
+                        <span className="w-1.5 h-1.5 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: "320ms" }} />
                       </span>
                     )}
                   </div>
@@ -226,26 +283,50 @@ export default function AISupportChat({ externalOpen, onExternalOpenChange }: AI
               <div ref={bottomRef} />
             </div>
 
-            {/* Quick Replies (only on first message) */}
-            {messages.length === 1 && (
+            {/* Scroll to bottom button */}
+            <AnimatePresence>
+              {showScrollBtn && (
+                <motion.button
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  onClick={scrollToBottom}
+                  className="absolute bottom-24 right-5 w-7 h-7 rounded-full flex items-center justify-center shadow-lg"
+                  style={{ background: "hsl(258,80%,50%)" }}
+                >
+                  <ChevronDown size={14} className="text-white" />
+                </motion.button>
+              )}
+            </AnimatePresence>
+
+            {/* Quick Replies (only at start) */}
+            {messages.length <= 1 && (
               <div className="px-3 pb-2 flex flex-wrap gap-1.5 shrink-0">
                 {quickReplies.map((q, i) => (
-                  <button
+                  <motion.button
                     key={i}
-                    onClick={() => { setInput(q); setTimeout(() => send(), 0); }}
-                    className="text-[11px] px-2.5 py-1 rounded-full text-purple-300 transition hover:bg-purple-600/20"
+                    initial={{ opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.05 }}
+                    onClick={() => send(q)}
+                    className="text-[11px] px-2.5 py-1 rounded-full text-purple-300 hover:text-white hover:bg-purple-600/40 transition-all"
                     style={{ border: "1px solid rgba(139,92,246,0.3)" }}
                   >
                     {q}
-                  </button>
+                  </motion.button>
                 ))}
               </div>
             )}
 
             {/* Input */}
-            <div className="px-3 pb-3 pt-2 shrink-0" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-              <div className="flex items-center gap-2 rounded-xl px-3 py-2"
-                style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}>
+            <div className="px-3 pb-3 pt-2 shrink-0" style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+              <div
+                className="flex items-center gap-2 rounded-xl px-3 py-2 transition-all"
+                style={{
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(139,92,246,0.2)",
+                }}
+              >
                 <input
                   ref={inputRef}
                   value={input}
@@ -255,23 +336,28 @@ export default function AISupportChat({ externalOpen, onExternalOpenChange }: AI
                   disabled={loading}
                   className="flex-1 bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none"
                 />
-                <button
-                  onClick={send}
+                <motion.button
+                  onClick={() => send()}
                   disabled={loading || !input.trim()}
-                  className="w-8 h-8 rounded-lg flex items-center justify-center transition disabled:opacity-40"
-                  style={{ background: "linear-gradient(135deg, hsl(258,90%,60%), hsl(258,70%,45%))" }}
+                  whileTap={{ scale: 0.9 }}
+                  className="w-8 h-8 rounded-lg flex items-center justify-center transition disabled:opacity-30"
+                  style={{ background: "linear-gradient(135deg, hsl(258,90%,58%), hsl(258,70%,44%))" }}
                 >
                   {loading
                     ? <Loader2 size={14} className="text-white animate-spin" />
                     : <Send size={14} className="text-white" />
                   }
-                </button>
+                </motion.button>
               </div>
-              <div className="flex items-center justify-between mt-1.5 px-1">
-                <p className="text-[10px] text-slate-600">Powered by Shahed AI</p>
-                <a href="https://wa.me/8801820060046" target="_blank" rel="noreferrer"
-                  className="flex items-center gap-1 text-[10px] text-green-500 hover:text-green-400 transition">
-                  <Phone size={9} /> WhatsApp
+              <div className="flex items-center justify-between mt-1.5 px-0.5">
+                <p className="text-[10px] text-slate-600">⚡ Powered by Shahed AI</p>
+                <a
+                  href="https://wa.me/8801820060046"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-1 text-[10px] text-green-500 hover:text-green-400 transition"
+                >
+                  <Phone size={9} /> WhatsApp সাপোর্ট
                 </a>
               </div>
             </div>
@@ -287,12 +373,17 @@ export default function AISupportChat({ externalOpen, onExternalOpenChange }: AI
             onClick={() => setMinimized(false)}
             className="flex items-center gap-2.5 px-4 py-2.5 rounded-2xl cursor-pointer"
             style={{
-              background: "linear-gradient(135deg, hsl(258,90%,50%), hsl(258,70%,38%))",
+              background: "linear-gradient(135deg, hsl(258,90%,48%), hsl(258,70%,36%))",
               boxShadow: "0 4px 20px rgba(139,92,246,0.3)"
             }}
           >
             <Sparkles size={14} className="text-white" />
             <span className="text-white text-sm font-medium">{botName}</span>
+            {unread > 0 && (
+              <span className="w-5 h-5 rounded-full bg-red-500 text-white text-[10px] flex items-center justify-center font-bold">
+                {unread}
+              </span>
+            )}
             <Maximize2 size={12} className="text-white/70" />
           </motion.div>
         )}

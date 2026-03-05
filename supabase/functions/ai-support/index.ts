@@ -15,17 +15,21 @@ serve(async (req) => {
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
-    // Fetch AI settings from DB
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    const { data: settings } = await supabase
-      .from("ai_support_settings")
-      .select("*")
-      .eq("id", 1)
-      .single();
+    // Fetch settings, services, and packages in parallel for speed
+    const [settingsRes, servicesRes, packagesRes] = await Promise.all([
+      supabase.from("ai_support_settings").select("*").eq("id", 1).single(),
+      supabase.from("services").select("title, short_description, description, features, slug").eq("is_published", true).order("sort_order"),
+      supabase.from("service_packages").select("title, description, price, original_price, currency, features, badge, service_id").eq("is_published", true).order("sort_order"),
+    ]);
+
+    const settings = settingsRes.data;
+    const services = servicesRes.data ?? [];
+    const packages = packagesRes.data ?? [];
 
     if (settings && !settings.is_enabled) {
       return new Response(
@@ -40,16 +44,53 @@ serve(async (req) => {
     const humanHandoff = settings?.human_handoff_message ??
       "আরও সাহায্যের জন্য আমাদের WhatsApp-এ যোগাযোগ করুন: 01820-060046";
 
+    // Build services context string
+    let servicesContext = "";
+    if (services.length > 0) {
+      servicesContext = "\n\n## Our Services:\n";
+      for (const svc of services) {
+        servicesContext += `\n### ${svc.title}\n`;
+        if (svc.short_description) servicesContext += `${svc.short_description}\n`;
+        if (svc.features && svc.features.length > 0) {
+          servicesContext += `Features: ${svc.features.join(", ")}\n`;
+        }
+      }
+    }
+
+    // Build packages context string
+    let packagesContext = "";
+    if (packages.length > 0) {
+      packagesContext = "\n\n## Our Service Packages & Pricing:\n";
+      for (const pkg of packages) {
+        const price = pkg.price ? `${pkg.currency ?? "BDT"} ${pkg.price}` : "Contact for price";
+        const originalPrice = pkg.original_price ? ` (was ${pkg.currency ?? "BDT"} ${pkg.original_price})` : "";
+        packagesContext += `\n- **${pkg.title}** — ${price}${originalPrice}`;
+        if (pkg.badge) packagesContext += ` [${pkg.badge}]`;
+        if (pkg.description) packagesContext += `\n  ${pkg.description}`;
+        if (pkg.features && pkg.features.length > 0) {
+          packagesContext += `\n  Includes: ${pkg.features.slice(0, 5).join(", ")}`;
+        }
+      }
+    }
+
     const fullSystemPrompt = `${systemPrompt}
 
 Company contact info:
-- Phone/WhatsApp: 01820-060046
+- Phone/WhatsApp: 01820-060046 / 01840-099853
 - Email: info@shahedit.com
+- Website: shahedit.com
 - Location: Dhaka, Bangladesh
+${servicesContext}
+${packagesContext}
 
-When customer needs human support or you cannot help, say: "${humanHandoff}"
-
-Always be concise (max 3-4 sentences per reply). Use bullet points for lists. Respond in the same language the customer uses (Bengali or English).`;
+IMPORTANT INSTRUCTIONS:
+- Answer questions about our services and packages using ONLY the information provided above.
+- If asked about pricing, provide exact prices from the packages list above.
+- Keep answers concise (2-4 sentences or bullet points). Be direct and fast.
+- Respond in the SAME language the customer uses (Bengali or English).
+- Use markdown for formatting: **bold**, bullet points, etc.
+- When customer needs human support, say: "${humanHandoff}"
+- Do NOT make up prices or services not listed above.`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -58,12 +99,13 @@ Always be concise (max 3-4 sentences per reply). Use bullet points for lists. Re
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
+        model: "google/gemini-2.5-flash-lite",
         messages: [
           { role: "system", content: fullSystemPrompt },
           ...messages,
         ],
         stream: true,
+        max_tokens: 512,
       }),
     });
 
@@ -83,9 +125,8 @@ Always be concise (max 3-4 sentences per reply). Use bullet points for lists. Re
       throw new Error(`AI gateway error: ${response.status}`);
     }
 
-    // Save/update chat session async (don't await to avoid blocking stream)
+    // Save chat session async
     if (session_id) {
-      const lastUserMsg = messages[messages.length - 1];
       supabase.from("support_chats").upsert({
         session_id,
         messages,
