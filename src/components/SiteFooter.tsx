@@ -128,7 +128,7 @@ const SiteFooter = () => {
                     style={{ background: 'rgba(234,179,8,0.12)', border: '1px solid rgba(234,179,8,0.20)' }}>
                     <MapPin size={13} style={{ color: 'hsl(45,93%,58%)' }} />
                   </span>
-                  সপুরা, রাজশাহী, বাংলাদেশ
+                  Sopura, Rajshahi, Bangladesh
                 </div>
               </div>
             </motion.div>
