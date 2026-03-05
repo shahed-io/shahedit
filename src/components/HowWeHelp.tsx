@@ -66,6 +66,7 @@ const HowWeHelp = () => {
               viewport={{ once: true }}
               transition={{ delay: i * 0.12, type: "spring", stiffness: 110 }}
               whileHover={{ y: -8 }}
+              whileTap={{ scale: 0.93, y: 0, transition: { duration: 0.12 } }}
               className="relative rounded-2xl p-7 group cursor-pointer overflow-hidden transition-all duration-500"
               style={{ background: step.bg, border: `1px solid ${step.border}` }}
             >
