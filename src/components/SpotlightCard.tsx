@@ -1,5 +1,5 @@
 import { useRef, useState, useCallback, useEffect } from "react";
-import { motion, MotionProps, useAnimationFrame, useMotionValue } from "framer-motion";
+import { motion, MotionProps, useAnimationFrame } from "framer-motion";
 
 interface SpotlightCardProps extends MotionProps {
   children: React.ReactNode;
@@ -9,111 +9,63 @@ interface SpotlightCardProps extends MotionProps {
   onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
-// Border Beam: animated light that travels around all 4 sides
+// Traveling border beam using CSS outline trick + rotating gradient
 const BorderBeam = ({ color, active }: { color: string; active: boolean }) => {
-  const progress = useMotionValue(0);
-  const [tick, setTick] = useState(0);
+  const [angle, setAngle] = useState(0);
+  const startTime = useRef<number | null>(null);
 
   useAnimationFrame((t) => {
-    if (active) {
-      // 0 → 1 loop every ~1800ms
-      progress.set((t % 1800) / 1800);
-      setTick(t); // force re-render
-    }
+    if (!active) return;
+    if (startTime.current === null) startTime.current = t;
+    const elapsed = t - startTime.current;
+    // Full rotation every 1.6 seconds
+    setAngle((elapsed / 1600) * 360);
   });
+
+  useEffect(() => {
+    if (!active) {
+      startTime.current = null;
+      setAngle(0);
+    }
+  }, [active]);
 
   if (!active) return null;
 
-  const p = progress.get();
-  // p goes 0→1 around the perimeter: top→right→bottom→left
-  // Convert p to position on each edge
-  const perimeter = 4; // normalized: each side = 1 unit
-  const pos = p * perimeter;
-
-  // Beam head position (x%, y%) on the border
-  let x = 0, y = 0;
-  const beamSize = 0.35; // size of tail in perimeter units
-
-  // For the glow dot following the beam
-  if (pos < 1) {
-    x = pos * 100; y = 0;         // top: left→right
-  } else if (pos < 2) {
-    x = 100; y = (pos - 1) * 100; // right: top→bottom
-  } else if (pos < 3) {
-    x = (1 - (pos - 2)) * 100; y = 100; // bottom: right→left
-  } else {
-    x = 0; y = (1 - (pos - 3)) * 100;   // left: bottom→top
-  }
-
-  // Build the SVG path position as percentage of perimeter for the stroke
-  const dashArray = `${beamSize * 25}% ${(4 - beamSize) * 25}%`;
-  const dashOffset = `${-(p * 100 - beamSize * 25)}%`;
-
   return (
-    <>
-      {/* SVG border beam */}
-      <svg
-        className="pointer-events-none absolute inset-0 w-full h-full"
-        style={{ zIndex: 10, overflow: 'visible' }}
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <defs>
-          <linearGradient id={`beam-grad-${color.replace(/[^a-z0-9]/gi, '')}`} x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor={color} stopOpacity="0" />
-            <stop offset="50%" stopColor={color} stopOpacity="1" />
-            <stop offset="100%" stopColor={color} stopOpacity="0" />
-          </linearGradient>
-        </defs>
-        {/* Dim base border */}
-        <rect
-          x="1" y="1"
-          width="calc(100% - 2px)" height="calc(100% - 2px)"
-          rx="15" ry="15"
-          fill="none"
-          stroke={color}
-          strokeWidth="1"
-          strokeOpacity="0.25"
-          style={{ width: 'calc(100% - 2px)', height: 'calc(100% - 2px)' }}
-        />
-        {/* Animated beam */}
-        <rect
-          x="1" y="1"
-          rx="15" ry="15"
-          fill="none"
-          stroke={color}
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          style={{
-            width: 'calc(100% - 2px)',
-            height: 'calc(100% - 2px)',
-            strokeDasharray: dashArray,
-            strokeDashoffset: dashOffset,
-            filter: `drop-shadow(0 0 6px ${color}) drop-shadow(0 0 12px ${color})`,
-          }}
-        />
-      </svg>
-
-      {/* Glow dot at beam head */}
+    <div
+      className="pointer-events-none absolute -inset-[1.5px] rounded-[inherit]"
+      style={{
+        zIndex: 10,
+        borderRadius: 'inherit',
+        background: `conic-gradient(from ${angle}deg at 50% 50%, transparent 0deg, ${color} 45deg, ${color} 90deg, transparent 120deg, transparent 360deg)`,
+        WebkitMask:
+          'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+        WebkitMaskComposite: 'xor',
+        maskComposite: 'exclude',
+        padding: '1.5px',
+      }}
+    >
+      {/* glow blur layer */}
       <div
-        className="pointer-events-none absolute"
+        className="absolute -inset-[2px] rounded-[inherit] opacity-60"
         style={{
-          zIndex: 11,
-          left: `calc(${x}% - 6px)`,
-          top: `calc(${y}% - 6px)`,
-          width: 12,
-          height: 12,
-          borderRadius: '50%',
-          background: color,
-          boxShadow: `0 0 10px 4px ${color}, 0 0 20px 8px ${color}55`,
-          opacity: 0.95,
-          transition: 'none',
+          background: `conic-gradient(from ${angle}deg at 50% 50%, transparent 0deg, ${color} 45deg, ${color} 90deg, transparent 120deg, transparent 360deg)`,
+          filter: 'blur(6px)',
+          zIndex: -1,
         }}
       />
-    </>
+    </div>
   );
 };
 
-const SpotlightCard = ({ children, color = "rgba(139,92,246,0.9)", className = "", style, onClick, ...motionProps }: SpotlightCardProps) => {
+const SpotlightCard = ({
+  children,
+  color = "rgba(139,92,246,0.9)",
+  className = "",
+  style,
+  onClick,
+  ...motionProps
+}: SpotlightCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [pos, setPos] = useState({ x: 50, y: 50 });
   const [isHovered, setIsHovered] = useState(false);
@@ -127,17 +79,25 @@ const SpotlightCard = ({ children, color = "rgba(139,92,246,0.9)", className = "
     setPos({ x, y });
   }, []);
 
-  const handleClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    setIsActive(prev => !prev);
-    onClick?.(e);
-  }, [onClick]);
+  const handleClick = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      setIsActive((prev) => !prev);
+      onClick?.(e);
+    },
+    [onClick]
+  );
 
-  // Stop beam after 3 seconds
+  // Auto-stop after 3 seconds
   useEffect(() => {
     if (!isActive) return;
     const timer = setTimeout(() => setIsActive(false), 3000);
     return () => clearTimeout(timer);
   }, [isActive]);
+
+  // Solid color for beam (strip alpha)
+  const solidColor = color
+    .replace(/rgba?\((\d+),\s*(\d+),\s*(\d+).*\)/, "rgb($1,$2,$3)")
+    .replace(/hsla?\(([^)]+)\)/, (_, g) => `hsl(${g.split(",").slice(0, 3).join(",")})`);
 
   return (
     <motion.div
@@ -150,7 +110,7 @@ const SpotlightCard = ({ children, color = "rgba(139,92,246,0.9)", className = "
       style={style}
       {...motionProps}
     >
-      {/* Mouse spotlight border glow */}
+      {/* Mouse-follow border glow (hover) */}
       <div
         className="pointer-events-none absolute -inset-px rounded-[inherit] transition-opacity duration-300"
         style={{
@@ -160,13 +120,13 @@ const SpotlightCard = ({ children, color = "rgba(139,92,246,0.9)", className = "
         }}
       />
 
-      {/* Inner mask for border effect */}
+      {/* Inner mask for border-only hover glow */}
       <div
         className="pointer-events-none absolute inset-[1px] rounded-[inherit]"
         style={{ background: "inherit", zIndex: 1 }}
       />
 
-      {/* Inner fill glow on hover */}
+      {/* Inner fill glow */}
       <div
         className="pointer-events-none absolute inset-0 rounded-[inherit] transition-opacity duration-500"
         style={{
@@ -176,8 +136,8 @@ const SpotlightCard = ({ children, color = "rgba(139,92,246,0.9)", className = "
         }}
       />
 
-      {/* Border Beam — activated on click */}
-      <BorderBeam color={color.replace(/rgba?\([^)]+\)/, color).replace(/[\d.]+\)$/, "1)")} active={isActive} />
+      {/* Rotating border beam on click */}
+      <BorderBeam color={solidColor} active={isActive} />
 
       {/* Content */}
       <div className="relative" style={{ zIndex: 3 }}>
