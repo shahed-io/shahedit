@@ -1,20 +1,22 @@
 import { motion } from "framer-motion";
 import { Code2, Smartphone, Palette, BarChart3, Cloud, ShieldCheck } from "lucide-react";
-import SpotlightCard from "./SpotlightCard";
 
 const categories = [
-  { name: "Web Design & Development", sub: "বিজনেস · ই-কমার্স · WordPress", icon: Code2, color: "hsl(258,90%,66%)", glow: "rgba(139,92,246,0.7)", bg: "rgba(139,92,246,0.12)", border: "rgba(139,92,246,0.25)" },
-  { name: "App Development", sub: "Android · iOS · Flutter", icon: Smartphone, color: "hsl(217,89%,61%)", glow: "rgba(59,130,246,0.7)", bg: "rgba(59,130,246,0.12)", border: "rgba(59,130,246,0.25)" },
-  { name: "Graphic Design", sub: "Logo · Branding · Video", icon: Palette, color: "hsl(315,80%,65%)", glow: "rgba(236,72,153,0.7)", bg: "rgba(236,72,153,0.12)", border: "rgba(236,72,153,0.25)" },
-  { name: "Digital Marketing", sub: "Facebook · Google · SEO", icon: BarChart3, color: "hsl(185,100%,48%)", glow: "rgba(6,182,212,0.7)", bg: "rgba(6,182,212,0.12)", border: "rgba(6,182,212,0.25)" },
-  { name: "Cloud & Hosting", sub: "Domain · Hosting · VPS", icon: Cloud, color: "hsl(45,93%,58%)", glow: "rgba(234,179,8,0.7)", bg: "rgba(234,179,8,0.12)", border: "rgba(234,179,8,0.25)" },
-  { name: "IT Support & Security", sub: "Cyber · Network · Repair", icon: ShieldCheck, color: "hsl(160,80%,55%)", glow: "rgba(34,197,94,0.7)", bg: "rgba(34,197,94,0.12)", border: "rgba(34,197,94,0.25)" },
+  { name: "Web Design & Development", sub: "বিজনেস · ই-কমার্স · WordPress", icon: Code2, color: "hsl(258,90%,66%)", bg: "rgba(139,92,246,0.12)", border: "rgba(139,92,246,0.25)" },
+  { name: "App Development", sub: "Android · iOS · Flutter", icon: Smartphone, color: "hsl(217,89%,61%)", bg: "rgba(59,130,246,0.12)", border: "rgba(59,130,246,0.25)" },
+  { name: "Graphic Design", sub: "Logo · Branding · Video", icon: Palette, color: "hsl(315,80%,65%)", bg: "rgba(236,72,153,0.12)", border: "rgba(236,72,153,0.25)" },
+  { name: "Digital Marketing", sub: "Facebook · Google · SEO", icon: BarChart3, color: "hsl(185,100%,48%)", bg: "rgba(6,182,212,0.12)", border: "rgba(6,182,212,0.25)" },
+  { name: "Cloud & Hosting", sub: "Domain · Hosting · VPS", icon: Cloud, color: "hsl(45,93%,58%)", bg: "rgba(234,179,8,0.12)", border: "rgba(234,179,8,0.25)" },
+  { name: "IT Support & Security", sub: "Cyber · Network · Repair", icon: ShieldCheck, color: "hsl(160,80%,55%)", bg: "rgba(34,197,94,0.12)", border: "rgba(34,197,94,0.25)" },
 ];
 
 const PopularCategories = () => {
   return (
     <section className="py-24 relative overflow-hidden">
+      {/* Section divider top */}
       <div className="absolute top-0 left-0 right-0 section-divider" />
+
+      {/* Background */}
       <div className="absolute inset-0 dot-grid opacity-25" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full"
         style={{ background: 'radial-gradient(ellipse, hsl(258,90%,66%) 0%, transparent 70%)', filter: 'blur(120px)', opacity: 0.07 }} />
@@ -43,18 +45,17 @@ const PopularCategories = () => {
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {categories.map((cat, i) => (
-            <SpotlightCard
+            <motion.a
               key={cat.name}
-              color={cat.glow}
+              href="/services"
               initial={{ opacity: 0, y: 30, scale: 0.95 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.08, type: "spring", stiffness: 130 }}
               whileHover={{ y: -10, scale: 1.04 }}
               whileTap={{ scale: 0.92, y: 0, transition: { duration: 0.12 } }}
-              className="group flex flex-col items-center p-6 rounded-2xl cursor-pointer overflow-hidden"
+              className="group flex flex-col items-center p-6 rounded-2xl cursor-pointer relative overflow-hidden transition-all duration-500"
               style={{ background: cat.bg, border: `1px solid ${cat.border}` }}
-              onClick={() => window.location.href = '/services'}
             >
               {/* Hover glow */}
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"
@@ -75,11 +76,12 @@ const PopularCategories = () => {
               <p className="text-xs mt-1.5 font-medium text-center transition-colors duration-300" style={{ color: cat.color }}>
                 {cat.sub}
               </p>
-            </SpotlightCard>
+            </motion.a>
           ))}
         </div>
       </div>
 
+      {/* Section divider bottom */}
       <div className="absolute bottom-0 left-0 right-0 section-divider" />
     </section>
   );

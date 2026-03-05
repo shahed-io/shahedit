@@ -1,27 +1,26 @@
 import { Headset, LayoutGrid, Hammer, ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
-import SpotlightCard from "./SpotlightCard";
 
 const steps = [
   {
     icon: Headset, step: "01", title: "Consultation",
     desc: "We take time to understand your business, goals, and challenges through an in-depth discovery session.",
-    color: "hsl(258,90%,66%)", glow: "rgba(139,92,246,0.7)", bg: "rgba(139,92,246,0.10)", border: "rgba(139,92,246,0.22)",
+    color: "hsl(258,90%,66%)", bg: "rgba(139,92,246,0.10)", border: "rgba(139,92,246,0.22)",
   },
   {
     icon: LayoutGrid, step: "02", title: "Customization",
     desc: "We architect tailored solutions designed precisely around your unique business requirements.",
-    color: "hsl(185,100%,48%)", glow: "rgba(6,182,212,0.7)", bg: "rgba(6,182,212,0.10)", border: "rgba(6,182,212,0.22)",
+    color: "hsl(185,100%,48%)", bg: "rgba(6,182,212,0.10)", border: "rgba(6,182,212,0.22)",
   },
   {
     icon: Hammer, step: "03", title: "Implementation",
     desc: "Our expert engineers bring your solution to life — on time, on budget, and beyond expectations.",
-    color: "hsl(315,80%,65%)", glow: "rgba(236,72,153,0.7)", bg: "rgba(236,72,153,0.10)", border: "rgba(236,72,153,0.22)",
+    color: "hsl(315,80%,65%)", bg: "rgba(236,72,153,0.10)", border: "rgba(236,72,153,0.22)",
   },
   {
     icon: ShieldCheck, step: "04", title: "Ongoing Support",
     desc: "We provide continued support and maintenance so your solutions grow with your business.",
-    color: "hsl(45,93%,58%)", glow: "rgba(234,179,8,0.7)", bg: "rgba(234,179,8,0.10)", border: "rgba(234,179,8,0.22)",
+    color: "hsl(45,93%,58%)", bg: "rgba(234,179,8,0.10)", border: "rgba(234,179,8,0.22)",
   },
 ];
 
@@ -60,16 +59,15 @@ const HowWeHelp = () => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
           {steps.map((step, i) => (
-            <SpotlightCard
+            <motion.div
               key={step.step}
-              color={step.glow}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.12, type: "spring", stiffness: 110 }}
               whileHover={{ y: -8 }}
               whileTap={{ scale: 0.93, y: 0, transition: { duration: 0.12 } }}
-              className="group cursor-pointer overflow-hidden rounded-2xl p-7"
+              className="relative rounded-2xl p-7 group cursor-pointer overflow-hidden transition-all duration-500"
               style={{ background: step.bg, border: `1px solid ${step.border}` }}
             >
               {/* Top glow on hover */}
@@ -99,7 +97,7 @@ const HowWeHelp = () => {
               <p className="text-sm text-foreground/50 leading-relaxed group-hover:text-foreground/65 transition-colors">
                 {step.desc}
               </p>
-            </SpotlightCard>
+            </motion.div>
           ))}
         </div>
       </div>
