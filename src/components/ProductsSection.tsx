@@ -1,4 +1,4 @@
-import { Star, ArrowRight, Zap, CreditCard, MessageCircle, X, Copy, Smartphone, Send, CheckCircle } from "lucide-react";
+import { Star, ArrowRight, Zap, CreditCard, MessageCircle, X, Copy, Smartphone, Send, CheckCircle, ChevronRight, Info } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -17,6 +17,7 @@ interface ServicePackageRow {
   sort_order: number;
   service_id: string;
   image_url: string | null;
+  features: string[] | null;
   services?: { title: string } | null;
 }
 
@@ -241,6 +242,160 @@ const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose: () =>
   );
 };
 
+// ─── Details Modal ───────────────────────────────────────────────────────────
+const DetailsModal = ({ pkg, onClose, onPay, c }: {
+  pkg: ServicePackageRow;
+  onClose: () => void;
+  onPay: () => void;
+  c: { color: string; bg: string; border: string };
+}) => {
+  const discount = pkg.original_price && pkg.price
+    ? Math.round((1 - pkg.price / pkg.original_price) * 100) : null;
+
+  const waMessage = encodeURIComponent(
+    `হ্যালো! আমি "${pkg.title}" প্যাকেজটি সম্পর্কে জানতে চাই।${pkg.price ? ` মূল্য: ৳${pkg.price.toLocaleString()}` : ""}`
+  );
+
+  return (
+    <div className="fixed inset-0 z-[998] flex items-center justify-center p-4" onClick={onClose}>
+      <div className="absolute inset-0 bg-black/75 backdrop-blur-sm" />
+      <motion.div
+        initial={{ opacity: 0, scale: 0.88, y: 30 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.88, y: 30 }}
+        transition={{ type: "spring", stiffness: 320, damping: 28 }}
+        className="relative w-full max-w-md rounded-3xl overflow-hidden shadow-2xl max-h-[88vh] overflow-y-auto"
+        style={{ background: 'hsl(222,45%,6%)', border: `1px solid ${c.border}` }}
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Hero image or gradient */}
+        <div className="relative h-44 flex items-center justify-center overflow-hidden"
+          style={{ background: `linear-gradient(135deg, ${c.color}20, ${c.color}08)` }}>
+          {pkg.image_url ? (
+            <img src={pkg.image_url} alt={pkg.title} className="w-full h-full object-cover" />
+          ) : (
+            <div className="text-8xl font-black select-none opacity-10"
+              style={{ color: c.color, fontFamily: "'Syne', sans-serif" }}>
+              {pkg.title.charAt(0)}
+            </div>
+          )}
+          {/* Overlay gradient at bottom */}
+          <div className="absolute inset-0" style={{ background: `linear-gradient(to bottom, transparent 40%, hsl(222,45%,6%) 100%)` }} />
+
+          {/* Badges */}
+          {discount && discount > 0 && (
+            <div className="absolute top-3 left-3 px-2.5 py-1 text-xs font-black rounded-full text-white"
+              style={{ background: 'linear-gradient(135deg, hsl(0,84%,60%), hsl(15,90%,55%))' }}>
+              -{discount}% ছাড়
+            </div>
+          )}
+          {pkg.badge === "hot" && (
+            <div className="absolute top-3 right-3 px-2.5 py-1 text-xs font-black rounded-full text-white badge-hot">🔥 HOT</div>
+          )}
+
+          <button onClick={onClose}
+            className="absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center text-white/70 hover:text-white hover:bg-white/15 transition-all"
+            style={{ background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(8px)' }}>
+            <X size={16} />
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="px-6 py-5">
+          <p className="text-xs font-semibold uppercase tracking-widest mb-1" style={{ color: c.color }}>
+            {pkg.services?.title ?? ""}
+          </p>
+          <h2 className="text-2xl font-black text-foreground mb-3 leading-tight">{pkg.title}</h2>
+
+          {/* Stars */}
+          <div className="flex items-center gap-1 mb-4">
+            {[...Array(5)].map((_, i) => (
+              <Star key={i} size={14} style={{ color: 'hsl(45,93%,58%)' }} fill="hsl(45,93%,58%)" />
+            ))}
+            <span className="text-xs text-foreground/40 ml-1">৫.০</span>
+          </div>
+
+          {/* Price */}
+          <div className="flex items-baseline gap-3 mb-5 p-4 rounded-2xl"
+            style={{ background: `${c.color}12`, border: `1px solid ${c.color}25` }}>
+            {pkg.original_price && (
+              <span className="text-sm text-foreground/35 line-through">{formatPrice(pkg.original_price)}</span>
+            )}
+            {pkg.price ? (
+              <span className="text-3xl font-black" style={{ color: c.color }}>{formatPrice(pkg.price)}</span>
+            ) : (
+              <span className="text-lg font-semibold text-foreground/50">মূল্য: যোগাযোগ করুন</span>
+            )}
+            {discount && discount > 0 && (
+              <span className="text-xs font-bold px-2 py-0.5 rounded-full text-white ml-auto"
+                style={{ background: 'hsl(0,84%,55%)' }}>
+                {discount}% সাশ্রয়
+              </span>
+            )}
+          </div>
+
+          {/* Description */}
+          {pkg.description && (
+            <div className="mb-5">
+              <h4 className="text-xs font-bold uppercase tracking-widest text-foreground/40 mb-2">বিবরণ</h4>
+              <p className="text-sm text-foreground/70 leading-relaxed">{pkg.description}</p>
+            </div>
+          )}
+
+          {/* Features */}
+          {pkg.features && (pkg.features as string[]).length > 0 && (
+            <div className="mb-6">
+              <h4 className="text-xs font-bold uppercase tracking-widest text-foreground/40 mb-3">কী কী পাবেন</h4>
+              <ul className="space-y-2">
+                {(pkg.features as string[]).map((f, i) => (
+                  <motion.li
+                    key={i}
+                    initial={{ opacity: 0, x: -12 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.06 }}
+                    className="flex items-start gap-2.5 text-sm text-foreground/75"
+                  >
+                    <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5"
+                      style={{ background: `${c.color}20` }}>
+                      <CheckCircle size={11} style={{ color: c.color }} />
+                    </div>
+                    {f}
+                  </motion.li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Action buttons */}
+          <div className="flex gap-3">
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={onPay}
+              className="flex-1 py-3 rounded-2xl text-sm font-bold text-white flex items-center justify-center gap-2 glossy-btn"
+              style={{ background: `linear-gradient(135deg, ${c.color}, ${c.color}BB)`, boxShadow: `0 4px 18px ${c.color}40` }}
+            >
+              <CreditCard size={15} /> পেমেন্ট করুন
+            </motion.button>
+
+            <motion.a
+              href={`https://wa.me/8801820060046?text=${waMessage}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 transition-all"
+              style={{ background: 'rgba(37,211,102,0.15)', border: '1px solid rgba(37,211,102,0.35)', color: '#25D366' }}
+            >
+              <MessageCircle size={18} />
+            </motion.a>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
 // ─── Product Card ────────────────────────────────────────────────────────────
 const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) => {
   const c = cardColors[index % cardColors.length];
@@ -248,6 +403,7 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
     ? Math.round((1 - pkg.price / pkg.original_price) * 100)
     : null;
   const [showPayment, setShowPayment] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
 
   const waMessage = encodeURIComponent(
     `হ্যালো! আমি "${pkg.title}" প্যাকেজটি অর্ডার করতে চাই।${pkg.price ? ` মূল্য: ৳${pkg.price.toLocaleString()}` : ""} অনুগ্রহ করে আরও তথ্য দিন।`
@@ -261,6 +417,8 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
         viewport={{ once: true }}
         transition={{ delay: index * 0.1, type: "spring", stiffness: 120 }}
         whileHover={{ y: -6, scale: 1.01 }}
+        whileTap={{ scale: 0.97 }}
+        onClick={() => setShowDetails(true)}
         className="group rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 flex flex-col"
         style={{ background: c.bg, border: `1px solid ${c.border}` }}
       >
@@ -277,7 +435,6 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
           ) : (
             <>
               <motion.div
-                whileHover={{ scale: 1.2, rotate: 10 }}
                 className="text-7xl font-black select-none"
                 style={{ color: `${c.color}20`, fontFamily: "'Syne', sans-serif" }}
               >
@@ -308,6 +465,14 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
               ✨ NEW
             </div>
           )}
+
+          {/* Info hover hint */}
+          <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="flex items-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-lg"
+              style={{ background: 'rgba(0,0,0,0.55)', color: c.color, backdropFilter: 'blur(6px)' }}>
+              <Info size={9} /> বিবরণ দেখুন
+            </div>
+          </div>
         </div>
 
         {/* Content */}
@@ -335,7 +500,7 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
           </div>
 
           {/* Action buttons */}
-          <div className="flex gap-2">
+          <div className="flex gap-2" onClick={e => e.stopPropagation()}>
             {/* Payment button */}
             <motion.button
               whileHover={{ scale: 1.03 }}
@@ -363,6 +528,18 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
           </div>
         </div>
       </motion.div>
+
+      {/* Details Modal */}
+      <AnimatePresence>
+        {showDetails && (
+          <DetailsModal
+            pkg={pkg}
+            c={c}
+            onClose={() => setShowDetails(false)}
+            onPay={() => { setShowDetails(false); setTimeout(() => setShowPayment(true), 100); }}
+          />
+        )}
+      </AnimatePresence>
 
       {/* Payment Modal */}
       <AnimatePresence>
