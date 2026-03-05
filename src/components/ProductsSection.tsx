@@ -403,6 +403,7 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
     ? Math.round((1 - pkg.price / pkg.original_price) * 100)
     : null;
   const [showPayment, setShowPayment] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
 
   const waMessage = encodeURIComponent(
     `হ্যালো! আমি "${pkg.title}" প্যাকেজটি অর্ডার করতে চাই।${pkg.price ? ` মূল্য: ৳${pkg.price.toLocaleString()}` : ""} অনুগ্রহ করে আরও তথ্য দিন।`
@@ -416,6 +417,8 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
         viewport={{ once: true }}
         transition={{ delay: index * 0.1, type: "spring", stiffness: 120 }}
         whileHover={{ y: -6, scale: 1.01 }}
+        whileTap={{ scale: 0.97 }}
+        onClick={() => setShowDetails(true)}
         className="group rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 flex flex-col"
         style={{ background: c.bg, border: `1px solid ${c.border}` }}
       >
@@ -432,7 +435,6 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
           ) : (
             <>
               <motion.div
-                whileHover={{ scale: 1.2, rotate: 10 }}
                 className="text-7xl font-black select-none"
                 style={{ color: `${c.color}20`, fontFamily: "'Syne', sans-serif" }}
               >
@@ -463,6 +465,14 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
               ✨ NEW
             </div>
           )}
+
+          {/* Info hover hint */}
+          <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="flex items-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-lg"
+              style={{ background: 'rgba(0,0,0,0.55)', color: c.color, backdropFilter: 'blur(6px)' }}>
+              <Info size={9} /> বিবরণ দেখুন
+            </div>
+          </div>
         </div>
 
         {/* Content */}
@@ -490,7 +500,7 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
           </div>
 
           {/* Action buttons */}
-          <div className="flex gap-2">
+          <div className="flex gap-2" onClick={e => e.stopPropagation()}>
             {/* Payment button */}
             <motion.button
               whileHover={{ scale: 1.03 }}
@@ -518,6 +528,18 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
           </div>
         </div>
       </motion.div>
+
+      {/* Details Modal */}
+      <AnimatePresence>
+        {showDetails && (
+          <DetailsModal
+            pkg={pkg}
+            c={c}
+            onClose={() => setShowDetails(false)}
+            onPay={() => { setShowDetails(false); setTimeout(() => setShowPayment(true), 100); }}
+          />
+        )}
+      </AnimatePresence>
 
       {/* Payment Modal */}
       <AnimatePresence>
