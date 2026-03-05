@@ -535,8 +535,6 @@ export default function AdminServicePackages() {
                               minHeight="130px"
                             />
                           </div>
-                            />
-                          </div>
 
                           {/* Features */}
                           <div className="space-y-2">
