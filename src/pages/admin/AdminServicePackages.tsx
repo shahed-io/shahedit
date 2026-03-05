@@ -526,14 +526,13 @@ export default function AdminServicePackages() {
                             </div>
                           </div>
 
-                          <div className="space-y-1">
-                            <label className="text-slate-400 text-xs">বিবরণ</label>
-                            <Textarea
+                          <div className="space-y-1 md:col-span-2">
+                            <label className="text-slate-400 text-xs font-medium">বিবরণ (Rich Text)</label>
+                            <RichDescriptionEditor
                               value={form.description ?? ""}
-                              onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
-                              placeholder="প্যাকেজের সংক্ষিপ্ত বিবরণ..."
-                              rows={3}
-                              className="bg-slate-900 border-slate-700 text-white resize-none"
+                              onChange={html => setForm(f => ({ ...f, description: html }))}
+                              placeholder="প্যাকেজের বিস্তারিত বিবরণ লিখুন... (Bold, Italic, তালিকা ইত্যাদি ব্যবহার করুন)"
+                              minHeight="130px"
                             />
                           </div>
 
