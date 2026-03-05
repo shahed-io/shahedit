@@ -1,4 +1,4 @@
-import { Star, ArrowRight, Zap, CreditCard, MessageCircle, X, Copy, Smartphone, Send, CheckCircle, ChevronRight, Info } from "lucide-react";
+import { Star, ArrowRight, Zap, CreditCard, MessageCircle, X, Copy, Smartphone, Send, CheckCircle, ChevronRight, Info, PenLine } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -242,6 +242,102 @@ const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose: () =>
   );
 };
 
+// ─── Custom Order Form ────────────────────────────────────────────────────────
+const CustomOrderForm = ({ pkg, c, onClose }: {
+  pkg: ServicePackageRow;
+  c: { color: string; bg: string; border: string };
+  onClose: () => void;
+}) => {
+  const [form, setForm] = useState({ name: "", phone: "", email: "", requirements: "" });
+  const [loading, setLoading] = useState(false);
+  const [done, setDone] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name.trim() || !form.phone.trim() || !form.requirements.trim()) {
+      toast.error("নাম, মোবাইল ও চাহিদা পূরণ করা বাধ্যতামূলক");
+      return;
+    }
+    setLoading(true);
+    const { error } = await supabase.from("leads").insert({
+      name: form.name.trim(),
+      phone: form.phone.trim(),
+      email: form.email.trim() || null,
+      service_interested: `${pkg.services?.title ?? ""} — ${pkg.title}`,
+      project_description: form.requirements.trim(),
+      source: "quote_form" as const,
+      status: "new" as const,
+    });
+    setLoading(false);
+    if (error) { toast.error("সমস্যা হয়েছে, আবার চেষ্টা করুন"); return; }
+    setDone(true);
+  };
+
+  if (done) {
+    return (
+      <motion.div initial={{ scale: 0.85, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-center py-6">
+        <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-3"
+          style={{ background: `${c.color}20` }}>
+          <CheckCircle size={28} style={{ color: c.color }} />
+        </div>
+        <h4 className="text-lg font-black text-foreground mb-1">অর্ডার পাঠানো হয়েছে! ✅</h4>
+        <p className="text-sm text-foreground/50 mb-1">আপনার চাহিদা আমরা পেয়েছি।</p>
+        <p className="text-xs text-foreground/35">শীঘ্রই WhatsApp/ফোনে যোগাযোগ করা হবে।</p>
+        <motion.button
+          whileTap={{ scale: 0.97 }}
+          onClick={onClose}
+          className="mt-5 px-6 py-2.5 rounded-xl text-sm font-bold text-white"
+          style={{ background: `linear-gradient(135deg, ${c.color}, ${c.color}BB)` }}>
+          ঠিক আছে
+        </motion.button>
+      </motion.div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-3 pt-1">
+      <p className="text-xs text-foreground/50 mb-3 leading-relaxed">
+        আপনার প্রজেক্টের বিস্তারিত চাহিদা লিখুন — আমরা কাস্টম কোটেশন দিয়ে যোগাযোগ করব।
+      </p>
+      <div className="grid grid-cols-2 gap-3">
+        <div>
+          <label className="text-xs font-semibold text-foreground/55 mb-1 block">নাম *</label>
+          <input required value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+            placeholder="পূর্ণ নাম"
+            className="w-full rounded-xl px-3 py-2.5 text-sm bg-white/5 border border-white/10 text-foreground placeholder:text-foreground/30 focus:outline-none focus:border-primary/50" />
+        </div>
+        <div>
+          <label className="text-xs font-semibold text-foreground/55 mb-1 block">মোবাইল *</label>
+          <input required value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
+            placeholder="01XXXXXXXXX"
+            className="w-full rounded-xl px-3 py-2.5 text-sm bg-white/5 border border-white/10 text-foreground placeholder:text-foreground/30 focus:outline-none focus:border-primary/50" />
+        </div>
+      </div>
+      <div>
+        <label className="text-xs font-semibold text-foreground/55 mb-1 block">ইমেইল (ঐচ্ছিক)</label>
+        <input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+          placeholder="example@email.com"
+          className="w-full rounded-xl px-3 py-2.5 text-sm bg-white/5 border border-white/10 text-foreground placeholder:text-foreground/30 focus:outline-none focus:border-primary/50" />
+      </div>
+      <div>
+        <label className="text-xs font-semibold text-foreground/55 mb-1 block">আপনার চাহিদা বিস্তারিত লিখুন *</label>
+        <textarea required rows={4} value={form.requirements} onChange={e => setForm(f => ({ ...f, requirements: e.target.value }))}
+          placeholder="যেমন: আমার একটি ই-কমার্স ওয়েবসাইট দরকার, ৫০০ প্রোডাক্ট থাকবে, বাংলা ও ইংরেজি ভাষায়, পেমেন্ট গেটওয়ে সহ..."
+          className="w-full rounded-xl px-3 py-2.5 text-sm bg-white/5 border border-white/10 text-foreground placeholder:text-foreground/30 focus:outline-none focus:border-primary/50 resize-none" />
+      </div>
+      <motion.button
+        type="submit"
+        disabled={loading}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.97 }}
+        className="w-full py-3 rounded-2xl text-sm font-bold text-white flex items-center justify-center gap-2"
+        style={{ background: `linear-gradient(135deg, ${c.color}, ${c.color}BB)`, boxShadow: `0 4px 18px ${c.color}35` }}>
+        {loading ? "পাঠানো হচ্ছে..." : <><Send size={14} /> কাস্টম অর্ডার পাঠান</>}
+      </motion.button>
+    </form>
+  );
+};
+
 // ─── Details Modal ───────────────────────────────────────────────────────────
 const DetailsModal = ({ pkg, onClose, onPay, c }: {
   pkg: ServicePackageRow;
@@ -249,6 +345,7 @@ const DetailsModal = ({ pkg, onClose, onPay, c }: {
   onPay: () => void;
   c: { color: string; bg: string; border: string };
 }) => {
+  const [activeTab, setActiveTab] = useState<"details" | "custom">("details");
   const discount = pkg.original_price && pkg.price
     ? Math.round((1 - pkg.price / pkg.original_price) * 100) : null;
 
@@ -305,7 +402,7 @@ const DetailsModal = ({ pkg, onClose, onPay, c }: {
           <p className="text-xs font-semibold uppercase tracking-widest mb-1" style={{ color: c.color }}>
             {pkg.services?.title ?? ""}
           </p>
-          <h2 className="text-2xl font-black text-foreground mb-3 leading-tight">{pkg.title}</h2>
+          <h2 className="text-2xl font-black text-foreground mb-2 leading-tight">{pkg.title}</h2>
 
           {/* Stars */}
           <div className="flex items-center gap-1 mb-4">
@@ -315,81 +412,105 @@ const DetailsModal = ({ pkg, onClose, onPay, c }: {
             <span className="text-xs text-foreground/40 ml-1">৫.০</span>
           </div>
 
-          {/* Price */}
-          <div className="flex items-baseline gap-3 mb-5 p-4 rounded-2xl"
-            style={{ background: `${c.color}12`, border: `1px solid ${c.color}25` }}>
-            {pkg.original_price && (
-              <span className="text-sm text-foreground/35 line-through">{formatPrice(pkg.original_price)}</span>
-            )}
-            {pkg.price ? (
-              <span className="text-3xl font-black" style={{ color: c.color }}>{formatPrice(pkg.price)}</span>
-            ) : (
-              <span className="text-lg font-semibold text-foreground/50">মূল্য: যোগাযোগ করুন</span>
-            )}
-            {discount && discount > 0 && (
-              <span className="text-xs font-bold px-2 py-0.5 rounded-full text-white ml-auto"
-                style={{ background: 'hsl(0,84%,55%)' }}>
-                {discount}% সাশ্রয়
-              </span>
-            )}
-          </div>
-
-          {/* Description */}
-          {pkg.description && (
-            <div className="mb-5">
-              <h4 className="text-xs font-bold uppercase tracking-widest text-foreground/40 mb-2">বিবরণ</h4>
-              <p className="text-sm text-foreground/70 leading-relaxed">{pkg.description}</p>
-            </div>
-          )}
-
-          {/* Features */}
-          {pkg.features && (pkg.features as string[]).length > 0 && (
-            <div className="mb-6">
-              <h4 className="text-xs font-bold uppercase tracking-widest text-foreground/40 mb-3">কী কী পাবেন</h4>
-              <ul className="space-y-2">
-                {(pkg.features as string[]).map((f, i) => (
-                  <motion.li
-                    key={i}
-                    initial={{ opacity: 0, x: -12 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.06 }}
-                    className="flex items-start gap-2.5 text-sm text-foreground/75"
-                  >
-                    <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5"
-                      style={{ background: `${c.color}20` }}>
-                      <CheckCircle size={11} style={{ color: c.color }} />
-                    </div>
-                    {f}
-                  </motion.li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {/* Action buttons */}
-          <div className="flex gap-3">
+          {/* Tab Switcher */}
+          <div className="flex gap-1 p-1 rounded-2xl mb-5"
+            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
             <motion.button
-              whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              onClick={onPay}
-              className="flex-1 py-3 rounded-2xl text-sm font-bold text-white flex items-center justify-center gap-2 glossy-btn"
-              style={{ background: `linear-gradient(135deg, ${c.color}, ${c.color}BB)`, boxShadow: `0 4px 18px ${c.color}40` }}
-            >
-              <CreditCard size={15} /> পেমেন্ট করুন
+              onClick={() => setActiveTab("details")}
+              className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-bold transition-all"
+              style={activeTab === "details"
+                ? { background: `linear-gradient(135deg, ${c.color}30, ${c.color}15)`, color: c.color, border: `1px solid ${c.color}30` }
+                : { color: 'rgba(255,255,255,0.4)' }}>
+              <Info size={12} /> প্যাকেজ বিবরণ
             </motion.button>
-
-            <motion.a
-              href={`https://wa.me/8801820060046?text=${waMessage}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 transition-all"
-              style={{ background: 'rgba(37,211,102,0.15)', border: '1px solid rgba(37,211,102,0.35)', color: '#25D366' }}
-            >
-              <MessageCircle size={18} />
-            </motion.a>
+            <motion.button
+              whileTap={{ scale: 0.97 }}
+              onClick={() => setActiveTab("custom")}
+              className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-bold transition-all"
+              style={activeTab === "custom"
+                ? { background: 'linear-gradient(135deg, rgba(139,92,246,0.25), rgba(6,182,212,0.15))', color: 'hsl(258,90%,75%)', border: '1px solid rgba(139,92,246,0.3)' }
+                : { color: 'rgba(255,255,255,0.4)' }}>
+              <PenLine size={12} /> কাস্টম অর্ডার
+            </motion.button>
           </div>
+
+          <AnimatePresence mode="wait">
+            {activeTab === "details" ? (
+              <motion.div key="details" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} transition={{ duration: 0.18 }}>
+                {/* Price */}
+                <div className="flex items-baseline gap-3 mb-5 p-4 rounded-2xl"
+                  style={{ background: `${c.color}12`, border: `1px solid ${c.color}25` }}>
+                  {pkg.original_price && (
+                    <span className="text-sm text-foreground/35 line-through">{formatPrice(pkg.original_price)}</span>
+                  )}
+                  {pkg.price ? (
+                    <span className="text-3xl font-black" style={{ color: c.color }}>{formatPrice(pkg.price)}</span>
+                  ) : (
+                    <span className="text-lg font-semibold text-foreground/50">মূল্য: যোগাযোগ করুন</span>
+                  )}
+                  {discount && discount > 0 && (
+                    <span className="text-xs font-bold px-2 py-0.5 rounded-full text-white ml-auto"
+                      style={{ background: 'hsl(0,84%,55%)' }}>
+                      {discount}% সাশ্রয়
+                    </span>
+                  )}
+                </div>
+
+                {/* Description */}
+                {pkg.description && (
+                  <div className="mb-5">
+                    <h4 className="text-xs font-bold uppercase tracking-widest text-foreground/40 mb-2">বিবরণ</h4>
+                    <p className="text-sm text-foreground/70 leading-relaxed">{pkg.description}</p>
+                  </div>
+                )}
+
+                {/* Features */}
+                {pkg.features && (pkg.features as string[]).length > 0 && (
+                  <div className="mb-6">
+                    <h4 className="text-xs font-bold uppercase tracking-widest text-foreground/40 mb-3">কী কী পাবেন</h4>
+                    <ul className="space-y-2">
+                      {(pkg.features as string[]).map((f, i) => (
+                        <motion.li key={i} initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: i * 0.06 }}
+                          className="flex items-start gap-2.5 text-sm text-foreground/75">
+                          <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5"
+                            style={{ background: `${c.color}20` }}>
+                            <CheckCircle size={11} style={{ color: c.color }} />
+                          </div>
+                          {f}
+                        </motion.li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Action buttons */}
+                <div className="flex gap-3">
+                  <motion.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={onPay}
+                    className="flex-1 py-3 rounded-2xl text-sm font-bold text-white flex items-center justify-center gap-2 glossy-btn"
+                    style={{ background: `linear-gradient(135deg, ${c.color}, ${c.color}BB)`, boxShadow: `0 4px 18px ${c.color}40` }}>
+                    <CreditCard size={15} /> পেমেন্ট করুন
+                  </motion.button>
+                  <motion.a
+                    href={`https://wa.me/8801820060046?text=${waMessage}`}
+                    target="_blank" rel="noopener noreferrer"
+                    whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+                    className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 transition-all"
+                    style={{ background: 'rgba(37,211,102,0.15)', border: '1px solid rgba(37,211,102,0.35)', color: '#25D366' }}>
+                    <MessageCircle size={18} />
+                  </motion.a>
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div key="custom" initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 10 }} transition={{ duration: 0.18 }}>
+                <CustomOrderForm pkg={pkg} c={c} onClose={onClose} />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </motion.div>
     </div>
