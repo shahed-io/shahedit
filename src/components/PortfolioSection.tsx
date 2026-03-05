@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ExternalLink, ArrowRight, Code2 } from "lucide-react";
+import { ExternalLink, ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Project } from "@/lib/supabase-types";
@@ -51,8 +51,6 @@ const PortfolioSection = () => {
             initial={{ opacity: 0, x: 24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            whileHover={{ scale: 1.04, y: -2 }}
-            whileTap={{ scale: 0.96 }}
             className="hidden md:flex items-center gap-2 text-sm font-semibold transition-all duration-300 group px-5 py-2.5 rounded-xl"
             style={{ background: 'rgba(139,92,246,0.10)', border: '1px solid rgba(139,92,246,0.22)', color: 'hsl(258,90%,75%)' }}
           >
@@ -63,14 +61,8 @@ const PortfolioSection = () => {
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {[...Array(6)].map((_, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: [0.3, 0.6, 0.3] }}
-                transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.1 }}
-                className="aspect-[4/3] rounded-2xl"
-                style={{ background: 'rgba(139,92,246,0.06)', border: '1px solid rgba(139,92,246,0.12)' }}
-              />
+              <div key={i} className="aspect-[4/3] rounded-2xl animate-pulse"
+                style={{ background: 'rgba(139,92,246,0.06)', border: '1px solid rgba(139,92,246,0.12)' }} />
             ))}
           </div>
         ) : projects.length === 0 ? (
@@ -89,8 +81,7 @@ const PortfolioSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.09, type: "spring", stiffness: 120 }}
-                whileHover={{ y: -8, scale: 1.01 }}
-                whileTap={{ scale: 0.97, y: 0, transition: { duration: 0.1 } }}
+                whileHover={{ y: -6 }}
                 className="group relative rounded-2xl overflow-hidden cursor-pointer"
                 style={{ border: '1px solid rgba(255,255,255,0.07)' }}
               >
@@ -100,22 +91,13 @@ const PortfolioSection = () => {
                       src={project.image_url}
                       alt={project.title}
                       className="w-full h-full object-cover"
-                      whileHover={{ scale: 1.10 }}
+                      whileHover={{ scale: 1.08 }}
                       transition={{ duration: 0.5 }}
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-5xl">🖥️</div>
                   )}
                 </div>
-
-                {/* Scan line on hover */}
-                <motion.div
-                  className="absolute inset-x-0 h-[2px] pointer-events-none z-10"
-                  style={{ background: 'linear-gradient(90deg, transparent, hsl(185,100%,55%), hsl(258,90%,70%), transparent)' }}
-                  initial={{ top: '-2px', opacity: 0 }}
-                  whileHover={{ top: ['0%', '100%'], opacity: [0, 1, 0] }}
-                  transition={{ duration: 0.6, ease: "linear" }}
-                />
 
                 {project.category && (
                   <div className="absolute top-3 left-3 px-3 py-1 text-xs font-bold rounded-full"
@@ -124,21 +106,15 @@ const PortfolioSection = () => {
                   </div>
                 )}
 
-                {/* Hover overlay */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-400 flex items-end p-5"
-                  style={{ background: 'linear-gradient(to top, rgba(10,8,20,0.95) 0%, rgba(10,8,20,0.50) 50%, transparent 100%)' }}>
+                  style={{ background: 'linear-gradient(to top, rgba(10,8,20,0.92) 0%, rgba(10,8,20,0.50) 50%, transparent 100%)' }}>
                   <div className="flex items-center justify-between w-full">
                     <div>
-                      <p className="text-xs font-mono mb-1" style={{ color: 'hsl(185,100%,55%)' }}>
-                        <span style={{ color: 'hsl(258,90%,66%)' }}>{'<'}</span>
-                        {project.category}
-                        <span style={{ color: 'hsl(258,90%,66%)' }}>{' />'}</span>
-                      </p>
+                      <p className="text-xs text-foreground/50 mb-1">{project.category}</p>
                       <span className="text-white font-bold">{project.title}</span>
                     </div>
                     <motion.div
                       whileHover={{ scale: 1.2, rotate: 45 }}
-                      whileTap={{ scale: 0.9 }}
                       className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
                       style={{ background: 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))' }}
                     >

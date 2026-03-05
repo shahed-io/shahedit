@@ -1,7 +1,7 @@
+import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle2, Sparkles, Star, Award, Users } from "lucide-react";
-import { motion, useMotionValue, useTransform, animate } from "framer-motion";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
 
 const highlights = [
   "Responsive, user-friendly websites built to convert",
@@ -15,39 +15,6 @@ const badges = [
   { icon: Award, label: "Award Winning", color: "hsl(258,90%,66%)" },
   { icon: Users, label: "150+ Clients", color: "hsl(185,100%,48%)" },
 ];
-
-// Animated counter
-function AnimatedCounter({ to, suffix = "" }: { to: number; suffix?: string }) {
-  const [val, setVal] = useState(0);
-  const ref = useRef<HTMLSpanElement>(null);
-  const [started, setStarted] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting && !started) setStarted(true); },
-      { threshold: 0.5 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, [started]);
-
-  useEffect(() => {
-    if (!started) return;
-    let frame: number;
-    const duration = 1400;
-    const start = performance.now();
-    const step = (now: number) => {
-      const progress = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setVal(Math.floor(eased * to));
-      if (progress < 1) frame = requestAnimationFrame(step);
-    };
-    frame = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(frame);
-  }, [started, to]);
-
-  return <span ref={ref}>{val}{suffix}</span>;
-}
 
 const AboutSection = () => {
   return (
@@ -93,9 +60,8 @@ const AboutSection = () => {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
-                  whileHover={{ scale: 1.08, y: -2 }}
-                  whileTap={{ scale: 0.93 }}
-                  className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold cursor-pointer"
+                  whileHover={{ scale: 1.05 }}
+                  className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold"
                   style={{ background: `${badge.color}15`, border: `1px solid ${badge.color}30`, color: badge.color }}
                 >
                   <badge.icon size={14} />
@@ -125,21 +91,11 @@ const AboutSection = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.12, type: "spring", stiffness: 120 }}
-                whileHover={{ x: 8, scale: 1.01 }}
-                whileTap={{ scale: 0.97, x: 0 }}
-                className="flex items-center gap-4 p-5 rounded-2xl group cursor-pointer transition-all duration-400 relative overflow-hidden"
+                whileHover={{ x: 6 }}
+                className="flex items-center gap-4 p-5 rounded-2xl group cursor-pointer transition-all duration-400"
                 style={{ background: 'rgba(139,92,246,0.07)', border: '1px solid rgba(139,92,246,0.15)' }}
               >
-                {/* Left accent bar */}
-                <motion.div
-                  className="absolute left-0 top-0 bottom-0 w-[3px] rounded-l-2xl"
-                  style={{ background: 'linear-gradient(180deg, hsl(258,90%,66%), hsl(185,100%,48%))' }}
-                  initial={{ scaleY: 0 }}
-                  whileInView={{ scaleY: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.12 + 0.2, duration: 0.4 }}
-                />
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6"
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
                   style={{ background: 'linear-gradient(135deg, rgba(139,92,246,0.25), rgba(6,182,212,0.15))' }}>
                   <CheckCircle2 size={20} style={{ color: 'hsl(185,100%,55%)' }} />
                 </div>
@@ -147,27 +103,22 @@ const AboutSection = () => {
               </motion.div>
             ))}
 
-            {/* Animated Stats card */}
+            {/* Stats card */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.5 }}
-              className="grid grid-cols-3 gap-4 p-6 rounded-2xl mt-6 relative overflow-hidden"
+              className="grid grid-cols-3 gap-4 p-6 rounded-2xl mt-6"
               style={{ background: 'linear-gradient(135deg, rgba(139,92,246,0.10), rgba(6,182,212,0.06))', border: '1px solid rgba(139,92,246,0.20)' }}
             >
-              {/* Shimmer sweep */}
-              <div className="absolute inset-0 shimmer pointer-events-none rounded-2xl opacity-50" />
-
               {[
-                { to: 150, suffix: "+", label: "Projects" },
-                { to: 5, suffix: "+", label: "Years" },
-                { to: 98, suffix: "%", label: "Satisfied" },
+                { val: "150+", label: "Projects" },
+                { val: "5+", label: "Years" },
+                { val: "98%", label: "Satisfied" },
               ].map((s) => (
-                <div key={s.label} className="text-center relative z-10">
-                  <div className="text-2xl font-black gradient-text font-mono">
-                    <AnimatedCounter to={s.to} suffix={s.suffix} />
-                  </div>
+                <div key={s.label} className="text-center">
+                  <div className="text-2xl font-black gradient-text">{s.val}</div>
                   <div className="text-xs text-foreground/40 mt-0.5">{s.label}</div>
                 </div>
               ))}
