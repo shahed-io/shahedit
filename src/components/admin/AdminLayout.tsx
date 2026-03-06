@@ -28,6 +28,7 @@ const navItems = [
   { label: "AI Support", icon: MessageSquare, href: "/admin/ai-support" },
   { label: "Admin Users", icon: Shield, href: "/admin/users" },
   { label: "Footer Editor", icon: LayoutTemplate, href: "/admin/footer" },
+  { label: "Client Docs", icon: FolderOpen, href: "/admin/client-docs" },
   { label: "Site Settings", icon: Settings, href: "/admin/settings" },
 ];
 
