@@ -457,31 +457,30 @@ const DetailsModal = ({ pkg, onClose, onPay, c }: {
                   )}
                 </div>
 
-          {/* Description — rendered as rich HTML */}
+          {/* Description — rendered as rich HTML (styled like screenshot) */}
                 {pkg.description && (
-                  <div className="mb-5">
-                    <h4 className="text-xs font-bold uppercase tracking-widest text-foreground/40 mb-2">বিবরণ</h4>
-                    <div
-                      className="text-sm text-foreground/75 leading-relaxed rich-description"
-                      dangerouslySetInnerHTML={{ __html: pkg.description }}
-                    />
-                  </div>
+                  <div
+                    className="mb-5 rich-description"
+                    dangerouslySetInnerHTML={{ __html: pkg.description }}
+                  />
                 )}
 
-                {/* Features */}
-                {pkg.features && (pkg.features as string[]).length > 0 && (
+                {/* Features — plain array fallback if no rich description */}
+                {(!pkg.description || pkg.description.trim() === "") && pkg.features && (pkg.features as string[]).length > 0 && (
                   <div className="mb-6">
-                    <h4 className="text-xs font-bold uppercase tracking-widest text-foreground/40 mb-3">কী কী পাবেন</h4>
+                    <h4 className="text-sm font-extrabold text-foreground mb-3 pb-1 border-b border-foreground/10">
+                      এই প্ল্যানে যা যা থাকছে
+                    </h4>
                     <ul className="space-y-2">
                       {(pkg.features as string[]).map((f, i) => (
                         <motion.li key={i} initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: i * 0.06 }}
-                          className="flex items-start gap-2.5 text-sm text-foreground/75">
+                          className="flex items-start gap-2.5 text-sm text-foreground/80">
                           <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5"
-                            style={{ background: `${c.color}20` }}>
+                            style={{ background: `${c.color}22` }}>
                             <CheckCircle size={11} style={{ color: c.color }} />
                           </div>
-                          {f}
+                          <span dangerouslySetInnerHTML={{ __html: f }} />
                         </motion.li>
                       ))}
                     </ul>
