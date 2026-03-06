@@ -747,7 +747,7 @@ export default function DashboardPage() {
                       <label className="block text-xs font-semibold text-foreground/50 mb-1.5">{label}</label>
                       <input
                         type={type}
-                        value={(editProfile as Record<string, string | null>)[key] || ""}
+                        value={(editProfile as unknown as Record<string, string | null>)[key] || ""}
                         onChange={e => setEditProfile(p => ({ ...p, [key]: e.target.value }))}
                         placeholder={placeholder}
                         className="w-full px-4 py-2.5 rounded-xl text-sm text-foreground outline-none transition-all"
