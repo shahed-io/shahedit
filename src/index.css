@@ -324,130 +324,45 @@
   ::-webkit-scrollbar-thumb:hover { background: hsl(var(--primary)/0.6); }
 
   /* ─── Rich Description (product details modal) ─── */
-  .rich-description {
-    font-size: 0.875rem;
-    line-height: 1.75;
-    color: hsl(var(--foreground) / 0.82);
-  }
-
-  /* h2 — section heading like "এই প্ল্যানে যা যা থাকছে" */
   .rich-description h2 {
-    font-size: 1rem;
-    font-weight: 800;
-    color: hsl(var(--foreground));
-    margin-top: 1.25rem;
-    margin-bottom: 0.6rem;
-    padding-bottom: 0.35rem;
-    border-bottom: 1px solid hsl(var(--foreground)/0.1);
-    letter-spacing: -0.01em;
-  }
-
-  /* h3 — sub-section heading */
-  .rich-description h3 {
     font-size: 0.875rem;
     font-weight: 700;
-    color: hsl(var(--primary)/0.9);
-    margin-top: 0.9rem;
-    margin-bottom: 0.35rem;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
+    color: hsl(var(--foreground));
+    margin-top: 0.75rem;
+    margin-bottom: 0.25rem;
   }
-
-  /* paragraphs */
-  .rich-description p {
-    margin-bottom: 0.5rem;
-    color: hsl(var(--foreground)/0.75);
+  .rich-description h3 {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: hsl(var(--foreground)/0.85);
+    margin-top: 0.5rem;
+    margin-bottom: 0.2rem;
   }
-
-  /* checklist-style unordered list */
+  .rich-description p { margin-bottom: 0.4rem; }
   .rich-description ul {
-    list-style: none;
-    padding-left: 0;
-    margin-bottom: 0.75rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.45rem;
+    list-style: disc;
+    padding-left: 1.2rem;
+    space-y: 0.25rem;
+    margin-bottom: 0.5rem;
   }
-
-  .rich-description ul > li {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.55rem;
-    color: hsl(var(--foreground)/0.82);
-    padding: 0.3rem 0.5rem;
-    border-radius: 0.5rem;
-    transition: background 0.15s;
-  }
-
-  .rich-description ul > li::before {
-    content: "✔";
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 1.1rem;
-    height: 1.1rem;
-    font-size: 0.6rem;
-    color: #fff;
-    background: hsl(var(--primary));
-    border-radius: 50%;
-    margin-top: 0.15rem;
-    flex-shrink: 0;
-  }
-
-  .rich-description ul > li:hover {
-    background: hsl(var(--foreground)/0.04);
-  }
-
-  /* ordered list */
   .rich-description ol {
     list-style: decimal;
-    padding-left: 1.3rem;
-    margin-bottom: 0.75rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
+    padding-left: 1.2rem;
+    margin-bottom: 0.5rem;
   }
-  .rich-description ol > li { color: hsl(var(--foreground)/0.82); }
-
-  /* bold / italic */
-  .rich-description strong {
-    color: hsl(var(--foreground));
-    font-weight: 700;
-  }
-  .rich-description em {
-    font-style: italic;
-    color: hsl(var(--foreground)/0.7);
-  }
-
-  /* blockquote — bonus box */
+  .rich-description li { color: hsl(var(--foreground)/0.78); margin-bottom: 0.15rem; }
+  .rich-description strong { color: hsl(var(--foreground)); font-weight: 700; }
+  .rich-description em { font-style: italic; color: hsl(var(--foreground)/0.75); }
   .rich-description blockquote {
-    background: hsl(var(--primary)/0.07);
-    border: 1px solid hsl(var(--primary)/0.2);
-    border-left: 3px solid hsl(var(--primary));
-    border-radius: 0.75rem;
-    padding: 0.75rem 1rem;
-    color: hsl(var(--foreground)/0.75);
-    font-style: normal;
-    margin: 0.75rem 0;
+    border-left: 2px solid hsl(var(--primary));
+    padding-left: 0.75rem;
+    color: hsl(var(--foreground)/0.55);
+    font-style: italic;
+    margin: 0.5rem 0;
   }
-
-  /* blockquote ul inside bonus section — diamond bullets */
-  .rich-description blockquote ul > li::before {
-    content: "◆";
-    background: transparent;
-    color: hsl(var(--accent));
-    font-size: 0.55rem;
-    min-width: 0.9rem;
-    height: auto;
-    border-radius: 0;
-    margin-top: 0.3rem;
-  }
-
-  /* horizontal rule */
   .rich-description hr {
-    border-color: hsl(var(--foreground)/0.1);
-    margin: 0.85rem 0;
+    border-color: hsl(var(--foreground)/0.12);
+    margin: 0.5rem 0;
   }
 }
 
