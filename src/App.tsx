@@ -22,6 +22,7 @@ import {
 import AdminPayments from "./pages/admin/AdminPayments";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminFooterEditor from "./pages/admin/AdminFooterEditor";
+import AdminClientDocuments from "./pages/admin/AdminClientDocuments";
 
 // Auth pages
 import LoginPage from "./pages/LoginPage";
@@ -93,6 +94,7 @@ const AdminRoutes = () => (
         <Route path="settings" element={<AdminSettings />} />
         <Route path="users" element={<AdminUsers />} />
         <Route path="footer" element={<AdminFooterEditor />} />
+        <Route path="client-docs" element={<AdminClientDocuments />} />
       </Routes>
     </AdminLayout>
   </ProtectedRoute>
