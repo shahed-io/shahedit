@@ -23,10 +23,10 @@ interface ServicePackageRow {
 
 const paymentMethods = [
   { id: "bkash_send", label: "বিকাশ", sublabel: "Send Money", number: "01820060046", color: "#E2136E", short: "bK" },
-  { id: "nagad_send", label: "নগদ", sublabel: "Send Money", number: "01840099853", color: "#F6821F", short: "NG" },
-  { id: "rocket_send", label: "রকেট", sublabel: "Send Money", number: "01840099853", color: "#8B1FA8", short: "RK" },
-  { id: "upay_send", label: "উপায়", sublabel: "Send Money", number: "01840099853", color: "#00A651", short: "UP" },
-  { id: "bkash_merchant", label: "বিকাশ মার্চেন্ট", sublabel: "Merchant", number: "01840099853", color: "#E2136E", short: "bM" },
+  { id: "nagad_send", label: "নগদ", sublabel: "Send Money", number: "01820060046", color: "#F6821F", short: "NG" },
+  { id: "rocket_send", label: "রকেট", sublabel: "Send Money", number: "01820060046", color: "#8B1FA8", short: "RK" },
+  { id: "upay_send", label: "উপায়", sublabel: "Send Money", number: "01820060046", color: "#00A651", short: "UP" },
+  { id: "bkash_merchant", label: "বিকাশ মার্চেন্ট", sublabel: "Merchant", number: "01820060046", color: "#E2136E", short: "bM" },
 ];
 
 const formatPrice = (price: number) => `৳ ${price.toLocaleString("en-BD")}`;
