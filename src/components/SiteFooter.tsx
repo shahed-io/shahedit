@@ -121,7 +121,7 @@ const SiteFooter = () => {
                     style={{ background: 'rgba(139,92,246,0.12)', border: '1px solid rgba(139,92,246,0.20)' }}>
                     <Phone size={13} style={{ color: 'hsl(258,90%,66%)' }} />
                   </span>
-                  01820-060046 / 01840-099853
+                  01820-060046
                 </motion.a>
                 <div className="flex items-center gap-3 text-foreground/35">
                   <span className="w-8 h-8 rounded-lg flex items-center justify-center"

@@ -28,9 +28,9 @@ const ContactPage = () => {
 
   const info = [
     { icon: MapPin, label: "ঠিকানা", value: "Sopura, Rajshahi, Bangladesh" },
-    { icon: Phone, label: "মোবাইল", value: "01820-060046 / 01840-099853" },
+    { icon: Phone, label: "মোবাইল", value: "01820-060046" },
     { icon: Mail, label: "ইমেইল", value: "info@shahedit.com" },
-    { icon: MessageCircle, label: "WhatsApp", value: "01820-060046 / 01840-099853" },
+    { icon: MessageCircle, label: "WhatsApp", value: "01820-060046" },
   ];
 
   return (

@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 
 const methods = [
   { label: "বিকাশ", sublabel: "Send Money", number: "01820060046", color: "#E2136E", short: "bK" },
-  { label: "নগদ", sublabel: "Send Money", number: "01840099853", color: "#F6821F", short: "NG" },
-  { label: "রকেট", sublabel: "Send Money", number: "01840099853", color: "#8B1FA8", short: "RK" },
-  { label: "উপায়", sublabel: "Send Money", number: "01840099853", color: "#00A651", short: "UP" },
-  { label: "বিকাশ মার্চেন্ট", sublabel: "Merchant", number: "01840099853", color: "#E2136E", short: "bM" },
+  { label: "নগদ", sublabel: "Send Money", number: "01820060046", color: "#F6821F", short: "NG" },
+  { label: "রকেট", sublabel: "Send Money", number: "01820060046", color: "#8B1FA8", short: "RK" },
+  { label: "উপায়", sublabel: "Send Money", number: "01820060046", color: "#00A651", short: "UP" },
+  { label: "বিকাশ মার্চেন্ট", sublabel: "Merchant", number: "01820060046", color: "#E2136E", short: "bM" },
 ];
 
 const PaymentSection = () => (
