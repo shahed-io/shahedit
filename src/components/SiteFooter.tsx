@@ -133,23 +133,37 @@ const SiteFooter = () => {
               </div>
             </motion.div>
 
-            {/* Dynamic Link columns */}
+            {/* Dynamic Link columns — Gradient Glassmorphism Cards */}
             {footerColumns.map((col, ci) =>
               <motion.div
                 key={col.title}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: ci * 0.1 }}>
+                transition={{ delay: ci * 0.1 }}
+                className="relative rounded-2xl p-5 overflow-hidden group/card"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(139,92,246,0.08), rgba(6,182,212,0.05), rgba(139,92,246,0.03))',
+                  border: '1px solid rgba(139,92,246,0.15)',
+                  backdropFilter: 'blur(16px)',
+                  WebkitBackdropFilter: 'blur(16px)',
+                  boxShadow: '0 8px 32px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.05)',
+                }}>
+                {/* Subtle glow on hover */}
+                <div className="absolute inset-0 rounded-2xl opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 pointer-events-none"
+                  style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(139,92,246,0.12), transparent 70%)' }} />
 
-                <h4 className="font-bold text-foreground/80 mb-5 text-sm uppercase tracking-[0.15em]">{col.title}</h4>
-                <ul className="space-y-3 text-sm">
+                <h4 className="font-bold text-foreground/90 mb-4 text-sm uppercase tracking-[0.15em] relative z-10"
+                  style={{ background: 'linear-gradient(90deg, hsl(258,90%,76%), hsl(185,100%,60%))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                  {col.title}
+                </h4>
+                <ul className="space-y-2.5 text-sm relative z-10">
                   {col.items.map((item) =>
                     <li key={item.id}>
                       <Link to={item.target ?? "#"}>
                         <motion.span
                           whileHover={{ x: 4 }}
-                          className="text-foreground/40 hover:text-foreground/80 transition-all duration-300 flex items-center gap-1.5 group cursor-pointer">
+                          className="text-foreground/45 hover:text-foreground/85 transition-all duration-300 flex items-center gap-1.5 group cursor-pointer">
                           <span className="w-0 h-px group-hover:w-3 transition-all duration-300 rounded-full"
                             style={{ background: 'linear-gradient(90deg, hsl(258,90%,66%), hsl(185,100%,48%))' }} />
                           {item.label}
