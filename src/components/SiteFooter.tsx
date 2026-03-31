@@ -90,7 +90,7 @@ const SiteFooter = () => {
           style={{ background: 'radial-gradient(ellipse, hsl(185,100%,48%) 0%, transparent 65%)', filter: 'blur(100px)', opacity: 0.06 }} />
 
         <div className="container mx-auto px-4 pt-16 pb-8 relative">
-          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-10 mb-14">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-10 mb-14">
 
             {/* Brand */}
             <motion.div
@@ -134,46 +134,48 @@ const SiteFooter = () => {
             </motion.div>
 
             {/* Dynamic Link columns — Gradient Glassmorphism Cards */}
-            {footerColumns.map((col, ci) =>
-              <motion.div
-                key={col.title}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: ci * 0.1 }}
-                className="relative rounded-2xl p-5 overflow-hidden group/card"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(139,92,246,0.08), rgba(6,182,212,0.05), rgba(139,92,246,0.03))',
-                  border: '1px solid rgba(139,92,246,0.15)',
-                  backdropFilter: 'blur(16px)',
-                  WebkitBackdropFilter: 'blur(16px)',
-                  boxShadow: '0 8px 32px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.05)',
-                }}>
-                {/* Subtle glow on hover */}
-                <div className="absolute inset-0 rounded-2xl opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 pointer-events-none"
-                  style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(139,92,246,0.12), transparent 70%)' }} />
+            <div className="md:col-span-1 lg:col-span-3 grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+              {footerColumns.map((col, ci) =>
+                <motion.div
+                  key={col.title}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: ci * 0.1 }}
+                  className="relative rounded-xl sm:rounded-2xl p-3 sm:p-5 overflow-hidden group/card"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(139,92,246,0.08), rgba(6,182,212,0.05), rgba(139,92,246,0.03))',
+                    border: '1px solid rgba(139,92,246,0.15)',
+                    backdropFilter: 'blur(16px)',
+                    WebkitBackdropFilter: 'blur(16px)',
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.05)',
+                  }}>
+                  {/* Subtle glow on hover */}
+                  <div className="absolute inset-0 rounded-2xl opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 pointer-events-none"
+                    style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(139,92,246,0.12), transparent 70%)' }} />
 
-                <h4 className="font-bold text-foreground/90 mb-4 text-sm uppercase tracking-[0.15em] relative z-10"
-                  style={{ background: 'linear-gradient(90deg, hsl(258,90%,76%), hsl(185,100%,60%))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                  {col.title}
-                </h4>
-                <ul className="space-y-2.5 text-sm relative z-10">
-                  {col.items.map((item) =>
-                    <li key={item.id}>
-                      <Link to={item.target ?? "#"}>
-                        <motion.span
-                          whileHover={{ x: 4 }}
-                          className="text-foreground/45 hover:text-foreground/85 transition-all duration-300 flex items-center gap-1.5 group cursor-pointer">
-                          <span className="w-0 h-px group-hover:w-3 transition-all duration-300 rounded-full"
-                            style={{ background: 'linear-gradient(90deg, hsl(258,90%,66%), hsl(185,100%,48%))' }} />
-                          {item.label}
-                        </motion.span>
-                      </Link>
-                    </li>
-                  )}
-                </ul>
-              </motion.div>
-            )}
+                  <h4 className="font-bold text-foreground/90 mb-2 sm:mb-4 text-xs sm:text-sm uppercase tracking-[0.12em] sm:tracking-[0.15em] relative z-10"
+                    style={{ background: 'linear-gradient(90deg, hsl(258,90%,76%), hsl(185,100%,60%))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                    {col.title}
+                  </h4>
+                  <ul className="space-y-1.5 sm:space-y-2.5 text-xs sm:text-sm relative z-10">
+                    {col.items.map((item) =>
+                      <li key={item.id}>
+                        <Link to={item.target ?? "#"}>
+                          <motion.span
+                            whileHover={{ x: 4 }}
+                            className="text-foreground/45 hover:text-foreground/85 transition-all duration-300 flex items-center gap-1.5 group cursor-pointer">
+                            <span className="w-0 h-px group-hover:w-3 transition-all duration-300 rounded-full"
+                              style={{ background: 'linear-gradient(90deg, hsl(258,90%,66%), hsl(185,100%,48%))' }} />
+                            {item.label}
+                          </motion.span>
+                        </Link>
+                      </li>
+                    )}
+                  </ul>
+                </motion.div>
+              )}
+            </div>
           </div>
 
           {/* Newsletter */}
