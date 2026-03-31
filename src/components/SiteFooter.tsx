@@ -134,6 +134,7 @@ const SiteFooter = () => {
             </motion.div>
 
             {/* Dynamic Link columns — Gradient Glassmorphism Cards */}
+            <div className="col-span-1 md:col-span-2 lg:col-span-3 grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
             {footerColumns.map((col, ci) =>
               <motion.div
                 key={col.title}
@@ -141,7 +142,7 @@ const SiteFooter = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: ci * 0.1 }}
-                className="relative rounded-2xl p-5 overflow-hidden group/card"
+                className="relative rounded-xl sm:rounded-2xl p-3 sm:p-5 overflow-hidden group/card"
                 style={{
                   background: 'linear-gradient(135deg, rgba(139,92,246,0.08), rgba(6,182,212,0.05), rgba(139,92,246,0.03))',
                   border: '1px solid rgba(139,92,246,0.15)',
