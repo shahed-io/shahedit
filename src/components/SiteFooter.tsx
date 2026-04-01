@@ -1,4 +1,4 @@
-import { Phone, ArrowRight, ArrowUp, MapPin, Mail, Clock } from "lucide-react";
+import { Phone, ArrowRight, ArrowUp, MapPin } from "lucide-react";
 import logoImg from "@/assets/logo-glossy.png";
 import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
@@ -92,92 +92,43 @@ const SiteFooter = () => {
         <div className="container mx-auto px-4 pt-16 pb-8 relative">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-10 mb-14">
 
-            {/* Brand — Glassmorphism Card */}
+            {/* Brand */}
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="lg:col-span-2 relative rounded-2xl p-6 overflow-hidden group/brand"
-              style={{
-                background: 'linear-gradient(145deg, rgba(6,182,212,0.08), rgba(139,92,246,0.06), rgba(6,182,212,0.03))',
-                border: '1px solid rgba(6,182,212,0.15)',
-                backdropFilter: 'blur(16px)',
-                WebkitBackdropFilter: 'blur(16px)',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.05)',
-              }}>
-              {/* Hover glow */}
-              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover/brand:opacity-100 transition-opacity duration-500 pointer-events-none"
-                style={{ background: 'radial-gradient(ellipse at 30% 20%, rgba(6,182,212,0.12), transparent 70%)' }} />
+              className="lg:col-span-2">
 
               <Link to="/">
-                <motion.div 
-                  whileHover={{ scale: 1.02 }}
-                  className="flex items-center gap-3 mb-5 relative z-10">
-                  <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0 ring-2 ring-white/10"
-                    style={{ filter: 'drop-shadow(0 6px 20px hsl(185,100%,48%,0.4))' }}>
+                <div className="flex items-center gap-2.5 mb-5">
+                  <div className="w-12 h-12 rounded-xl overflow-hidden shrink-0"
+                    style={{ filter: 'drop-shadow(0 6px 18px hsl(185,100%,48%,0.5))' }}>
                     <img src={logoImg} alt="Shahed IT" className="w-full h-full object-contain" />
                   </div>
-                  <div>
-                    <span className="text-2xl font-black block" style={{ fontFamily: "'Syne', sans-serif" }}>
-                      <span style={{ background: 'linear-gradient(135deg, hsl(185,100%,48%), hsl(165,80%,45%))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Shahed</span>
-                      <span className="text-foreground"> IT</span>
-                    </span>
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-foreground/30 font-medium">Professional IT Agency</span>
-                  </div>
-                </motion.div>
-              </Link>
-
-              <div className="h-px mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, rgba(6,182,212,0.25), rgba(139,92,246,0.15), transparent)' }} />
-
-              <p className="text-foreground/40 text-sm mb-5 leading-relaxed relative z-10">
-                Premium web development, graphic design & digital marketing solutions from Bangladesh.
-              </p>
-
-              <div className="space-y-2.5 relative z-10">
-                <motion.a whileHover={{ x: 4 }} href="tel:+8801820060046"
-                  className="flex items-center gap-3 text-foreground/50 hover:text-foreground/80 transition-all group/link py-1.5 px-2 -mx-2 rounded-lg hover:bg-white/[0.03]">
-                  <span className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-all group-hover/link:scale-110"
-                    style={{ background: 'linear-gradient(135deg, rgba(34,197,94,0.15), rgba(34,197,94,0.05))', border: '1px solid rgba(34,197,94,0.25)' }}>
-                    <Phone size={14} style={{ color: 'hsl(142,71%,45%)' }} />
+                  <span className="text-2xl font-black" style={{ fontFamily: "'Syne', sans-serif" }}>
+                    <span style={{ background: 'linear-gradient(135deg, hsl(185,100%,48%), hsl(165,80%,45%))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Shahed</span>
+                    <span className="text-foreground"> IT</span>
                   </span>
-                  <div>
-                    <span className="text-sm font-medium block">01820-060046</span>
-                    <span className="text-[10px] text-foreground/25">WhatsApp Available</span>
-                  </div>
-                </motion.a>
-
-                <motion.a whileHover={{ x: 4 }} href="mailto:info@shahedit.com"
-                  className="flex items-center gap-3 text-foreground/50 hover:text-foreground/80 transition-all group/link py-1.5 px-2 -mx-2 rounded-lg hover:bg-white/[0.03]">
-                  <span className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-all group-hover/link:scale-110"
-                    style={{ background: 'linear-gradient(135deg, rgba(139,92,246,0.15), rgba(139,92,246,0.05))', border: '1px solid rgba(139,92,246,0.25)' }}>
-                    <Mail size={14} style={{ color: 'hsl(258,90%,66%)' }} />
-                  </span>
-                  <div>
-                    <span className="text-sm font-medium block">info@shahedit.com</span>
-                    <span className="text-[10px] text-foreground/25">Email Us Anytime</span>
-                  </div>
-                </motion.a>
-
-                <div className="flex items-center gap-3 text-foreground/50 py-1.5 px-2 -mx-2">
-                  <span className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
-                    style={{ background: 'linear-gradient(135deg, rgba(234,179,8,0.15), rgba(234,179,8,0.05))', border: '1px solid rgba(234,179,8,0.25)' }}>
-                    <MapPin size={14} style={{ color: 'hsl(45,93%,58%)' }} />
-                  </span>
-                  <div>
-                    <span className="text-sm font-medium block">Sopura, Rajshahi</span>
-                    <span className="text-[10px] text-foreground/25">Bangladesh</span>
-                  </div>
                 </div>
-
-                <div className="flex items-center gap-3 text-foreground/50 py-1.5 px-2 -mx-2">
-                  <span className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
-                    style={{ background: 'linear-gradient(135deg, rgba(6,182,212,0.15), rgba(6,182,212,0.05))', border: '1px solid rgba(6,182,212,0.25)' }}>
-                    <Clock size={14} style={{ color: 'hsl(185,100%,48%)' }} />
+              </Link>
+              <p className="text-foreground/40 text-sm mb-6 leading-relaxed max-w-xs">
+                Professional IT agency delivering premium web development, graphic design & digital marketing solutions from Bangladesh.
+              </p>
+              <div className="space-y-3 text-sm">
+                <motion.a whileHover={{ x: 4 }} href="tel:+8801820060046"
+                  className="flex items-center gap-3 text-foreground/45 hover:text-primary transition-all group">
+                  <span className="w-8 h-8 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors"
+                    style={{ background: 'rgba(139,92,246,0.12)', border: '1px solid rgba(139,92,246,0.20)' }}>
+                    <Phone size={13} style={{ color: 'hsl(258,90%,66%)' }} />
                   </span>
-                  <div>
-                    <span className="text-sm font-medium block">সকাল ১০:০০ — রাত ১০:০০</span>
-                    <span className="text-[10px] text-foreground/25">প্রতিদিন সাপোর্ট</span>
-                  </div>
+                  01820-060046
+                </motion.a>
+                <div className="flex items-center gap-3 text-foreground/35">
+                  <span className="w-8 h-8 rounded-lg flex items-center justify-center"
+                    style={{ background: 'rgba(234,179,8,0.12)', border: '1px solid rgba(234,179,8,0.20)' }}>
+                    <MapPin size={13} style={{ color: 'hsl(45,93%,58%)' }} />
+                  </span>
+                  Sopura, Rajshahi, Bangladesh
                 </div>
               </div>
             </motion.div>
