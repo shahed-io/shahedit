@@ -47,6 +47,7 @@ import RefundPolicyPage from "./pages/RefundPolicyPage";
 import DeliveryPolicyPage from "./pages/DeliveryPolicyPage";
 import ComplaintPolicyPage from "./pages/ComplaintPolicyPage";
 import PaymentPage from "./pages/PaymentPage";
+import ProductDetailsPage from "./pages/ProductDetailsPage";
 
 // CMS Admin Pages
 import CmsDashboard from "./pages/cms/CmsDashboard";
