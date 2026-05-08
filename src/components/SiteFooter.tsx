@@ -1,4 +1,4 @@
-import { Phone, ArrowRight, ArrowUp, MapPin } from "lucide-react";
+import { Phone, ArrowRight, ArrowUp, MapPin, Mail, Clock, Facebook, Instagram, Linkedin, Youtube, Send } from "lucide-react";
 import logoImg from "@/assets/logo-glossy.png";
 import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
@@ -6,16 +6,8 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
-interface MenuItem {
-  id: string;
-  label: string;
-  target: string | null;
-}
-
-interface FooterColumn {
-  title: string;
-  items: MenuItem[];
-}
+interface MenuItem { id: string; label: string; target: string | null; }
+interface FooterColumn { title: string; items: MenuItem[]; }
 
 const defaultFooterLinks: FooterColumn[] = [
   { title: "Services", items: [
@@ -42,18 +34,24 @@ const defaultFooterLinks: FooterColumn[] = [
   ]},
 ];
 
+const socialLinks = [
+  { Icon: Facebook, href: "https://facebook.com", label: "Facebook", color: "hsl(217,90%,60%)" },
+  { Icon: Instagram, href: "https://instagram.com", label: "Instagram", color: "hsl(330,80%,60%)" },
+  { Icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn", color: "hsl(210,90%,55%)" },
+  { Icon: Youtube, href: "https://youtube.com", label: "YouTube", color: "hsl(0,80%,60%)" },
+];
+
 const SiteFooter = () => {
   const [footerColumns, setFooterColumns] = useState<FooterColumn[]>(defaultFooterLinks);
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
-    // Fetch footer menus from DB
     supabase
       .from("cms_menus")
       .select("id, name, location")
       .eq("location", "footer")
       .then(async ({ data: menus }) => {
         if (!menus || menus.length === 0) return;
-
         const columns: FooterColumn[] = await Promise.all(
           menus.map(async (menu) => {
             const { data: items } = await supabase
@@ -62,179 +60,220 @@ const SiteFooter = () => {
               .eq("menu_id", menu.id)
               .is("parent_id", null)
               .order("sort_order");
-            return {
-              title: menu.name,
-              items: (items ?? []) as MenuItem[],
-            };
+            return { title: menu.name, items: (items ?? []) as MenuItem[] };
           })
         );
-
         const nonEmpty = columns.filter(c => c.items.length > 0);
         if (nonEmpty.length > 0) setFooterColumns(nonEmpty);
       });
   }, []);
 
   return (
-    <footer className="relative overflow-hidden">
-      {/* Top gradient line */}
-      <div className="h-px" style={{ background: 'linear-gradient(90deg, transparent, hsl(258,90%,66%), hsl(185,100%,48%), transparent)' }} />
+    <footer className="relative overflow-hidden mt-20">
+      {/* Top accent line */}
+      <div className="h-px bg-gradient-to-r from-transparent via-purple-500/70 to-transparent" />
+      <div className="h-px bg-gradient-to-r from-transparent via-teal-400/40 to-transparent mt-px" />
 
       <div
         className="relative"
-        style={{ background: 'linear-gradient(180deg, hsl(220,42%,4%) 0%, hsl(222,45%,3%) 100%)' }}>
+        style={{ background: 'linear-gradient(180deg, hsl(222,47%,6%) 0%, hsl(224,50%,4%) 50%, hsl(222,47%,3%) 100%)' }}
+      >
+        {/* Ambient blobs */}
+        <div className="absolute top-0 right-0 w-[500px] h-[400px] rounded-full pointer-events-none"
+          style={{ background: 'radial-gradient(ellipse, hsl(258,90%,66%) 0%, transparent 65%)', filter: 'blur(120px)', opacity: 0.10 }} />
+        <div className="absolute bottom-0 left-0 w-[450px] h-[350px] rounded-full pointer-events-none"
+          style={{ background: 'radial-gradient(ellipse, hsl(185,100%,48%) 0%, transparent 65%)', filter: 'blur(110px)', opacity: 0.08 }} />
+        <div className="absolute inset-0 tech-grid-bg opacity-[0.18] pointer-events-none" />
 
-        <div className="absolute inset-0 tech-grid-bg opacity-25" />
-        <div className="absolute top-10 right-10 w-[400px] h-[300px] rounded-full"
-          style={{ background: 'radial-gradient(ellipse, hsl(258,90%,66%) 0%, transparent 65%)', filter: 'blur(120px)', opacity: 0.07 }} />
-        <div className="absolute bottom-10 left-10 w-[350px] h-[250px] rounded-full"
-          style={{ background: 'radial-gradient(ellipse, hsl(185,100%,48%) 0%, transparent 65%)', filter: 'blur(100px)', opacity: 0.06 }} />
-
-        <div className="container mx-auto px-4 pt-16 pb-8 relative">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-10 mb-14">
-
-            {/* Brand */}
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="lg:col-span-2">
-
-              <Link to="/">
-                <div className="flex items-center gap-2.5 mb-5">
-                  <div className="w-12 h-12 rounded-xl overflow-hidden shrink-0"
-                    style={{ filter: 'drop-shadow(0 6px 18px hsl(185,100%,48%,0.5))' }}>
-                    <img src={logoImg} alt="Shahed IT" className="w-full h-full object-contain" />
-                  </div>
-                  <span className="text-2xl font-black" style={{ fontFamily: "'Syne', sans-serif" }}>
-                    <span style={{ background: 'linear-gradient(135deg, hsl(185,100%,48%), hsl(165,80%,45%))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Shahed</span>
-                    <span className="text-foreground"> IT</span>
-                  </span>
-                </div>
-              </Link>
-              <p className="text-foreground/40 text-sm mb-6 leading-relaxed max-w-xs">
-                Professional IT agency delivering premium web development, graphic design & digital marketing solutions from Bangladesh.
-              </p>
-              <div className="space-y-3 text-sm">
-                <motion.a whileHover={{ x: 4 }} href="tel:+8801820060046"
-                  className="flex items-center gap-3 text-foreground/45 hover:text-primary transition-all group">
-                  <span className="w-8 h-8 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors"
-                    style={{ background: 'rgba(139,92,246,0.12)', border: '1px solid rgba(139,92,246,0.20)' }}>
-                    <Phone size={13} style={{ color: 'hsl(258,90%,66%)' }} />
-                  </span>
-                  01820-060046
-                </motion.a>
-                <div className="flex items-center gap-3 text-foreground/35">
-                  <span className="w-8 h-8 rounded-lg flex items-center justify-center"
-                    style={{ background: 'rgba(234,179,8,0.12)', border: '1px solid rgba(234,179,8,0.20)' }}>
-                    <MapPin size={13} style={{ color: 'hsl(45,93%,58%)' }} />
-                  </span>
-                  Sopura, Rajshahi, Bangladesh
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Dynamic Link columns — Gradient Glassmorphism Cards */}
-            <div className="md:col-span-1 lg:col-span-3 grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
-              {footerColumns.map((col, ci) =>
-                <motion.div
-                  key={col.title}
-                  initial={{ opacity: 0, y: 24 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: ci * 0.1 }}
-                  className="relative rounded-xl sm:rounded-2xl p-3 sm:p-5 overflow-hidden group/card"
-                  style={{
-                    background: 'linear-gradient(135deg, rgba(139,92,246,0.08), rgba(6,182,212,0.05), rgba(139,92,246,0.03))',
-                    border: '1px solid rgba(139,92,246,0.15)',
-                    backdropFilter: 'blur(16px)',
-                    WebkitBackdropFilter: 'blur(16px)',
-                    boxShadow: '0 8px 32px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.05)',
-                  }}>
-                  {/* Subtle glow on hover */}
-                  <div className="absolute inset-0 rounded-2xl opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 pointer-events-none"
-                    style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(139,92,246,0.12), transparent 70%)' }} />
-
-                  <h4 className="font-bold text-foreground/90 mb-2 sm:mb-4 text-xs sm:text-sm uppercase tracking-[0.12em] sm:tracking-[0.15em] relative z-10"
-                    style={{ background: 'linear-gradient(90deg, hsl(258,90%,76%), hsl(185,100%,60%))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                    {col.title}
-                  </h4>
-                  <ul className="space-y-1.5 sm:space-y-2.5 text-xs sm:text-sm relative z-10">
-                    {col.items.map((item) =>
-                      <li key={item.id}>
-                        <Link to={item.target ?? "#"}>
-                          <motion.span
-                            whileHover={{ x: 4 }}
-                            className="text-foreground/45 hover:text-foreground/85 transition-all duration-300 flex items-center gap-1.5 group cursor-pointer">
-                            <span className="w-0 h-px group-hover:w-3 transition-all duration-300 rounded-full"
-                              style={{ background: 'linear-gradient(90deg, hsl(258,90%,66%), hsl(185,100%,48%))' }} />
-                            {item.label}
-                          </motion.span>
-                        </Link>
-                      </li>
-                    )}
-                  </ul>
-                </motion.div>
-              )}
-            </div>
-          </div>
-
-          {/* Newsletter */}
+        <div className="container mx-auto px-4 sm:px-6 pt-16 pb-8 relative">
+          {/* Newsletter — top, prominent */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="rounded-2xl p-6 mb-10 flex flex-col md:flex-row items-center gap-5 justify-between"
-            style={{ background: 'linear-gradient(135deg, rgba(139,92,246,0.10), rgba(6,182,212,0.06))', border: '1px solid rgba(139,92,246,0.18)' }}>
-            <div>
-              <h4 className="font-bold text-foreground/85 mb-1">Stay updated with Shahed IT</h4>
-              <p className="text-xs text-foreground/40">Get news, tips and special offers in your inbox.</p>
-            </div>
-            <div className="flex gap-2 w-full md:w-auto">
-              <Input
-                placeholder="Your email address"
-                type="email"
-                className="text-sm h-11 rounded-xl border-white/10 bg-white/5 text-foreground placeholder:text-foreground/30 focus-visible:ring-primary/40 min-w-[220px]" />
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="h-11 w-11 rounded-xl flex items-center justify-center shrink-0 glossy-btn"
-                style={{ background: 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))' }}>
-                <ArrowRight size={16} className="text-white" />
-              </motion.button>
+            className="relative rounded-3xl p-6 sm:p-8 mb-12 overflow-hidden"
+            style={{
+              background: 'linear-gradient(135deg, rgba(139,92,246,0.18), rgba(20,184,166,0.10) 60%, rgba(139,92,246,0.06))',
+              border: '1px solid rgba(139,92,246,0.30)',
+              backdropFilter: 'blur(20px)',
+              boxShadow: '0 12px 40px rgba(139,92,246,0.15), inset 0 1px 0 rgba(255,255,255,0.08)',
+            }}
+          >
+            <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-gradient-to-br from-purple-500/30 to-teal-400/20 blur-3xl pointer-events-none" />
+            <div className="relative flex flex-col md:flex-row items-start md:items-center gap-6 justify-between">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0"
+                  style={{ background: 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))', boxShadow: '0 8px 24px rgba(139,92,246,0.4)' }}>
+                  <Send size={20} className="text-white" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-white text-lg sm:text-xl mb-1">নিউজলেটার সাবস্ক্রাইব করুন</h4>
+                  <p className="text-sm text-white/60">আমাদের নতুন অফার, টিপস ও আপডেট সরাসরি ইনবক্সে পেতে।</p>
+                </div>
+              </div>
+              <form
+                onSubmit={(e) => { e.preventDefault(); setEmail(""); }}
+                className="flex gap-2 w-full md:w-auto"
+              >
+                <Input
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="your@email.com"
+                  type="email"
+                  required
+                  className="text-sm h-12 rounded-xl border-white/15 bg-white/5 text-white placeholder:text-white/40 focus-visible:ring-purple-400 min-w-[260px]"
+                />
+                <motion.button
+                  type="submit"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="h-12 px-5 rounded-xl flex items-center gap-2 shrink-0 text-white font-semibold text-sm shadow-lg"
+                  style={{ background: 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))', boxShadow: '0 8px 24px rgba(139,92,246,0.35)' }}
+                >
+                  Subscribe <ArrowRight size={15} />
+                </motion.button>
+              </form>
             </div>
           </motion.div>
 
-          {/* Bottom bar */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-6" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+          {/* Main grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 mb-12">
+            {/* Brand */}
             <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="flex flex-wrap items-center justify-center sm:justify-start gap-x-2 gap-y-1"
+              className="lg:col-span-4"
             >
-              <span className="text-xs text-foreground/35">© 2026</span>
-              <span className="text-xs font-bold gradient-text tracking-wide">Shahed IT</span>
-              <span className="text-xs text-foreground/20 hidden sm:inline">·</span>
-              <span className="text-xs text-foreground/30">All Rights Reserved.</span>
-              <span className="text-xs text-foreground/20 hidden sm:inline">·</span>
-              <span className="flex items-center gap-1 text-xs text-foreground/30">
+              <Link to="/" className="inline-flex items-center gap-3 mb-5 group">
+                <div className="relative w-12 h-12 shrink-0">
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/40 to-teal-400/40 blur-xl rounded-full" />
+                  <img src={logoImg} alt="Shahed IT" className="relative w-full h-full object-contain drop-shadow-[0_4px_12px_rgba(20,184,166,0.5)]" />
+                </div>
+                <span className="text-2xl font-black tracking-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                  <span style={{ background: 'linear-gradient(135deg, hsl(258,90%,72%), hsl(185,100%,55%))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Shahed</span>
+                  <span className="text-white"> IT</span>
+                </span>
+              </Link>
+
+              <p className="text-white/65 text-sm mb-6 leading-relaxed max-w-sm">
+                Bangladesh-এর premium IT agency — Web Development, Graphic Design, Digital Marketing ও Cloud Hosting এর One-Stop Solution.
+              </p>
+
+              {/* Contact list */}
+              <ul className="space-y-3 text-sm">
+                <li>
+                  <a href="tel:+8801820060046" className="flex items-center gap-3 text-white/75 hover:text-white transition-colors group">
+                    <span className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 transition-colors group-hover:bg-purple-500/25"
+                      style={{ background: 'rgba(139,92,246,0.15)', border: '1px solid rgba(139,92,246,0.30)' }}>
+                      <Phone size={14} className="text-purple-300" />
+                    </span>
+                    <span className="font-medium">01820-060046</span>
+                  </a>
+                </li>
+                <li className="flex items-center gap-3 text-white/75">
+                  <span className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+                    style={{ background: 'rgba(20,184,166,0.15)', border: '1px solid rgba(20,184,166,0.30)' }}>
+                    <Clock size={14} className="text-teal-300" />
+                  </span>
+                  <span>সকাল ১০টা — রাত ১০টা</span>
+                </li>
+                <li>
+                  <a href="mailto:info.shahedit@gmail.com" className="flex items-center gap-3 text-white/75 hover:text-white transition-colors group break-all">
+                    <span className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 transition-colors group-hover:bg-blue-500/25"
+                      style={{ background: 'rgba(59,130,246,0.15)', border: '1px solid rgba(59,130,246,0.30)' }}>
+                      <Mail size={14} className="text-blue-300" />
+                    </span>
+                    info.shahedit@gmail.com
+                  </a>
+                </li>
+                <li className="flex items-center gap-3 text-white/75">
+                  <span className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+                    style={{ background: 'rgba(234,179,8,0.15)', border: '1px solid rgba(234,179,8,0.30)' }}>
+                    <MapPin size={14} className="text-yellow-300" />
+                  </span>
+                  Sopura, Rajshahi, Bangladesh
+                </li>
+              </ul>
+
+              {/* Social */}
+              <div className="flex items-center gap-2.5 mt-6">
+                {socialLinks.map(({ Icon, href, label, color }) => (
+                  <motion.a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    whileHover={{ y: -3, scale: 1.08 }}
+                    whileTap={{ scale: 0.92 }}
+                    className="w-10 h-10 rounded-xl flex items-center justify-center transition-all"
+                    style={{
+                      background: 'rgba(255,255,255,0.04)',
+                      border: '1px solid rgba(255,255,255,0.10)',
+                      color,
+                    }}
+                  >
+                    <Icon size={16} />
+                  </motion.a>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Link columns */}
+            <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-3 gap-6 sm:gap-8">
+              {footerColumns.map((col, ci) => (
+                <motion.div
+                  key={col.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: ci * 0.08 }}
+                >
+                  <h4 className="font-bold text-white text-sm uppercase tracking-[0.18em] mb-5 flex items-center gap-2">
+                    <span className="inline-block w-1 h-4 rounded-full" style={{ background: 'linear-gradient(180deg, hsl(258,90%,66%), hsl(185,100%,48%))' }} />
+                    {col.title}
+                  </h4>
+                  <ul className="space-y-2.5 text-sm">
+                    {col.items.map((item) => (
+                      <li key={item.id}>
+                        <Link to={item.target ?? "#"} className="group inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors">
+                          <span className="w-0 h-px group-hover:w-3 transition-all duration-300 rounded-full"
+                            style={{ background: 'linear-gradient(90deg, hsl(258,90%,66%), hsl(185,100%,48%))' }} />
+                          <span className="group-hover:translate-x-0.5 transition-transform">{item.label}</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Bottom bar */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-white/[0.08]">
+            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-x-2 gap-y-1 text-xs">
+              <span className="text-white/55">© {new Date().getFullYear()}</span>
+              <span className="font-bold tracking-wide" style={{ background: 'linear-gradient(90deg, hsl(258,90%,72%), hsl(185,100%,55%))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Shahed IT</span>
+              <span className="text-white/30 hidden sm:inline">·</span>
+              <span className="text-white/55">All Rights Reserved.</span>
+              <span className="text-white/30 hidden sm:inline">·</span>
+              <span className="flex items-center gap-1 text-white/55">
                 Designed &amp; Developed by
-                <span className="relative ml-1 font-semibold text-xs"
-                  style={{ background: 'linear-gradient(90deg, hsl(258,90%,70%), hsl(185,100%,55%))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                <span className="font-semibold ml-1" style={{ background: 'linear-gradient(90deg, hsl(258,90%,72%), hsl(185,100%,55%))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                   Shahed IT
-                  <span className="absolute -bottom-0.5 left-0 w-full h-px rounded-full"
-                    style={{ background: 'linear-gradient(90deg, hsl(258,90%,66%), hsl(185,100%,48%))' }} />
                 </span>
               </span>
-            </motion.div>
+            </div>
             <motion.button
-              whileHover={{ y: -3, scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
+              whileHover={{ y: -3, scale: 1.08 }}
+              whileTap={{ scale: 0.92 }}
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="w-10 h-10 rounded-xl flex items-center justify-center glossy-btn shrink-0"
-              style={{ background: 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))' }}
+              aria-label="Back to top"
+              className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 text-white shadow-lg"
+              style={{ background: 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))', boxShadow: '0 8px 24px rgba(139,92,246,0.35)' }}
             >
-              <ArrowUp size={16} className="text-white" />
+              <ArrowUp size={16} />
             </motion.button>
           </div>
         </div>
