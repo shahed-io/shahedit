@@ -674,6 +674,29 @@ interface ServiceGroup {
   packages: ServicePackageRow[];
 }
 
+const FilterChip = ({ active, onClick, label }: { active: boolean; onClick: () => void; label: string }) => (
+  <motion.button
+    whileTap={{ scale: 0.95 }}
+    onClick={onClick}
+    className="px-4 py-1.5 rounded-full text-xs font-bold transition-all"
+    style={
+      active
+        ? {
+            background: "linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))",
+            color: "white",
+            boxShadow: "0 4px 16px rgba(139,92,246,0.35)",
+          }
+        : {
+            background: "rgba(255,255,255,0.04)",
+            border: "1px solid rgba(255,255,255,0.10)",
+            color: "rgba(255,255,255,0.7)",
+          }
+    }
+  >
+    {label}
+  </motion.button>
+);
+
 // ─── Products Section ────────────────────────────────────────────────────────
 const ProductsSection = () => {
   const [groups, setGroups] = useState<ServiceGroup[]>([]);
