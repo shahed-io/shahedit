@@ -66,11 +66,13 @@ const AdminLogin = () => {
               transition={{ type: "spring", stiffness: 180, delay: 0.2 }}
               className="relative mb-5"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/40 to-teal-500/40 blur-2xl rounded-full" />
+              {/* Soft aurora glow matching brand background */}
+              <div className="absolute -inset-6 bg-[conic-gradient(from_180deg_at_50%_50%,#a855f7_0deg,#14b8a6_120deg,#6366f1_240deg,#a855f7_360deg)] opacity-40 blur-3xl rounded-full animate-pulse" />
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/30 to-teal-400/30 blur-2xl rounded-full" />
               <img
                 src={logoImg}
                 alt="Shahed IT Logo"
-                className="relative w-24 h-24 object-contain drop-shadow-[0_8px_24px_rgba(139,92,246,0.45)]"
+                className="relative w-24 h-24 object-contain drop-shadow-[0_8px_24px_rgba(20,184,166,0.55)]"
               />
             </motion.div>
             <h1 className="text-2xl font-bold text-white mb-1 tracking-tight">Admin Panel</h1>
