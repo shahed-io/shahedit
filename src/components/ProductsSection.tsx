@@ -1,7 +1,7 @@
-import { Star, ArrowRight, Zap, CreditCard, MessageCircle, X, Copy, Smartphone, Send, CheckCircle, ChevronRight, Info, PenLine } from "lucide-react";
+import { Star, ArrowRight, Zap, CreditCard, MessageCircle, X, Copy, Smartphone, Send, CheckCircle, ChevronRight, Info, PenLine, Search } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { sanitizeHtml } from "@/lib/sanitize";
@@ -678,6 +678,8 @@ interface ServiceGroup {
 const ProductsSection = () => {
   const [groups, setGroups] = useState<ServiceGroup[]>([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [activeCategory, setActiveCategory] = useState<string>("all");
 
   useEffect(() => {
     supabase
@@ -699,6 +701,23 @@ const ProductsSection = () => {
         setLoading(false);
       });
   }, []);
+
+  const filteredGroups = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return groups
+      .filter(g => activeCategory === "all" || g.service_id === activeCategory)
+      .map(g => ({
+        ...g,
+        packages: g.packages.filter(p => {
+          if (!q) return true;
+          const hay = `${p.title} ${p.description ?? ""} ${g.service_title}`.toLowerCase();
+          return hay.includes(q);
+        }),
+      }))
+      .filter(g => g.packages.length > 0);
+  }, [groups, search, activeCategory]);
+
+  const totalMatches = filteredGroups.reduce((sum, g) => sum + g.packages.length, 0);
 
   if (loading) return (
     <section className="py-24">
