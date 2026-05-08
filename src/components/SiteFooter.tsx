@@ -151,7 +151,7 @@ const SiteFooter = () => {
                   <img src={logoImg} alt="Shahed IT" className="relative w-full h-full object-contain drop-shadow-[0_4px_12px_rgba(20,184,166,0.5)]" />
                 </div>
                 <span className="text-2xl font-black tracking-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                  <span style={{ background: 'linear-gradient(135deg, hsl(258,90%,72%), hsl(185,100%,55%))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Shahed</span>
+                  <span style={{ background: 'linear-gradient(135deg, hsl(185,100%,55%), hsl(165,80%,50%))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Shahed</span>
                   <span className="text-white"> IT</span>
                 </span>
               </Link>
@@ -254,7 +254,7 @@ const SiteFooter = () => {
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-white/[0.08]">
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-x-2 gap-y-1 text-xs">
               <span className="text-white/55">© {new Date().getFullYear()}</span>
-              <span className="font-bold tracking-wide" style={{ background: 'linear-gradient(90deg, hsl(258,90%,72%), hsl(185,100%,55%))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Shahed IT</span>
+              <span className="font-bold tracking-wide" style={{ background: 'linear-gradient(90deg, hsl(185,100%,55%), hsl(165,80%,50%))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Shahed IT</span>
               <span className="text-white/30 hidden sm:inline">·</span>
               <span className="text-white/55">All Rights Reserved.</span>
               <span className="text-white/30 hidden sm:inline">·</span>
