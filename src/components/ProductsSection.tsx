@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { sanitizeHtml } from "@/lib/sanitize";
+import { StarRating } from "@/components/StarRating";
+import { useProductRating } from "@/hooks/useProductRatings";
 
 export interface ServicePackageRow {
   id: string;
@@ -529,6 +531,7 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
     ? Math.round((1 - pkg.price / pkg.original_price) * 100)
     : null;
   const [showPayment, setShowPayment] = useState(false);
+  const { stat: ratingStat } = useProductRating(pkg.id);
 
   const waMessage = encodeURIComponent(
     `হ্যালো! আমি "${pkg.title}" প্যাকেজটি অর্ডার করতে চাই।${pkg.price ? ` মূল্য: ৳${pkg.price.toLocaleString()}` : ""} অনুগ্রহ করে আরও তথ্য দিন।`
@@ -607,10 +610,13 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
             {pkg.title}
           </h3>
 
-          <div className="flex items-center gap-0.5 mb-2">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} size={10} style={{ color: 'hsl(45,93%,58%)' }} fill="hsl(45,93%,58%)" />
-            ))}
+          <div className="mb-2">
+            <StarRating
+              average={ratingStat.average}
+              count={ratingStat.count}
+              size={11}
+              showText={ratingStat.count > 0}
+            />
           </div>
 
           <div className="flex items-baseline gap-2 mb-4 mt-auto">
