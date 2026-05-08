@@ -5,71 +5,85 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { useAnalyticsInjection } from "@/hooks/useAnalyticsInjection";
+import { lazy, Suspense } from "react";
+
+// Eagerly loaded (most-visited / lightweight)
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import AdminLayout from "./components/admin/AdminLayout";
-import AdminLeads from "./pages/admin/AdminLeads";
-import AdminServices from "./pages/admin/AdminServices";
-import AdminSettings from "./pages/admin/AdminSettings";
-import AdminAISupport from "./pages/admin/AdminAISupport";
-import AdminServicePackages from "./pages/admin/AdminServicePackages";
-import {
-  AdminPortfolio, AdminBlog, AdminTestimonials, AdminTeam,
-  AdminClients, AdminPricing, AdminFAQ, AdminCareers
-} from "./pages/admin/AdminCrud";
-import AdminPayments from "./pages/admin/AdminPayments";
-import AdminUsers from "./pages/admin/AdminUsers";
-import AdminFooterEditor from "./pages/admin/AdminFooterEditor";
-import AdminClientDocuments from "./pages/admin/AdminClientDocuments";
-
-// Auth pages
 import LoginPage from "./pages/LoginPage";
-import DashboardPage from "./pages/DashboardPage";
-import ForgotPasswordPage from "./pages/ForgotPasswordPage";
-import ResetPasswordPage from "./pages/ResetPasswordPage";
-import ProfilePage from "./pages/ProfilePage";
+
+// --- Lazy-loaded routes ---------------------------------------------------
+// Admin
+const AdminLayout = lazy(() => import("./components/admin/AdminLayout"));
+const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
+const AdminLeads = lazy(() => import("./pages/admin/AdminLeads"));
+const AdminServices = lazy(() => import("./pages/admin/AdminServices"));
+const AdminSettings = lazy(() => import("./pages/admin/AdminSettings"));
+const AdminAISupport = lazy(() => import("./pages/admin/AdminAISupport"));
+const AdminServicePackages = lazy(() => import("./pages/admin/AdminServicePackages"));
+const AdminPayments = lazy(() => import("./pages/admin/AdminPayments"));
+const AdminUsers = lazy(() => import("./pages/admin/AdminUsers"));
+const AdminFooterEditor = lazy(() => import("./pages/admin/AdminFooterEditor"));
+const AdminClientDocuments = lazy(() => import("./pages/admin/AdminClientDocuments"));
+const AdminPortfolio = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminPortfolio })));
+const AdminBlog = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminBlog })));
+const AdminTestimonials = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminTestimonials })));
+const AdminTeam = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminTeam })));
+const AdminClients = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminClients })));
+const AdminPricing = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminPricing })));
+const AdminFAQ = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminFAQ })));
+const AdminCareers = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminCareers })));
+
+// Auth / user pages
+const DashboardPage = lazy(() => import("./pages/DashboardPage"));
+const ForgotPasswordPage = lazy(() => import("./pages/ForgotPasswordPage"));
+const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage"));
+const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 
 // Public pages
-import ServicesPage from "./pages/ServicesPage";
-import PortfolioPage from "./pages/PortfolioPage";
-import BlogPage from "./pages/BlogPage";
-import AboutPage from "./pages/AboutPage";
-import ContactPage from "./pages/ContactPage";
-import FAQPage from "./pages/FAQPage";
-import PricingPage from "./pages/PricingPage";
-import CareersPage from "./pages/CareersPage";
-import GetQuotePage from "./pages/GetQuotePage";
-import TermsPage from "./pages/TermsPage";
-import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
-import RefundPolicyPage from "./pages/RefundPolicyPage";
-import DeliveryPolicyPage from "./pages/DeliveryPolicyPage";
-import ComplaintPolicyPage from "./pages/ComplaintPolicyPage";
-import PaymentPage from "./pages/PaymentPage";
-import ProductDetailsPage from "./pages/ProductDetailsPage";
+const ServicesPage = lazy(() => import("./pages/ServicesPage"));
+const PortfolioPage = lazy(() => import("./pages/PortfolioPage"));
+const BlogPage = lazy(() => import("./pages/BlogPage"));
+const AboutPage = lazy(() => import("./pages/AboutPage"));
+const ContactPage = lazy(() => import("./pages/ContactPage"));
+const FAQPage = lazy(() => import("./pages/FAQPage"));
+const PricingPage = lazy(() => import("./pages/PricingPage"));
+const CareersPage = lazy(() => import("./pages/CareersPage"));
+const GetQuotePage = lazy(() => import("./pages/GetQuotePage"));
+const TermsPage = lazy(() => import("./pages/TermsPage"));
+const PrivacyPolicyPage = lazy(() => import("./pages/PrivacyPolicyPage"));
+const RefundPolicyPage = lazy(() => import("./pages/RefundPolicyPage"));
+const DeliveryPolicyPage = lazy(() => import("./pages/DeliveryPolicyPage"));
+const ComplaintPolicyPage = lazy(() => import("./pages/ComplaintPolicyPage"));
+const PaymentPage = lazy(() => import("./pages/PaymentPage"));
+const ProductDetailsPage = lazy(() => import("./pages/ProductDetailsPage"));
 
-// CMS Admin Pages
-import CmsDashboard from "./pages/cms/CmsDashboard";
-import ContentListPage from "./pages/cms/ContentListPage";
-import ContentEditorPage from "./pages/cms/ContentEditorPage";
-import MediaLibraryPage from "./pages/cms/MediaLibraryPage";
-import TaxonomyPage from "./pages/cms/TaxonomyPage";
-import MenusPage from "./pages/cms/MenusPage";
-import SeoManagerPage from "./pages/cms/SeoManagerPage";
-import CmsSettingsPage from "./pages/cms/CmsSettingsPage";
-import CmsUsersPage from "./pages/cms/CmsUsersPage";
-import AuditLogsPage from "./pages/cms/AuditLogsPage";
-
-// CMS Public Pages
-import CmsBlogPublicPage from "./pages/cms/CmsBlogPublicPage";
-import PublicContentPage from "./pages/cms/PublicContentPage";
+// CMS
+const CmsDashboard = lazy(() => import("./pages/cms/CmsDashboard"));
+const ContentListPage = lazy(() => import("./pages/cms/ContentListPage"));
+const ContentEditorPage = lazy(() => import("./pages/cms/ContentEditorPage"));
+const MediaLibraryPage = lazy(() => import("./pages/cms/MediaLibraryPage"));
+const TaxonomyPage = lazy(() => import("./pages/cms/TaxonomyPage"));
+const MenusPage = lazy(() => import("./pages/cms/MenusPage"));
+const SeoManagerPage = lazy(() => import("./pages/cms/SeoManagerPage"));
+const CmsSettingsPage = lazy(() => import("./pages/cms/CmsSettingsPage"));
+const CmsUsersPage = lazy(() => import("./pages/cms/CmsUsersPage"));
+const AuditLogsPage = lazy(() => import("./pages/cms/AuditLogsPage"));
+const CmsBlogPublicPage = lazy(() => import("./pages/cms/CmsBlogPublicPage"));
+const PublicContentPage = lazy(() => import("./pages/cms/PublicContentPage"));
 
 const queryClient = new QueryClient();
 
+const PageFallback = () => (
+  <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+    <div className="w-8 h-8 border-2 border-purple-500 border-t-transparent rounded-full animate-spin" />
+  </div>
+);
+
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading, isAdmin } = useAuth();
-  if (loading) return <div className="min-h-screen bg-slate-950 flex items-center justify-center"><div className="w-8 h-8 border-2 border-purple-500 border-t-transparent rounded-full animate-spin" /></div>;
+  if (loading) return <PageFallback />;
   if (!user || !isAdmin) return <Navigate to="/admin/login" replace />;
   return <>{children}</>;
 };
@@ -125,42 +139,44 @@ const CmsRoutes = () => (
 const AppWithAnalytics = () => {
   useAnalyticsInjection();
   return (
-    <Routes>
-      {/* Auth Routes */}
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-      <Route path="/reset-password" element={<ResetPasswordPage />} />
-      <Route path="/profile" element={<ProfilePage />} />
-      <Route path="/dashboard" element={<DashboardPage />} />
-      {/* Public Routes */}
-      <Route path="/" element={<Index />} />
-      <Route path="/services" element={<ServicesPage />} />
-      <Route path="/portfolio" element={<PortfolioPage />} />
-      <Route path="/blog" element={<BlogPage />} />
-      <Route path="/about" element={<AboutPage />} />
-      <Route path="/contact" element={<ContactPage />} />
-      <Route path="/faq" element={<FAQPage />} />
-      <Route path="/pricing" element={<PricingPage />} />
-      <Route path="/careers" element={<CareersPage />} />
-      <Route path="/get-quote" element={<GetQuotePage />} />
-      <Route path="/terms" element={<TermsPage />} />
-      <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-      <Route path="/refund-policy" element={<RefundPolicyPage />} />
-      <Route path="/delivery-policy" element={<DeliveryPolicyPage />} />
-      <Route path="/complaint-policy" element={<ComplaintPolicyPage />} />
-      <Route path="/payment" element={<PaymentPage />} />
-      <Route path="/product/:id" element={<ProductDetailsPage />} />
-      {/* CMS Public Routes */}
-      <Route path="/cms-blog" element={<CmsBlogPublicPage />} />
-      <Route path="/post/:slug" element={<PublicContentPage type="post" />} />
-      <Route path="/page/:slug" element={<PublicContentPage type="page" />} />
-      {/* Admin Routes */}
-      <Route path="/admin/login" element={<AdminLogin />} />
-      <Route path="/admin/*" element={<AdminRoutes />} />
-      {/* CMS Routes */}
-      <Route path="/cms/*" element={<CmsRoutes />} />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+    <Suspense fallback={<PageFallback />}>
+      <Routes>
+        {/* Auth Routes */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+        {/* Public Routes */}
+        <Route path="/" element={<Index />} />
+        <Route path="/services" element={<ServicesPage />} />
+        <Route path="/portfolio" element={<PortfolioPage />} />
+        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/faq" element={<FAQPage />} />
+        <Route path="/pricing" element={<PricingPage />} />
+        <Route path="/careers" element={<CareersPage />} />
+        <Route path="/get-quote" element={<GetQuotePage />} />
+        <Route path="/terms" element={<TermsPage />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+        <Route path="/refund-policy" element={<RefundPolicyPage />} />
+        <Route path="/delivery-policy" element={<DeliveryPolicyPage />} />
+        <Route path="/complaint-policy" element={<ComplaintPolicyPage />} />
+        <Route path="/payment" element={<PaymentPage />} />
+        <Route path="/product/:id" element={<ProductDetailsPage />} />
+        {/* CMS Public Routes */}
+        <Route path="/cms-blog" element={<CmsBlogPublicPage />} />
+        <Route path="/post/:slug" element={<PublicContentPage type="post" />} />
+        <Route path="/page/:slug" element={<PublicContentPage type="page" />} />
+        {/* Admin Routes */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/*" element={<AdminRoutes />} />
+        {/* CMS Routes */}
+        <Route path="/cms/*" element={<CmsRoutes />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Suspense>
   );
 };
 
