@@ -58,16 +58,21 @@ const AdminLogin = () => {
         className="relative w-full max-w-md"
       >
         <div className="bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl p-8 shadow-2xl">
-          <div className="text-center mb-8">
+          <div className="flex flex-col items-center text-center mb-8">
             <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: "spring", delay: 0.2 }}
-              className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg overflow-hidden bg-gradient-to-br from-purple-500/20 to-teal-500/20 p-2"
+              initial={{ scale: 0, rotate: -10 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ type: "spring", stiffness: 180, delay: 0.2 }}
+              className="relative mb-5"
             >
-              <img src={logoImg} alt="Shahed IT Logo" className="w-full h-full object-contain" />
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/40 to-teal-500/40 blur-2xl rounded-full" />
+              <img
+                src={logoImg}
+                alt="Shahed IT Logo"
+                className="relative w-24 h-24 object-contain drop-shadow-[0_8px_24px_rgba(139,92,246,0.45)]"
+              />
             </motion.div>
-            <h1 className="text-2xl font-bold text-white mb-1">Admin Panel</h1>
+            <h1 className="text-2xl font-bold text-white mb-1 tracking-tight">Admin Panel</h1>
             <p className="text-white/60 text-sm">Shahed IT — Secure Login</p>
           </div>
 
