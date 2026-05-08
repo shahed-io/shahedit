@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard, Settings, Users, Briefcase, FolderOpen, FileText,
   MessageSquare, Star, UserCheck, Building2, DollarSign, HelpCircle,
-  Inbox, ChevronLeft, Menu, LogOut, Bell, Shield, Cpu, Package, CreditCard, LayoutTemplate, Search
+  Inbox, ChevronLeft, Menu, LogOut, Bell, Shield, Package, CreditCard, LayoutTemplate, Search
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
