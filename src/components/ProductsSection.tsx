@@ -243,7 +243,7 @@ export const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose
 };
 
 // ─── Custom Order Form ────────────────────────────────────────────────────────
-const CustomOrderForm = ({ pkg, c, onClose }: {
+export const CustomOrderForm = ({ pkg, c, onClose }: {
   pkg: ServicePackageRow;
   c: { color: string; bg: string; border: string };
   onClose: () => void;
