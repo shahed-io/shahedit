@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { toast } from "sonner";
+import logoImg from "@/assets/logo-glossy.png";
 
 const navItems = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/admin" },
@@ -65,8 +66,8 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                 exit={{ opacity: 0, x: -10 }}
                 className="flex items-center gap-2"
               >
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-teal-500 flex items-center justify-center">
-                  <Cpu size={16} className="text-white" />
+                <div className="w-8 h-8 shrink-0 drop-shadow-[0_3px_10px_rgba(20,184,166,0.45)]">
+                  <img src={logoImg} alt="Shahed IT Logo" className="w-full h-full object-contain" />
                 </div>
                 <span className="text-white font-bold text-sm">Shahed IT</span>
               </motion.div>
