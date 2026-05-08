@@ -67,26 +67,20 @@
   body {
     @apply text-foreground antialiased;
     font-family: 'Inter', sans-serif;
-    background-color: hsl(220, 40%, 5%);
+    background-color: hsl(225, 45%, 6%);
     background-image:
-      /* Top-left big purple glow */
-      radial-gradient(ellipse 70% 60% at -5% -5%, hsla(258, 90%, 66%, 0.20) 0%, transparent 60%),
-      /* Top-right cyan glow */
-      radial-gradient(ellipse 55% 50% at 105% 0%, hsla(185, 100%, 48%, 0.15) 0%, transparent 55%),
-      /* Center subtle blue */
-      radial-gradient(ellipse 90% 70% at 50% 30%, hsla(220, 40%, 7%, 0.95) 0%, transparent 75%),
-      /* Bottom-left pink hint */
-      radial-gradient(ellipse 60% 50% at -10% 100%, hsla(315, 80%, 65%, 0.10) 0%, transparent 55%),
-      /* Bottom-right purple */
-      radial-gradient(ellipse 65% 55% at 110% 100%, hsla(258, 90%, 66%, 0.12) 0%, transparent 55%),
-      /* Grid lines */
-      linear-gradient(rgba(139, 92, 246, 0.035) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(139, 92, 246, 0.035) 1px, transparent 1px),
-      /* Base */
-      linear-gradient(180deg, hsl(220, 42%, 5%) 0%, hsl(222, 38%, 4%) 100%);
+      /* Subtle right-side teal glow */
+      radial-gradient(ellipse 50% 60% at 100% 50%, hsla(190, 80%, 35%, 0.12) 0%, transparent 65%),
+      /* Soft top vignette */
+      radial-gradient(ellipse 80% 40% at 50% 0%, hsla(225, 50%, 10%, 0.6) 0%, transparent 70%),
+      /* Fine grid lines */
+      linear-gradient(rgba(148, 163, 184, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(148, 163, 184, 0.04) 1px, transparent 1px),
+      /* Deep midnight base */
+      linear-gradient(180deg, hsl(225, 45%, 6%) 0%, hsl(222, 50%, 4%) 100%);
     background-size:
-      100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%,
-      60px 60px, 60px 60px,
+      100% 100%, 100% 100%,
+      48px 48px, 48px 48px,
       100% 100%;
     background-attachment: fixed;
     min-height: 100vh;
