@@ -653,18 +653,6 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
         </div>
       </motion.div>
 
-      {/* Details Modal */}
-      <AnimatePresence>
-        {showDetails && (
-          <DetailsModal
-            pkg={pkg}
-            c={c}
-            onClose={() => setShowDetails(false)}
-            onPay={() => { setShowDetails(false); setTimeout(() => setShowPayment(true), 100); }}
-          />
-        )}
-      </AnimatePresence>
-
       {/* Payment Modal */}
       <AnimatePresence>
         {showPayment && <PaymentModal pkg={pkg} onClose={() => setShowPayment(false)} />}
