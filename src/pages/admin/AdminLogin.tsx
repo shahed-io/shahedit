@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { motion } from "framer-motion";
@@ -10,17 +10,35 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { lovable } from "@/integrations/lovable";
 
+const ADMIN_EMAIL = "info.shahedit@gmail.com";
+
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { signIn } = useAuth();
+  const { signIn, signOut, user, isAdmin, loading: authLoading } = useAuth();
   const navigate = useNavigate();
+
+  // If already logged in as admin, skip login. If logged in but not admin, kick them out.
+  useEffect(() => {
+    if (authLoading) return;
+    if (!user) return;
+    if (isAdmin && user.email?.toLowerCase() === ADMIN_EMAIL) {
+      navigate("/admin", { replace: true });
+    } else {
+      toast.error("This account is not authorized to access the admin panel.");
+      signOut();
+    }
+  }, [user, isAdmin, authLoading, navigate, signOut]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) { toast.error("Please fill in all fields"); return; }
+    if (email.trim().toLowerCase() !== ADMIN_EMAIL) {
+      toast.error("Only the authorized admin email can sign in here.");
+      return;
+    }
     setLoading(true);
     const { error } = await signIn(email, password);
     setLoading(false);
@@ -135,7 +153,8 @@ const AdminLogin = () => {
             onClick={async () => {
               setLoading(true);
               const result = await lovable.auth.signInWithOAuth("google", {
-                redirect_uri: window.location.origin + "/admin",
+                redirect_uri: window.location.origin + "/admin/login",
+                extraParams: { prompt: "select_account", login_hint: ADMIN_EMAIL },
               });
               if (result.error) {
                 setLoading(false);
