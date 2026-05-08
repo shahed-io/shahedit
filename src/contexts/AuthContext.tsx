@@ -42,12 +42,41 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setRole(data?.role as AppRole ?? null);
   };
 
+  const syncProfileFromOAuth = async (u: User) => {
+    const meta = u.user_metadata ?? {};
+    const oauthName = meta.full_name ?? meta.name ?? null;
+    const oauthAvatar = meta.avatar_url ?? meta.picture ?? null;
+    if (!oauthName && !oauthAvatar) return;
+    const { data: existing } = await supabase
+      .from("profiles")
+      .select("id, full_name, avatar_url")
+      .eq("user_id", u.id)
+      .maybeSingle();
+    if (!existing) {
+      await supabase.from("profiles").insert({
+        user_id: u.id,
+        full_name: oauthName,
+        avatar_url: oauthAvatar,
+      });
+      return;
+    }
+    const patch: Record<string, string> = {};
+    if (oauthName && !existing.full_name) patch.full_name = oauthName;
+    if (oauthAvatar && !existing.avatar_url) patch.avatar_url = oauthAvatar;
+    if (Object.keys(patch).length) {
+      await supabase.from("profiles").update(patch).eq("user_id", u.id);
+    }
+  };
+
   useEffect(() => {
-    supabase.auth.onAuthStateChange((_event, session) => {
+    supabase.auth.onAuthStateChange((event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
         setTimeout(() => fetchRole(session.user.id), 0);
+        if (event === "SIGNED_IN") {
+          setTimeout(() => syncProfileFromOAuth(session.user), 0);
+        }
       } else {
         setRole(null);
       }
