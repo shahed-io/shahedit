@@ -1,7 +1,7 @@
-import { Star, ArrowRight, Zap, CreditCard, MessageCircle, X, Copy, Smartphone, Send, CheckCircle, ChevronRight, Info, PenLine } from "lucide-react";
+import { Star, ArrowRight, Zap, CreditCard, MessageCircle, X, Copy, Smartphone, Send, CheckCircle, ChevronRight, Info, PenLine, Search } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { sanitizeHtml } from "@/lib/sanitize";
@@ -674,10 +674,35 @@ interface ServiceGroup {
   packages: ServicePackageRow[];
 }
 
+const FilterChip = ({ active, onClick, label }: { active: boolean; onClick: () => void; label: string }) => (
+  <motion.button
+    whileTap={{ scale: 0.95 }}
+    onClick={onClick}
+    className="px-4 py-1.5 rounded-full text-xs font-bold transition-all"
+    style={
+      active
+        ? {
+            background: "linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))",
+            color: "white",
+            boxShadow: "0 4px 16px rgba(139,92,246,0.35)",
+          }
+        : {
+            background: "rgba(255,255,255,0.04)",
+            border: "1px solid rgba(255,255,255,0.10)",
+            color: "rgba(255,255,255,0.7)",
+          }
+    }
+  >
+    {label}
+  </motion.button>
+);
+
 // ─── Products Section ────────────────────────────────────────────────────────
 const ProductsSection = () => {
   const [groups, setGroups] = useState<ServiceGroup[]>([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [activeCategory, setActiveCategory] = useState<string>("all");
 
   useEffect(() => {
     supabase
@@ -699,6 +724,23 @@ const ProductsSection = () => {
         setLoading(false);
       });
   }, []);
+
+  const filteredGroups = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return groups
+      .filter(g => activeCategory === "all" || g.service_id === activeCategory)
+      .map(g => ({
+        ...g,
+        packages: g.packages.filter(p => {
+          if (!q) return true;
+          const hay = `${p.title} ${p.description ?? ""} ${g.service_title}`.toLowerCase();
+          return hay.includes(q);
+        }),
+      }))
+      .filter(g => g.packages.length > 0);
+  }, [groups, search, activeCategory]);
+
+  const totalMatches = filteredGroups.reduce((sum, g) => sum + g.packages.length, 0);
 
   if (loading) return (
     <section className="py-24">
@@ -757,36 +799,104 @@ const ProductsSection = () => {
           </motion.a>
         </div>
 
-        {/* Per-service groups */}
-        <div className="space-y-20">
-          {groups.map((group, gi) => {
-            const sc = sectionColors[gi % sectionColors.length];
-            return (
-              <motion.div
-                key={group.service_id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 0.5 }}
+        {/* Search + Category filter */}
+        <div className="mb-12 space-y-4">
+          <div className="relative max-w-xl mx-auto">
+            <Search
+              size={18}
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/40 pointer-events-none"
+            />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value.slice(0, 100))}
+              placeholder="প্রোডাক্ট খুঁজুন... (নাম, বিবরণ, ক্যাটাগরি)"
+              className="w-full pl-11 pr-10 py-3 rounded-2xl text-sm text-foreground placeholder:text-foreground/40 focus:outline-none transition-all"
+              style={{
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(255,255,255,0.10)",
+                backdropFilter: "blur(10px)",
+              }}
+            />
+            {search && (
+              <button
+                type="button"
+                onClick={() => setSearch("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/40 hover:text-foreground p-1 rounded-full hover:bg-white/10 transition"
+                aria-label="Clear search"
               >
-                {/* Group heading */}
-                <div className="flex items-center gap-4 mb-8">
-                  <div className="h-px flex-1 max-w-8 rounded-full" style={{ background: sc.accent }} />
-                  <h3 className="text-xl md:text-2xl font-black" style={{ color: sc.accent }}>
-                    {group.service_title}
-                  </h3>
-                  <div className="h-px flex-1 rounded-full" style={{ background: `linear-gradient(90deg, ${sc.accent}50, transparent)` }} />
-                </div>
+                <X size={14} />
+              </button>
+            )}
+          </div>
 
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                  {group.packages.map((pkg, i) => (
-                    <ProductCard key={pkg.id} pkg={pkg} index={i} />
-                  ))}
-                </div>
-              </motion.div>
-            );
-          })}
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <FilterChip
+              active={activeCategory === "all"}
+              onClick={() => setActiveCategory("all")}
+              label="সব"
+            />
+            {groups.map((g) => (
+              <FilterChip
+                key={g.service_id}
+                active={activeCategory === g.service_id}
+                onClick={() => setActiveCategory(g.service_id)}
+                label={g.service_title}
+              />
+            ))}
+          </div>
+
+          {(search || activeCategory !== "all") && (
+            <p className="text-center text-xs text-foreground/50">
+              {totalMatches > 0
+                ? `${totalMatches}টি প্রোডাক্ট পাওয়া গেছে`
+                : "কোনো প্রোডাক্ট পাওয়া যায়নি"}
+            </p>
+          )}
         </div>
+
+        {/* Per-service groups */}
+        {filteredGroups.length === 0 ? (
+          <div className="text-center py-20 text-foreground/50">
+            <p className="text-lg mb-2">কোনো প্রোডাক্ট পাওয়া যায়নি</p>
+            <button
+              onClick={() => { setSearch(""); setActiveCategory("all"); }}
+              className="text-sm font-semibold text-primary hover:underline"
+            >
+              ফিল্টার রিসেট করুন
+            </button>
+          </div>
+        ) : (
+          <div className="space-y-20">
+            {filteredGroups.map((group, gi) => {
+              const sc = sectionColors[gi % sectionColors.length];
+              return (
+                <motion.div
+                  key={group.service_id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-80px" }}
+                  transition={{ duration: 0.5 }}
+                >
+                  {/* Group heading */}
+                  <div className="flex items-center gap-4 mb-8">
+                    <div className="h-px flex-1 max-w-8 rounded-full" style={{ background: sc.accent }} />
+                    <h3 className="text-xl md:text-2xl font-black" style={{ color: sc.accent }}>
+                      {group.service_title}
+                    </h3>
+                    <div className="h-px flex-1 rounded-full" style={{ background: `linear-gradient(90deg, ${sc.accent}50, transparent)` }} />
+                  </div>
+
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                    {group.packages.map((pkg, i) => (
+                      <ProductCard key={pkg.id} pkg={pkg} index={i} />
+                    ))}
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </section>
   );
