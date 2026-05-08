@@ -93,10 +93,11 @@ export default function DashboardPage() {
   const [payments, setPayments] = useState<Payment[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [documents, setDocuments] = useState<ClientDocument[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  const [activeTab, setActiveTab] = useState<"overview" | "quotes" | "payments" | "documents" | "profile">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "orders" | "quotes" | "payments" | "documents" | "profile">("overview");
   const [notifOpen, setNotifOpen] = useState(false);
   const notifRef = useRef<HTMLDivElement>(null);
 
