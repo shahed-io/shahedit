@@ -147,8 +147,7 @@ const SiteFooter = () => {
             >
               <Link to="/" className="inline-flex items-center gap-3 mb-5 group">
                 <div className="relative w-12 h-12 shrink-0">
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/40 to-teal-400/40 blur-xl rounded-full" />
-                  <img src={logoImg} alt="Shahed IT" className="relative w-full h-full object-contain drop-shadow-[0_4px_12px_rgba(20,184,166,0.5)]" />
+                  <img src={logoImg} alt="Shahed IT" className="w-full h-full object-contain drop-shadow-[0_4px_12px_rgba(20,184,166,0.5)]" />
                 </div>
                 <span className="text-2xl font-black tracking-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
                   <span style={{ background: 'linear-gradient(135deg, hsl(185,100%,55%), hsl(165,80%,50%))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Shahed</span>
