@@ -25,6 +25,7 @@ export default function ProductDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"details" | "custom">("details");
   const [showPayment, setShowPayment] = useState(false);
+  const { stat: ratingStat, refresh: refreshRating } = useProductRating(id);
 
   useEffect(() => {
     if (!id) return;
@@ -158,11 +159,8 @@ export default function ProductDetailsPage() {
               {pkg.title}
             </h1>
 
-            <div className="flex items-center gap-1 mb-5">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} size={16} style={{ color: 'hsl(45,93%,58%)' }} fill="hsl(45,93%,58%)" />
-              ))}
-              <span className="text-sm text-foreground/50 ml-2">৫.০ রেটিং</span>
+            <div className="mb-5">
+              <StarRating average={ratingStat.average} count={ratingStat.count} size={16} />
             </div>
 
             {/* Price */}
