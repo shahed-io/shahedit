@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { sanitizeHtml } from "@/lib/sanitize";
 
 export interface ServicePackageRow {
   id: string;
@@ -463,7 +464,7 @@ const DetailsModal = ({ pkg, onClose, onPay, c }: {
                     <h4 className="text-xs font-bold uppercase tracking-widest text-foreground/40 mb-2">বিবরণ</h4>
                     <div
                       className="text-sm text-foreground/75 leading-relaxed rich-description"
-                      dangerouslySetInnerHTML={{ __html: pkg.description }}
+                      dangerouslySetInnerHTML={{ __html: sanitizeHtml(pkg.description) }}
                     />
                   </div>
                 )}

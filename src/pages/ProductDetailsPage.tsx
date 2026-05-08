@@ -12,6 +12,7 @@ import {
   cardColors,
   type ServicePackageRow,
 } from "@/components/ProductsSection";
+import { sanitizeHtml } from "@/lib/sanitize";
 
 export default function ProductDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -261,7 +262,7 @@ export default function ProductDetailsPage() {
                   {pkg.description ? (
                     <div
                       className="text-base text-foreground/80 leading-relaxed rich-description prose prose-invert max-w-none"
-                      dangerouslySetInnerHTML={{ __html: pkg.description }}
+                      dangerouslySetInnerHTML={{ __html: sanitizeHtml(pkg.description) }}
                     />
                   ) : (
                     <p className="text-foreground/50 italic">কোনো বিবরণ যুক্ত করা হয়নি।</p>
