@@ -7,7 +7,6 @@ import {
   MessageSquare, Star, UserCheck, Building2, DollarSign, HelpCircle,
   Inbox, ChevronLeft, Menu, LogOut, Bell, Shield, Cpu, Package, CreditCard, LayoutTemplate
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { toast } from "sonner";
 
@@ -34,6 +33,8 @@ const navItems = [
 
 interface AdminLayoutProps { children: React.ReactNode; }
 
+const FB_BLUE = "#1877F2";
+
 const AdminLayout = ({ children }: AdminLayoutProps) => {
   const [collapsed, setCollapsed] = useState(false);
   const { user, role, signOut } = useAuth();
@@ -46,16 +47,27 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     navigate("/admin/login");
   };
 
+  const activeItem = navItems.find(
+    (n) => location.pathname === n.href || (n.href !== "/admin" && location.pathname.startsWith(n.href))
+  );
+
   return (
-    <div className="flex h-screen bg-slate-950 overflow-hidden">
+    <div className="fb-theme flex h-screen overflow-hidden" style={{ background: "#F1F4F7" }}>
       {/* Sidebar */}
       <motion.aside
-        animate={{ width: collapsed ? 72 : 240 }}
+        animate={{ width: collapsed ? 72 : 248 }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className="flex-shrink-0 bg-slate-900 border-r border-slate-800 flex flex-col overflow-hidden"
+        className="flex-shrink-0 flex flex-col overflow-hidden"
+        style={{
+          background: "#FFFFFF",
+          borderRight: "1px solid #E4E6EB",
+        }}
       >
         {/* Logo */}
-        <div className="p-4 flex items-center justify-between border-b border-slate-800 h-16">
+        <div
+          className="px-4 flex items-center justify-between h-14"
+          style={{ borderBottom: "1px solid #E4E6EB" }}
+        >
           <AnimatePresence mode="wait">
             {!collapsed && (
               <motion.div
@@ -64,37 +76,53 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                 exit={{ opacity: 0, x: -10 }}
                 className="flex items-center gap-2"
               >
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-teal-500 flex items-center justify-center">
+                <div
+                  className="w-8 h-8 rounded-full flex items-center justify-center"
+                  style={{ background: FB_BLUE }}
+                >
                   <Cpu size={16} className="text-white" />
                 </div>
-                <span className="text-white font-bold text-sm">Shahed IT</span>
+                <span className="font-semibold text-[15px]" style={{ color: "#111112" }}>
+                  Shahed IT
+                </span>
               </motion.div>
             )}
           </AnimatePresence>
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors ml-auto"
+            className="p-2 rounded-lg ml-auto transition-colors"
+            style={{ color: "#666A72" }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = "#F1F4F7")}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+            aria-label="Toggle sidebar"
           >
             {collapsed ? <Menu size={18} /> : <ChevronLeft size={18} />}
           </button>
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 overflow-y-auto py-4 px-2 space-y-0.5">
+        <nav className="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
           {navItems.map((item) => {
-            const active = location.pathname === item.href ||
+            const active =
+              location.pathname === item.href ||
               (item.href !== "/admin" && location.pathname.startsWith(item.href));
             return (
               <Link key={item.href} to={item.href}>
-                <motion.div
-                  whileHover={{ x: 2 }}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                    active
-                      ? "bg-gradient-to-r from-purple-600/30 to-teal-600/20 text-white border border-purple-500/30"
-                      : "text-slate-400 hover:text-white hover:bg-slate-800"
-                  }`}
+                <div
+                  className="flex items-center gap-3 px-3 rounded-lg text-[14px] font-medium transition-colors"
+                  style={{
+                    minHeight: 44,
+                    background: active ? "rgba(24,119,242,0.1)" : "transparent",
+                    color: active ? FB_BLUE : "#1C1E21",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!active) e.currentTarget.style.background = "#F1F4F7";
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!active) e.currentTarget.style.background = "transparent";
+                  }}
                 >
-                  <item.icon size={18} className={active ? "text-purple-400" : ""} />
+                  <item.icon size={18} style={{ color: active ? FB_BLUE : "#666A72" }} />
                   <AnimatePresence mode="wait">
                     {!collapsed && (
                       <motion.span
@@ -107,17 +135,17 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                       </motion.span>
                     )}
                   </AnimatePresence>
-                </motion.div>
+                </div>
               </Link>
             );
           })}
         </nav>
 
         {/* User */}
-        <div className="p-3 border-t border-slate-800">
+        <div className="p-3" style={{ borderTop: "1px solid #E4E6EB" }}>
           <div className={`flex items-center gap-3 ${collapsed ? "justify-center" : ""}`}>
-            <Avatar className="w-8 h-8 flex-shrink-0">
-              <AvatarFallback className="bg-gradient-to-br from-purple-500 to-teal-500 text-white text-xs">
+            <Avatar className="w-9 h-9 flex-shrink-0">
+              <AvatarFallback className="text-white text-xs" style={{ background: FB_BLUE }}>
                 {user?.email?.[0]?.toUpperCase() ?? "A"}
               </AvatarFallback>
             </Avatar>
@@ -129,8 +157,10 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                   exit={{ opacity: 0 }}
                   className="flex-1 min-w-0"
                 >
-                  <p className="text-white text-xs font-medium truncate">{user?.email}</p>
-                  <p className="text-slate-400 text-xs capitalize flex items-center gap-1">
+                  <p className="text-[13px] font-medium truncate" style={{ color: "#111112" }}>
+                    {user?.email}
+                  </p>
+                  <p className="text-[11px] capitalize flex items-center gap-1" style={{ color: "#666A72" }}>
                     <Shield size={10} />
                     {role ?? "admin"}
                   </p>
@@ -138,14 +168,22 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
               )}
             </AnimatePresence>
             {!collapsed && (
-              <Button
-                variant="ghost"
-                size="icon"
+              <button
                 onClick={handleSignOut}
-                className="text-slate-400 hover:text-red-400 h-7 w-7 flex-shrink-0"
+                className="rounded-lg flex items-center justify-center transition-colors"
+                style={{ width: 36, height: 36, color: "#666A72" }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "rgba(211,17,48,0.08)";
+                  e.currentTarget.style.color = "#D31130";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "transparent";
+                  e.currentTarget.style.color = "#666A72";
+                }}
+                aria-label="Sign out"
               >
-                <LogOut size={14} />
-              </Button>
+                <LogOut size={16} />
+              </button>
             )}
           </div>
         </div>
@@ -154,28 +192,54 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       {/* Main */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top bar */}
-        <header className="h-16 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-6 flex-shrink-0">
+        <header
+          className="h-14 flex items-center justify-between px-6 flex-shrink-0"
+          style={{
+            background: "#FFFFFF",
+            borderBottom: "1px solid #E4E6EB",
+          }}
+        >
           <div>
-            <h2 className="text-white font-semibold text-sm">
-              {navItems.find(n => location.pathname === n.href || (n.href !== "/admin" && location.pathname.startsWith(n.href)))?.label ?? "Admin Panel"}
+            <h2 className="text-[15px] font-semibold" style={{ color: "#111112" }}>
+              {activeItem?.label ?? "Admin Panel"}
             </h2>
-            <p className="text-slate-500 text-xs">Shahed IT Management System</p>
+            <p className="text-[12px]" style={{ color: "#666A72" }}>
+              Shahed IT Management System
+            </p>
           </div>
-          <div className="flex items-center gap-3">
-            <Link to="/" target="_blank" className="text-slate-400 hover:text-white text-xs bg-slate-800 px-3 py-1.5 rounded-lg transition-colors">
+          <div className="flex items-center gap-2">
+            <Link
+              to="/"
+              target="_blank"
+              className="text-[13px] font-medium px-3 rounded-lg transition-colors flex items-center"
+              style={{
+                background: "#F1F4F7",
+                color: FB_BLUE,
+                height: 40,
+                border: "1px solid #E4E6EB",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = "#E4E6EB")}
+              onMouseLeave={(e) => (e.currentTarget.style.background = "#F1F4F7")}
+            >
               View Site →
             </Link>
-            <button className="text-slate-400 hover:text-white relative">
+            <button
+              className="rounded-full flex items-center justify-center transition-colors"
+              style={{ width: 40, height: 40, background: "#F1F4F7", color: "#1C1E21" }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = "#E4E6EB")}
+              onMouseLeave={(e) => (e.currentTarget.style.background = "#F1F4F7")}
+              aria-label="Notifications"
+            >
               <Bell size={18} />
             </button>
           </div>
         </header>
 
         {/* Content */}
-        <main className="flex-1 overflow-y-auto bg-slate-950 p-6">
+        <main className="flex-1 overflow-y-auto p-6" style={{ background: "#F1F4F7" }}>
           <motion.div
             key={location.pathname}
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.2 }}
           >

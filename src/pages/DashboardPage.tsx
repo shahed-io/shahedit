@@ -58,8 +58,10 @@ const cardVariants: Variants = {
   visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.07, duration: 0.4, ease: [0.25, 0.1, 0.25, 1] } }),
 };
 
-const CARD_STYLE = { background: 'rgba(14,11,28,0.82)', border: '1px solid rgba(255,255,255,0.07)', backdropFilter: 'blur(12px)' };
-const GRAD = 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))';
+const CARD_STYLE = { background: '#FFFFFF', border: '1px solid #E4E6EB', boxShadow: '0 1px 2px rgba(0,0,0,0.06)' };
+const EMPTY_STYLE = { background: '#F1F4F7', border: '1px dashed #D0D3D6' };
+const GRAD = 'linear-gradient(135deg, #1877F2, #0866FF)';
+const FB_BLUE = '#1877F2';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function formatBytes(b: number | null) {
@@ -182,7 +184,7 @@ export default function DashboardPage() {
   };
 
   if (loading) return (
-    <div className="min-h-screen bg-background flex items-center justify-center">
+    <div className="fb-theme min-h-screen flex items-center justify-center" style={{ background: "#F1F4F7" }}>
       <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
     </div>
   );
@@ -212,7 +214,7 @@ export default function DashboardPage() {
   ] as const;
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="fb-theme min-h-screen" style={{ background: "#F1F4F7" }}>
       <SiteHeader />
       <div className="container mx-auto px-4 py-10 max-w-5xl">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
@@ -246,7 +248,7 @@ export default function DashboardPage() {
                   whileHover={{ scale: 1.06 }} whileTap={{ scale: 0.94 }}
                   onClick={() => setNotifOpen(v => !v)}
                   className="relative w-10 h-10 rounded-xl flex items-center justify-center transition-all"
-                  style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  style={{ background: '#F1F4F7', border: '1px solid #E4E6EB' }}>
                   <Bell size={17} className="text-foreground/70" />
                   {unreadCount > 0 && (
                     <span className="absolute -top-1 -right-1 w-4.5 h-4.5 min-w-[18px] h-[18px] px-1 text-[10px] font-black text-white rounded-full flex items-center justify-center"
@@ -264,7 +266,7 @@ export default function DashboardPage() {
                       exit={{ opacity: 0, y: 8, scale: 0.96 }}
                       transition={{ duration: 0.18 }}
                       className="absolute right-0 top-12 w-80 rounded-2xl overflow-hidden z-50 shadow-2xl"
-                      style={{ background: 'rgba(16,12,32,0.98)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                      style={{ background: '#FFFFFF', border: '1px solid #E4E6EB' }}>
                       <div className="flex items-center justify-between px-4 py-3 border-b border-white/5">
                         <span className="text-sm font-bold text-foreground">Notifications</span>
                         {unreadCount > 0 && (
@@ -324,7 +326,7 @@ export default function DashboardPage() {
               )}
               <motion.button onClick={handleLogout} whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
                 className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all"
-                style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.18)', color: 'hsl(0,84%,70%)' }}>
+                style={{ background: '#FEE7EA', border: '1px solid #F4C7CD', color: '#D31130' }}>
                 <LogOut size={14} /> Logout
               </motion.button>
             </div>
@@ -332,7 +334,7 @@ export default function DashboardPage() {
 
           {/* ── Tabs ── */}
           <div className="flex gap-1 p-1 rounded-2xl mb-8 overflow-x-auto"
-            style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
+            style={{ background: '#FFFFFF', border: '1px solid #E4E6EB' }}>
             {tabs.map(({ key, label, icon: Icon }) => (
               <button key={key} onClick={() => setActiveTab(key)}
                 className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 whitespace-nowrap"
@@ -499,7 +501,7 @@ export default function DashboardPage() {
               {leads.length === 0 && (
                 <motion.div custom={5} variants={cardVariants} initial="hidden" animate="visible"
                   className="rounded-2xl p-12 text-center"
-                  style={{ background: 'rgba(14,11,28,0.80)', border: '1px dashed rgba(139,92,246,0.2)' }}>
+                  style={EMPTY_STYLE}>
                   <FileText size={36} className="mx-auto mb-4 text-primary/40" />
                   <h3 className="text-foreground font-bold mb-2">এখনও কোনো কোটেশন নেই</h3>
                   <p className="text-foreground/40 text-sm mb-5">প্রজেক্টের জন্য একটি কোটেশন অনুরোধ করুন</p>
@@ -530,7 +532,7 @@ export default function DashboardPage() {
               </div>
               {leads.length === 0 ? (
                 <div className="rounded-2xl p-12 text-center"
-                  style={{ background: 'rgba(14,11,28,0.80)', border: '1px dashed rgba(139,92,246,0.2)' }}>
+                  style={EMPTY_STYLE}>
                   <FileText size={36} className="mx-auto mb-3 text-primary/30" />
                   <p className="text-foreground/50 text-sm">কোনো কোটেশন পাওয়া যায়নি।</p>
                 </div>
@@ -600,7 +602,7 @@ export default function DashboardPage() {
 
               {payments.length === 0 ? (
                 <div className="rounded-2xl p-12 text-center"
-                  style={{ background: 'rgba(14,11,28,0.80)', border: '1px dashed rgba(139,92,246,0.2)' }}>
+                  style={EMPTY_STYLE}>
                   <Banknote size={36} className="mx-auto mb-3 text-primary/30" />
                   <p className="text-foreground/50 text-sm">কোনো payment পাওয়া যায়নি।</p>
                 </div>
@@ -646,7 +648,7 @@ export default function DashboardPage() {
               </div>
               {documents.length === 0 ? (
                 <div className="rounded-2xl p-14 text-center"
-                  style={{ background: 'rgba(14,11,28,0.80)', border: '1px dashed rgba(139,92,246,0.2)' }}>
+                  style={EMPTY_STYLE}>
                   <FolderOpen size={40} className="mx-auto mb-4 text-primary/25" />
                   <h3 className="text-foreground font-bold mb-2">কোনো document নেই</h3>
                   <p className="text-foreground/40 text-sm">Admin আপনার সাথে কোনো document শেয়ার করেনি।</p>
@@ -752,11 +754,11 @@ export default function DashboardPage() {
                         placeholder={placeholder}
                         className="w-full px-4 py-2.5 rounded-xl text-sm text-foreground outline-none transition-all"
                         style={{
-                          background: 'rgba(255,255,255,0.04)',
-                          border: '1px solid rgba(255,255,255,0.08)',
+                          background: '#FFFFFF',
+                          border: '1px solid #E4E6EB',
                         }}
-                        onFocus={e => (e.target.style.borderColor = 'rgba(139,92,246,0.5)')}
-                        onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.08)')}
+                        onFocus={e => (e.target.style.borderColor = '#1877F2')}
+                        onBlur={e => (e.target.style.borderColor = '#E4E6EB')}
                       />
                     </div>
                   ))}
@@ -769,11 +771,11 @@ export default function DashboardPage() {
                       rows={3}
                       className="w-full px-4 py-2.5 rounded-xl text-sm text-foreground outline-none resize-none transition-all"
                       style={{
-                        background: 'rgba(255,255,255,0.04)',
-                        border: '1px solid rgba(255,255,255,0.08)',
+                        background: '#FFFFFF',
+                        border: '1px solid #E4E6EB',
                       }}
-                      onFocus={e => (e.target.style.borderColor = 'rgba(139,92,246,0.5)')}
-                      onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.08)')}
+                      onFocus={e => (e.target.style.borderColor = '#1877F2')}
+                      onBlur={e => (e.target.style.borderColor = '#E4E6EB')}
                     />
                   </div>
                 </div>
