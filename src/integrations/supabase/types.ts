@@ -745,6 +745,44 @@ export type Database = {
         }
         Relationships: []
       }
+      product_reviews: {
+        Row: {
+          comment: string | null
+          created_at: string
+          id: string
+          package_id: string
+          rating: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          package_id: string
+          rating: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          package_id?: string
+          rating?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_reviews_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "service_packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -1283,7 +1321,22 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      product_review_stats: {
+        Row: {
+          average_rating: number | null
+          package_id: string | null
+          review_count: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_reviews_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "service_packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       has_role: {
