@@ -7,6 +7,7 @@ import { lovable } from "@/integrations/lovable/index";
 import { toast } from "sonner";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import shahedLogo from "@/assets/shahed-it-logo.png";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -86,10 +87,7 @@ export default function LoginPage() {
             <div className="flex justify-center mb-6">
               <Link to="/">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-                    style={{ background: 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))' }}>
-                    <Zap size={20} className="text-white" fill="white" />
-                  </div>
+                  <img src={shahedLogo} alt="Shahed IT logo" className="w-10 h-10 rounded-xl object-cover shadow-lg" />
                   <span className="text-2xl font-black" style={{ fontFamily: "'Syne', sans-serif" }}>
                     <span className="gradient-text">Shahed</span>
                     <span className="text-foreground"> IT</span>
