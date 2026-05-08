@@ -1,11 +1,11 @@
 import { Star, ArrowRight, Zap, CreditCard, MessageCircle, X, Copy, Smartphone, Send, CheckCircle, ChevronRight, Info, PenLine } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
-interface ServicePackageRow {
+export interface ServicePackageRow {
   id: string;
   title: string;
   description: string | null;
@@ -29,9 +29,9 @@ const paymentMethods = [
   { id: "bkash_merchant", label: "বিকাশ মার্চেন্ট", sublabel: "Merchant", number: "01820060046", color: "#E2136E", short: "bM" },
 ];
 
-const formatPrice = (price: number) => `৳ ${price.toLocaleString("en-BD")}`;
+export const formatPrice = (price: number) => `৳ ${price.toLocaleString("en-BD")}`;
 
-const cardColors = [
+export const cardColors = [
   { color: "hsl(258,90%,66%)", bg: "rgba(139,92,246,0.10)", border: "rgba(139,92,246,0.22)" },
   { color: "hsl(185,100%,48%)", bg: "rgba(6,182,212,0.10)", border: "rgba(6,182,212,0.22)" },
   { color: "hsl(315,80%,65%)", bg: "rgba(236,72,153,0.10)", border: "rgba(236,72,153,0.22)" },
@@ -40,7 +40,7 @@ const cardColors = [
 ];
 
 // ─── Payment Modal ───────────────────────────────────────────────────────────
-const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose: () => void }) => {
+export const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose: () => void }) => {
   const [step, setStep] = useState<"method" | "form" | "done">("method");
   const [selected, setSelected] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -243,7 +243,7 @@ const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose: () =>
 };
 
 // ─── Custom Order Form ────────────────────────────────────────────────────────
-const CustomOrderForm = ({ pkg, c, onClose }: {
+export const CustomOrderForm = ({ pkg, c, onClose }: {
   pkg: ServicePackageRow;
   c: { color: string; bg: string; border: string };
   onClose: () => void;
@@ -523,11 +523,11 @@ const DetailsModal = ({ pkg, onClose, onPay, c }: {
 // ─── Product Card ────────────────────────────────────────────────────────────
 const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) => {
   const c = cardColors[index % cardColors.length];
+  const navigate = useNavigate();
   const discount = pkg.original_price && pkg.price
     ? Math.round((1 - pkg.price / pkg.original_price) * 100)
     : null;
   const [showPayment, setShowPayment] = useState(false);
-  const [showDetails, setShowDetails] = useState(false);
 
   const waMessage = encodeURIComponent(
     `হ্যালো! আমি "${pkg.title}" প্যাকেজটি অর্ডার করতে চাই।${pkg.price ? ` মূল্য: ৳${pkg.price.toLocaleString()}` : ""} অনুগ্রহ করে আরও তথ্য দিন।`
@@ -542,7 +542,7 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
         transition={{ delay: index * 0.1, type: "spring", stiffness: 120 }}
         whileHover={{ y: -6, scale: 1.01 }}
         whileTap={{ scale: 0.97 }}
-        onClick={() => setShowDetails(true)}
+        onClick={() => navigate(`/product/${pkg.id}`)}
         className="group rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 flex flex-col"
         style={{ background: c.bg, border: `1px solid ${c.border}` }}
       >
@@ -652,18 +652,6 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
           </div>
         </div>
       </motion.div>
-
-      {/* Details Modal */}
-      <AnimatePresence>
-        {showDetails && (
-          <DetailsModal
-            pkg={pkg}
-            c={c}
-            onClose={() => setShowDetails(false)}
-            onPay={() => { setShowDetails(false); setTimeout(() => setShowPayment(true), 100); }}
-          />
-        )}
-      </AnimatePresence>
 
       {/* Payment Modal */}
       <AnimatePresence>

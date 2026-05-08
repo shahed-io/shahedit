@@ -47,6 +47,7 @@ import RefundPolicyPage from "./pages/RefundPolicyPage";
 import DeliveryPolicyPage from "./pages/DeliveryPolicyPage";
 import ComplaintPolicyPage from "./pages/ComplaintPolicyPage";
 import PaymentPage from "./pages/PaymentPage";
+import ProductDetailsPage from "./pages/ProductDetailsPage";
 
 // CMS Admin Pages
 import CmsDashboard from "./pages/cms/CmsDashboard";
@@ -148,6 +149,7 @@ const AppWithAnalytics = () => {
       <Route path="/delivery-policy" element={<DeliveryPolicyPage />} />
       <Route path="/complaint-policy" element={<ComplaintPolicyPage />} />
       <Route path="/payment" element={<PaymentPage />} />
+      <Route path="/product/:id" element={<ProductDetailsPage />} />
       {/* CMS Public Routes */}
       <Route path="/cms-blog" element={<CmsBlogPublicPage />} />
       <Route path="/post/:slug" element={<PublicContentPage type="post" />} />
