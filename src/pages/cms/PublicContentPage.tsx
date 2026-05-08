@@ -5,6 +5,7 @@ import SiteHeader from '@/components/SiteHeader';
 import SiteFooter from '@/components/SiteFooter';
 import { Calendar, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { sanitizeHtml } from '@/lib/sanitize';
 
 
 function usePublicContent(type: string, slug: string) {
@@ -101,7 +102,7 @@ export default function PublicContentPage({ type }: Props) {
 
           <div
             className="prose prose-invert prose-violet max-w-none text-slate-300"
-            dangerouslySetInnerHTML={{ __html: bodyHtml }}
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(bodyHtml) }}
           />
         </article>
       </main>
