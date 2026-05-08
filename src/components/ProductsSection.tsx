@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
-interface ServicePackageRow {
+export interface ServicePackageRow {
   id: string;
   title: string;
   description: string | null;
