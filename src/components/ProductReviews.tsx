@@ -55,7 +55,7 @@ export function ProductReviews({
       .select("id, user_id, rating, comment, created_at")
       .eq("package_id", packageId)
       .order("created_at", { ascending: false });
-    const rows = (data as Review[] | null) ?? [];
+    const rows = (data as unknown as Review[] | null) ?? [];
     setReviews(rows);
 
     // Try fetch profile names (RLS only allows own profile, others may be null)

@@ -27,7 +27,7 @@ export function useProductRating(packageId: string | undefined) {
       .eq("package_id", packageId)
       .maybeSingle()
       .then(({ data }) => {
-        const row = data as
+        const row = data as unknown as
           | { average_rating: number | null; review_count: number | null }
           | null;
         setStat({
@@ -57,7 +57,7 @@ export function useProductRatings(packageIds: string[]) {
       .in("package_id", packageIds)
       .then(({ data }) => {
         const next: Record<string, RatingStat> = {};
-        (data as any[] | null)?.forEach((r) => {
+        (data as unknown as any[] | null)?.forEach((r) => {
           next[r.package_id] = {
             average: Number(r.average_rating ?? 0),
             count: Number(r.review_count ?? 0),
