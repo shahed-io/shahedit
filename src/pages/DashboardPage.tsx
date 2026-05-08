@@ -754,11 +754,11 @@ export default function DashboardPage() {
                         placeholder={placeholder}
                         className="w-full px-4 py-2.5 rounded-xl text-sm text-foreground outline-none transition-all"
                         style={{
-                          background: 'rgba(255,255,255,0.04)',
-                          border: '1px solid rgba(255,255,255,0.08)',
+                          background: '#FFFFFF',
+                          border: '1px solid #E4E6EB',
                         }}
-                        onFocus={e => (e.target.style.borderColor = 'rgba(139,92,246,0.5)')}
-                        onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.08)')}
+                        onFocus={e => (e.target.style.borderColor = '#1877F2')}
+                        onBlur={e => (e.target.style.borderColor = '#E4E6EB')}
                       />
                     </div>
                   ))}
@@ -771,11 +771,11 @@ export default function DashboardPage() {
                       rows={3}
                       className="w-full px-4 py-2.5 rounded-xl text-sm text-foreground outline-none resize-none transition-all"
                       style={{
-                        background: 'rgba(255,255,255,0.04)',
-                        border: '1px solid rgba(255,255,255,0.08)',
+                        background: '#FFFFFF',
+                        border: '1px solid #E4E6EB',
                       }}
-                      onFocus={e => (e.target.style.borderColor = 'rgba(139,92,246,0.5)')}
-                      onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.08)')}
+                      onFocus={e => (e.target.style.borderColor = '#1877F2')}
+                      onBlur={e => (e.target.style.borderColor = '#E4E6EB')}
                     />
                   </div>
                 </div>
