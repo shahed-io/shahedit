@@ -589,6 +589,30 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
               ✨ NEW
             </div>
           )}
+          {pkg.badge === "popular" && (
+            <div className="absolute top-3 right-3 px-2.5 py-1 text-xs font-black rounded-full text-white"
+              style={{ background: 'linear-gradient(135deg, hsl(262,83%,58%), hsl(280,80%,55%))', boxShadow: '0 4px 14px hsl(262,83%,58%,0.45)' }}>
+              ⭐ POPULAR
+            </div>
+          )}
+          {pkg.badge === "premium" && (
+            <div className="absolute top-3 right-3 px-2.5 py-1 text-xs font-black rounded-full text-white"
+              style={{ background: 'linear-gradient(135deg, hsl(45,93%,55%), hsl(30,90%,50%))', boxShadow: '0 4px 14px hsl(45,93%,55%,0.5)' }}>
+              👑 PREMIUM
+            </div>
+          )}
+          {pkg.badge === "enterprise" && (
+            <div className="absolute top-3 right-3 px-2.5 py-1 text-xs font-black rounded-full text-white"
+              style={{ background: 'linear-gradient(135deg, hsl(220,70%,40%), hsl(262,83%,45%))', boxShadow: '0 4px 14px hsl(220,70%,40%,0.5)' }}>
+              💎 ENTERPRISE
+            </div>
+          )}
+          {pkg.badge === "starter" && (
+            <div className="absolute top-3 right-3 px-2.5 py-1 text-xs font-black rounded-full text-white"
+              style={{ background: 'linear-gradient(135deg, hsl(160,70%,45%), hsl(180,70%,45%))' }}>
+              🚀 STARTER
+            </div>
+          )}
 
           {/* Info hover hint */}
           <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
