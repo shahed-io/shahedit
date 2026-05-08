@@ -7,6 +7,7 @@ import { lovable } from "@/integrations/lovable/index";
 import { toast } from "sonner";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import shahedLogo from "@/assets/shahed-it-logo.png";
 
 export default function LoginPage() {
   const navigate = useNavigate();
