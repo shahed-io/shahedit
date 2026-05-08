@@ -153,7 +153,8 @@ const AdminLogin = () => {
             onClick={async () => {
               setLoading(true);
               const result = await lovable.auth.signInWithOAuth("google", {
-                redirect_uri: window.location.origin + "/admin",
+                redirect_uri: window.location.origin + "/admin/login",
+                extraParams: { prompt: "select_account", login_hint: ADMIN_EMAIL },
               });
               if (result.error) {
                 setLoading(false);
