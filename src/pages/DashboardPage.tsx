@@ -38,6 +38,14 @@ interface ClientDocument {
   id: string; title: string; description: string | null; file_url: string;
   file_type: string; file_size: number | null; created_at: string;
 }
+interface Order {
+  id: string; order_number: string; product_title: string;
+  amount: number; currency: string; status: string;
+  delivery_days: number | null; expected_delivery_at: string | null;
+  delivered_at: string | null; delivery_notes: string | null;
+  delivery_files: Array<{ url: string; name: string }> | null;
+  payment_method: string | null; created_at: string;
+}
 
 // ── Configs ──────────────────────────────────────────────────────────────────
 const statusConfig: Record<string, { label: string; color: string; bg: string; icon: React.ElementType }> = {
