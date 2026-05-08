@@ -215,11 +215,12 @@ export default function DashboardPage() {
   ];
 
   const tabs = [
-    { key: "overview",  label: "Overview",  icon: LayoutDashboard },
+    { key: "overview",  label: "Overview",   icon: LayoutDashboard },
+    { key: "orders",    label: "My Orders",  icon: Package },
     { key: "quotes",    label: "Quotations", icon: FileText },
-    { key: "payments",  label: "Payments",  icon: CreditCard },
-    { key: "documents", label: "Documents", icon: FolderOpen },
-    { key: "profile",   label: "Profile",   icon: User },
+    { key: "payments",  label: "Payments",   icon: CreditCard },
+    { key: "documents", label: "Documents",  icon: FolderOpen },
+    { key: "profile",   label: "Profile",    icon: User },
   ] as const;
 
   return (
