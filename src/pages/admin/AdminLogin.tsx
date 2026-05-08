@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { motion } from "framer-motion";
-import { Lock, Mail, Eye, EyeOff, Shield } from "lucide-react";
+import { Lock, Mail, Eye, EyeOff } from "lucide-react";
+import logoImg from "@/assets/logo-glossy.png";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -62,9 +63,9 @@ const AdminLogin = () => {
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ type: "spring", delay: 0.2 }}
-              className="w-16 h-16 bg-gradient-to-br from-purple-500 to-teal-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg"
+              className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg overflow-hidden bg-gradient-to-br from-purple-500/20 to-teal-500/20 p-2"
             >
-              <Shield size={28} className="text-white" />
+              <img src={logoImg} alt="Shahed IT Logo" className="w-full h-full object-contain" />
             </motion.div>
             <h1 className="text-2xl font-bold text-white mb-1">Admin Panel</h1>
             <p className="text-white/60 text-sm">Shahed IT — Secure Login</p>
