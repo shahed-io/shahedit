@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Mail, Lock, Eye, EyeOff, Zap, ArrowRight } from "lucide-react";
+import logoGlossy from "@/assets/logo-glossy.png";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { toast } from "sonner";
@@ -86,10 +87,7 @@ export default function LoginPage() {
             <div className="flex justify-center mb-6">
               <Link to="/">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-                    style={{ background: 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))' }}>
-                    <Zap size={20} className="text-white" fill="white" />
-                  </div>
+                  <img src={logoGlossy} alt="Shahed IT logo" className="w-10 h-10 rounded-xl object-contain" />
                   <span className="text-2xl font-black" style={{ fontFamily: "'Syne', sans-serif" }}>
                     <span className="gradient-text">Shahed</span>
                     <span className="text-foreground"> IT</span>
