@@ -3,8 +3,10 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { useAnalyticsInjection } from "@/hooks/useAnalyticsInjection";
+import { SEO } from "@/components/SEO";
 import { lazy, Suspense } from "react";
 
 // Eagerly loaded (most-visited / lightweight)
@@ -26,6 +28,7 @@ const AdminPayments = lazy(() => import("./pages/admin/AdminPayments"));
 const AdminUsers = lazy(() => import("./pages/admin/AdminUsers"));
 const AdminFooterEditor = lazy(() => import("./pages/admin/AdminFooterEditor"));
 const AdminClientDocuments = lazy(() => import("./pages/admin/AdminClientDocuments"));
+const AdminSEO = lazy(() => import("./pages/admin/AdminSEO"));
 const AdminPortfolio = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminPortfolio })));
 const AdminBlog = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminBlog })));
 const AdminTestimonials = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminTestimonials })));
@@ -107,6 +110,7 @@ const AdminRoutes = () => (
         <Route path="careers" element={<AdminCareers />} />
         <Route path="ai-support" element={<AdminAISupport />} />
         <Route path="settings" element={<AdminSettings />} />
+        <Route path="seo" element={<AdminSEO />} />
         <Route path="users" element={<AdminUsers />} />
         <Route path="footer" element={<AdminFooterEditor />} />
         <Route path="client-docs" element={<AdminClientDocuments />} />
@@ -140,6 +144,7 @@ const AppWithAnalytics = () => {
   useAnalyticsInjection();
   return (
     <Suspense fallback={<PageFallback />}>
+      <SEO />
       <Routes>
         {/* Auth Routes */}
         <Route path="/login" element={<LoginPage />} />
@@ -182,15 +187,17 @@ const AppWithAnalytics = () => {
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <AuthProvider>
-          <AppWithAnalytics />
-        </AuthProvider>
-      </BrowserRouter>
-    </TooltipProvider>
+    <HelmetProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <AuthProvider>
+            <AppWithAnalytics />
+          </AuthProvider>
+        </BrowserRouter>
+      </TooltipProvider>
+    </HelmetProvider>
   </QueryClientProvider>
 );
 
