@@ -29,9 +29,9 @@ const paymentMethods = [
   { id: "bkash_merchant", label: "বিকাশ মার্চেন্ট", sublabel: "Merchant", number: "01820060046", color: "#E2136E", short: "bM" },
 ];
 
-const formatPrice = (price: number) => `৳ ${price.toLocaleString("en-BD")}`;
+export const formatPrice = (price: number) => `৳ ${price.toLocaleString("en-BD")}`;
 
-const cardColors = [
+export const cardColors = [
   { color: "hsl(258,90%,66%)", bg: "rgba(139,92,246,0.10)", border: "rgba(139,92,246,0.22)" },
   { color: "hsl(185,100%,48%)", bg: "rgba(6,182,212,0.10)", border: "rgba(6,182,212,0.22)" },
   { color: "hsl(315,80%,65%)", bg: "rgba(236,72,153,0.10)", border: "rgba(236,72,153,0.22)" },
