@@ -58,8 +58,10 @@ const cardVariants: Variants = {
   visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.07, duration: 0.4, ease: [0.25, 0.1, 0.25, 1] } }),
 };
 
-const CARD_STYLE = { background: 'rgba(14,11,28,0.82)', border: '1px solid rgba(255,255,255,0.07)', backdropFilter: 'blur(12px)' };
-const GRAD = 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))';
+const CARD_STYLE = { background: '#FFFFFF', border: '1px solid #E4E6EB', boxShadow: '0 1px 2px rgba(0,0,0,0.06)' };
+const EMPTY_STYLE = { background: '#F1F4F7', border: '1px dashed #D0D3D6' };
+const GRAD = 'linear-gradient(135deg, #1877F2, #0866FF)';
+const FB_BLUE = '#1877F2';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function formatBytes(b: number | null) {
