@@ -25,6 +25,7 @@ const AdminSettings = lazy(() => import("./pages/admin/AdminSettings"));
 const AdminAISupport = lazy(() => import("./pages/admin/AdminAISupport"));
 const AdminServicePackages = lazy(() => import("./pages/admin/AdminServicePackages"));
 const AdminPayments = lazy(() => import("./pages/admin/AdminPayments"));
+const AdminOrders = lazy(() => import("./pages/admin/AdminOrders"));
 const AdminUsers = lazy(() => import("./pages/admin/AdminUsers"));
 const AdminFooterEditor = lazy(() => import("./pages/admin/AdminFooterEditor"));
 const AdminClientDocuments = lazy(() => import("./pages/admin/AdminClientDocuments"));
@@ -98,6 +99,7 @@ const AdminRoutes = () => (
         <Route path="" element={<AdminDashboard />} />
         <Route path="leads" element={<AdminLeads />} />
         <Route path="payments" element={<AdminPayments />} />
+        <Route path="orders" element={<AdminOrders />} />
         <Route path="services" element={<AdminServices />} />
         <Route path="service-packages" element={<AdminServicePackages />} />
         <Route path="portfolio" element={<AdminPortfolio />} />

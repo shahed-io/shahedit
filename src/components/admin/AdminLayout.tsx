@@ -15,6 +15,7 @@ const navItems = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/admin" },
   { label: "Leads", icon: Inbox, href: "/admin/leads" },
   { label: "Payments", icon: CreditCard, href: "/admin/payments" },
+  { label: "Orders & Delivery", icon: Package, href: "/admin/orders" },
   { label: "Services", icon: Briefcase, href: "/admin/services" },
   { label: "Service Packages", icon: Package, href: "/admin/service-packages" },
   { label: "Portfolio", icon: FolderOpen, href: "/admin/portfolio" },

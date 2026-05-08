@@ -38,6 +38,14 @@ interface ClientDocument {
   id: string; title: string; description: string | null; file_url: string;
   file_type: string; file_size: number | null; created_at: string;
 }
+interface Order {
+  id: string; order_number: string; product_title: string;
+  amount: number; currency: string; status: string;
+  delivery_days: number | null; expected_delivery_at: string | null;
+  delivered_at: string | null; delivery_notes: string | null;
+  delivery_files: Array<{ url: string; name: string }> | null;
+  payment_method: string | null; created_at: string;
+}
 
 // ── Configs ──────────────────────────────────────────────────────────────────
 const statusConfig: Record<string, { label: string; color: string; bg: string; icon: React.ElementType }> = {
@@ -85,10 +93,11 @@ export default function DashboardPage() {
   const [payments, setPayments] = useState<Payment[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [documents, setDocuments] = useState<ClientDocument[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  const [activeTab, setActiveTab] = useState<"overview" | "quotes" | "payments" | "documents" | "profile">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "orders" | "quotes" | "payments" | "documents" | "profile">("overview");
   const [notifOpen, setNotifOpen] = useState(false);
   const notifRef = useRef<HTMLDivElement>(null);
 
@@ -106,7 +115,8 @@ export default function DashboardPage() {
       supabase.from("notifications").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(50),
       supabase.from("client_documents").select("*").eq("client_email", user.email ?? "").eq("is_visible", true).order("created_at", { ascending: false }),
       supabase.from("user_roles").select("role").eq("user_id", user.id),
-    ]).then(([profileRes, leadsRes, paymentsRes, notifRes, docsRes, rolesRes]) => {
+      (supabase as any).from("orders").select("*").eq("customer_email", user.email ?? "").order("created_at", { ascending: false }),
+    ]).then(([profileRes, leadsRes, paymentsRes, notifRes, docsRes, rolesRes, ordersRes]) => {
       if (profileRes.data) {
         setProfile(profileRes.data as Profile);
         setEditProfile(profileRes.data as Profile);
@@ -115,6 +125,7 @@ export default function DashboardPage() {
       if (paymentsRes.data) setPayments(paymentsRes.data as Payment[]);
       if (notifRes.data) setNotifications(notifRes.data as Notification[]);
       if (docsRes.data) setDocuments(docsRes.data as ClientDocument[]);
+      if (ordersRes?.data) setOrders(ordersRes.data as Order[]);
       if (rolesRes.data?.length) {
         setIsAdmin(rolesRes.data.some(r => ["super_admin", "admin", "editor"].includes(r.role)));
       }
@@ -204,11 +215,12 @@ export default function DashboardPage() {
   ];
 
   const tabs = [
-    { key: "overview",  label: "Overview",  icon: LayoutDashboard },
+    { key: "overview",  label: "Overview",   icon: LayoutDashboard },
+    { key: "orders",    label: "My Orders",  icon: Package },
     { key: "quotes",    label: "Quotations", icon: FileText },
-    { key: "payments",  label: "Payments",  icon: CreditCard },
-    { key: "documents", label: "Documents", icon: FolderOpen },
-    { key: "profile",   label: "Profile",   icon: User },
+    { key: "payments",  label: "Payments",   icon: CreditCard },
+    { key: "documents", label: "Documents",  icon: FolderOpen },
+    { key: "profile",   label: "Profile",    icon: User },
   ] as const;
 
   return (
@@ -569,6 +581,118 @@ export default function DashboardPage() {
           )}
 
           {/* ══════════════════ PAYMENTS TAB ══════════════════ */}
+          {/* ══════════════════ ORDERS TAB ══════════════════ */}
+          {activeTab === "orders" && (
+            <div className="space-y-4">
+              <div className="mb-2">
+                <h2 className="text-lg font-black text-foreground">আমার অর্ডার ও ডেলিভারি</h2>
+                <p className="text-sm text-foreground/40 mt-1">প্রতিটি অর্ডারের ডেলিভারি timeline ও status এখানে দেখতে পারবেন</p>
+              </div>
+
+              {orders.length === 0 ? (
+                <div className="rounded-2xl p-14 text-center"
+                  style={{ background: 'rgba(14,11,28,0.80)', border: '1px dashed rgba(139,92,246,0.2)' }}>
+                  <Package size={40} className="mx-auto mb-4 text-primary/25" />
+                  <h3 className="text-foreground font-bold mb-2">কোনো অর্ডার নেই</h3>
+                  <p className="text-foreground/40 text-sm">পেমেন্ট সম্পন্ন হলে অর্ডার এখানে দেখাবে।</p>
+                </div>
+              ) : orders.map((o, i) => {
+                const orderStatus: Record<string, { label: string; color: string; bg: string; icon: React.ElementType }> = {
+                  pending:     { label: "Payment Pending", color: "hsl(35,90%,60%)",  bg: "rgba(251,146,60,0.12)",  icon: Clock },
+                  in_progress: { label: "প্রক্রিয়াধীন",   color: "hsl(258,90%,66%)", bg: "rgba(139,92,246,0.12)", icon: Zap },
+                  delivered:   { label: "Delivered",       color: "hsl(145,70%,50%)", bg: "rgba(34,197,94,0.12)",  icon: CheckCircle2 },
+                  cancelled:   { label: "Cancelled",       color: "hsl(0,70%,60%)",   bg: "rgba(239,68,68,0.12)",  icon: X },
+                };
+                const cfg = orderStatus[o.status] || orderStatus.pending;
+                const SIcon = cfg.icon;
+                const eta = o.expected_delivery_at ? new Date(o.expected_delivery_at) : null;
+                const daysLeft = eta ? Math.ceil((eta.getTime() - Date.now()) / 86400000) : null;
+                const totalDays = o.delivery_days ?? 7;
+                const elapsed = eta ? Math.max(0, totalDays - (daysLeft ?? 0)) : 0;
+                const progress = o.status === "delivered" ? 100
+                  : o.status === "cancelled" ? 0
+                  : o.status === "in_progress" ? Math.min(95, Math.max(8, (elapsed / totalDays) * 100))
+                  : 5;
+                return (
+                  <motion.div key={o.id} custom={i} variants={cardVariants} initial="hidden" animate="visible"
+                    className="rounded-2xl p-5" style={CARD_STYLE}>
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-4">
+                      <div className="flex items-start gap-4 min-w-0">
+                        <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
+                          style={{ background: cfg.bg }}>
+                          <SIcon size={18} style={{ color: cfg.color }} />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="font-bold text-foreground truncate">{o.product_title}</p>
+                          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-foreground/45 mt-1">
+                            <span className="font-mono">#{o.order_number}</span>
+                            <span className="flex items-center gap-1"><Calendar size={10} /> {new Date(o.created_at).toLocaleDateString("en-BD", { year: "numeric", month: "short", day: "numeric" })}</span>
+                            {o.payment_method && <span>{o.payment_method}</span>}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex flex-col sm:items-end gap-2 shrink-0">
+                        <p className="text-xl font-black" style={{ color: 'hsl(145,70%,50%)' }}>৳{o.amount.toLocaleString()}</p>
+                        <span className="text-xs font-semibold px-3 py-1 rounded-lg w-fit"
+                          style={{ background: cfg.bg, color: cfg.color }}>{cfg.label}</span>
+                      </div>
+                    </div>
+
+                    {/* Progress bar */}
+                    {o.status !== "cancelled" && (
+                      <div className="mt-3">
+                        <div className="flex items-center justify-between text-xs text-foreground/55 mb-2">
+                          <span className="flex items-center gap-1.5"><Clock size={11} /> ডেলিভারি timeline</span>
+                          <span className="font-semibold">
+                            {o.status === "delivered" && o.delivered_at
+                              ? `Delivered: ${new Date(o.delivered_at).toLocaleDateString("en-BD")}`
+                              : eta ? `ETA: ${eta.toLocaleDateString("en-BD", { month: "short", day: "numeric" })} (${daysLeft! > 0 ? daysLeft + " দিন বাকি" : "Today"})`
+                              : `${totalDays} দিন (পেমেন্ট verify-এর পর শুরু)`}
+                          </span>
+                        </div>
+                        <div className="h-2 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${progress}%` }}
+                            transition={{ duration: 0.8, ease: "easeOut" }}
+                            className="h-full rounded-full"
+                            style={{ background: o.status === "delivered" ? 'linear-gradient(90deg, hsl(145,70%,45%), hsl(145,70%,55%))' : GRAD }}
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Delivery notes */}
+                    {o.delivery_notes && (
+                      <div className="mt-4 p-3 rounded-xl text-sm text-foreground/75"
+                        style={{ background: 'rgba(139,92,246,0.06)', border: '1px solid rgba(139,92,246,0.15)' }}>
+                        <p className="text-xs font-semibold text-primary/80 mb-1">📋 Admin থেকে বার্তা</p>
+                        {o.delivery_notes}
+                      </div>
+                    )}
+
+                    {/* Delivery files */}
+                    {o.delivery_files && o.delivery_files.length > 0 && (
+                      <div className="mt-4 space-y-2">
+                        <p className="text-xs font-semibold text-foreground/60">📦 Delivered files</p>
+                        <div className="grid sm:grid-cols-2 gap-2">
+                          {o.delivery_files.map((f, idx) => (
+                            <a key={idx} href={f.url} target="_blank" rel="noreferrer"
+                              className="flex items-center gap-2 p-2.5 rounded-xl text-xs hover:bg-white/5 transition"
+                              style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                              <Download size={13} className="text-primary/70 shrink-0" />
+                              <span className="truncate flex-1 text-foreground/80">{f.name}</span>
+                            </a>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </motion.div>
+                );
+              })}
+            </div>
+          )}
+
           {activeTab === "payments" && (
             <div className="space-y-4">
               <div className="flex items-center justify-between mb-2">
