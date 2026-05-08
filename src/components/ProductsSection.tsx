@@ -40,7 +40,7 @@ export const cardColors = [
 ];
 
 // ─── Payment Modal ───────────────────────────────────────────────────────────
-const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose: () => void }) => {
+export const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose: () => void }) => {
   const [step, setStep] = useState<"method" | "form" | "done">("method");
   const [selected, setSelected] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
