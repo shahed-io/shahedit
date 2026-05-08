@@ -254,7 +254,7 @@ const SiteFooter = () => {
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-white/[0.08]">
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-x-2 gap-y-1 text-xs">
               <span className="text-white/55">© {new Date().getFullYear()}</span>
-              <span className="font-bold tracking-wide" style={{ background: 'linear-gradient(90deg, hsl(258,90%,72%), hsl(185,100%,55%))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Shahed IT</span>
+              <span className="font-bold tracking-wide" style={{ background: 'linear-gradient(90deg, hsl(185,100%,55%), hsl(165,80%,50%))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Shahed IT</span>
               <span className="text-white/30 hidden sm:inline">·</span>
               <span className="text-white/55">All Rights Reserved.</span>
               <span className="text-white/30 hidden sm:inline">·</span>
