@@ -523,11 +523,11 @@ const DetailsModal = ({ pkg, onClose, onPay, c }: {
 // ─── Product Card ────────────────────────────────────────────────────────────
 const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) => {
   const c = cardColors[index % cardColors.length];
+  const navigate = useNavigate();
   const discount = pkg.original_price && pkg.price
     ? Math.round((1 - pkg.price / pkg.original_price) * 100)
     : null;
   const [showPayment, setShowPayment] = useState(false);
-  const [showDetails, setShowDetails] = useState(false);
 
   const waMessage = encodeURIComponent(
     `হ্যালো! আমি "${pkg.title}" প্যাকেজটি অর্ডার করতে চাই।${pkg.price ? ` মূল্য: ৳${pkg.price.toLocaleString()}` : ""} অনুগ্রহ করে আরও তথ্য দিন।`
@@ -542,7 +542,7 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
         transition={{ delay: index * 0.1, type: "spring", stiffness: 120 }}
         whileHover={{ y: -6, scale: 1.01 }}
         whileTap={{ scale: 0.97 }}
-        onClick={() => setShowDetails(true)}
+        onClick={() => navigate(`/product/${pkg.id}`)}
         className="group rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 flex flex-col"
         style={{ background: c.bg, border: `1px solid ${c.border}` }}
       >
