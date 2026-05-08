@@ -115,7 +115,8 @@ export default function DashboardPage() {
       supabase.from("notifications").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(50),
       supabase.from("client_documents").select("*").eq("client_email", user.email ?? "").eq("is_visible", true).order("created_at", { ascending: false }),
       supabase.from("user_roles").select("role").eq("user_id", user.id),
-    ]).then(([profileRes, leadsRes, paymentsRes, notifRes, docsRes, rolesRes]) => {
+      (supabase as any).from("orders").select("*").eq("customer_email", user.email ?? "").order("created_at", { ascending: false }),
+    ]).then(([profileRes, leadsRes, paymentsRes, notifRes, docsRes, rolesRes, ordersRes]) => {
       if (profileRes.data) {
         setProfile(profileRes.data as Profile);
         setEditProfile(profileRes.data as Profile);
@@ -124,6 +125,7 @@ export default function DashboardPage() {
       if (paymentsRes.data) setPayments(paymentsRes.data as Payment[]);
       if (notifRes.data) setNotifications(notifRes.data as Notification[]);
       if (docsRes.data) setDocuments(docsRes.data as ClientDocument[]);
+      if (ordersRes?.data) setOrders(ordersRes.data as Order[]);
       if (rolesRes.data?.length) {
         setIsAdmin(rolesRes.data.some(r => ["super_admin", "admin", "editor"].includes(r.role)));
       }
