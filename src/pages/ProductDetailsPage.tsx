@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Star, CheckCircle, CreditCard, MessageCircle, Info, PenLine, Zap } from "lucide-react";
+import { ArrowLeft, CheckCircle, CreditCard, MessageCircle, Info, PenLine, Zap } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
@@ -13,6 +13,9 @@ import {
   type ServicePackageRow,
 } from "@/components/ProductsSection";
 import { sanitizeHtml } from "@/lib/sanitize";
+import { StarRating } from "@/components/StarRating";
+import { ProductReviews } from "@/components/ProductReviews";
+import { useProductRating } from "@/hooks/useProductRatings";
 
 export default function ProductDetailsPage() {
   const { id } = useParams<{ id: string }>();
