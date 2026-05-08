@@ -655,6 +655,103 @@ export type Database = {
         }
         Relationships: []
       }
+      orders: {
+        Row: {
+          admin_notes: string | null
+          amount: number
+          created_at: string
+          currency: string
+          customer_email: string
+          customer_name: string
+          customer_phone: string | null
+          delivered_at: string | null
+          delivery_days: number | null
+          delivery_files: Json | null
+          delivery_notes: string | null
+          expected_delivery_at: string | null
+          id: string
+          order_number: string
+          package_id: string | null
+          payment_id: string | null
+          payment_method: string | null
+          product_title: string
+          service_id: string | null
+          status: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          amount?: number
+          created_at?: string
+          currency?: string
+          customer_email: string
+          customer_name: string
+          customer_phone?: string | null
+          delivered_at?: string | null
+          delivery_days?: number | null
+          delivery_files?: Json | null
+          delivery_notes?: string | null
+          expected_delivery_at?: string | null
+          id?: string
+          order_number?: string
+          package_id?: string | null
+          payment_id?: string | null
+          payment_method?: string | null
+          product_title: string
+          service_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          amount?: number
+          created_at?: string
+          currency?: string
+          customer_email?: string
+          customer_name?: string
+          customer_phone?: string | null
+          delivered_at?: string | null
+          delivery_days?: number | null
+          delivery_files?: Json | null
+          delivery_notes?: string | null
+          expected_delivery_at?: string | null
+          id?: string
+          order_number?: string
+          package_id?: string | null
+          payment_id?: string | null
+          payment_method?: string | null
+          product_title?: string
+          service_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "service_packages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orders_payment_id_fkey"
+            columns: ["payment_id"]
+            isOneToOne: false
+            referencedRelation: "payment_submissions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orders_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       payment_submissions: {
         Row: {
           amount: number
@@ -1004,6 +1101,7 @@ export type Database = {
           badge: string | null
           created_at: string
           currency: string | null
+          delivery_days: number | null
           description: string | null
           features: string[] | null
           id: string
@@ -1021,6 +1119,7 @@ export type Database = {
           badge?: string | null
           created_at?: string
           currency?: string | null
+          delivery_days?: number | null
           description?: string | null
           features?: string[] | null
           id?: string
@@ -1038,6 +1137,7 @@ export type Database = {
           badge?: string | null
           created_at?: string
           currency?: string | null
+          delivery_days?: number | null
           description?: string | null
           features?: string[] | null
           id?: string
@@ -1064,6 +1164,7 @@ export type Database = {
       services: {
         Row: {
           created_at: string
+          default_delivery_days: number | null
           description: string | null
           features: string[] | null
           icon: string | null
@@ -1081,6 +1182,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          default_delivery_days?: number | null
           description?: string | null
           features?: string[] | null
           icon?: string | null
@@ -1098,6 +1200,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          default_delivery_days?: number | null
           description?: string | null
           features?: string[] | null
           icon?: string | null
@@ -1413,6 +1516,10 @@ export type Database = {
         Returns: boolean
       }
       is_admin: { Args: { _user_id: string }; Returns: boolean }
+      resolve_delivery_days: {
+        Args: { _package_id: string; _service_id: string }
+        Returns: number
+      }
     }
     Enums: {
       app_role: "super_admin" | "admin" | "editor"
