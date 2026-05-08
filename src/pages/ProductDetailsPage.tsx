@@ -318,6 +318,9 @@ export default function ProductDetailsPage() {
           </AnimatePresence>
         </div>
 
+        {/* Reviews */}
+        <ProductReviews packageId={pkg.id} accentColor={c.color} onChange={refreshRating} />
+
         {/* Related */}
         {related.length > 0 && (
           <div className="mt-20">
