@@ -65,19 +65,6 @@ const ComplaintPolicyPage = lazy(() => import("./pages/ComplaintPolicyPage"));
 const PaymentPage = lazy(() => import("./pages/PaymentPage"));
 const ProductDetailsPage = lazy(() => import("./pages/ProductDetailsPage"));
 
-// CMS
-const CmsDashboard = lazy(() => import("./pages/cms/CmsDashboard"));
-const ContentListPage = lazy(() => import("./pages/cms/ContentListPage"));
-const ContentEditorPage = lazy(() => import("./pages/cms/ContentEditorPage"));
-const MediaLibraryPage = lazy(() => import("./pages/cms/MediaLibraryPage"));
-const TaxonomyPage = lazy(() => import("./pages/cms/TaxonomyPage"));
-const MenusPage = lazy(() => import("./pages/cms/MenusPage"));
-const SeoManagerPage = lazy(() => import("./pages/cms/SeoManagerPage"));
-const CmsSettingsPage = lazy(() => import("./pages/cms/CmsSettingsPage"));
-const CmsUsersPage = lazy(() => import("./pages/cms/CmsUsersPage"));
-const AuditLogsPage = lazy(() => import("./pages/cms/AuditLogsPage"));
-const CmsBlogPublicPage = lazy(() => import("./pages/cms/CmsBlogPublicPage"));
-const PublicContentPage = lazy(() => import("./pages/cms/PublicContentPage"));
 
 const queryClient = new QueryClient();
 
