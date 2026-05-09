@@ -391,10 +391,10 @@ const SiteHeader = () => {
           `}</style>
 
           {/* Mobile actions */}
-          <div className="md:hidden ml-auto flex items-center gap-2">
+          <div className="md:hidden ml-auto flex items-center gap-1.5 sm:gap-2 shrink-0">
             <motion.button
               whileTap={{ scale: 0.92 }}
-              className="w-10 h-10 rounded-full flex items-center justify-center"
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shrink-0"
               style={{
                 background: "linear-gradient(135deg, rgba(124,58,237,0.18), rgba(236,72,153,0.14))",
                 border: "1px solid rgba(168, 85, 247, 0.40)",
@@ -404,11 +404,12 @@ const SiteHeader = () => {
               onClick={() => setSearchOpen(true)}
               aria-label="Search"
             >
-              <Search size={17} />
+              <Search size={16} className="sm:hidden" />
+              <Search size={17} className="hidden sm:block" />
             </motion.button>
             <motion.button
               whileTap={{ scale: 0.92 }}
-              className="w-10 h-10 rounded-full flex items-center justify-center text-white"
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white shrink-0"
               style={{
                 background: mobileOpen
                   ? "linear-gradient(135deg, #6366f1, #a855f7 55%, #ec4899)"
@@ -421,7 +422,7 @@ const SiteHeader = () => {
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label="Toggle menu"
             >
-              {mobileOpen ? <X size={18} /> : <Menu size={18} />}
+              {mobileOpen ? <X size={17} /> : <Menu size={17} />}
             </motion.button>
           </div>
         </div>
