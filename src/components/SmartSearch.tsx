@@ -212,7 +212,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
   };
 
   return (
-    <div ref={wrapRef} className={`relative ${variant === "desktop" ? "hidden md:flex flex-1 max-w-md mx-auto" : "w-full"}`}>
+    <div ref={wrapRef} className={`relative ${variant === "desktop" ? "hidden md:flex flex-1 max-w-md mx-auto" : "w-full"} ${open && variant === "desktop" ? "z-[60]" : ""}`}>
       <form onSubmit={submit} className="w-full">
         <div
           className="group relative w-full flex items-center gap-2 pl-4 pr-1.5 py-1.5 rounded-2xl transition-all focus-within:scale-[1.005]"
@@ -262,6 +262,27 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
           </button>
         </div>
       </form>
+
+      {/* Desktop full-page blur backdrop */}
+      {variant === "desktop" && (
+        <AnimatePresence>
+          {open && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.18 }}
+              onClick={() => setOpen(false)}
+              className="hidden md:block fixed inset-0 z-[55]"
+              style={{
+                background: "rgba(8, 4, 22, 0.55)",
+                backdropFilter: "blur(8px) saturate(120%)",
+                WebkitBackdropFilter: "blur(8px) saturate(120%)",
+              }}
+            />
+          )}
+        </AnimatePresence>
+      )}
 
       <AnimatePresence>
         {open && (
