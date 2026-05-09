@@ -9,6 +9,7 @@ import PortfolioSection from "@/components/PortfolioSection";
 import TechStack from "@/components/TechStack";
 import AboutSection from "@/components/AboutSection";
 import FaqSection from "@/components/FaqSection";
+import TrustStatsBar from "@/components/TrustStatsBar";
 
 import SiteFooter from "@/components/SiteFooter";
 import FloatingContactButton from "@/components/FloatingContactButton";
@@ -42,6 +43,7 @@ const Index = () => {
       <div className="relative z-10">
         <SiteHeader />
         <HeroBanner />
+        <TrustStatsBar />
         <PopularCategories />
         <HowWeHelp />
         <IndustrySolutions />

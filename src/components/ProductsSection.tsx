@@ -12,6 +12,7 @@ export interface ServicePackageRow {
   id: string;
   title: string;
   description: string | null;
+  short_description?: string | null;
   price: number | null;
   original_price: number | null;
   currency: string;
@@ -460,14 +461,20 @@ const DetailsModal = ({ pkg, onClose, onPay, c }: {
                   )}
                 </div>
 
-          {/* Description — rendered as rich HTML */}
-                {pkg.description && (
+          {/* Short description for card — concise tagline */}
+                {(pkg.short_description || pkg.description) && (
                   <div className="mb-5">
                     <h4 className="text-xs font-bold uppercase tracking-widest text-foreground/40 mb-2">বিবরণ</h4>
-                    <div
-                      className="text-sm text-foreground/75 leading-relaxed rich-description"
-                      dangerouslySetInnerHTML={{ __html: sanitizeHtml(pkg.description) }}
-                    />
+                    {pkg.short_description ? (
+                      <p className="text-sm text-foreground/75 leading-relaxed">
+                        {pkg.short_description}
+                      </p>
+                    ) : (
+                      <div
+                        className="text-sm text-foreground/75 leading-relaxed rich-description line-clamp-3"
+                        dangerouslySetInnerHTML={{ __html: sanitizeHtml(pkg.description!) }}
+                      />
+                    )}
                   </div>
                 )}
 
