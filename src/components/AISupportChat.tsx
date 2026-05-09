@@ -172,10 +172,10 @@ export default function AISupportChat({ externalOpen, onExternalOpenChange }: AI
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.92 }}
             transition={{ type: "spring", stiffness: 340, damping: 28 }}
-            className="w-80 sm:w-96 rounded-2xl overflow-hidden shadow-2xl flex flex-col"
+            className="w-[22rem] sm:w-[26rem] rounded-2xl overflow-hidden shadow-2xl flex flex-col"
             style={{
-              height: "540px",
-              background: "hsl(222,38%,5%)",
+              height: "600px",
+              background: "hsl(222,38%,6%)",
               border: "1px solid rgba(139,92,246,0.22)"
             }}
           >
