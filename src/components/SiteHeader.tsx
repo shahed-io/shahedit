@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, FormEvent } from "react";
 import {
   Search, Menu, X, ChevronRight, ChevronDown, LogIn, LogOut,
-  Globe, Wrench, Palette, Facebook, TrendingUp, Building2,
+  Globe, Wrench, Palette, Facebook, TrendingUp, Building2, Sparkles,
 } from "lucide-react";
 import logoImg from "@/assets/logo-glossy.png";
 import { motion, AnimatePresence } from "framer-motion";
