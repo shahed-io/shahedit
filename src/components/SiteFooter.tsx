@@ -1,5 +1,6 @@
 import { Phone, Mail, MapPin, Package, Info, FileText, Facebook, MessageCircle, Instagram, Send, ShieldCheck, BadgeCheck, ArrowUpRight, Sparkles } from "lucide-react";
 import logoImg from "@/assets/logo-glossy.png";
+import deeplIdLogo from "@/assets/deepl-id-logo.png";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
