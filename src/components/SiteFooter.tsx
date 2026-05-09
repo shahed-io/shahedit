@@ -47,23 +47,47 @@ interface ColumnProps {
   items: { label: string; to: string }[];
 }
 
-const FooterColumn = ({ title, Icon, accent, items }: ColumnProps) => (
+interface ColumnPropsExt extends ColumnProps {
+  glow: string; // hsla color used for glow halo
+  shimmer: string; // tailwind via-* class for top shimmer
+}
+
+const FooterColumn = ({ title, Icon, accent, items, glow, shimmer }: ColumnPropsExt) => (
   <motion.div
     initial={{ opacity: 0, y: 16 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
-    className="group relative rounded-2xl p-6 sm:p-7 bg-white/[0.03] backdrop-blur-xl border border-white/10 hover:border-white/20 hover:bg-white/[0.05] transition-all duration-300 overflow-hidden"
+    whileHover={{ y: -4 }}
+    className="group relative rounded-2xl p-6 sm:p-7 bg-gradient-to-br from-white/[0.06] via-white/[0.03] to-white/[0.02] backdrop-blur-xl border border-white/10 hover:border-primary/40 transition-all duration-500 overflow-hidden"
+    style={{ boxShadow: `0 10px 40px -18px ${glow}` }}
   >
-    {/* subtle top shimmer line on hover */}
-    <div className={`absolute top-0 left-0 right-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-transparent ${accent.includes('primary') ? 'via-primary' : accent.includes('blue') ? 'via-accent' : 'via-emerald-400'} to-transparent`} />
+    {/* Hover glow halo */}
+    <div
+      className="absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+      style={{ background: `radial-gradient(ellipse 80% 60% at 50% 0%, ${glow}, transparent 70%)` }}
+    />
+    {/* Corner accent blob */}
+    <div
+      className="absolute -top-16 -right-16 w-40 h-40 rounded-full opacity-40 group-hover:opacity-70 blur-2xl transition-opacity duration-500 pointer-events-none"
+      style={{ background: glow }}
+    />
+    {/* Top shimmer line on hover */}
+    <div className={`absolute top-0 left-0 right-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-transparent ${shimmer} to-transparent`} />
+
     <div className="relative">
       <div className="flex items-center gap-3 mb-5">
-        <span className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 bg-gradient-to-br ${accent} shadow-lg`}>
-          <Icon size={18} className="text-white" />
+        <span
+          className={`relative w-11 h-11 rounded-xl flex items-center justify-center shrink-0 bg-gradient-to-br ${accent} shadow-lg ring-1 ring-white/20 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500`}
+          style={{ boxShadow: `0 8px 24px -6px ${glow}` }}
+        >
+          <Icon size={18} className="text-white drop-shadow" />
+          <span className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/30 to-transparent opacity-60 pointer-events-none" />
         </span>
-        <h4 className="font-bold text-foreground/90 text-sm tracking-[0.18em] uppercase">{title}</h4>
+        <h4 className={`font-black text-sm tracking-[0.18em] uppercase bg-gradient-to-r ${accent} bg-clip-text text-transparent`}>
+          {title}
+        </h4>
       </div>
-      <div className="h-px bg-gradient-to-r from-white/15 via-white/5 to-transparent mb-4" />
+      <div className={`h-px bg-gradient-to-r ${accent} opacity-40 mb-4`} />
       <ul className="space-y-3 text-sm">
         {items.map((it) => (
           <li key={it.label}>
@@ -71,9 +95,9 @@ const FooterColumn = ({ title, Icon, accent, items }: ColumnProps) => (
               to={it.to}
               className="group/link inline-flex items-center gap-2.5 text-muted-foreground hover:text-foreground transition-colors"
             >
-              <span className={`w-1.5 h-1.5 rounded-full bg-gradient-to-br ${accent} transition-transform group-hover/link:scale-150`} />
-              <span className="group-hover/link:translate-x-1 transition-transform">{it.label}</span>
-              <ArrowUpRight size={12} className="opacity-0 -translate-x-1 group-hover/link:opacity-60 group-hover/link:translate-x-0 transition-all" />
+              <span className={`w-1.5 h-1.5 rounded-full bg-gradient-to-br ${accent} shadow-[0_0_8px_currentColor] transition-transform group-hover/link:scale-[2]`} />
+              <span className="group-hover/link:translate-x-1 group-hover/link:text-foreground transition-all">{it.label}</span>
+              <ArrowUpRight size={12} className="opacity-0 -translate-x-1 group-hover/link:opacity-80 group-hover/link:translate-x-0 transition-all text-primary" />
             </Link>
           </li>
         ))}
