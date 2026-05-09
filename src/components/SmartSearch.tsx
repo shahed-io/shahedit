@@ -95,9 +95,9 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
         supabase.from("blog_posts").select("title,slug,excerpt").eq("is_published", true).ilike("title", like).limit(3),
       ]);
       const out: Suggestion[] = [];
-      svc.data?.forEach((s: any) => out.push({ type: "service", title: s.title, subtitle: s.short_description, href: `/services#${s.slug || ""}` }));
-      pkg.data?.forEach((p: any) => out.push({ type: "package", title: p.title, subtitle: p.short_description, href: `/pricing` }));
-      blog.data?.forEach((b: any) => out.push({ type: "blog", title: b.title, subtitle: b.excerpt, href: `/blog/${b.slug}` }));
+      svc.data?.forEach((s: any) => out.push({ type: "service", title: s.title, subtitle: s.short_description, href: `/services` }));
+      pkg.data?.forEach((p: any) => out.push({ type: "package", title: p.title, subtitle: p.short_description, href: `/product/${p.id}` }));
+      blog.data?.forEach((b: any) => out.push({ type: "blog", title: b.title, subtitle: b.excerpt, href: `/blog` }));
       const ql = q.toLowerCase();
       STATIC_PAGES.filter(p => p.title.toLowerCase().includes(ql)).slice(0, 3).forEach(p => out.push(p));
       setResults(out);
