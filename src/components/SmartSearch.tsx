@@ -529,7 +529,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
                 <span className="flex items-center gap-1"><kbd className="px-1.5 py-0.5 rounded border" style={{ borderColor: "rgba(120,100,180,0.25)" }}>Esc</kbd> বন্ধ</span>
               </div>
               <span className="flex items-center gap-1 font-medium" style={{ color: "#7c3aed" }}>
-                <Sparkles size={11} /> Shahed Store Search
+                <Sparkles size={11} /> Shahed IT Search
               </span>
             </div>
           </motion.div>
