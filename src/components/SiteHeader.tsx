@@ -46,6 +46,10 @@ const SiteHeader = () => {
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const servicesTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const drawerRef = useRef<HTMLElement | null>(null);
+  const searchModalRef = useRef<HTMLDivElement | null>(null);
+  const menuTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const searchTriggerRef = useRef<HTMLButtonElement | null>(null);
 
   const isActive = (href: string) => location.pathname === href;
   const activeKey = navLinks.find(l => isActive(l.href))?.label || (servicesOpen ? "Services" : null);
