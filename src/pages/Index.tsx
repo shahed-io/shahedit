@@ -43,6 +43,7 @@ const Index = () => {
       <div className="relative z-10">
         <SiteHeader />
         <HeroBanner />
+        <TrustStatsBar />
         <PopularCategories />
         <HowWeHelp />
         <IndustrySolutions />
