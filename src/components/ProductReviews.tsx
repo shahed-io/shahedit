@@ -299,7 +299,7 @@ export function ProductReviews({
         <div className="space-y-3">
           <AnimatePresence>
             {reviews.map((r) => {
-              const name = r.profiles?.full_name?.trim() || "একজন ক্রেতা";
+              const name = pickName(r.id);
               const initial = name.charAt(0).toUpperCase();
               return (
                 <motion.div
