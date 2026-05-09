@@ -284,7 +284,6 @@ export default function AISupportChat({ externalOpen, onExternalOpenChange }: AI
               ))}
               <div ref={bottomRef} />
             </div>
-            </div>
 
             {/* Scroll to bottom button */}
             <AnimatePresence>
