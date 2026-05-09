@@ -1,4 +1,4 @@
-import { Phone, Mail, MapPin, Package, Info, FileText, Facebook, MessageCircle, Instagram, Send, ShieldCheck, BadgeCheck } from "lucide-react";
+import { Phone, Mail, MapPin, Package, Info, FileText, Facebook, MessageCircle, Instagram, Send, ShieldCheck, BadgeCheck, ArrowUpRight, Sparkles } from "lucide-react";
 import logoImg from "@/assets/logo-glossy.png";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -42,162 +42,149 @@ const payments = ["bKash", "Nagad", "Rocket", "Upay", "bKash Merchant"];
 interface ColumnProps {
   title: string;
   Icon: typeof Package;
-  iconBg: string;
-  iconColor: string;
-  dotColor: string;
+  accent: string; // tailwind hue eg "from-primary to-accent"
   items: { label: string; to: string }[];
 }
 
-const FooterColumn = ({ title, Icon, iconBg, iconColor, dotColor, items }: ColumnProps) => (
+const FooterColumn = ({ title, Icon, accent, items }: ColumnProps) => (
   <motion.div
     initial={{ opacity: 0, y: 16 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
-    className="rounded-2xl p-6 sm:p-7 bg-white/70 backdrop-blur-xl border border-slate-200/70 shadow-[0_4px_24px_-8px_rgba(99,102,241,0.10)]"
+    className="group relative rounded-2xl p-6 sm:p-7 bg-white/[0.03] backdrop-blur-xl border border-white/10 hover:border-white/20 transition-colors overflow-hidden"
   >
-    <div className="flex items-center gap-3 mb-4">
-      <span
-        className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-        style={{ background: iconBg }}
-      >
-        <Icon size={18} style={{ color: iconColor }} />
-      </span>
-      <h4 className="font-bold text-slate-700 text-sm tracking-[0.18em] uppercase">{title}</h4>
+    {/* hover glow */}
+    <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-br ${accent} mix-blend-overlay`} style={{ filter: "blur(40px)" }} />
+    <div className="relative">
+      <div className="flex items-center gap-3 mb-5">
+        <span className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 bg-gradient-to-br ${accent} shadow-lg`}>
+          <Icon size={18} className="text-white" />
+        </span>
+        <h4 className="font-bold text-foreground/90 text-sm tracking-[0.18em] uppercase">{title}</h4>
+      </div>
+      <div className="h-px bg-gradient-to-r from-white/15 via-white/5 to-transparent mb-4" />
+      <ul className="space-y-3 text-sm">
+        {items.map((it) => (
+          <li key={it.label}>
+            <Link
+              to={it.to}
+              className="group/link inline-flex items-center gap-2.5 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <span className={`w-1.5 h-1.5 rounded-full bg-gradient-to-br ${accent} transition-transform group-hover/link:scale-150`} />
+              <span className="group-hover/link:translate-x-1 transition-transform">{it.label}</span>
+              <ArrowUpRight size={12} className="opacity-0 -translate-x-1 group-hover/link:opacity-60 group-hover/link:translate-x-0 transition-all" />
+            </Link>
+          </li>
+        ))}
+      </ul>
     </div>
-    <div className="h-px bg-gradient-to-r from-slate-200 via-slate-200/60 to-transparent mb-4" />
-    <ul className="space-y-3 text-sm">
-      {items.map((it) => (
-        <li key={it.label}>
-          <Link
-            to={it.to}
-            className="group inline-flex items-center gap-2.5 text-slate-600 hover:text-slate-900 transition-colors"
-          >
-            <span
-              className="w-1.5 h-1.5 rounded-full transition-transform group-hover:scale-150"
-              style={{ background: dotColor }}
-            />
-            <span className="group-hover:translate-x-0.5 transition-transform">{it.label}</span>
-          </Link>
-        </li>
-      ))}
-    </ul>
   </motion.div>
 );
 
 const SiteFooter = () => {
   return (
-    <footer className="relative mt-20 overflow-hidden" style={{ background: "linear-gradient(180deg, #f7f6ff 0%, #f3f4ff 50%, #eef2ff 100%)" }}>
-      {/* subtle ambient blobs */}
-      <div className="absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(168,85,247,0.10), transparent 70%)", filter: "blur(80px)" }} />
-      <div className="absolute -bottom-32 -right-32 w-[500px] h-[500px] rounded-full pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(20,184,166,0.10), transparent 70%)", filter: "blur(80px)" }} />
+    <footer className="relative mt-24 overflow-hidden border-t border-white/10">
+      {/* Ambient background glows matching site theme */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full"
+          style={{ background: "radial-gradient(circle, hsla(258, 90%, 66%, 0.18), transparent 70%)", filter: "blur(80px)" }} />
+        <div className="absolute -top-20 right-0 w-[500px] h-[500px] rounded-full"
+          style={{ background: "radial-gradient(circle, hsla(185, 100%, 48%, 0.14), transparent 70%)", filter: "blur(80px)" }} />
+        <div className="absolute -bottom-40 left-1/3 w-[500px] h-[500px] rounded-full"
+          style={{ background: "radial-gradient(circle, hsla(315, 80%, 65%, 0.10), transparent 70%)", filter: "blur(80px)" }} />
+      </div>
 
-      <div className="container mx-auto px-4 sm:px-6 pt-14 pb-8 relative">
+      {/* top hairline gradient */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
+
+      <div className="container mx-auto px-4 sm:px-6 pt-16 pb-8 relative">
         {/* Top centered brand card */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="rounded-3xl p-8 sm:p-10 mb-8 bg-white/75 backdrop-blur-xl border border-slate-200/70 shadow-[0_8px_32px_-12px_rgba(99,102,241,0.15)] text-center"
+          className="relative rounded-3xl p-8 sm:p-10 mb-10 bg-white/[0.04] backdrop-blur-2xl border border-white/10 shadow-[0_8px_40px_-12px_hsla(258,90%,66%,0.35)] text-center overflow-hidden"
         >
-          {/* Logo + brand */}
-          <Link to="/" className="inline-flex items-center gap-4 mb-4">
-            <div className="w-16 h-16 rounded-2xl flex items-center justify-center bg-gradient-to-br from-orange-50 to-purple-50 border border-purple-200/60 shadow-sm shrink-0">
-              <img src={logoImg} alt="Shahed IT" className="w-12 h-12 object-contain drop-shadow-[0_2px_6px_rgba(20,184,166,0.4)]" />
-            </div>
-            <div className="flex flex-col items-start">
-              <div className="flex items-baseline gap-2 text-3xl sm:text-4xl font-black tracking-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                <span style={{ background: "linear-gradient(135deg, #f97316, #ea580c)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Shahed</span>
-                <span style={{ background: "linear-gradient(135deg, #2563eb, #4f46e5)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>IT</span>
+          {/* inner glow */}
+          <div className="absolute inset-0 pointer-events-none opacity-50"
+            style={{ background: "radial-gradient(ellipse 60% 50% at 50% 0%, hsla(258,90%,66%,0.15), transparent 70%)" }} />
+
+          <div className="relative">
+            {/* Logo + brand */}
+            <Link to="/" className="inline-flex items-center gap-4 mb-5">
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center bg-gradient-to-br from-primary/20 to-accent/20 border border-white/15 shadow-[0_0_24px_-4px_hsla(258,90%,66%,0.5)] shrink-0">
+                <img src={logoImg} alt="Shahed IT" className="w-12 h-12 object-contain drop-shadow-[0_2px_8px_hsla(185,100%,48%,0.6)]" />
               </div>
-              <div className="flex items-center gap-2 mt-1">
-                <span className="h-px w-6 bg-orange-400" />
-                <span className="text-[11px] font-bold tracking-[0.25em] text-slate-500">SHAHEDIT.COM</span>
-                <span className="h-px w-6 bg-teal-400" />
+              <div className="flex flex-col items-start">
+                <div className="flex items-baseline gap-2 text-3xl sm:text-4xl font-black tracking-tight" style={{ fontFamily: "'Syne', sans-serif" }}>
+                  <span className="bg-gradient-to-r from-primary via-fuchsia-400 to-accent bg-clip-text text-transparent">Shahed</span>
+                  <span className="bg-gradient-to-r from-accent to-cyan-300 bg-clip-text text-transparent">IT</span>
+                </div>
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="h-px w-6 bg-gradient-to-r from-transparent to-primary" />
+                  <span className="text-[11px] font-bold tracking-[0.25em] text-muted-foreground">SHAHEDIT.COM</span>
+                  <span className="h-px w-6 bg-gradient-to-l from-transparent to-accent" />
+                </div>
+              </div>
+            </Link>
+
+            {/* Tagline */}
+            <p className="text-sm sm:text-base mb-6 max-w-2xl mx-auto leading-relaxed">
+              <span className="text-foreground/80">বাংলাদেশের সবচেয়ে </span>
+              <span className="text-accent font-semibold">বিশ্বস্ত ডিজিটাল আইটি সলিউশন</span>
+              <span className="text-foreground/80">। </span>
+              <span className="bg-gradient-to-r from-primary to-fuchsia-400 bg-clip-text text-transparent font-semibold">প্রিমিয়াম কোয়ালিটি</span>
+              <span className="text-foreground/80">, সেরা দামে, </span>
+              <span className="text-accent font-semibold">ইনস্ট্যান্ট ডেলিভারি।</span>
+            </p>
+
+            {/* Contact rows */}
+            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mb-6">
+              <a href="tel:+8801820060046" className="group inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 hover:border-primary/40 hover:bg-primary/10 transition-colors">
+                <span className="w-8 h-8 rounded-full flex items-center justify-center bg-gradient-to-br from-primary to-fuchsia-500 shadow-md">
+                  <Phone size={13} className="text-white" />
+                </span>
+                <span className="text-sm font-medium text-foreground/90">01820-060046</span>
+              </a>
+              <a href="mailto:info.shahedit@gmail.com" className="group inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 hover:border-accent/40 hover:bg-accent/10 transition-colors">
+                <span className="w-8 h-8 rounded-full flex items-center justify-center bg-gradient-to-br from-accent to-cyan-500 shadow-md">
+                  <Mail size={13} className="text-white" />
+                </span>
+                <span className="text-sm font-medium text-foreground/90">info.shahedit@gmail.com</span>
+              </a>
+              <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/[0.04] border border-white/10">
+                <span className="w-8 h-8 rounded-full flex items-center justify-center bg-gradient-to-br from-emerald-500 to-teal-500 shadow-md">
+                  <MapPin size={13} className="text-white" />
+                </span>
+                <span className="text-sm font-medium text-foreground/90">Sopura, Rajshahi, Bangladesh</span>
               </div>
             </div>
-          </Link>
 
-          {/* Tagline */}
-          <p className="text-sm sm:text-base mb-6">
-            <span className="text-emerald-600 font-medium">বাংলাদেশের সবচেয়ে </span>
-            <span className="text-teal-600 font-semibold italic">বিশ্বস্ত ডিজিটাল আইটি সলিউশন</span>
-            <span className="text-slate-700">। </span>
-            <span className="text-rose-500 font-semibold italic">প্রিমিয়াম কোয়ালিটি</span>
-            <span className="text-slate-700">, </span>
-            <span className="text-emerald-600 font-medium">সেরা দামে</span>
-            <span className="text-slate-700">, </span>
-            <span className="text-teal-600 font-semibold italic">ইনস্ট্যান্ট ডেলিভারি।</span>
-          </p>
-
-          {/* Contact rows */}
-          <div className="flex flex-col items-center gap-3 mb-6">
-            <a href="tel:+8801820060046" className="inline-flex items-center gap-3 text-slate-700 hover:text-purple-600 transition-colors group">
-              <span className="w-9 h-9 rounded-full flex items-center justify-center bg-purple-100 border border-purple-200">
-                <Phone size={14} className="text-purple-600" />
-              </span>
-              <span className="text-sm font-medium">01820-060046</span>
-            </a>
-            <a href="mailto:info.shahedit@gmail.com" className="inline-flex items-center gap-3 text-slate-700 hover:text-blue-600 transition-colors">
-              <span className="w-9 h-9 rounded-full flex items-center justify-center bg-blue-100 border border-blue-200">
-                <Mail size={14} className="text-blue-600" />
-              </span>
-              <span className="text-sm font-medium">info.shahedit@gmail.com</span>
-            </a>
-            <div className="inline-flex items-center gap-3 text-slate-700">
-              <span className="w-9 h-9 rounded-full flex items-center justify-center bg-emerald-100 border border-emerald-200">
-                <MapPin size={14} className="text-emerald-600" />
-              </span>
-              <span className="text-sm font-medium">Sopura, Rajshahi, Bangladesh</span>
+            {/* Social */}
+            <div className="flex items-center justify-center gap-3">
+              {socials.map(({ Icon, href, label }) => (
+                <motion.a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  whileHover={{ y: -3, scale: 1.08 }}
+                  whileTap={{ scale: 0.92 }}
+                  className="w-10 h-10 rounded-full flex items-center justify-center bg-white/[0.04] border border-white/10 text-muted-foreground hover:text-foreground hover:border-primary/50 hover:bg-primary/15 transition-colors"
+                >
+                  <Icon size={16} />
+                </motion.a>
+              ))}
             </div>
-          </div>
-
-          {/* Social */}
-          <div className="flex items-center justify-center gap-3">
-            {socials.map(({ Icon, href, label }) => (
-              <motion.a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={label}
-                whileHover={{ y: -3, scale: 1.08 }}
-                whileTap={{ scale: 0.92 }}
-                className="w-10 h-10 rounded-full flex items-center justify-center bg-white border border-slate-200 text-slate-500 hover:text-purple-600 hover:border-purple-300 shadow-sm transition-colors"
-              >
-                <Icon size={16} />
-              </motion.a>
-            ))}
           </div>
         </motion.div>
 
         {/* 3-column links */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
-          <FooterColumn
-            title="Products"
-            Icon={Package}
-            iconBg="rgba(168,85,247,0.12)"
-            iconColor="#9333ea"
-            dotColor="#a855f7"
-            items={productLinks}
-          />
-          <FooterColumn
-            title="Information"
-            Icon={Info}
-            iconBg="rgba(59,130,246,0.12)"
-            iconColor="#2563eb"
-            dotColor="#60a5fa"
-            items={infoLinks}
-          />
-          <FooterColumn
-            title="Policies"
-            Icon={FileText}
-            iconBg="rgba(20,184,166,0.12)"
-            iconColor="#0d9488"
-            dotColor="#14b8a6"
-            items={policyLinks}
-          />
+          <FooterColumn title="Products" Icon={Package} accent="from-primary to-fuchsia-500" items={productLinks} />
+          <FooterColumn title="Information" Icon={Info} accent="from-blue-500 to-accent" items={infoLinks} />
+          <FooterColumn title="Policies" Icon={FileText} accent="from-accent to-emerald-400" items={policyLinks} />
         </div>
 
         {/* Bottom bar: certified | payments | trust */}
@@ -205,44 +192,43 @@ const SiteFooter = () => {
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="rounded-2xl p-5 sm:p-6 bg-white/75 backdrop-blur-xl border border-slate-200/70 shadow-sm flex flex-col lg:flex-row items-center justify-between gap-5"
+          className="rounded-2xl p-5 sm:p-6 bg-white/[0.04] backdrop-blur-xl border border-white/10 flex flex-col lg:flex-row items-center justify-between gap-5"
         >
           <div className="flex items-center gap-3">
-            <span className="w-11 h-11 rounded-full flex items-center justify-center bg-gradient-to-br from-purple-100 to-teal-100 border border-purple-200/60">
-              <ShieldCheck size={20} className="text-purple-600" />
+            <span className="w-11 h-11 rounded-full flex items-center justify-center bg-gradient-to-br from-primary/30 to-accent/30 border border-white/15 shadow-[0_0_16px_-2px_hsla(258,90%,66%,0.5)]">
+              <ShieldCheck size={20} className="text-foreground" />
             </span>
             <div className="text-left">
-              <div className="text-sm font-bold tracking-wider text-slate-700">GOVT. CERTIFIED BUSINESS</div>
-              <div className="text-xs text-slate-500 mt-0.5">DBID: 586772174</div>
+              <div className="text-sm font-bold tracking-wider text-foreground/90">GOVT. CERTIFIED BUSINESS</div>
+              <div className="text-xs text-muted-foreground mt-0.5">DBID: 586772174</div>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 flex-wrap justify-center">
-            <span className="text-xs font-semibold tracking-[0.2em] text-slate-500 uppercase">Payments:</span>
+          <div className="flex items-center gap-2 flex-wrap justify-center">
+            <span className="text-xs font-semibold tracking-[0.2em] text-muted-foreground uppercase mr-1">Payments:</span>
             {payments.map((p) => (
               <span
                 key={p}
-                className="px-3 py-1 rounded-full text-xs font-semibold text-slate-700 bg-white border border-slate-200 shadow-sm"
+                className="px-3 py-1 rounded-full text-xs font-semibold text-foreground/90 bg-white/[0.04] border border-white/10 hover:border-white/25 transition-colors"
               >
                 {p}
               </span>
             ))}
           </div>
 
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 border border-emerald-200">
-            <BadgeCheck size={16} className="text-emerald-600" />
-            <span className="text-xs font-semibold text-emerald-700">Trusted Digital IT Partner</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-emerald-500/15 to-teal-500/15 border border-emerald-400/30">
+            <BadgeCheck size={16} className="text-emerald-400" />
+            <span className="text-xs font-semibold text-emerald-300">Trusted Digital IT Partner</span>
           </div>
         </motion.div>
 
         {/* Copyright */}
-        <div className="text-center text-xs text-slate-500 mt-6">
+        <div className="text-center text-xs text-muted-foreground mt-8 inline-flex items-center justify-center gap-1.5 w-full">
+          <Sparkles size={12} className="text-primary" />
           © {new Date().getFullYear()}{" "}
-          <span className="font-bold" style={{ background: "linear-gradient(90deg, #f97316, #2563eb)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-            Shahed IT
-          </span>{" "}
+          <span className="font-bold bg-gradient-to-r from-primary via-fuchsia-400 to-accent bg-clip-text text-transparent">Shahed IT</span>
           · All Rights Reserved · Designed &amp; Developed by{" "}
-          <span className="font-semibold text-purple-600">Shahed IT</span>
+          <span className="font-semibold text-accent">Shahed IT</span>
         </div>
       </div>
     </footer>
