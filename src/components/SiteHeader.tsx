@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import {
   Menu, X, ChevronRight, ChevronDown, LogIn, LogOut, Search,
   Globe, Wrench, Palette, Facebook, TrendingUp, Building2, Sparkles,
+  FileText, Receipt, FolderOpen, User as UserIcon, Flame, MessageCircle,
+  Briefcase, Phone, Shield, BadgeCheck,
 } from "lucide-react";
 import logoImg from "@/assets/logo-glossy.png";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
@@ -424,133 +426,259 @@ const SiteHeader = () => {
         </div>
       </div>
 
-      {/* ───── Mobile Menu ───── */}
+      {/* ───── Mobile Drawer (Premium Rich Menu) ───── */}
       <AnimatePresence>
         {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="md:hidden overflow-hidden"
-            style={{
-              background: "linear-gradient(180deg, rgba(14, 10, 32, 0.98), rgba(20, 15, 48, 0.98))",
-              backdropFilter: "blur(20px) saturate(160%)",
-              WebkitBackdropFilter: "blur(20px) saturate(160%)",
-              borderBottom: "1px solid rgba(168, 85, 247, 0.18)",
-            }}
-          >
-            <div className="px-4 py-4 space-y-1.5">
-              <div className="mb-3">
-                <SmartSearch variant="mobile" onNavigate={() => setMobileOpen(false)} />
-              </div>
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="md:hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
+              onClick={() => setMobileOpen(false)}
+            />
+            <motion.div
+              initial={{ opacity: 0, y: -12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+              className="md:hidden fixed left-3 right-3 top-[68px] z-50 rounded-3xl overflow-hidden max-h-[calc(100vh-84px)] overflow-y-auto"
+              style={{
+                background: "linear-gradient(180deg, rgba(16, 11, 38, 0.98), rgba(22, 14, 52, 0.98))",
+                backdropFilter: "blur(24px) saturate(180%)",
+                WebkitBackdropFilter: "blur(24px) saturate(180%)",
+                border: "1px solid rgba(168, 85, 247, 0.28)",
+                boxShadow: "0 24px 60px rgba(0,0,0,0.55), 0 0 0 1px rgba(168,85,247,0.10), inset 0 1px 0 rgba(255,255,255,0.05)",
+              }}
+            >
+              {/* Aurora top edge */}
+              <div className="h-px w-full" style={{ background: "linear-gradient(90deg, transparent, rgba(99,102,241,0.7), rgba(168,85,247,0.95), rgba(236,72,153,0.7), transparent)" }} />
 
-              {navLinks.map((link) =>
-                link.hasDropdown ? (
-                  <div key={link.label}>
+              <div className="p-4 space-y-4">
+                {/* Search */}
+                <SmartSearch variant="mobile" onNavigate={() => setMobileOpen(false)} />
+
+                {/* Welcome / Login Card */}
+                {user ? (
+                  <Link to="/dashboard" onClick={() => setMobileOpen(false)}>
                     <div
-                      onClick={() => setMobileServicesOpen(v => !v)}
-                      className="flex items-center justify-between py-3 px-4 text-sm font-semibold rounded-xl cursor-pointer text-white"
+                      className="relative rounded-2xl p-4 overflow-hidden"
                       style={{
-                        background: mobileServicesOpen ? "rgba(168, 85, 247, 0.12)" : "rgba(255,255,255,0.03)",
-                        border: "1px solid rgba(255,255,255,0.06)",
+                        background: "linear-gradient(135deg, #4c1d95 0%, #7c3aed 45%, #c026d3 100%)",
+                        boxShadow: "0 12px 28px rgba(124,58,237,0.45), inset 0 1px 0 rgba(255,255,255,0.18)",
                       }}
                     >
-                      {link.label}
-                      <ChevronDown size={14} className={`transition-transform ${mobileServicesOpen ? "rotate-180" : ""}`} style={{ color: "#c4b5fd" }} />
-                    </div>
-                    <AnimatePresence>
-                      {mobileServicesOpen && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: "auto" }}
-                          exit={{ opacity: 0, height: 0 }}
-                          className="ml-2 mt-1 space-y-1 overflow-hidden"
-                        >
-                          {serviceCategories.map((cat) => (
-                            <Link key={cat.label} to={cat.href} onClick={() => { setMobileOpen(false); setMobileServicesOpen(false); }}>
-                              <div className="flex items-center gap-3 py-2 px-3 rounded-xl">
-                                <div className="w-9 h-9 rounded-lg overflow-hidden shrink-0">
-                                  <img src={cat.img} alt={cat.label} className="w-full h-full object-cover" />
-                                </div>
-                                <span className="text-sm font-medium text-white">{cat.label}</span>
-                                <ChevronRight size={12} className="ml-auto" style={{ color: "#c4b5fd" }} />
-                              </div>
-                            </Link>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                ) : (
-                  <Link key={link.label} to={link.href} onClick={() => setMobileOpen(false)}>
-                    <div
-                      className="flex items-center justify-between py-3 px-4 text-sm font-semibold rounded-xl text-white"
-                      style={{
-                        background: isActive(link.href) ? "linear-gradient(135deg, rgba(168, 85, 247, 0.20), rgba(236, 72, 153, 0.15))" : "rgba(255,255,255,0.03)",
-                        border: `1px solid ${isActive(link.href) ? "rgba(168, 85, 247, 0.35)" : "rgba(255,255,255,0.06)"}`,
-                      }}
-                    >
-                      {link.label}
-                      <ChevronRight size={14} style={{ color: "#c4b5fd" }} />
+                      <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full opacity-30 blur-2xl" style={{ background: "radial-gradient(circle, #f0abfc, transparent 70%)" }} />
+                      <div className="relative flex items-center gap-3">
+                        {(() => {
+                          const meta: any = (user as any)?.user_metadata ?? {};
+                          const avatarUrl = meta.avatar_url || meta.picture;
+                          const fullName = meta.full_name || meta.name || user.email?.split("@")[0];
+                          const initial = (fullName?.[0] || "U").toUpperCase();
+                          return avatarUrl ? (
+                            <img src={avatarUrl} alt={fullName} referrerPolicy="no-referrer" className="w-14 h-14 rounded-full object-cover" style={{ boxShadow: "0 0 0 3px rgba(255,255,255,0.30)" }} />
+                          ) : (
+                            <div className="w-14 h-14 rounded-full flex items-center justify-center text-xl font-black text-white" style={{ background: "linear-gradient(135deg, #ec4899, #6366f1)", boxShadow: "0 0 0 3px rgba(255,255,255,0.30)" }}>
+                              {initial}
+                            </div>
+                          );
+                        })()}
+                        <div className="flex-1 min-w-0">
+                          <div className="text-[10px] uppercase tracking-[0.18em] font-bold text-white/75 flex items-center gap-1">
+                            Welcome Back <Sparkles size={9} />
+                          </div>
+                          <div className="text-base font-extrabold text-white truncate flex items-center gap-1.5">
+                            {(user as any)?.user_metadata?.full_name || user.email?.split("@")[0]}
+                            <BadgeCheck size={14} className="text-cyan-300" />
+                          </div>
+                          <span className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full text-[10px] font-bold text-amber-200" style={{ background: "rgba(0,0,0,0.25)", border: "1px solid rgba(251,191,36,0.40)" }}>
+                            <Sparkles size={9} /> Premium Client
+                          </span>
+                        </div>
+                        <ChevronRight size={18} className="text-white/85" />
+                      </div>
                     </div>
                   </Link>
-                )
-              )}
+                ) : (
+                  <Link to="/login" onClick={() => setMobileOpen(false)}>
+                    <div
+                      className="relative rounded-2xl p-4 overflow-hidden flex items-center gap-3"
+                      style={{
+                        background: "linear-gradient(135deg, #4c1d95, #7c3aed 55%, #c026d3)",
+                        boxShadow: "0 12px 28px rgba(124,58,237,0.45), inset 0 1px 0 rgba(255,255,255,0.18)",
+                      }}
+                    >
+                      <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: "rgba(255,255,255,0.18)" }}>
+                        <LogIn size={20} className="text-white" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="text-[10px] uppercase tracking-[0.18em] font-bold text-white/75">Get Started</div>
+                        <div className="text-base font-extrabold text-white">Login / Sign Up</div>
+                      </div>
+                      <ChevronRight size={18} className="text-white/85" />
+                    </div>
+                  </Link>
+                )}
 
-              <div className="pt-2 grid grid-cols-2 gap-2">
-                {user ? (
-                  <>
-                    <Link to="/dashboard" onClick={() => setMobileOpen(false)}>
-                      <div
-                        className="flex items-center justify-center gap-2 py-2.5 rounded-full text-sm font-semibold text-white"
-                        style={{
-                          background: "rgba(255,255,255,0.05)",
-                          border: "1px solid rgba(255,255,255,0.12)",
-                        }}
-                      >
-                        Dashboard
+                {/* Quick Tiles */}
+                <div className="grid grid-cols-4 gap-2">
+                  {[
+                    { label: "Quotes", icon: FileText, to: "/dashboard?tab=quote", grad: "linear-gradient(135deg, #6366f1, #4338ca)" },
+                    { label: "Payments", icon: Receipt, to: "/dashboard?tab=payment", grad: "linear-gradient(135deg, #10b981, #059669)" },
+                    { label: "Documents", icon: FolderOpen, to: "/dashboard?tab=docs", grad: "linear-gradient(135deg, #ec4899, #be185d)" },
+                    { label: "Profile", icon: UserIcon, to: "/dashboard?tab=profile", grad: "linear-gradient(135deg, #f59e0b, #d97706)" },
+                  ].map((t) => (
+                    <Link key={t.label} to={t.to} onClick={() => setMobileOpen(false)}>
+                      <div className="rounded-xl p-2.5 flex flex-col items-center gap-1.5" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+                        <div className="w-10 h-10 rounded-full flex items-center justify-center text-white" style={{ background: t.grad, boxShadow: "0 4px 12px rgba(0,0,0,0.30), inset 0 1px 0 rgba(255,255,255,0.20)" }}>
+                          <t.icon size={16} />
+                        </div>
+                        <span className="text-[10px] font-bold text-white/85 text-center leading-tight">{t.label}</span>
                       </div>
                     </Link>
+                  ))}
+                </div>
+
+                {/* Promo Cards */}
+                <div className="grid grid-cols-2 gap-2.5">
+                  <Link to="/pricing" onClick={() => setMobileOpen(false)}>
+                    <div className="relative rounded-2xl p-3 overflow-hidden h-full" style={{ background: "linear-gradient(135deg, #f97316, #dc2626)", boxShadow: "0 10px 22px rgba(249,115,22,0.40)" }}>
+                      <div className="flex items-center gap-1.5">
+                        <Flame size={14} className="text-amber-200" />
+                        <span className="text-[10px] font-black text-white uppercase tracking-wider">Hot Deals</span>
+                      </div>
+                      <div className="text-base font-extrabold text-white mt-1.5 leading-tight">Up to 50% OFF</div>
+                      <div className="text-[11px] text-white/85 mt-0.5">প্যাকেজ দেখুন →</div>
+                    </div>
+                  </Link>
+                  <a href="https://wa.me/8801820060046" target="_blank" rel="noopener noreferrer">
+                    <div className="relative rounded-2xl p-3 overflow-hidden h-full" style={{ background: "linear-gradient(135deg, #10b981, #047857)", boxShadow: "0 10px 22px rgba(16,185,129,0.40)" }}>
+                      <div className="flex items-center gap-1.5">
+                        <MessageCircle size={14} className="text-emerald-100" />
+                        <span className="text-[10px] font-black text-white uppercase tracking-wider">Live 24/7</span>
+                      </div>
+                      <div className="text-base font-extrabold text-white mt-1.5 leading-tight">সাহায্য নিন</div>
+                      <div className="text-[11px] text-white/85 mt-0.5">WhatsApp চ্যাট →</div>
+                    </div>
+                  </a>
+                </div>
+
+                {/* Trending Categories */}
+                <div>
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <Sparkles size={11} style={{ color: "#f0abfc" }} />
+                    <span className="text-[10px] font-black uppercase tracking-[0.22em]" style={{ color: "#c4b5fd" }}>Trending Categories</span>
+                    <Sparkles size={11} style={{ color: "#f0abfc" }} />
+                  </div>
+                  <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1" style={{ scrollbarWidth: "none" }}>
+                    {serviceCategories.map((cat) => (
+                      <Link key={cat.label} to={cat.href} onClick={() => setMobileOpen(false)} className="shrink-0">
+                        <div className="flex items-center gap-2 px-3 py-2 rounded-full whitespace-nowrap" style={{ background: "rgba(255,255,255,0.05)", border: `1px solid hsl(${cat.accent} / 0.40)` }}>
+                          <cat.icon size={13} style={{ color: `hsl(${cat.accent})` }} />
+                          <span className="text-xs font-semibold text-white">{cat.label}</span>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Navigation Section */}
+                <div>
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <span className="h-px flex-1" style={{ background: "linear-gradient(90deg, transparent, rgba(168,85,247,0.40))" }} />
+                    <Sparkles size={11} style={{ color: "#a78bfa" }} />
+                    <span className="text-[10px] font-black uppercase tracking-[0.22em]" style={{ color: "#c4b5fd" }}>Navigation</span>
+                    <Sparkles size={11} style={{ color: "#a78bfa" }} />
+                    <span className="h-px flex-1" style={{ background: "linear-gradient(90deg, rgba(168,85,247,0.40), transparent)" }} />
+                  </div>
+                  <div className="space-y-1.5">
+                    {[
+                      { label: "Home", to: "/", icon: Globe, grad: "linear-gradient(135deg, #f59e0b, #ea580c)" },
+                      { label: "Services", to: "/services", icon: Briefcase, grad: "linear-gradient(135deg, #3b82f6, #1d4ed8)" },
+                      { label: "Portfolio", to: "/portfolio", icon: FolderOpen, grad: "linear-gradient(135deg, #f59e0b, #d97706)" },
+                      { label: "Blog", to: "/blog", icon: FileText, grad: "linear-gradient(135deg, #a855f7, #7e22ce)" },
+                      { label: "Pricing", to: "/pricing", icon: Receipt, grad: "linear-gradient(135deg, #6366f1, #4338ca)" },
+                      { label: "Contact", to: "/contact", icon: Phone, grad: "linear-gradient(135deg, #14b8a6, #0d9488)" },
+                    ].map((item) => (
+                      <Link key={item.label} to={item.to} onClick={() => setMobileOpen(false)}>
+                        <div
+                          className="flex items-center gap-3 px-3 py-2.5 rounded-2xl"
+                          style={{
+                            background: isActive(item.to)
+                              ? "linear-gradient(135deg, rgba(168,85,247,0.18), rgba(236,72,153,0.12))"
+                              : "rgba(255,255,255,0.035)",
+                            border: `1px solid ${isActive(item.to) ? "rgba(168,85,247,0.45)" : "rgba(255,255,255,0.07)"}`,
+                          }}
+                        >
+                          <div className="w-9 h-9 rounded-full flex items-center justify-center text-white shrink-0" style={{ background: item.grad, boxShadow: "0 4px 12px rgba(0,0,0,0.30), inset 0 1px 0 rgba(255,255,255,0.20)" }}>
+                            <item.icon size={15} />
+                          </div>
+                          <span className="text-sm font-bold text-white flex-1">{item.label}</span>
+                          <ChevronRight size={14} style={{ color: "#c4b5fd" }} />
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Bottom Action Buttons */}
+                <div className="grid grid-cols-2 gap-2 pt-1">
+                  <Link to="/get-quote" onClick={() => setMobileOpen(false)}>
+                    <div
+                      className="flex items-center justify-center gap-1.5 py-3 rounded-full text-sm font-extrabold text-white"
+                      style={{
+                        background: "linear-gradient(135deg, #6366f1, #a855f7 55%, #ec4899)",
+                        boxShadow: "0 10px 24px rgba(168, 85, 247, 0.50), inset 0 1px 0 rgba(255,255,255,0.25)",
+                      }}
+                    >
+                      <Sparkles size={14} /> Quote
+                    </div>
+                  </Link>
+                  {user ? (
                     <button
                       onClick={() => { signOut(); setMobileOpen(false); }}
-                      className="flex items-center justify-center gap-2 py-2.5 rounded-full text-sm font-semibold text-white"
+                      className="flex items-center justify-center gap-1.5 py-3 rounded-full text-sm font-extrabold"
                       style={{
-                        background: "rgba(255,255,255,0.05)",
-                        border: "1px solid rgba(255,255,255,0.12)",
+                        background: "rgba(244, 63, 94, 0.10)",
+                        border: "1px solid rgba(244, 63, 94, 0.45)",
+                        color: "#fda4af",
                       }}
                     >
                       <LogOut size={14} /> Logout
                     </button>
-                  </>
-                ) : (
-                  <Link to="/login" onClick={() => setMobileOpen(false)} className="col-span-2">
+                  ) : (
+                    <Link to="/login" onClick={() => setMobileOpen(false)}>
+                      <div
+                        className="flex items-center justify-center gap-1.5 py-3 rounded-full text-sm font-extrabold text-white"
+                        style={{
+                          background: "rgba(255,255,255,0.06)",
+                          border: "1px solid rgba(255,255,255,0.15)",
+                        }}
+                      >
+                        <LogIn size={14} /> Login
+                      </div>
+                    </Link>
+                  )}
+                </div>
+
+                {user?.email === "info.shahedit@gmail.com" && (
+                  <Link to="/admin" onClick={() => setMobileOpen(false)}>
                     <div
-                      className="flex items-center justify-center gap-2 py-2.5 rounded-full text-sm font-semibold text-white"
+                      className="flex items-center justify-center gap-1.5 py-2.5 rounded-full text-sm font-extrabold text-white"
                       style={{
-                        background: "rgba(255,255,255,0.05)",
-                        border: "1px solid rgba(255,255,255,0.12)",
+                        background: "linear-gradient(135deg, #1e293b, #334155)",
+                        border: "1px solid rgba(168,85,247,0.40)",
+                        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.10)",
                       }}
                     >
-                      <LogIn size={14} /> Login
+                      <Shield size={14} className="text-purple-300" /> Admin Panel
                     </div>
                   </Link>
                 )}
               </div>
-
-              <Link to="/get-quote" onClick={() => setMobileOpen(false)} className="block pt-1">
-                <div
-                  className="flex items-center justify-center gap-1.5 py-3 rounded-full text-sm font-bold text-white"
-                  style={{
-                    background: "linear-gradient(135deg, #6366f1, #a855f7 55%, #ec4899)",
-                    boxShadow: "0 8px 24px rgba(168, 85, 247, 0.45), inset 0 1px 0 rgba(255,255,255,0.25)",
-                  }}
-                >
-                  <Sparkles size={14} /> Get a Free Quote
-                </div>
-              </Link>
-            </div>
-          </motion.div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </motion.header>
