@@ -282,44 +282,29 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
             {/* Top gradient bar */}
             <div style={{ height: 3, background: "linear-gradient(90deg, #6366f1, #a855f7, #ec4899)" }} />
 
-            {/* Hero search bar inside dropdown */}
+            {/* Hero search bar inside dropdown — DISPLAY ONLY (mirror of top input) */}
             <div className="px-4 pt-4 pb-3" style={{ background: "linear-gradient(180deg, rgba(124,58,237,0.12), rgba(124,58,237,0))" }}>
-              <form onSubmit={submit} className="relative">
-                <div
-                  className="flex items-center gap-2 px-4 py-3 rounded-2xl"
-                  style={{
-                    background: "rgba(255,255,255,0.04)",
-                    border: "1.5px solid rgba(168,85,247,0.35)",
-                    boxShadow: "0 4px 22px rgba(124,58,237,0.25), inset 0 1px 0 rgba(255,255,255,0.06)",
-                  }}
-                >
-                  <Search size={18} style={{ color: "#c4b5fd" }} className="shrink-0" />
-                  <input
-                    type="text"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    onKeyDown={onKeyDown}
-                    autoFocus
-                    placeholder="Shahed IT-তে যেকোনো সার্ভিস খুঁজুন..."
-                    className="flex-1 bg-transparent outline-none text-[15px] font-medium placeholder:text-[rgba(226,218,245,0.45)]"
-                    style={{ color: "#fff" }}
-                    autoComplete="off"
-                  />
-                  {query && (
-                    <button type="button" onClick={() => setQuery("")} className="p-1 rounded-full hover:bg-white/10">
-                      <X size={15} style={{ color: "#c4b5fd" }} />
-                    </button>
-                  )}
-                  <button
-                    type="submit"
-                    className="shrink-0 w-9 h-9 rounded-xl flex items-center justify-center transition-transform hover:scale-105"
-                    style={{ background: "linear-gradient(135deg, #6366f1, #a855f7, #ec4899)", boxShadow: "0 4px 14px rgba(168,85,247,0.45)" }}
-                    aria-label="Search"
-                  >
-                    <Search size={16} className="text-white" />
-                  </button>
+              <div
+                onClick={() => inputRef.current?.focus()}
+                className="flex items-center gap-2 px-4 py-3 rounded-2xl cursor-text select-none"
+                style={{
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1.5px solid rgba(168,85,247,0.35)",
+                  boxShadow: "0 4px 22px rgba(124,58,237,0.25), inset 0 1px 0 rgba(255,255,255,0.06)",
+                }}
+                aria-hidden="true"
+              >
+                <Search size={18} style={{ color: "#c4b5fd" }} className="shrink-0" />
+                <div className="flex-1 min-w-0 text-[15px] font-medium truncate" style={{ color: query ? "#fff" : "rgba(226,218,245,0.45)" }}>
+                  {query || "Shahed IT-তে যেকোনো সার্ভিস খুঁজুন..."}
                 </div>
-              </form>
+                <div
+                  className="shrink-0 w-9 h-9 rounded-xl flex items-center justify-center pointer-events-none"
+                  style={{ background: "linear-gradient(135deg, #6366f1, #a855f7, #ec4899)", boxShadow: "0 4px 14px rgba(168,85,247,0.45)" }}
+                >
+                  <Search size={16} className="text-white" />
+                </div>
+              </div>
             </div>
 
             <div className="max-h-[60vh] overflow-y-auto">
