@@ -103,6 +103,23 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
     return () => { cancelled = true; };
   }, []);
 
+  // Fetch popular searches once
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { data } = await supabase
+        .from("popular_searches")
+        .select("term")
+        .eq("is_active", true)
+        .order("sort_order", { ascending: true })
+        .limit(20);
+      if (cancelled) return;
+      const list = (data || []).map((d: any) => d.term).filter(Boolean);
+      if (list.length) setPopular(list);
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
   useEffect(() => {
     if (variant !== "desktop") return;
     const onKey = (e: globalThis.KeyboardEvent) => {
