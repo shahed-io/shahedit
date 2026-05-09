@@ -606,10 +606,18 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
           )}
 
           {discount && discount > 0 && (
-            <div className="absolute top-3 left-3 px-2.5 py-1 text-xs font-black rounded-full text-white"
-              style={{ background: 'linear-gradient(135deg, hsl(0,84%,60%), hsl(15,90%,55%))' }}>
-              -{discount}%
-            </div>
+            <motion.div
+              initial={{ scale: 0, rotate: -20 }}
+              animate={{ scale: 1, rotate: -8 }}
+              transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
+              className="absolute top-3 left-3 px-3 py-1.5 text-xs font-black rounded-full text-white shadow-lg"
+              style={{
+                background: 'linear-gradient(135deg, hsl(0,84%,60%), hsl(15,90%,55%))',
+                boxShadow: '0 6px 20px -4px hsl(0 84% 60% / 0.6), inset 0 1px 0 rgba(255,255,255,0.3)',
+              }}
+            >
+              -{discount}% OFF
+            </motion.div>
           )}
           {pkg.badge === "hot" && (
             <div className="absolute top-3 right-3 px-2.5 py-1 text-xs font-black rounded-full text-white badge-hot">
@@ -629,16 +637,24 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
               <Info size={9} /> বিবরণ দেখুন
             </div>
           </div>
+
+          {/* Bottom fade for legibility */}
+          <div className="absolute inset-x-0 bottom-0 h-16 pointer-events-none"
+            style={{ background: 'linear-gradient(to top, rgba(6,3,16,0.95), transparent)' }} />
         </div>
 
         {/* Content */}
-        <div className="p-4 flex flex-col flex-1">
-          <p className="text-xs text-foreground/40 mb-1 font-medium">{pkg.services?.title ?? ""}</p>
-          <h3 className="font-bold text-foreground/90 text-sm mb-2 group-hover:text-white transition-colors leading-tight">
+        <div className="p-4 flex flex-col flex-1 relative">
+          <p className="text-[10px] text-foreground/50 mb-1.5 font-semibold uppercase tracking-wider"
+            style={{ color: `${c.color}CC` }}>
+            {pkg.services?.title ?? ""}
+          </p>
+          <h3 className="font-bold text-foreground text-[15px] mb-2 group-hover:text-white transition-colors leading-snug line-clamp-2"
+            style={{ fontFamily: "'Syne', sans-serif" }}>
             {pkg.title}
           </h3>
 
-          <div className="mb-2">
+          <div className="mb-3">
             <StarRating
               average={ratingStat.average}
               count={ratingStat.count}
@@ -647,14 +663,29 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
             />
           </div>
 
-          <div className="flex items-baseline gap-2 mb-4 mt-auto">
-            {pkg.original_price && (
-              <span className="text-xs text-foreground/35 line-through">{formatPrice(pkg.original_price)}</span>
-            )}
-            {pkg.price ? (
-              <span className="text-lg font-black" style={{ color: c.color }}>{formatPrice(pkg.price)}</span>
-            ) : (
-              <span className="text-sm font-semibold text-foreground/50">যোগাযোগ করুন</span>
+          {/* Premium price chip */}
+          <div className="mb-4 mt-auto rounded-2xl px-3 py-2.5 flex items-center justify-between gap-2"
+            style={{
+              background: `linear-gradient(135deg, ${c.color}1A, ${c.color}08)`,
+              border: `1px solid ${c.color}25`,
+            }}>
+            <div className="flex flex-col">
+              {pkg.original_price && (
+                <span className="text-[10px] text-foreground/40 line-through leading-none">{formatPrice(pkg.original_price)}</span>
+              )}
+              {pkg.price ? (
+                <span className="text-xl font-black leading-tight" style={{ color: c.color, fontFamily: "'Syne', sans-serif" }}>
+                  {formatPrice(pkg.price)}
+                </span>
+              ) : (
+                <span className="text-sm font-semibold text-foreground/60">যোগাযোগ করুন</span>
+              )}
+            </div>
+            {pkg.price && (
+              <div className="text-[9px] font-bold uppercase tracking-wider opacity-70 text-right leading-tight"
+                style={{ color: c.color }}>
+                সেরা<br />অফার
+              </div>
             )}
           </div>
 
@@ -665,8 +696,11 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               onClick={() => setShowPayment(true)}
-              className="flex-1 py-2.5 rounded-xl text-xs font-bold text-white glossy-btn flex items-center justify-center gap-1.5 transition-all duration-300"
-              style={{ background: `linear-gradient(135deg, ${c.color}, ${c.color}BB)`, boxShadow: `0 4px 15px ${c.color}35` }}
+              className="flex-1 py-2.5 rounded-xl text-xs font-bold text-white glossy-btn flex items-center justify-center gap-1.5 transition-all duration-300 relative overflow-hidden"
+              style={{
+                background: `linear-gradient(135deg, ${c.color}, ${c.color}AA)`,
+                boxShadow: `0 6px 20px -4px ${c.color}55, inset 0 1px 0 rgba(255,255,255,0.25)`,
+              }}
             >
               <CreditCard size={13} /> পেমেন্ট
             </motion.button>
@@ -676,10 +710,15 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
               href={`https://wa.me/8801820060046?text=${waMessage}`}
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.05, rotate: 3 }}
               whileTap={{ scale: 0.95 }}
               className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-all"
-              style={{ background: 'rgba(37,211,102,0.15)', border: '1px solid rgba(37,211,102,0.35)', color: '#25D366' }}
+              style={{
+                background: 'linear-gradient(135deg, rgba(37,211,102,0.25), rgba(37,211,102,0.1))',
+                border: '1px solid rgba(37,211,102,0.45)',
+                color: '#25D366',
+                boxShadow: '0 4px 14px -4px rgba(37,211,102,0.4)',
+              }}
               title="WhatsApp-এ অর্ডার করুন"
             >
               <MessageCircle size={16} />
