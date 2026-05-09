@@ -31,7 +31,7 @@ const toBn = (n: number | string) =>
 
 export function ProductReviews({
   packageId,
-  accentColor = "hsl(270,92%,65%)",
+  accentColor = "hsl(42,70%,65%)",
   onChange,
 }: {
   packageId: string;
@@ -161,7 +161,7 @@ export function ProductReviews({
       {!user ? (
         <div
           className="p-4 rounded-2xl text-sm text-foreground/70 mb-6"
-          style={{ background: "rgba(168,85,247,0.08)", border: "1px solid rgba(168,85,247,0.2)" }}
+          style={{ background: "rgba(201,161,74,0.08)", border: "1px solid rgba(201,161,74,0.2)" }}
         >
           রিভিউ দিতে{" "}
           <Link to="/login" className="font-bold underline" style={{ color: accentColor }}>

@@ -31,15 +31,15 @@ export default function ForgotPasswordPage() {
     <div className="min-h-screen bg-background flex items-center justify-center px-4">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
         <div className="rounded-3xl p-8"
-          style={{ background: 'rgba(14,11,28,0.90)', border: '1px solid rgba(168,85,247,0.18)', backdropFilter: 'blur(20px)' }}>
+          style={{ background: 'rgba(14,11,28,0.90)', border: '1px solid rgba(201,161,74,0.18)', backdropFilter: 'blur(20px)' }}>
           <div className="absolute top-0 left-0 right-0 h-px"
-            style={{ background: 'linear-gradient(90deg, transparent, hsl(270,92%,65%), hsl(320,90%,48%), transparent)' }} />
+            style={{ background: 'linear-gradient(90deg, transparent, hsl(42,70%,65%), hsl(45,85%,48%), transparent)' }} />
 
           <div className="flex justify-center mb-6">
             <Link to="/">
               <div className="flex items-center gap-2.5">
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-                  style={{ background: 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))' }}>
+                  style={{ background: 'linear-gradient(135deg, hsl(42,70%,65%), hsl(45,85%,48%))' }}>
                   <Zap size={20} className="text-white" fill="white" />
                 </div>
                 <span className="text-2xl font-black" style={{ fontFamily: "'Syne', sans-serif" }}>
@@ -75,12 +75,12 @@ export default function ForgotPasswordPage() {
                   <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="ইমেইল ঠিকানা" required
                     className="w-full pl-10 pr-4 py-3 rounded-xl text-sm text-foreground placeholder:text-foreground/30 focus:outline-none transition-all"
                     style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}
-                    onFocus={e => e.target.style.borderColor = 'hsl(270,92%,65%)'}
+                    onFocus={e => e.target.style.borderColor = 'hsl(42,70%,65%)'}
                     onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.08)'} />
                 </div>
                 <motion.button type="submit" disabled={loading} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
                   className="w-full py-3 rounded-xl text-sm font-bold text-white"
-                  style={{ background: 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))' }}>
+                  style={{ background: 'linear-gradient(135deg, hsl(42,70%,65%), hsl(45,85%,48%))' }}>
                   {loading ? "পাঠানো হচ্ছে..." : "রিসেট লিংক পাঠান"}
                 </motion.button>
               </form>

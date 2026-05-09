@@ -35,7 +35,7 @@ interface Order {
 
 const statusOptions = [
   { value: "pending",     label: "Payment Pending", color: "hsl(35,90%,60%)",  bg: "rgba(251,146,60,0.12)",  Icon: Clock },
-  { value: "in_progress", label: "In Progress",     color: "hsl(270,92%,65%)", bg: "rgba(168,85,247,0.12)", Icon: Zap },
+  { value: "in_progress", label: "In Progress",     color: "hsl(42,70%,65%)", bg: "rgba(201,161,74,0.12)", Icon: Zap },
   { value: "delivered",   label: "Delivered",       color: "hsl(145,70%,50%)", bg: "rgba(34,197,94,0.12)",  Icon: CheckCircle2 },
   { value: "cancelled",   label: "Cancelled",       color: "hsl(0,70%,60%)",   bg: "rgba(239,68,68,0.12)",  Icon: X },
 ];
@@ -160,7 +160,7 @@ const AdminOrders = () => {
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
         <button onClick={() => setFilter("all")}
           className={`rounded-xl p-4 text-left transition-all ${filter === "all" ? "ring-2 ring-purple-500/50" : ""}`}
-          style={{ background: 'rgba(168,85,247,0.08)', border: '1px solid rgba(168,85,247,0.18)' }}>
+          style={{ background: 'rgba(201,161,74,0.08)', border: '1px solid rgba(201,161,74,0.18)' }}>
           <p className="text-2xl font-black text-white">{counts.all}</p>
           <p className="text-xs text-slate-400 mt-1">All Orders</p>
         </button>

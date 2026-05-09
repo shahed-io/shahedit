@@ -15,8 +15,8 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
       label: "AI Support",
       sublabel: "তাৎক্ষণিক উত্তর পান",
       icon: Bot,
-      gradient: "linear-gradient(135deg, hsl(270,92%,58%), hsl(270,75%,42%))",
-      glow: "rgba(168,85,247,0.4)",
+      gradient: "linear-gradient(135deg, hsl(42,70%,58%), hsl(38,60%,42%))",
+      glow: "rgba(201,161,74,0.4)",
       onClick: () => { setOpen(false); onOpenAI(); },
     },
     {
@@ -46,7 +46,7 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
                 onClick={opt.onClick}
                 className="flex items-center gap-3 pr-4 pl-2 py-2 rounded-2xl shadow-2xl"
                 style={{
-                  background: "hsl(265,45%,6%)",
+                  background: "hsl(240,22%,6%)",
                   border: "1px solid rgba(255,255,255,0.08)",
                   boxShadow: `0 8px 32px ${opt.glow}`,
                 }}
@@ -91,9 +91,9 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
             <div
               className="relative px-3.5 py-2 rounded-xl shadow-2xl whitespace-nowrap"
               style={{
-                background: "linear-gradient(135deg, hsl(265,45%,8%), hsl(265,45%,12%))",
-                border: "1px solid rgba(168,85,247,0.35)",
-                boxShadow: "0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(168,85,247,0.25)",
+                background: "linear-gradient(135deg, hsl(240,22%,8%), hsl(240,22%,12%))",
+                border: "1px solid rgba(201,161,74,0.35)",
+                boxShadow: "0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(201,161,74,0.25)",
               }}
             >
               <div className="flex items-center gap-2">
@@ -108,9 +108,9 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
               <span
                 className="absolute top-1/2 -right-1.5 -translate-y-1/2 w-3 h-3 rotate-45"
                 style={{
-                  background: "linear-gradient(135deg, hsl(265,45%,8%), hsl(265,45%,12%))",
-                  borderRight: "1px solid rgba(168,85,247,0.35)",
-                  borderTop: "1px solid rgba(168,85,247,0.35)",
+                  background: "linear-gradient(135deg, hsl(240,22%,8%), hsl(240,22%,12%))",
+                  borderRight: "1px solid rgba(201,161,74,0.35)",
+                  borderTop: "1px solid rgba(201,161,74,0.35)",
                 }}
               />
             </div>
@@ -130,12 +130,12 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
         className="relative w-16 h-16 rounded-full flex items-center justify-center"
         style={{
           background: open
-            ? "linear-gradient(135deg, hsl(265,45%,12%), hsl(222,40%,16%))"
-            : "radial-gradient(circle at 30% 25%, hsl(258,95%,72%) 0%, hsl(270,92%,58%) 35%, hsl(220,90%,45%) 75%, hsl(320,90%,38%) 100%)",
+            ? "linear-gradient(135deg, hsl(240,22%,12%), hsl(222,40%,16%))"
+            : "radial-gradient(circle at 30% 25%, hsl(258,95%,72%) 0%, hsl(42,70%,58%) 35%, hsl(220,90%,45%) 75%, hsl(45,85%,38%) 100%)",
           border: open ? "1px solid rgba(255,255,255,0.12)" : "1.5px solid rgba(255,255,255,0.35)",
           boxShadow: open
             ? "0 8px 24px rgba(0,0,0,0.4)"
-            : "0 12px 40px rgba(168,85,247,0.6), 0 0 0 1px rgba(255,255,255,0.08), inset 0 2px 8px rgba(255,255,255,0.35), inset 0 -4px 10px rgba(0,0,0,0.25)",
+            : "0 12px 40px rgba(201,161,74,0.6), 0 0 0 1px rgba(255,255,255,0.08), inset 0 2px 8px rgba(255,255,255,0.35), inset 0 -4px 10px rgba(0,0,0,0.25)",
         }}
       >
         {/* Rotating conic glow ring (closed only) */}
@@ -147,7 +147,7 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
             className="absolute -inset-1.5 rounded-full pointer-events-none"
             style={{
               background:
-                "conic-gradient(from 0deg, hsl(270,92%,58%) 0%, hsl(320,90%,42%) 25%, transparent 45%, hsl(270,92%,58%) 75%, hsl(320,90%,42%) 100%)",
+                "conic-gradient(from 0deg, hsl(42,70%,58%) 0%, hsl(45,85%,42%) 25%, transparent 45%, hsl(42,70%,58%) 75%, hsl(45,85%,42%) 100%)",
               filter: "blur(8px)",
               opacity: 0.7,
               zIndex: -1,
@@ -159,7 +159,7 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
         {!open && (
           <span
             className="absolute inset-0 rounded-full animate-ping pointer-events-none"
-            style={{ background: "rgba(168,85,247,0.25)" }}
+            style={{ background: "rgba(201,161,74,0.25)" }}
           />
         )}
 
@@ -205,7 +205,7 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
           <span
             className="absolute bottom-0.5 right-0.5 w-4 h-4 rounded-full flex items-center justify-center z-10"
             style={{
-              background: "hsl(265,45%,8%)",
+              background: "hsl(240,22%,8%)",
               boxShadow: "0 2px 6px rgba(0,0,0,0.4)",
             }}
           >

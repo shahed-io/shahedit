@@ -175,14 +175,14 @@ export default function AISupportChat({ externalOpen, onExternalOpenChange }: AI
             className="w-[22rem] sm:w-[26rem] rounded-2xl overflow-hidden shadow-2xl flex flex-col"
             style={{
               height: "600px",
-              background: "hsl(265,42%,6%)",
-              border: "1px solid rgba(168,85,247,0.22)"
+              background: "hsl(240,20%,6%)",
+              border: "1px solid rgba(201,161,74,0.22)"
             }}
           >
             {/* Header */}
             <div
               className="flex items-center justify-between px-4 py-3 shrink-0"
-              style={{ background: "linear-gradient(135deg, hsl(270,92%,48%), hsl(270,85%,36%))" }}
+              style={{ background: "linear-gradient(135deg, hsl(42,70%,48%), hsl(42,65%,36%))" }}
             >
               <div className="flex items-center gap-2.5">
                 <div className="relative">
@@ -224,7 +224,7 @@ export default function AISupportChat({ externalOpen, onExternalOpenChange }: AI
               ref={scrollRef}
               onScroll={handleScroll}
               className="flex-1 overflow-y-auto px-3 py-3 space-y-3"
-              style={{ scrollbarWidth: "thin", scrollbarColor: "rgba(168,85,247,0.2) transparent" }}
+              style={{ scrollbarWidth: "thin", scrollbarColor: "rgba(201,161,74,0.2) transparent" }}
             >
               {messages.map((msg, i) => (
                 <motion.div
@@ -252,7 +252,7 @@ export default function AISupportChat({ externalOpen, onExternalOpenChange }: AI
                     }`}
                     style={
                       msg.role === "user"
-                        ? { background: "linear-gradient(135deg, hsl(270,92%,52%), hsl(270,75%,40%))" }
+                        ? { background: "linear-gradient(135deg, hsl(42,70%,52%), hsl(38,60%,40%))" }
                         : { background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.09)" }
                     }
                   >
@@ -294,7 +294,7 @@ export default function AISupportChat({ externalOpen, onExternalOpenChange }: AI
                   exit={{ opacity: 0, scale: 0.8 }}
                   onClick={scrollToBottom}
                   className="absolute bottom-24 right-5 w-7 h-7 rounded-full flex items-center justify-center shadow-lg"
-                  style={{ background: "hsl(270,85%,50%)" }}
+                  style={{ background: "hsl(42,65%,50%)" }}
                 >
                   <ChevronDown size={14} className="text-white" />
                 </motion.button>
@@ -312,7 +312,7 @@ export default function AISupportChat({ externalOpen, onExternalOpenChange }: AI
                     transition={{ delay: i * 0.05 }}
                     onClick={() => send(q)}
                     className="text-[11px] px-2.5 py-1 rounded-full text-purple-300 hover:text-white hover:bg-purple-600/40 transition-all"
-                    style={{ border: "1px solid rgba(168,85,247,0.3)" }}
+                    style={{ border: "1px solid rgba(201,161,74,0.3)" }}
                   >
                     {q}
                   </motion.button>
@@ -326,7 +326,7 @@ export default function AISupportChat({ externalOpen, onExternalOpenChange }: AI
                 className="flex items-center gap-2 rounded-xl px-3 py-2 transition-all"
                 style={{
                   background: "rgba(255,255,255,0.04)",
-                  border: "1px solid rgba(168,85,247,0.2)",
+                  border: "1px solid rgba(201,161,74,0.2)",
                 }}
               >
                 <input
@@ -343,7 +343,7 @@ export default function AISupportChat({ externalOpen, onExternalOpenChange }: AI
                   disabled={loading || !input.trim()}
                   whileTap={{ scale: 0.9 }}
                   className="w-8 h-8 rounded-lg flex items-center justify-center transition disabled:opacity-30"
-                  style={{ background: "linear-gradient(135deg, hsl(270,92%,58%), hsl(270,75%,44%))" }}
+                  style={{ background: "linear-gradient(135deg, hsl(42,70%,58%), hsl(38,60%,44%))" }}
                 >
                   {loading
                     ? <Loader2 size={14} className="text-white animate-spin" />
@@ -375,8 +375,8 @@ export default function AISupportChat({ externalOpen, onExternalOpenChange }: AI
             onClick={() => setMinimized(false)}
             className="flex items-center gap-2.5 px-4 py-2.5 rounded-2xl cursor-pointer"
             style={{
-              background: "linear-gradient(135deg, hsl(270,92%,48%), hsl(270,75%,36%))",
-              boxShadow: "0 4px 20px rgba(168,85,247,0.3)"
+              background: "linear-gradient(135deg, hsl(42,70%,48%), hsl(38,60%,36%))",
+              boxShadow: "0 4px 20px rgba(201,161,74,0.3)"
             }}
           >
             <Sparkles size={14} className="text-white" />
