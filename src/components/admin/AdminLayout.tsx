@@ -31,6 +31,7 @@ const navItems = [
   { label: "Admin Users", icon: Shield, href: "/admin/users" },
   { label: "Footer Editor", icon: LayoutTemplate, href: "/admin/footer" },
   { label: "SEO & Analytics", icon: Search, href: "/admin/seo" },
+  { label: "Popular Searches", icon: TrendingUp, href: "/admin/popular-searches" },
   { label: "Site Settings", icon: Settings, href: "/admin/settings" },
 ];
 
