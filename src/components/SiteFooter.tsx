@@ -255,12 +255,22 @@ const SiteFooter = () => {
         </motion.div>
 
         {/* Copyright */}
-        <div className="text-center text-xs text-muted-foreground mt-8 inline-flex items-center justify-center gap-1.5 w-full">
-          <Sparkles size={12} className="text-primary" />
-          © {new Date().getFullYear()}{" "}
-          <span className="font-bold bg-gradient-to-r from-primary via-fuchsia-400 to-accent bg-clip-text text-transparent">Shahed IT</span>
-          · All Rights Reserved · Designed &amp; Developed by{" "}
-          <span className="font-semibold text-accent">Shahed IT</span>
+        <div className="mt-8 flex justify-center">
+          <div
+            className="inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs text-foreground/80"
+            style={{
+              background: "rgba(255,255,255,0.04)",
+              border: "1px solid rgba(255,255,255,0.10)",
+              backdropFilter: "blur(10px)",
+            }}
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-foreground/60" />
+            © {new Date().getFullYear()}{" "}
+            <span className="font-semibold bg-gradient-to-r from-primary via-fuchsia-400 to-accent bg-clip-text text-transparent">
+              Shahed IT
+            </span>
+            . All Rights Reserved.
+          </div>
         </div>
       </div>
     </footer>
