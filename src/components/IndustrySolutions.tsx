@@ -18,9 +18,9 @@ const IndustrySolutions = () => {
       {/* Background layers */}
       <div className="absolute inset-0 dot-grid opacity-20" />
       <div className="absolute left-[-200px] top-[20%] w-[600px] h-[600px] rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(circle, hsl(270,92%,65%) 0%, transparent 60%)', filter: 'blur(100px)', opacity: 0.10 }} />
+        style={{ background: 'radial-gradient(circle, hsl(270,92%,65%) 0%, transparent 60%)', opacity: 0.10 }} />
       <div className="absolute right-[-200px] bottom-[10%] w-[500px] h-[500px] rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(circle, hsl(320,90%,50%) 0%, transparent 60%)', filter: 'blur(100px)', opacity: 0.08 }} />
+        style={{ background: 'radial-gradient(circle, hsl(320,90%,50%) 0%, transparent 60%)', opacity: 0.08 }} />
 
       <div className="container mx-auto px-4 relative">
         {/* Header */}

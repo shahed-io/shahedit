@@ -21,9 +21,9 @@ const AboutSection = () => {
     <section id="about" className="py-24 relative overflow-hidden">
       <div className="absolute inset-0 dot-grid opacity-20" />
       <div className="absolute top-0 right-0 w-[600px] h-[500px] rounded-full"
-        style={{ background: 'radial-gradient(ellipse, hsl(270,92%,65%) 0%, transparent 65%)', filter: 'blur(130px)', opacity: 0.09 }} />
+        style={{ background: 'radial-gradient(ellipse, hsl(270,92%,65%) 0%, transparent 65%)', opacity: 0.09 }} />
       <div className="absolute bottom-0 left-0 w-[500px] h-[400px] rounded-full"
-        style={{ background: 'radial-gradient(ellipse, hsl(320,90%,48%) 0%, transparent 65%)', filter: 'blur(110px)', opacity: 0.08 }} />
+        style={{ background: 'radial-gradient(ellipse, hsl(320,90%,48%) 0%, transparent 65%)', opacity: 0.08 }} />
 
       <div className="container mx-auto px-4 relative">
         <div className="grid lg:grid-cols-2 gap-16 items-center">

@@ -49,9 +49,9 @@ const HeroBanner = () => {
       <div className="absolute inset-0 cross-grid opacity-60" />
 
       {/* Big glowing orbs */}
-      <div className="absolute -top-32 -left-32 w-[700px] h-[700px] rounded-full float-anim" style={{ background: 'radial-gradient(circle, hsl(270,92%,65%) 0%, transparent 65%)', filter: 'blur(100px)', opacity: 0.18, animationDuration: '8s' }} />
-      <div className="absolute -top-20 right-[5%] w-[500px] h-[500px] rounded-full float-anim" style={{ background: 'radial-gradient(circle, hsl(320,90%,48%) 0%, transparent 65%)', filter: 'blur(90px)', opacity: 0.13, animationDelay: '3s', animationDuration: '10s' }} />
-      <div className="absolute bottom-0 left-[35%] w-[400px] h-[400px] rounded-full" style={{ background: 'radial-gradient(circle, hsl(315,80%,65%) 0%, transparent 65%)', filter: 'blur(80px)', opacity: 0.10 }} />
+      <div className="absolute -top-32 -left-32 w-[700px] h-[700px] rounded-full float-anim" style={{ background: 'radial-gradient(circle, hsl(270,92%,65%) 0%, transparent 65%)', opacity: 0.18, animationDuration: '8s' }} />
+      <div className="absolute -top-20 right-[5%] w-[500px] h-[500px] rounded-full float-anim" style={{ background: 'radial-gradient(circle, hsl(320,90%,48%) 0%, transparent 65%)', opacity: 0.13, animationDelay: '3s', animationDuration: '10s' }} />
+      <div className="absolute bottom-0 left-[35%] w-[400px] h-[400px] rounded-full" style={{ background: 'radial-gradient(circle, hsl(315,80%,65%) 0%, transparent 65%)', opacity: 0.10 }} />
 
       {/* Floating tech icons */}
       {floatingIcons.map((item, i) => (
