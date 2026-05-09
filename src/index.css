@@ -451,7 +451,15 @@
   }
 
   /* ─── Orbs ─── */
-  .orb { border-radius: 50%; filter: blur(80px); position: absolute; pointer-events: none; }
+  .orb {
+    border-radius: 50%;
+    filter: blur(60px);
+    position: absolute;
+    pointer-events: none;
+    transform: translateZ(0);
+    will-change: transform;
+    contain: strict;
+  }
   .orb-purple { background: hsl(var(--primary)); }
   .orb-cyan { background: hsl(var(--accent)); }
   .orb-pink { background: hsl(var(--glow-pink)); }
