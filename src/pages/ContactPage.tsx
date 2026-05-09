@@ -27,10 +27,10 @@ const ContactPage = () => {
   };
 
   const info = [
-    { icon: MapPin, label: "ঠিকানা", value: "Sopura, Rajshahi, Bangladesh" },
-    { icon: Phone, label: "মোবাইল", value: "01820-060046" },
-    { icon: Mail, label: "ইমেইল", value: "info@shahedit.com" },
-    { icon: MessageCircle, label: "WhatsApp", value: "01820-060046" },
+    { icon: MapPin, label: "ঠিকানা", value: "Sopura, Rajshahi, Bangladesh", href: "https://maps.google.com/?q=Sopura,Rajshahi,Bangladesh" },
+    { icon: Phone, label: "মোবাইল", value: "01820-060046", href: "tel:01820060046" },
+    { icon: Mail, label: "ইমেইল", value: "info@shahedit.com", href: "mailto:info@shahedit.com" },
+    { icon: MessageCircle, label: "WhatsApp", value: "01820-060046", href: "https://wa.me/8801820060046" },
   ];
 
   return (
