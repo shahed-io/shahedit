@@ -70,7 +70,7 @@ const PortfolioSection = () => {
             <p className="text-foreground/40">কোনো প্রজেক্ট নেই। Admin থেকে যোগ করুন।</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project, i) => (
               <motion.a
                 key={project.id}
@@ -81,46 +81,81 @@ const PortfolioSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.09, type: "spring", stiffness: 120 }}
-                whileHover={{ y: -6 }}
-                className="group relative rounded-2xl overflow-hidden cursor-pointer"
-                style={{ border: '1px solid rgba(255,255,255,0.07)' }}
+                whileHover={{ y: -8 }}
+                className="group relative rounded-3xl cursor-pointer"
+                style={{ padding: '1px', background: 'linear-gradient(135deg, rgba(168,85,247,0.50), rgba(236,72,153,0.32) 50%, rgba(99,102,241,0.40))' }}
               >
-                <div className="aspect-[4/3] overflow-hidden bg-gradient-to-br from-primary/10 to-accent/10">
-                  {project.image_url ? (
-                    <motion.img
-                      src={project.image_url}
-                      alt={project.title}
-                      className="w-full h-full object-cover"
-                      whileHover={{ scale: 1.08 }}
-                      transition={{ duration: 0.5 }}
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-5xl">🖥️</div>
-                  )}
-                </div>
+                <div
+                  className="relative rounded-[calc(1.5rem-1px)] overflow-hidden h-full"
+                  style={{
+                    background: 'linear-gradient(180deg, rgba(20,12,40,0.92), rgba(12,6,28,0.96))',
+                    boxShadow: '0 18px 48px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.05)',
+                  }}
+                >
+                  <div className="aspect-[4/3] overflow-hidden relative bg-gradient-to-br from-primary/10 to-accent/10">
+                    {project.image_url ? (
+                      <motion.img
+                        src={project.image_url}
+                        alt={project.title}
+                        className="w-full h-full object-cover"
+                        whileHover={{ scale: 1.10 }}
+                        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-5xl">🖥️</div>
+                    )}
 
-                {project.category && (
-                  <div className="absolute top-3 left-3 px-3 py-1 text-xs font-bold rounded-full"
-                    style={{ background: 'rgba(10,8,20,0.80)', border: '1px solid rgba(168,85,247,0.30)', color: 'hsl(270,92%,75%)', backdropFilter: 'blur(10px)' }}>
-                    {project.category}
-                  </div>
-                )}
+                    {/* Persistent legibility gradient */}
+                    <div className="absolute inset-x-0 bottom-0 h-2/3 pointer-events-none"
+                      style={{ background: 'linear-gradient(to top, rgba(8,4,20,0.95) 0%, rgba(8,4,20,0.55) 45%, transparent 100%)' }} />
 
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-400 flex items-end p-5"
-                  style={{ background: 'linear-gradient(to top, rgba(10,8,20,0.92) 0%, rgba(10,8,20,0.50) 50%, transparent 100%)' }}>
-                  <div className="flex items-center justify-between w-full">
-                    <div>
-                      <p className="text-xs text-foreground/50 mb-1">{project.category}</p>
-                      <span className="text-white font-bold">{project.title}</span>
+                    {/* Hover sheen sweep */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                      style={{ background: 'linear-gradient(115deg, transparent 35%, rgba(255,255,255,0.12) 50%, transparent 65%)' }} />
+
+                    {/* Category chip */}
+                    {project.category && (
+                      <div className="absolute top-3.5 left-3.5 px-3 py-1.5 text-[11px] font-bold rounded-full inline-flex items-center gap-1.5"
+                        style={{
+                          background: 'linear-gradient(135deg, rgba(168,85,247,0.28), rgba(236,72,153,0.22))',
+                          border: '1px solid rgba(168,85,247,0.50)',
+                          color: '#f0d4ff',
+                          backdropFilter: 'blur(14px)',
+                          WebkitBackdropFilter: 'blur(14px)',
+                          boxShadow: '0 4px 14px rgba(124,58,237,0.30)',
+                        }}>
+                        <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'linear-gradient(135deg, #a855f7, #ec4899)', boxShadow: '0 0 8px rgba(236,72,153,0.8)' }} />
+                        {project.category}
+                      </div>
+                    )}
+
+                    {/* Title overlay (always visible) */}
+                    <div className="absolute inset-x-0 bottom-0 p-5 flex items-end justify-between gap-3">
+                      <div className="min-w-0 flex-1">
+                        <p className="text-[10px] uppercase tracking-[0.18em] font-semibold mb-1" style={{ color: 'rgba(240,212,255,0.6)' }}>
+                          Featured Work
+                        </p>
+                        <h3 className="text-white font-bold text-base leading-snug truncate">
+                          {project.title}
+                        </h3>
+                      </div>
+                      <motion.div
+                        whileHover={{ scale: 1.15, rotate: 45 }}
+                        transition={{ type: 'spring', stiffness: 280 }}
+                        className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0"
+                        style={{
+                          background: 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,55%))',
+                          boxShadow: '0 8px 22px rgba(168,85,247,0.55), inset 0 1px 0 rgba(255,255,255,0.25)',
+                        }}
+                      >
+                        <ArrowRight size={16} className="text-white" />
+                      </motion.div>
                     </div>
-                    <motion.div
-                      whileHover={{ scale: 1.2, rotate: 45 }}
-                      className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                      style={{ background: 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))' }}
-                    >
-                      <ExternalLink size={15} className="text-white" />
-                    </motion.div>
                   </div>
+
+                  {/* Outer hover glow */}
+                  <div className="absolute -inset-px rounded-[calc(1.5rem-1px)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                    style={{ boxShadow: '0 30px 80px -20px rgba(168,85,247,0.55)' }} />
                 </div>
               </motion.a>
             ))}
