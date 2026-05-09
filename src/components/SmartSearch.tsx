@@ -322,33 +322,33 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
                   {recent.length > 0 && (
                     <section className="pt-4">
                       <div className="flex items-center justify-between px-5 pb-2">
-                        <span className="flex items-center gap-2 text-[12px] font-semibold" style={{ color: "#7c3aed" }}>
+                        <span className="flex items-center gap-2 text-[12px] font-semibold" style={{ color: "#c4b5fd" }}>
                           <Clock size={13} /> সাম্প্রতিক সার্চ
                         </span>
-                        <button onClick={clearRecent} className="text-[11px] font-medium hover:underline" style={{ color: "#7c3aed" }}>
+                        <button onClick={clearRecent} className="text-[11px] font-medium hover:underline" style={{ color: "#ec4899" }}>
                           সব মুছুন
                         </button>
                       </div>
                       <ul>
                         {recent.map((r) => (
                           <li key={r}>
-                            <div className="group flex items-center gap-3 px-5 py-2 hover:bg-[rgba(124,58,237,0.04)] transition-colors">
-                              <Clock size={14} style={{ color: "#9b8fb5" }} className="shrink-0" />
+                            <div className="group flex items-center gap-3 px-5 py-2 hover:bg-[rgba(168,85,247,0.10)] transition-colors">
+                              <Clock size={14} style={{ color: "rgba(226,218,245,0.5)" }} className="shrink-0" />
                               <button
                                 type="button"
                                 onClick={() => goRecent(r)}
                                 className="flex-1 text-left text-sm truncate"
-                                style={{ color: "#2a1f4a" }}
+                                style={{ color: "rgba(255,255,255,0.92)" }}
                               >
                                 {r}
                               </button>
                               <button
                                 type="button"
                                 onClick={() => removeRecent(r)}
-                                className="opacity-60 hover:opacity-100 p-1 rounded-md hover:bg-[rgba(124,58,237,0.1)]"
+                                className="opacity-60 hover:opacity-100 p-1 rounded-md hover:bg-white/10"
                                 aria-label="Remove"
                               >
-                                <X size={13} style={{ color: "#9b8fb5" }} />
+                                <X size={13} style={{ color: "rgba(226,218,245,0.6)" }} />
                               </button>
                             </div>
                           </li>
@@ -360,7 +360,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
                   {/* Popular Searches */}
                   <section className="pt-4">
                     <div className="px-5 pb-2">
-                      <span className="flex items-center gap-2 text-[12px] font-semibold" style={{ color: "#7c3aed" }}>
+                      <span className="flex items-center gap-2 text-[12px] font-semibold" style={{ color: "#c4b5fd" }}>
                         <TrendingUp size={13} /> জনপ্রিয় সার্চ
                       </span>
                     </div>
@@ -370,10 +370,10 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
                           <button
                             type="button"
                             onClick={() => goRecent(p)}
-                            className="w-full flex items-center gap-3 px-5 py-2 text-left hover:bg-[rgba(124,58,237,0.04)] transition-colors"
+                            className="w-full flex items-center gap-3 px-5 py-2 text-left hover:bg-[rgba(168,85,247,0.10)] transition-colors"
                           >
-                            <TrendingUp size={14} style={{ color: "#7c3aed" }} className="shrink-0" />
-                            <span className="text-sm" style={{ color: "#2a1f4a" }}>{p}</span>
+                            <TrendingUp size={14} style={{ color: "#a855f7" }} className="shrink-0" />
+                            <span className="text-sm" style={{ color: "rgba(255,255,255,0.92)" }}>{p}</span>
                           </button>
                         </li>
                       ))}
