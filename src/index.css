@@ -561,3 +561,11 @@
   }
 }
 
+
+/* Nav pill hover effect — matches active state */
+.nav-pill { transition: all 0.2s ease; }
+.nav-pill:hover {
+  background: linear-gradient(180deg, #ffffff, #faf7ff);
+  color: #7c3aed !important;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.18), 0 0 0 1px rgba(124, 58, 237, 0.12), inset 0 1px 0 rgba(255,255,255,1);
+}
