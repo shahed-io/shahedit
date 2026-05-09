@@ -7,6 +7,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { useAnalyticsInjection } from "@/hooks/useAnalyticsInjection";
 import { SEO } from "@/components/SEO";
+import GlobalSupport from "@/components/GlobalSupport";
 import { lazy, Suspense } from "react";
 
 // Eagerly loaded (most-visited / lightweight)
