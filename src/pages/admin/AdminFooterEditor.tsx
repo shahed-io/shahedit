@@ -352,7 +352,7 @@ export default function AdminFooterEditor() {
 
       {/* Preview note */}
       <div className="rounded-xl p-4 text-xs text-slate-500 text-center"
-        style={{ background: "rgba(139,92,246,0.05)", border: "1px dashed rgba(139,92,246,0.2)" }}>
+        style={{ background: "rgba(168,85,247,0.05)", border: "1px dashed rgba(168,85,247,0.2)" }}>
         💡 এখানে করা পরিবর্তন সাথে সাথে ওয়েবসাইটের ফুটারে দেখা যাবে
       </div>
     </div>

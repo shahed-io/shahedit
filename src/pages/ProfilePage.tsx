@@ -115,7 +115,7 @@ export default function ProfilePage() {
 
           {/* Profile card */}
           <div className="rounded-3xl p-8 space-y-6"
-            style={{ background: 'rgba(14,11,28,0.80)', border: '1px solid rgba(139,92,246,0.15)', backdropFilter: 'blur(20px)' }}>
+            style={{ background: 'rgba(14,11,28,0.80)', border: '1px solid rgba(168,85,247,0.15)', backdropFilter: 'blur(20px)' }}>
 
             {/* Avatar */}
             <div className="flex items-center gap-5">
@@ -124,12 +124,12 @@ export default function ProfilePage() {
                   <img src={profile.avatar_url} alt="avatar" className="w-20 h-20 rounded-2xl object-cover ring-2 ring-primary/30" />
                 ) : (
                   <div className="w-20 h-20 rounded-2xl flex items-center justify-center text-2xl font-black text-white"
-                    style={{ background: 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))' }}>
+                    style={{ background: 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))' }}>
                     {initials}
                   </div>
                 )}
                 <label className="absolute -bottom-2 -right-2 w-7 h-7 rounded-lg flex items-center justify-center cursor-pointer transition-all"
-                  style={{ background: 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))', boxShadow: '0 4px 12px rgba(0,0,0,0.4)' }}>
+                  style={{ background: 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))', boxShadow: '0 4px 12px rgba(0,0,0,0.4)' }}>
                   {uploading ? <div className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
                     : <Camera size={13} className="text-white" />}
                   <input type="file" accept="image/*" className="hidden" onChange={handleAvatarUpload} disabled={uploading} />
@@ -160,7 +160,7 @@ export default function ProfilePage() {
                       placeholder={placeholder}
                       className="w-full pl-10 pr-4 py-3 rounded-xl text-sm text-foreground placeholder:text-foreground/25 focus:outline-none transition-all"
                       style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}
-                      onFocus={e => e.target.style.borderColor = 'hsl(258,90%,66%)'}
+                      onFocus={e => e.target.style.borderColor = 'hsl(270,92%,65%)'}
                       onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.07)'} />
                   </div>
                 </div>
@@ -174,7 +174,7 @@ export default function ProfilePage() {
                     placeholder="আপনার সম্পর্কে কিছু লিখুন..." rows={3}
                     className="w-full pl-10 pr-4 py-3 rounded-xl text-sm text-foreground placeholder:text-foreground/25 focus:outline-none transition-all resize-none"
                     style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}
-                    onFocus={e => e.target.style.borderColor = 'hsl(258,90%,66%)'}
+                    onFocus={e => e.target.style.borderColor = 'hsl(270,92%,65%)'}
                     onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.07)'} />
                 </div>
               </div>
@@ -182,7 +182,7 @@ export default function ProfilePage() {
 
             <motion.button onClick={handleSave} disabled={saving} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
               className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold text-white"
-              style={{ background: 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))', boxShadow: '0 8px 30px hsl(258,90%,66%,0.25)' }}>
+              style={{ background: 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))', boxShadow: '0 8px 30px hsl(258,90%,66%,0.25)' }}>
               {saving ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 : <><Save size={15} /> প্রোফাইল সেভ করুন</>}
             </motion.button>

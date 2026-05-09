@@ -205,7 +205,7 @@ const SiteFooter = () => {
                 className="absolute -inset-1.5 rounded-full opacity-80 blur-[6px] animate-spin"
                 style={{
                   background:
-                    "conic-gradient(from 0deg, hsl(280,80%,60%), hsl(185,100%,55%), hsl(315,80%,65%), hsl(258,90%,66%), hsl(280,80%,60%))",
+                    "conic-gradient(from 0deg, hsl(280,80%,60%), hsl(320,90%,55%), hsl(315,80%,65%), hsl(270,92%,65%), hsl(280,80%,60%))",
                   animationDuration: "6s",
                 }}
                 aria-hidden

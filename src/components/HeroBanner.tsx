@@ -12,8 +12,8 @@ const stats = [
 ];
 
 const floatingIcons = [
-  { icon: Code2, x: "10%", y: "20%", delay: 0, color: "hsl(258,90%,66%)" },
-  { icon: Globe, x: "85%", y: "15%", delay: 0.5, color: "hsl(185,100%,48%)" },
+  { icon: Code2, x: "10%", y: "20%", delay: 0, color: "hsl(270,92%,65%)" },
+  { icon: Globe, x: "85%", y: "15%", delay: 0.5, color: "hsl(320,90%,48%)" },
   { icon: Smartphone, x: "90%", y: "70%", delay: 1, color: "hsl(315,80%,65%)" },
   { icon: Zap, x: "5%", y: "75%", delay: 1.5, color: "hsl(45,93%,58%)" },
 ];
@@ -43,14 +43,14 @@ const HeroBanner = () => {
   return (
     <section className="relative overflow-hidden min-h-[700px] flex items-center">
       {/* Background layers */}
-      <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, hsl(220,42%,5%) 0%, hsl(258,30%,8%) 50%, hsl(220,40%,5%) 100%)' }} />
+      <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, hsl(220,42%,5%) 0%, hsl(258,30%,8%) 50%, hsl(265,45%,4%) 100%)' }} />
 
       {/* Cross grid */}
       <div className="absolute inset-0 cross-grid opacity-60" />
 
       {/* Big glowing orbs */}
-      <div className="absolute -top-32 -left-32 w-[700px] h-[700px] rounded-full float-anim" style={{ background: 'radial-gradient(circle, hsl(258,90%,66%) 0%, transparent 65%)', filter: 'blur(100px)', opacity: 0.18, animationDuration: '8s' }} />
-      <div className="absolute -top-20 right-[5%] w-[500px] h-[500px] rounded-full float-anim" style={{ background: 'radial-gradient(circle, hsl(185,100%,48%) 0%, transparent 65%)', filter: 'blur(90px)', opacity: 0.13, animationDelay: '3s', animationDuration: '10s' }} />
+      <div className="absolute -top-32 -left-32 w-[700px] h-[700px] rounded-full float-anim" style={{ background: 'radial-gradient(circle, hsl(270,92%,65%) 0%, transparent 65%)', filter: 'blur(100px)', opacity: 0.18, animationDuration: '8s' }} />
+      <div className="absolute -top-20 right-[5%] w-[500px] h-[500px] rounded-full float-anim" style={{ background: 'radial-gradient(circle, hsl(320,90%,48%) 0%, transparent 65%)', filter: 'blur(90px)', opacity: 0.13, animationDelay: '3s', animationDuration: '10s' }} />
       <div className="absolute bottom-0 left-[35%] w-[400px] h-[400px] rounded-full" style={{ background: 'radial-gradient(circle, hsl(315,80%,65%) 0%, transparent 65%)', filter: 'blur(80px)', opacity: 0.10 }} />
 
       {/* Floating tech icons */}
@@ -67,7 +67,7 @@ const HeroBanner = () => {
       ))}
 
       {/* Scan line */}
-      <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 4px, rgba(139,92,246,0.012) 4px, rgba(139,92,246,0.012) 5px)' }} />
+      <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 4px, rgba(168,85,247,0.012) 4px, rgba(168,85,247,0.012) 5px)' }} />
 
       <div className="container mx-auto px-4 relative z-10 py-20">
         <div className="grid lg:grid-cols-[1.3fr_1fr] gap-12 items-center">
@@ -78,7 +78,7 @@ const HeroBanner = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full mb-7 border text-sm font-medium"
-              style={{ background: 'rgba(139,92,246,0.10)', borderColor: 'rgba(139,92,246,0.30)', color: 'hsl(258,90%,80%)' }}
+              style={{ background: 'rgba(168,85,247,0.10)', borderColor: 'rgba(168,85,247,0.30)', color: 'hsl(270,92%,80%)' }}
             >
               <motion.span animate={{ rotate: [0, 20, -20, 0] }} transition={{ duration: 2, repeat: Infinity, delay: 1 }}>
                 <Sparkles size={14} />
@@ -97,7 +97,7 @@ const HeroBanner = () => {
               <br />
               <span
                 className="bg-clip-text text-transparent gradient-animate"
-                style={{ backgroundImage: 'linear-gradient(90deg, hsl(258,90%,75%), hsl(185,100%,55%), hsl(315,80%,70%), hsl(258,90%,75%))', backgroundSize: '300% 100%' }}
+                style={{ backgroundImage: 'linear-gradient(90deg, hsl(270,92%,75%), hsl(320,90%,55%), hsl(315,80%,70%), hsl(270,92%,75%))', backgroundSize: '300% 100%' }}
               >
                 Digital Empire
               </span>
@@ -124,7 +124,7 @@ const HeroBanner = () => {
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                   className="flex items-center gap-2.5 px-7 py-3.5 rounded-2xl text-base font-bold text-white glossy-btn"
-                  style={{ background: 'linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,45%))', boxShadow: '0 6px 30px rgba(139,92,246,0.45), 0 0 60px rgba(139,92,246,0.15)' }}
+                  style={{ background: 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,45%))', boxShadow: '0 6px 30px rgba(168,85,247,0.45), 0 0 60px rgba(168,85,247,0.15)' }}
                 >
                   <Zap size={18} fill="white" /> Start Your Project
                 </motion.button>
@@ -171,7 +171,7 @@ const HeroBanner = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3, type: "spring" }}
               className="rounded-2xl p-6"
-              style={{ background: 'rgba(139,92,246,0.08)', border: '1px solid rgba(139,92,246,0.22)', backdropFilter: 'blur(16px)' }}
+              style={{ background: 'rgba(168,85,247,0.08)', border: '1px solid rgba(168,85,247,0.22)', backdropFilter: 'blur(16px)' }}
             >
               <p className="text-xs text-foreground/40 uppercase tracking-widest mb-4 flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" /> Special Offer Ends In
@@ -184,7 +184,7 @@ const HeroBanner = () => {
                   { val: countdown.secs, label: "Secs" },
                 ].map((item, i) => (
                   <div key={item.label} className="flex-1 rounded-xl p-3 text-center"
-                    style={{ background: 'rgba(139,92,246,0.12)', border: '1px solid rgba(139,92,246,0.20)' }}>
+                    style={{ background: 'rgba(168,85,247,0.12)', border: '1px solid rgba(168,85,247,0.20)' }}>
                     <div className="text-2xl font-black gradient-text">{pad(item.val)}</div>
                     <div className="text-[10px] text-foreground/35 uppercase tracking-wider mt-0.5">{item.label}</div>
                   </div>
@@ -194,7 +194,7 @@ const HeroBanner = () => {
 
             {/* Two info cards */}
             {[
-              { tag: "🚀 Featured", title: "Web Development", desc: "Custom websites that convert visitors into customers", color: "hsl(258,90%,66%)" },
+              { tag: "🚀 Featured", title: "Web Development", desc: "Custom websites that convert visitors into customers", color: "hsl(270,92%,65%)" },
               { tag: "⚡ Popular", title: "Graphics Design", desc: "Creative logos, branding & visuals that make you stand out", color: "hsl(315,80%,65%)" },
             ].map((card, i) => (
               <motion.div

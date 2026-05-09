@@ -133,7 +133,7 @@ export default function AdminUsers() {
           whileTap={{ scale: 0.96 }}
           onClick={() => setAdding(v => !v)}
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white transition-all"
-          style={{ background: 'linear-gradient(135deg, hsl(258,90%,60%), hsl(185,100%,40%))' }}
+          style={{ background: 'linear-gradient(135deg, hsl(270,92%,60%), hsl(320,90%,40%))' }}
         >
           <UserPlus size={15} />
           নতুন Admin যোগ করুন
@@ -215,7 +215,7 @@ export default function AdminUsers() {
                   onClick={handleCreate}
                   disabled={loading}
                   className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white disabled:opacity-50"
-                  style={{ background: 'linear-gradient(135deg, hsl(258,90%,60%), hsl(185,100%,40%))' }}
+                  style={{ background: 'linear-gradient(135deg, hsl(270,92%,60%), hsl(320,90%,40%))' }}
                 >
                   {loading ? "তৈরি হচ্ছে..." : <><UserPlus size={14} /> Admin তৈরি করুন</>}
                 </motion.button>
