@@ -9,7 +9,8 @@ const RECENT_KEY = "search_recent_v1";
 const MAX_RECENT = 8;
 
 const POPULAR_FALLBACK = [
-  "Windows 11", "Office 365", "Netflix", "Adobe", "Antivirus", "VPN", "Spotify", "Canva Pro",
+  "Web Development", "App Development", "Logo Design", "Graphic Design",
+  "SEO Service", "Digital Marketing", "WordPress Website", "Cloud Hosting",
 ];
 
 interface Props {
@@ -272,7 +273,47 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
             {/* Top gradient bar */}
             <div style={{ height: 3, background: "linear-gradient(90deg, #6366f1, #a855f7, #ec4899)" }} />
 
-            <div className="max-h-[70vh] overflow-y-auto">
+            {/* Hero search bar inside dropdown */}
+            <div className="px-4 pt-4 pb-3" style={{ background: "linear-gradient(180deg, rgba(243,238,255,0.7), rgba(255,255,255,0))" }}>
+              <form onSubmit={submit} className="relative">
+                <div
+                  className="flex items-center gap-2 px-4 py-3 rounded-2xl"
+                  style={{
+                    background: "#fff",
+                    border: "1.5px solid rgba(124,58,237,0.25)",
+                    boxShadow: "0 4px 18px rgba(124,58,237,0.12), inset 0 1px 0 rgba(255,255,255,0.8)",
+                  }}
+                >
+                  <Search size={18} style={{ color: "#7c3aed" }} className="shrink-0" />
+                  <input
+                    type="text"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    onKeyDown={onKeyDown}
+                    autoFocus
+                    placeholder="Shahed IT-তে যেকোনো সার্ভিস খুঁজুন..."
+                    className="flex-1 bg-transparent outline-none text-[15px] font-medium"
+                    style={{ color: "#2a1f4a" }}
+                    autoComplete="off"
+                  />
+                  {query && (
+                    <button type="button" onClick={() => setQuery("")} className="p-1 rounded-full hover:bg-purple-50">
+                      <X size={15} style={{ color: "#7c3aed" }} />
+                    </button>
+                  )}
+                  <button
+                    type="submit"
+                    className="shrink-0 w-9 h-9 rounded-xl flex items-center justify-center transition-transform hover:scale-105"
+                    style={{ background: "linear-gradient(135deg, #6366f1, #a855f7, #ec4899)" }}
+                    aria-label="Search"
+                  >
+                    <Search size={16} className="text-white" />
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <div className="max-h-[60vh] overflow-y-auto">
               {/* ============== EMPTY STATE ============== */}
               {showEmptyState && (
                 <>
