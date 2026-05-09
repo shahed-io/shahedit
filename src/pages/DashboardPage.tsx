@@ -7,11 +7,12 @@ import {
   AlertCircle, MessageSquare, Star, Zap, ArrowRight,
   TrendingUp, Package, LogOut, ChevronRight, Calendar, Mail, Shield,
   CreditCard, Bell, FolderOpen, Upload, Download, Eye, X, Check,
-  Banknote, Phone, Edit3, Save, Camera
+  Banknote, Phone, Edit3, Save, Camera, Receipt
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
+import { openInvoice } from "@/lib/invoice";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 
