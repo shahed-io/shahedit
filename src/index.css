@@ -116,6 +116,83 @@
       linear-gradient(90deg, rgba(56, 189, 248, 0.04) 1px, transparent 1px),
       linear-gradient(180deg, hsl(215, 52%, 5%) 0%, hsl(218, 50%, 4%) 100%);
   }
+
+  /* ─── Glassmorphism Premium Theme — frosted aurora glass ─── */
+  [data-theme="glass"] {
+    --background: 240 35% 8%;
+    --foreground: 220 30% 98%;
+
+    --card: 240 30% 12%;
+    --card-foreground: 220 30% 98%;
+
+    --popover: 240 30% 12%;
+    --popover-foreground: 220 30% 98%;
+
+    --primary: 280 95% 70%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 28% 16%;
+    --secondary-foreground: 220 30% 98%;
+
+    --muted: 240 22% 18%;
+    --muted-foreground: 230 18% 72%;
+
+    --accent: 195 100% 65%;
+    --accent-foreground: 240 35% 8%;
+
+    --border: 230 30% 28%;
+    --input: 230 30% 22%;
+    --ring: 280 95% 70%;
+
+    --glow-purple: 280 95% 70%;
+    --glow-violet: 260 100% 75%;
+    --glow-magenta: 320 90% 70%;
+    --glow-pink: 335 90% 72%;
+    --glow-gold: 42 95% 65%;
+    --glow-blue: 195 100% 65%;
+
+    --sidebar-background: 240 35% 8%;
+    --sidebar-foreground: 220 30% 98%;
+    --sidebar-primary: 280 95% 70%;
+    --sidebar-accent: 240 28% 16%;
+    --sidebar-accent-foreground: 220 30% 98%;
+    --sidebar-border: 230 30% 28%;
+    --sidebar-ring: 280 95% 70%;
+  }
+
+  [data-theme="glass"] body {
+    background-color: hsl(240, 35%, 8%);
+    background-image:
+      radial-gradient(ellipse 70% 60% at 0% 0%, hsla(280, 95%, 65%, 0.32) 0%, transparent 60%),
+      radial-gradient(ellipse 65% 55% at 100% 0%, hsla(195, 100%, 60%, 0.28) 0%, transparent 55%),
+      radial-gradient(ellipse 75% 60% at 50% 50%, hsla(320, 90%, 65%, 0.16) 0%, transparent 70%),
+      radial-gradient(ellipse 70% 55% at 0% 100%, hsla(260, 100%, 70%, 0.24) 0%, transparent 55%),
+      radial-gradient(ellipse 70% 60% at 100% 100%, hsla(195, 100%, 60%, 0.22) 0%, transparent 55%),
+      linear-gradient(180deg, hsl(240, 38%, 7%) 0%, hsl(245, 35%, 6%) 100%);
+  }
+
+  /* Glassmorphism: deeper frost on cards & surfaces */
+  [data-theme="glass"] .glass-card,
+  [data-theme="glass"] [class*="glass-"],
+  [data-theme="glass"] .premium-card,
+  [data-theme="glass"] .glossy-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03)) !important;
+    backdrop-filter: blur(32px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(32px) saturate(200%) !important;
+    border: 1px solid rgba(255,255,255,0.14) !important;
+    box-shadow:
+      0 8px 32px rgba(0,0,0,0.35),
+      inset 0 1px 0 rgba(255,255,255,0.18),
+      inset 0 -1px 0 rgba(255,255,255,0.04) !important;
+  }
+
+  [data-theme="glass"] .bg-card,
+  [data-theme="glass"] [class*="bg-card"] {
+    background: rgba(255,255,255,0.05) !important;
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255,255,255,0.10);
+  }
 }
 
 @layer base {

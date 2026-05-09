@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 
-export type ThemeName = "royal" | "ocean";
+export type ThemeName = "royal" | "ocean" | "glass";
+export const THEME_ORDER: ThemeName[] = ["royal", "ocean", "glass"];
 
 interface ThemeCtx {
   theme: ThemeName;
@@ -23,7 +24,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, [theme]);
 
   const setTheme = (t: ThemeName) => setThemeState(t);
-  const toggleTheme = () => setThemeState((p) => (p === "royal" ? "ocean" : "royal"));
+  const toggleTheme = () =>
+    setThemeState((p) => {
+      const i = THEME_ORDER.indexOf(p);
+      return THEME_ORDER[(i + 1) % THEME_ORDER.length];
+    });
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>
