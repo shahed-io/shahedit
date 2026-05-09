@@ -127,6 +127,59 @@ const SiteHeader = () => {
     };
   }, [mobileOpen, searchOpen]);
 
+  // Keyboard: Escape to close + focus trap (Tab cycles within drawer/modal)
+  useEffect(() => {
+    if (!mobileOpen && !searchOpen) return;
+
+    const container: HTMLElement | null =
+      mobileOpen ? drawerRef.current : searchModalRef.current;
+    const trigger: HTMLButtonElement | null =
+      mobileOpen ? menuTriggerRef.current : searchTriggerRef.current;
+
+    const getFocusables = () =>
+      container
+        ? Array.from(
+            container.querySelectorAll<HTMLElement>(
+              'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+            )
+          )
+        : [];
+
+    const t = window.setTimeout(() => {
+      const f = getFocusables();
+      (f[0] ?? container)?.focus();
+    }, 60);
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.stopPropagation();
+        if (mobileOpen) setMobileOpen(false);
+        if (searchOpen) setSearchOpen(false);
+        return;
+      }
+      if (e.key !== "Tab" || !container) return;
+      const focusables = getFocusables();
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+      if (e.shiftKey && active === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      window.clearTimeout(t);
+      document.removeEventListener("keydown", onKeyDown);
+      trigger?.focus?.();
+    };
+  }, [mobileOpen, searchOpen]);
+
 
   return (
     <motion.header
