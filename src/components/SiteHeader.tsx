@@ -634,11 +634,17 @@ const SiteHeader = () => {
 
             {/* Side Sheet */}
             <motion.aside
+              ref={drawerRef as any}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Main navigation menu"
+              id="mobile-nav-drawer"
+              tabIndex={-1}
               initial={{ x: "100%", opacity: 0.6 }}
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: "100%", opacity: 0.4 }}
               transition={{ type: "spring", stiffness: 320, damping: 36 }}
-              className="md:hidden fixed top-0 right-0 bottom-0 z-50 w-[88%] max-w-[400px] flex flex-col overflow-hidden"
+              className="md:hidden fixed top-0 right-0 bottom-0 z-50 w-[88%] max-w-[400px] flex flex-col overflow-hidden focus:outline-none"
               style={{
                 background:
                   "linear-gradient(180deg, rgba(14, 9, 32, 0.97) 0%, rgba(20, 12, 48, 0.97) 50%, rgba(14, 9, 32, 0.98) 100%)",
