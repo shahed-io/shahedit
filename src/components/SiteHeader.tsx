@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef, FormEvent } from "react";
 import {
   Search, Menu, X, ChevronRight, ChevronDown, LogIn, LogOut,
-  Globe, Wrench, Palette, Facebook, TrendingUp, Building2, Sparkles, Waves, Gem,
+  Globe, Wrench, Palette, Facebook, TrendingUp, Building2, Sparkles,
 } from "lucide-react";
 import logoImg from "@/assets/logo-glossy.png";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { useTheme } from "@/contexts/ThemeContext";
+
 
 import catWebDev from "@/assets/cat-web-dev.jpg";
 import catMaintenance from "@/assets/cat-maintenance.jpg";
@@ -36,7 +36,6 @@ const navLinks = [
 
 const SiteHeader = () => {
   const { user, signOut } = useAuth();
-  const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -60,9 +59,6 @@ const SiteHeader = () => {
 
   const isActive = (href: string) => location.pathname === href;
 
-  const themeLabel =
-    theme === "royal" ? "Royal Purple" : theme === "ocean" ? "Deep Ocean" : "Glass Premium";
-  const ThemeIcon = theme === "royal" ? Sparkles : theme === "ocean" ? Waves : Gem;
 
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
@@ -335,34 +331,6 @@ const SiteHeader = () => {
 
           {/* ── Right cluster ── */}
           <div className="hidden md:flex items-center gap-2 shrink-0 ml-auto lg:ml-0">
-            {/* Theme toggle (premium) */}
-            <motion.button
-              onClick={toggleTheme}
-              whileHover={{ scale: 1.08, rotate: 12 }}
-              whileTap={{ scale: 0.92 }}
-              title={`Theme: ${themeLabel}`}
-              className="relative w-9 h-9 rounded-full flex items-center justify-center overflow-hidden"
-              style={{
-                background: "linear-gradient(180deg, #ffffff, #f8f5fd)",
-                border: "1px solid rgba(120, 100, 180, 0.18)",
-                boxShadow:
-                  "inset 0 1px 0 rgba(255,255,255,1), 0 2px 8px rgba(124, 58, 237, 0.10)",
-              }}
-            >
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={theme}
-                  initial={{ opacity: 0, rotate: -90, scale: 0.5 }}
-                  animate={{ opacity: 1, rotate: 0, scale: 1 }}
-                  exit={{ opacity: 0, rotate: 90, scale: 0.5 }}
-                  transition={{ duration: 0.25 }}
-                  className="absolute inset-0 flex items-center justify-center"
-                >
-                  <ThemeIcon size={14} style={{ color: "#7c3aed" }} />
-                </motion.span>
-              </AnimatePresence>
-            </motion.button>
-
             {user ? (
               <>
                 <Link to="/dashboard">
