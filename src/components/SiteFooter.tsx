@@ -196,9 +196,8 @@ const SiteFooter = () => {
           className="rounded-2xl p-5 sm:p-6 bg-white/[0.04] backdrop-blur-xl border border-white/10 flex flex-col lg:flex-row items-center justify-between gap-5"
         >
           <div className="flex items-center gap-3">
-            <span className="relative w-12 h-12 rounded-2xl flex items-center justify-center bg-gradient-to-br from-primary/25 via-fuchsia-500/15 to-accent/25 border border-white/15 shadow-[0_0_18px_-2px_hsla(280,80%,60%,0.55)] overflow-hidden">
-              <span className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.25),transparent_60%)]" />
-              <img src={deeplIdLogo} alt="DeepL ID" className="relative w-8 h-8 object-contain drop-shadow-[0_2px_6px_rgba(168,85,247,0.45)]" />
+            <span className="relative w-14 h-14 rounded-full flex items-center justify-center bg-white border border-white/20 shadow-[0_0_22px_-2px_hsla(280,80%,60%,0.6)] overflow-hidden shrink-0">
+              <img src={deeplIdLogo} alt="DeepL ID" className="w-full h-full object-cover" />
             </span>
             <div className="text-left">
               <div className="text-sm font-bold tracking-wider text-foreground/90">GOVT. CERTIFIED BUSINESS</div>
