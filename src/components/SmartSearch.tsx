@@ -212,7 +212,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
   };
 
   return (
-    <div ref={wrapRef} className={`relative ${variant === "desktop" ? "hidden md:flex flex-1 max-w-md mx-auto" : "w-full"}`}>
+    <div ref={wrapRef} className={`relative ${variant === "desktop" ? "hidden md:flex flex-1 max-w-md mx-auto" : "w-full"} ${open && variant === "desktop" ? "z-[60]" : ""}`}>
       <form onSubmit={submit} className="w-full">
         <div
           className="group relative w-full flex items-center gap-2 pl-4 pr-1.5 py-1.5 rounded-2xl transition-all focus-within:scale-[1.005]"
