@@ -203,14 +203,14 @@ const SiteHeader = () => {
               onClick={toggleTheme}
               whileHover={{ scale: 1.08, rotate: 12 }}
               whileTap={{ scale: 0.92 }}
-              title={theme === "royal" ? "Switch to Ocean theme" : "Switch to Royal Purple theme"}
+              title={theme === "royal" ? "Switch to Ocean theme" : "Switch to Midnight Gold theme"}
               className="relative w-10 h-10 rounded-xl flex items-center justify-center transition-all overflow-hidden group"
               style={{
                 background: theme === "royal"
-                  ? "linear-gradient(135deg, hsl(42,70%,55%), hsl(45,85%,55%))"
+                  ? "linear-gradient(135deg, hsl(42,70%,50%), hsl(45,85%,60%))"
                   : "linear-gradient(135deg, hsl(205,95%,55%), hsl(175,85%,45%))",
                 boxShadow: theme === "royal"
-                  ? "0 4px 18px hsl(270,92%,55%,0.45), inset 0 1px 0 rgba(255,255,255,0.18)"
+                  ? "0 4px 18px hsl(42,70%,50%,0.5), inset 0 1px 0 rgba(255,255,255,0.22)"
                   : "0 4px 18px hsl(205,95%,55%,0.45), inset 0 1px 0 rgba(255,255,255,0.18)",
                 border: "1px solid rgba(255,255,255,0.12)",
               }}
