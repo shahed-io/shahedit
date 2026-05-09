@@ -15,38 +15,40 @@ import SiteFooter from "@/components/SiteFooter";
 const Index = () => {
   return (
     <div className="min-h-screen relative overflow-x-hidden">
-      {/* Animated background orbs */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="orb orb-primary absolute" style={{ width: 600, height: 600, top: '-150px', left: '-150px', opacity: 0.12 }} />
-        <div className="orb orb-accent absolute" style={{ width: 500, height: 500, top: '-100px', right: '-150px', opacity: 0.10 }} />
-        <div className="orb orb-blue absolute" style={{ width: 400, height: 400, top: '40%', left: '60%', opacity: 0.08 }} />
-        <div className="orb orb-primary absolute" style={{ width: 500, height: 500, bottom: '10%', left: '-100px', opacity: 0.09 }} />
-        <div className="orb orb-accent absolute" style={{ width: 350, height: 350, bottom: '-50px', right: '5%', opacity: 0.08 }} />
-        <div
-          className="absolute rounded-full"
-          style={{
-            width: 300, height: 300,
-            top: '25%', left: '45%',
-            background: 'radial-gradient(circle, hsl(245,80%,65%) 0%, transparent 70%)',
-            opacity: 0.06,
-            filter: 'blur(60px)',
-            animation: 'float 8s ease-in-out infinite',
-          }}
-        />
+      {/* Static background orbs (no animation, fixed = painted once) */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0" style={{ contain: 'strict', transform: 'translateZ(0)' }}>
+        <div className="orb orb-primary absolute" style={{ width: 600, height: 600, top: '-150px', left: '-150px', opacity: 0.12, willChange: 'transform' }} />
+        <div className="orb orb-accent absolute" style={{ width: 500, height: 500, top: '-100px', right: '-150px', opacity: 0.10, willChange: 'transform' }} />
+        <div className="orb orb-primary absolute" style={{ width: 500, height: 500, bottom: '10%', left: '-100px', opacity: 0.09, willChange: 'transform' }} />
       </div>
 
       <div className="relative z-10">
         <SiteHeader />
         <HeroBanner />
-        <PopularCategories />
-        <HowWeHelp />
-        <IndustrySolutions />
-        <ProductsSection />
-        <PortfolioSection />
-        <TechStack />
-        <AboutSection />
-        
-        <FaqSection />
+        <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 800px' }}>
+          <PopularCategories />
+        </div>
+        <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 800px' }}>
+          <HowWeHelp />
+        </div>
+        <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 800px' }}>
+          <IndustrySolutions />
+        </div>
+        <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 1000px' }}>
+          <ProductsSection />
+        </div>
+        <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 800px' }}>
+          <PortfolioSection />
+        </div>
+        <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 600px' }}>
+          <TechStack />
+        </div>
+        <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 700px' }}>
+          <AboutSection />
+        </div>
+        <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 600px' }}>
+          <FaqSection />
+        </div>
         <SiteFooter />
       </div>
     </div>
