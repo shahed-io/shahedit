@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { CheckCircle, XCircle, Clock, RefreshCw, Settings, Zap, User, Phone, CreditCard, Hash } from "lucide-react";
+import { CheckCircle, XCircle, Clock, RefreshCw, Settings, Zap, User, Phone, CreditCard, Hash, Receipt } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { openInvoice } from "@/lib/invoice";
 
 interface Payment {
   id: string;
@@ -224,6 +225,14 @@ const AdminPayments = () => {
                   </div>
 
                   <div className="flex gap-2 flex-shrink-0">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => openInvoice(p as any)}
+                      className="text-xs border-purple-500/30 text-purple-300 hover:bg-purple-500/10 gap-1"
+                    >
+                      <Receipt size={12} /> Invoice
+                    </Button>
                     {mode === "auto" && p.status === "pending" && (
                       <Button
                         size="sm"
