@@ -83,75 +83,135 @@ const SiteHeader = () => {
       <div
         className="relative"
         style={{
-          background: "linear-gradient(180deg, rgba(252, 250, 255, 0.92), rgba(248, 246, 252, 0.86))",
-          backdropFilter: "blur(20px) saturate(160%)",
-          WebkitBackdropFilter: "blur(20px) saturate(160%)",
-          borderBottom: "1px solid rgba(120, 100, 180, 0.10)",
-          boxShadow: "0 2px 14px rgba(80, 50, 140, 0.04)",
+          background:
+            "linear-gradient(180deg, rgba(253, 251, 255, 0.94) 0%, rgba(248, 245, 253, 0.88) 100%)",
+          backdropFilter: "blur(24px) saturate(180%)",
+          WebkitBackdropFilter: "blur(24px) saturate(180%)",
+          boxShadow:
+            "0 1px 0 rgba(255,255,255,0.9) inset, 0 4px 24px rgba(80, 50, 140, 0.06), 0 1px 0 rgba(120, 100, 180, 0.08)",
         }}
       >
-        <div className="container mx-auto px-4 lg:px-6 py-3 flex items-center gap-3 lg:gap-5">
+        {/* Premium aurora top edge */}
+        <div
+          className="absolute top-0 left-0 right-0 h-px pointer-events-none opacity-80"
+          style={{
+            background:
+              "linear-gradient(90deg, transparent 0%, rgba(99, 102, 241, 0.5) 20%, rgba(168, 85, 247, 0.7) 50%, rgba(236, 72, 153, 0.5) 80%, transparent 100%)",
+          }}
+        />
+        {/* Soft floating glow */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div
+            className="absolute -top-16 left-1/3 w-72 h-32 rounded-full opacity-[0.18] blur-3xl"
+            style={{ background: "radial-gradient(ellipse, #a855f7, transparent 70%)" }}
+          />
+          <div
+            className="absolute -top-16 right-1/4 w-64 h-32 rounded-full opacity-[0.14] blur-3xl"
+            style={{ background: "radial-gradient(ellipse, #ec4899, transparent 70%)" }}
+          />
+        </div>
+
+        <div className="container mx-auto px-4 lg:px-6 py-3 flex items-center gap-3 lg:gap-5 relative">
           {/* ── Logo ── */}
           <Link to="/" className="shrink-0">
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex items-center gap-2.5">
-              <div
-                className="relative w-11 h-11 rounded-xl flex items-center justify-center overflow-hidden shrink-0"
-                style={{
-                  background: "linear-gradient(135deg, #ffffff, #f5f1fb)",
-                  border: "1px solid rgba(168, 85, 247, 0.20)",
-                  boxShadow: "0 4px 14px rgba(168, 85, 247, 0.18), inset 0 1px 0 rgba(255,255,255,0.9)",
-                }}
-              >
-                <img src={logoImg} alt="Shahed IT" className="w-9 h-9 object-contain" />
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex items-center gap-2.5 group">
+              <div className="relative shrink-0">
+                {/* Animated halo */}
+                <motion.div
+                  className="absolute -inset-1.5 rounded-2xl opacity-50 blur-md"
+                  style={{ background: "conic-gradient(from 0deg, #a855f7, #ec4899, #6366f1, #a855f7)" }}
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                />
+                <div
+                  className="relative w-11 h-11 rounded-xl flex items-center justify-center overflow-hidden"
+                  style={{
+                    background: "linear-gradient(135deg, #ffffff 0%, #faf7ff 100%)",
+                    border: "1px solid rgba(168, 85, 247, 0.25)",
+                    boxShadow:
+                      "0 6px 18px rgba(168, 85, 247, 0.22), inset 0 1px 0 rgba(255,255,255,1), inset 0 -1px 0 rgba(168, 85, 247, 0.06)",
+                  }}
+                >
+                  {/* Glossy sheen */}
+                  <span
+                    className="absolute inset-0 opacity-60 pointer-events-none"
+                    style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.7) 0%, transparent 50%)" }}
+                  />
+                  <img src={logoImg} alt="Shahed IT" className="w-9 h-9 object-contain relative" />
+                </div>
               </div>
               <div className="hidden sm:flex flex-col leading-tight">
-                <span className="text-[20px] font-extrabold tracking-tight" style={{ fontFamily: "'Syne', sans-serif" }}>
-                  <span style={{ color: "#1a1233" }}>Shahed </span>
-                  <span style={{ background: "linear-gradient(135deg, #a855f7, #ec4899)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                    IT
+                <span className="flex items-center gap-1.5">
+                  <span className="text-[20px] font-extrabold tracking-tight" style={{ fontFamily: "'Syne', sans-serif" }}>
+                    <span style={{ color: "#1a1233" }}>Shahed </span>
+                    <span style={{ background: "linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                      IT
+                    </span>
+                  </span>
+                  <span
+                    className="text-[8px] font-black tracking-[0.12em] px-1.5 py-0.5 rounded-md text-white relative top-[-2px]"
+                    style={{
+                      background: "linear-gradient(135deg, #fbbf24, #f59e0b)",
+                      boxShadow: "0 2px 6px rgba(245, 158, 11, 0.35), inset 0 1px 0 rgba(255,255,255,0.4)",
+                    }}
+                  >
+                    PRO
                   </span>
                 </span>
-                <span className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.18em] font-semibold" style={{ color: "#f97316" }}>
-                  <span className="block w-2.5 h-px" style={{ background: "#f97316" }} />
+                <span className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.20em] font-bold" style={{ color: "#f97316" }}>
+                  <span className="block w-2.5 h-px" style={{ background: "linear-gradient(90deg, #f97316, transparent)" }} />
                   SHAHEDIT.COM.BD
                 </span>
               </div>
             </motion.div>
           </Link>
 
-          {/* ── Search Bar ── */}
+          {/* ── Premium Search Bar ── */}
           <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-md mx-auto">
             <div
-              className="group relative w-full flex items-center gap-2 px-4 py-2.5 rounded-full transition-all"
+              className="group relative w-full flex items-center gap-2 px-4 py-2.5 rounded-full transition-all focus-within:scale-[1.01]"
               style={{
-                background: "rgba(245, 242, 250, 0.85)",
-                border: "1px solid rgba(120, 100, 180, 0.12)",
-                boxShadow: "inset 0 1px 2px rgba(80, 50, 140, 0.04)",
+                background: "linear-gradient(180deg, rgba(255,255,255,0.85), rgba(245, 242, 250, 0.85))",
+                border: "1px solid rgba(120, 100, 180, 0.14)",
+                boxShadow:
+                  "inset 0 1px 2px rgba(80, 50, 140, 0.05), 0 1px 0 rgba(255,255,255,0.9)",
               }}
             >
-              <Search size={16} className="shrink-0" style={{ color: "#9b8fb5" }} />
+              {/* Focus glow ring */}
+              <span
+                className="absolute -inset-px rounded-full opacity-0 group-focus-within:opacity-100 transition-opacity pointer-events-none"
+                style={{
+                  background: "linear-gradient(135deg, rgba(99, 102, 241, 0.35), rgba(168, 85, 247, 0.35), rgba(236, 72, 153, 0.35))",
+                  padding: "1px",
+                  WebkitMask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
+                  WebkitMaskComposite: "xor",
+                  maskComposite: "exclude",
+                }}
+              />
+              <Search size={16} className="shrink-0 transition-colors group-focus-within:text-[#7c3aed]" style={{ color: "#9b8fb5" }} />
               <input
                 ref={searchInputRef}
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="প্রোডাক্ট খুঁজুন..."
-                className="flex-1 bg-transparent outline-none text-sm placeholder:text-[#9b8fb5]"
+                className="flex-1 bg-transparent outline-none text-sm placeholder:text-[#9b8fb5] font-medium"
                 style={{ color: "#2a1f4a" }}
               />
               <kbd
-                className="hidden lg:flex items-center gap-0.5 text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded"
+                className="hidden lg:flex items-center gap-0.5 text-[10px] font-mono font-bold px-2 py-0.5 rounded-md"
                 style={{
-                  background: "#ffffff",
-                  border: "1px solid rgba(120, 100, 180, 0.16)",
-                  color: "#6b5b8e",
-                  boxShadow: "0 1px 0 rgba(80, 50, 140, 0.06)",
+                  background: "linear-gradient(180deg, #ffffff, #f8f5fd)",
+                  border: "1px solid rgba(120, 100, 180, 0.18)",
+                  color: "#7c3aed",
+                  boxShadow: "0 1px 0 rgba(80, 50, 140, 0.08), inset 0 1px 0 rgba(255,255,255,1)",
                 }}
               >
-                Ctrl K
+                ⌘ K
               </kbd>
             </div>
           </form>
+
 
           {/* ── Pill Nav ── */}
           <nav
