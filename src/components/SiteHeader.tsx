@@ -297,7 +297,7 @@ const SiteHeader = () => {
               ) : (
                 <Link key={link.label} to={link.href}>
                   <span
-                    className="relative px-4 py-1.5 text-sm font-semibold rounded-full transition-all hover:text-[#7c3aed]"
+                    className="nav-pill relative px-4 py-1.5 text-sm font-semibold rounded-full"
                     style={
                       isActive(link.href)
                         ? {
