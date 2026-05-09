@@ -387,13 +387,7 @@ const SiteHeader = () => {
                         }}
                       />
                     </div>
-                    <span className="text-sm font-bold truncate max-w-[140px]" style={{ color: "#2a1f4a" }}>
-                      {(() => {
-                        const meta: any = (user as any)?.user_metadata ?? {};
-                        const fullName: string | undefined = meta.full_name || meta.name;
-                        return fullName?.split(" ")[0] || "Dashboard";
-                      })()}
-                    </span>
+                    <span className="text-sm font-bold" style={{ color: "#2a1f4a" }}>Dashboard</span>
                   </motion.div>
                 </Link>
                 <motion.button
