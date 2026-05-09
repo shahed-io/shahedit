@@ -36,10 +36,10 @@ const paymentMethods = [
 export const formatPrice = (price: number) => `৳ ${price.toLocaleString("en-BD")}`;
 
 export const cardColors = [
-  { color: "hsl(42,70%,65%)", bg: "rgba(201,161,74,0.10)", border: "rgba(201,161,74,0.22)" },
-  { color: "hsl(45,85%,48%)", bg: "rgba(244,215,122,0.10)", border: "rgba(244,215,122,0.22)" },
-  { color: "hsl(315,80%,65%)", bg: "rgba(244,215,122,0.10)", border: "rgba(244,215,122,0.22)" },
-  { color: "hsl(42,70%,65%)", bg: "rgba(201,161,74,0.10)", border: "rgba(201,161,74,0.22)" },
+  { color: "hsl(270,92%,65%)", bg: "rgba(168,85,247,0.10)", border: "rgba(168,85,247,0.22)" },
+  { color: "hsl(320,90%,48%)", bg: "rgba(236,72,153,0.10)", border: "rgba(236,72,153,0.22)" },
+  { color: "hsl(315,80%,65%)", bg: "rgba(236,72,153,0.10)", border: "rgba(236,72,153,0.22)" },
+  { color: "hsl(270,92%,65%)", bg: "rgba(168,85,247,0.10)", border: "rgba(168,85,247,0.22)" },
   { color: "hsl(45,93%,58%)", bg: "rgba(234,179,8,0.10)", border: "rgba(234,179,8,0.22)" },
 ];
 
@@ -91,7 +91,7 @@ export const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose
         exit={{ opacity: 0, scale: 0.92, y: 20 }}
         transition={{ type: "spring", stiffness: 300, damping: 25 }}
         className="relative w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl max-h-[90vh] overflow-y-auto"
-        style={{ background: 'hsl(240,22%,6%)', border: '1px solid rgba(201,161,74,0.25)' }}
+        style={{ background: 'hsl(265,45%,6%)', border: '1px solid rgba(168,85,247,0.25)' }}
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
@@ -100,7 +100,7 @@ export const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose
             <p className="text-xs text-foreground/40 uppercase tracking-widest mb-1">পেমেন্ট করুন</p>
             <h3 className="font-black text-foreground text-lg leading-tight">{pkg.title}</h3>
             {price > 0 && (
-              <span className="text-2xl font-black mt-1 block" style={{ color: 'hsl(45,85%,55%)' }}>
+              <span className="text-2xl font-black mt-1 block" style={{ color: 'hsl(320,90%,55%)' }}>
                 {formatPrice(price)}
               </span>
             )}
@@ -120,7 +120,7 @@ export const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose
               <p className="text-foreground/50 text-sm mb-1">আপনার পেমেন্ট তথ্য পাওয়া গেছে।</p>
               <p className="text-foreground/40 text-xs">২৪ ঘন্টার মধ্যে WhatsApp/Email-এ কনফার্মেশন পাবেন।</p>
               <button onClick={onClose} className="mt-6 px-6 py-2.5 rounded-xl text-sm font-bold text-white glossy-btn"
-                style={{ background: 'linear-gradient(135deg, hsl(42,70%,65%), hsl(45,85%,48%))' }}>
+                style={{ background: 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))' }}>
                 বন্ধ করুন
               </button>
             </motion.div>
@@ -149,7 +149,7 @@ export const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose
               {selectedMethod && (
                 <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
                   className="rounded-2xl border border-primary/25 p-4 flex items-center justify-between gap-3 mb-5"
-                  style={{ background: 'rgba(201,161,74,0.08)' }}>
+                  style={{ background: 'rgba(168,85,247,0.08)' }}>
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm"
                       style={{ background: selectedMethod.color }}>
@@ -173,14 +173,14 @@ export const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose
                 onClick={() => selected && setStep("form")}
                 disabled={!selected}
                 className={`w-full py-3 rounded-2xl text-sm font-bold text-white transition-all ${selected ? "glossy-btn" : "opacity-40 cursor-not-allowed"}`}
-                style={{ background: selected ? 'linear-gradient(135deg, hsl(42,70%,65%), hsl(45,85%,48%))' : 'rgba(255,255,255,0.08)' }}>
+                style={{ background: selected ? 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))' : 'rgba(255,255,255,0.08)' }}>
                 পরের ধাপ →
               </motion.button>
             </>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="rounded-2xl border border-primary/20 p-3 mb-2 flex items-center gap-3"
-                style={{ background: 'rgba(244,215,122,0.07)' }}>
+                style={{ background: 'rgba(236,72,153,0.07)' }}>
                 <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs font-bold"
                   style={{ background: selectedMethod?.color }}>
                   {selectedMethod?.short}
@@ -234,7 +234,7 @@ export const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose
 
               <button type="submit" disabled={loading}
                 className="w-full py-3 rounded-2xl text-sm font-bold text-white glossy-btn flex items-center justify-center gap-2"
-                style={{ background: 'linear-gradient(135deg, hsl(42,70%,65%), hsl(45,85%,48%))' }}>
+                style={{ background: 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))' }}>
                 {loading ? "জমা হচ্ছে..." : <><Send size={15} /> পেমেন্ট জমা দিন</>}
               </button>
               <p className="text-[10px] text-foreground/35 text-center">পেমেন্ট যাচাই হলে ২৪ ঘন্টার মধ্যে কনফার্মেশন পাবেন।</p>
@@ -366,7 +366,7 @@ const DetailsModal = ({ pkg, onClose, onPay, c }: {
         exit={{ opacity: 0, scale: 0.88, y: 30 }}
         transition={{ type: "spring", stiffness: 320, damping: 28 }}
         className="relative w-full max-w-md rounded-3xl overflow-hidden shadow-2xl max-h-[88vh] overflow-y-auto"
-        style={{ background: 'hsl(240,22%,6%)', border: `1px solid ${c.border}` }}
+        style={{ background: 'hsl(265,45%,6%)', border: `1px solid ${c.border}` }}
         onClick={e => e.stopPropagation()}
       >
         {/* Hero image or gradient */}
@@ -381,7 +381,7 @@ const DetailsModal = ({ pkg, onClose, onPay, c }: {
             </div>
           )}
           {/* Overlay gradient at bottom */}
-          <div className="absolute inset-0" style={{ background: `linear-gradient(to bottom, transparent 40%, hsl(240,22%,6%) 100%)` }} />
+          <div className="absolute inset-0" style={{ background: `linear-gradient(to bottom, transparent 40%, hsl(265,45%,6%) 100%)` }} />
 
           {/* Badges */}
           {discount && discount > 0 && (
@@ -433,7 +433,7 @@ const DetailsModal = ({ pkg, onClose, onPay, c }: {
               onClick={() => setActiveTab("custom")}
               className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-bold transition-all"
               style={activeTab === "custom"
-                ? { background: 'linear-gradient(135deg, rgba(201,161,74,0.25), rgba(244,215,122,0.15))', color: 'hsl(42,70%,75%)', border: '1px solid rgba(201,161,74,0.3)' }
+                ? { background: 'linear-gradient(135deg, rgba(168,85,247,0.25), rgba(236,72,153,0.15))', color: 'hsl(270,92%,75%)', border: '1px solid rgba(168,85,247,0.3)' }
                 : { color: 'rgba(255,255,255,0.4)' }}>
               <PenLine size={12} /> কাস্টম অর্ডার
             </motion.button>
@@ -689,9 +689,9 @@ const FilterChip = ({ active, onClick, label }: { active: boolean; onClick: () =
     style={
       active
         ? {
-            background: "linear-gradient(135deg, hsl(42,70%,65%), hsl(45,85%,48%))",
+            background: "linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))",
             color: "white",
-            boxShadow: "0 4px 16px rgba(201,161,74,0.35)",
+            boxShadow: "0 4px 16px rgba(168,85,247,0.35)",
           }
         : {
             background: "rgba(255,255,255,0.04)",
@@ -754,7 +754,7 @@ const ProductsSection = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {[...Array(5)].map((_, i) => (
-            <div key={i} className="h-72 rounded-2xl animate-pulse" style={{ background: 'rgba(201,161,74,0.06)', border: '1px solid rgba(201,161,74,0.12)' }} />
+            <div key={i} className="h-72 rounded-2xl animate-pulse" style={{ background: 'rgba(168,85,247,0.06)', border: '1px solid rgba(168,85,247,0.12)' }} />
           ))}
         </div>
       </div>
@@ -764,9 +764,9 @@ const ProductsSection = () => {
   if (groups.length === 0) return null;
 
   const sectionColors = [
-    { accent: 'hsl(42,70%,65%)', glow: 'rgba(201,161,74,0.08)' },
-    { accent: 'hsl(45,85%,48%)', glow: 'rgba(244,215,122,0.08)' },
-    { accent: 'hsl(315,80%,65%)', glow: 'rgba(244,215,122,0.08)' },
+    { accent: 'hsl(270,92%,65%)', glow: 'rgba(168,85,247,0.08)' },
+    { accent: 'hsl(320,90%,48%)', glow: 'rgba(236,72,153,0.08)' },
+    { accent: 'hsl(315,80%,65%)', glow: 'rgba(236,72,153,0.08)' },
     { accent: 'hsl(45,93%,58%)', glow: 'rgba(234,179,8,0.08)' },
     { accent: 'hsl(142,76%,55%)', glow: 'rgba(34,197,94,0.08)' },
     { accent: 'hsl(21,90%,60%)', glow: 'rgba(249,115,22,0.08)' },
@@ -792,7 +792,7 @@ const ProductsSection = () => {
             <h2 className="text-4xl md:text-5xl font-black text-foreground mt-2">
               আমাদের <span className="gradient-text">সার্ভিস</span> প্যাকেজ
             </h2>
-            <div className="mt-4 w-20 h-1 rounded-full" style={{ background: 'linear-gradient(90deg, hsl(42,70%,65%), hsl(45,93%,58%))' }} />
+            <div className="mt-4 w-20 h-1 rounded-full" style={{ background: 'linear-gradient(90deg, hsl(270,92%,65%), hsl(45,93%,58%))' }} />
           </motion.div>
           <motion.a
             href="/pricing"
@@ -800,7 +800,7 @@ const ProductsSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             className="hidden md:flex items-center gap-2 text-sm font-semibold px-5 py-2.5 rounded-xl group transition-all"
-            style={{ background: 'rgba(201,161,74,0.10)', border: '1px solid rgba(201,161,74,0.22)', color: 'hsl(42,70%,75%)' }}
+            style={{ background: 'rgba(168,85,247,0.10)', border: '1px solid rgba(168,85,247,0.22)', color: 'hsl(270,92%,75%)' }}
           >
             All Plans <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
           </motion.a>

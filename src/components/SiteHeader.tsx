@@ -14,7 +14,7 @@ import catDigitalMarketing from "@/assets/cat-digital-marketing.jpg";
 import catBusiness from "@/assets/cat-business.jpg";
 
 const serviceCategories = [
-  { label: "Web Development", href: "/services#web-development", icon: Globe, img: catWebDev, color: "hsl(42,70%,65%)" },
+  { label: "Web Development", href: "/services#web-development", icon: Globe, img: catWebDev, color: "hsl(270,92%,65%)" },
   { label: "Website Maintenance", href: "/services#maintenance", icon: Wrench, img: catMaintenance, color: "hsl(210,80%,60%)" },
   { label: "Graphics Design", href: "/services#graphics", icon: Palette, img: catGraphics, color: "hsl(320,80%,60%)" },
   { label: "Facebook Services", href: "/services#facebook", icon: Facebook, img: catFacebook, color: "hsl(220,90%,55%)" },
@@ -50,7 +50,7 @@ const SiteHeader = () => {
       {/* Top bar */}
       <div
         className="relative overflow-hidden"
-        style={{ background: 'linear-gradient(90deg, hsl(42,70%,20%) 0%, hsl(220,40%,8%) 50%, hsl(185,60%,15%) 100%)' }}
+        style={{ background: 'linear-gradient(90deg, hsl(270,92%,20%) 0%, hsl(220,40%,8%) 50%, hsl(185,60%,15%) 100%)' }}
       >
         {/* Moving gradient line */}
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary to-transparent opacity-60" />
@@ -73,7 +73,7 @@ const SiteHeader = () => {
             <span className="hidden sm:flex items-center gap-1 text-foreground/50 text-[11px]">
               <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" /> 24/7 Support
             </span>
-            <span className="text-[11px] px-2.5 py-0.5 rounded-full font-semibold" style={{ background: 'linear-gradient(90deg, hsl(42,70%,65%), hsl(45,85%,48%))', color: 'hsl(240,22%,4%)' }}>
+            <span className="text-[11px] px-2.5 py-0.5 rounded-full font-semibold" style={{ background: 'linear-gradient(90deg, hsl(270,92%,65%), hsl(320,90%,48%))', color: 'hsl(265,45%,4%)' }}>
               🎯 Free Consultation
             </span>
           </div>
@@ -87,7 +87,7 @@ const SiteHeader = () => {
       >
         {/* Subtle top glow line */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-px opacity-50"
-          style={{ background: 'linear-gradient(90deg, transparent, hsl(42,70%,65%), hsl(45,85%,48%), transparent)' }} />
+          style={{ background: 'linear-gradient(90deg, transparent, hsl(270,92%,65%), hsl(320,90%,48%), transparent)' }} />
 
         <div className="container mx-auto px-4 py-4 flex items-center justify-between gap-6">
           {/* Logo */}
@@ -97,7 +97,7 @@ const SiteHeader = () => {
                 <img src={logoImg} alt="Shahed IT Logo" className="w-full h-full object-contain" />
               </div>
               <span className="text-xl font-bold tracking-tight" style={{ fontFamily: "'Syne', sans-serif" }}>
-                <span style={{ background: 'linear-gradient(135deg, hsl(45,85%,48%), hsl(165,80%,45%))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Shahed</span>
+                <span style={{ background: 'linear-gradient(135deg, hsl(320,90%,48%), hsl(165,80%,45%))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Shahed</span>
                 <span className="text-foreground"> IT</span>
               </span>
             </motion.div>
@@ -128,7 +128,7 @@ const SiteHeader = () => {
                       {link.label}
                       <ChevronDown size={13} className={`transition-transform duration-200 ${servicesOpen ? "rotate-180" : ""}`} />
                       <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-0.5 w-0 group-hover:w-3/4 rounded-full transition-all duration-300"
-                        style={{ background: 'linear-gradient(90deg, hsl(42,70%,65%), hsl(45,85%,48%))' }} />
+                        style={{ background: 'linear-gradient(90deg, hsl(270,92%,65%), hsl(320,90%,48%))' }} />
                     </motion.span>
                   </Link>
 
@@ -145,7 +145,7 @@ const SiteHeader = () => {
                           background: "rgba(14, 11, 28, 0.97)",
                           backdropFilter: "blur(20px)",
                           border: "1px solid rgba(255,255,255,0.08)",
-                          boxShadow: "0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(201,161,74,0.1)",
+                          boxShadow: "0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(168,85,247,0.1)",
                         }}
                       >
                         <div className="p-2">
@@ -171,7 +171,7 @@ const SiteHeader = () => {
                         <div className="px-3 pb-3">
                           <Link to="/services" onClick={() => setServicesOpen(false)}>
                             <div className="text-center py-2 text-xs font-semibold rounded-xl transition-all"
-                              style={{ background: "linear-gradient(135deg, hsl(258,90%,66%,0.15), hsl(185,100%,48%,0.15))", color: "hsl(42,70%,75%)", border: "1px solid hsl(258,90%,66%,0.2)" }}>
+                              style={{ background: "linear-gradient(135deg, hsl(258,90%,66%,0.15), hsl(185,100%,48%,0.15))", color: "hsl(270,92%,75%)", border: "1px solid hsl(258,90%,66%,0.2)" }}>
                               সকল সার্ভিস দেখুন →
                             </div>
                           </Link>
@@ -190,7 +190,7 @@ const SiteHeader = () => {
                   >
                     {link.label}
                     <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-0.5 w-0 group-hover:w-3/4 rounded-full transition-all duration-300"
-                      style={{ background: 'linear-gradient(90deg, hsl(42,70%,65%), hsl(45,85%,48%))' }} />
+                      style={{ background: 'linear-gradient(90deg, hsl(270,92%,65%), hsl(320,90%,48%))' }} />
                   </motion.span>
                 </Link>
               )
@@ -203,14 +203,14 @@ const SiteHeader = () => {
               onClick={toggleTheme}
               whileHover={{ scale: 1.08, rotate: 12 }}
               whileTap={{ scale: 0.92 }}
-              title={theme === "royal" ? "Switch to Ocean theme" : "Switch to Midnight Gold theme"}
+              title={theme === "royal" ? "Switch to Ocean theme" : "Switch to Royal Purple theme"}
               className="relative w-10 h-10 rounded-xl flex items-center justify-center transition-all overflow-hidden group"
               style={{
                 background: theme === "royal"
-                  ? "linear-gradient(135deg, hsl(42,70%,50%), hsl(45,85%,60%))"
+                  ? "linear-gradient(135deg, hsl(270,92%,55%), hsl(320,90%,55%))"
                   : "linear-gradient(135deg, hsl(205,95%,55%), hsl(175,85%,45%))",
                 boxShadow: theme === "royal"
-                  ? "0 4px 18px hsl(42,70%,50%,0.5), inset 0 1px 0 rgba(255,255,255,0.22)"
+                  ? "0 4px 18px hsl(270,92%,55%,0.45), inset 0 1px 0 rgba(255,255,255,0.18)"
                   : "0 4px 18px hsl(205,95%,55%,0.45), inset 0 1px 0 rgba(255,255,255,0.18)",
                 border: "1px solid rgba(255,255,255,0.12)",
               }}
@@ -245,9 +245,9 @@ const SiteHeader = () => {
               <Link to="/dashboard">
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
                   className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all"
-                  style={{ background: 'rgba(201,161,74,0.12)', border: '1px solid rgba(201,161,74,0.25)', color: 'hsl(42,70%,75%)' }}>
+                  style={{ background: 'rgba(168,85,247,0.12)', border: '1px solid rgba(168,85,247,0.25)', color: 'hsl(270,92%,75%)' }}>
                   <div className="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-black text-white"
-                    style={{ background: 'linear-gradient(135deg, hsl(42,70%,65%), hsl(45,85%,48%))' }}>
+                    style={{ background: 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))' }}>
                     {user.email?.[0].toUpperCase()}
                   </div>
                   ড্যাশবোর্ড
@@ -257,7 +257,7 @@ const SiteHeader = () => {
               <Link to="/login">
                 <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
                   className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all"
-                  style={{ background: 'rgba(201,161,74,0.10)', border: '1px solid rgba(201,161,74,0.22)', color: 'hsl(42,70%,75%)' }}>
+                  style={{ background: 'rgba(168,85,247,0.10)', border: '1px solid rgba(168,85,247,0.22)', color: 'hsl(270,92%,75%)' }}>
                   <LogIn size={14} /> লগইন
                 </motion.button>
               </Link>
@@ -267,7 +267,7 @@ const SiteHeader = () => {
                 whileHover={{ scale: 1.05, y: -1 }}
                 whileTap={{ scale: 0.95 }}
                 className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white glossy-btn relative overflow-hidden group"
-                style={{ background: 'linear-gradient(135deg, hsl(42,70%,65%), hsl(42,70%,55%))', boxShadow: '0 4px 20px hsl(258,90%,66%,0.35), 0 0 40px hsl(258,90%,66%,0.12)' }}
+                style={{ background: 'linear-gradient(135deg, hsl(270,92%,65%), hsl(270,92%,55%))', boxShadow: '0 4px 20px hsl(258,90%,66%,0.35), 0 0 40px hsl(258,90%,66%,0.12)' }}
               >
                 <span>Get a Quote</span>
                 <ChevronRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
@@ -344,7 +344,7 @@ const SiteHeader = () => {
               )}
               <Link to="/get-quote" className="block mt-3" onClick={() => setMobileOpen(false)}>
                 <div className="text-center py-3 px-4 text-sm font-bold text-white rounded-xl"
-                  style={{ background: 'linear-gradient(135deg, hsl(42,70%,65%), hsl(185,100%,48%,0.8))' }}>
+                  style={{ background: 'linear-gradient(135deg, hsl(270,92%,65%), hsl(185,100%,48%,0.8))' }}>
                   Get a Free Quote →
                 </div>
               </Link>

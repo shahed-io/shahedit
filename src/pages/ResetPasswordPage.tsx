@@ -46,11 +46,11 @@ export default function ResetPasswordPage() {
     <div className="min-h-screen bg-background flex items-center justify-center px-4">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
         <div className="rounded-3xl p-8"
-          style={{ background: 'rgba(14,11,28,0.90)', border: '1px solid rgba(201,161,74,0.18)', backdropFilter: 'blur(20px)' }}>
+          style={{ background: 'rgba(14,11,28,0.90)', border: '1px solid rgba(168,85,247,0.18)', backdropFilter: 'blur(20px)' }}>
           <div className="flex justify-center mb-6">
             <div className="flex items-center gap-2.5">
               <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-                style={{ background: 'linear-gradient(135deg, hsl(42,70%,65%), hsl(45,85%,48%))' }}>
+                style={{ background: 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))' }}>
                 <Zap size={20} className="text-white" fill="white" />
               </div>
               <span className="text-2xl font-black" style={{ fontFamily: "'Syne', sans-serif" }}>
@@ -70,7 +70,7 @@ export default function ResetPasswordPage() {
                 placeholder="নতুন পাসওয়ার্ড" required minLength={6}
                 className="w-full pl-10 pr-11 py-3 rounded-xl text-sm text-foreground placeholder:text-foreground/30 focus:outline-none"
                 style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}
-                onFocus={e => e.target.style.borderColor = 'hsl(42,70%,65%)'}
+                onFocus={e => e.target.style.borderColor = 'hsl(270,92%,65%)'}
                 onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.08)'} />
               <button type="button" onClick={() => setShowPw(v => !v)}
                 className="absolute right-3.5 top-1/2 -translate-y-1/2 text-foreground/35 hover:text-foreground/70">
@@ -83,12 +83,12 @@ export default function ResetPasswordPage() {
                 placeholder="পাসওয়ার্ড নিশ্চিত করুন" required
                 className="w-full pl-10 pr-4 py-3 rounded-xl text-sm text-foreground placeholder:text-foreground/30 focus:outline-none"
                 style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}
-                onFocus={e => e.target.style.borderColor = 'hsl(42,70%,65%)'}
+                onFocus={e => e.target.style.borderColor = 'hsl(270,92%,65%)'}
                 onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.08)'} />
             </div>
             <motion.button type="submit" disabled={loading} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
               className="w-full py-3 rounded-xl text-sm font-bold text-white"
-              style={{ background: 'linear-gradient(135deg, hsl(42,70%,65%), hsl(45,85%,48%))' }}>
+              style={{ background: 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))' }}>
               {loading ? "আপডেট হচ্ছে..." : "পাসওয়ার্ড পরিবর্তন করুন"}
             </motion.button>
           </form>

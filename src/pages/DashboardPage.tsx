@@ -51,7 +51,7 @@ interface Order {
 const statusConfig: Record<string, { label: string; color: string; bg: string; icon: React.ElementType }> = {
   new:         { label: "নতুন",          color: "hsl(210,90%,65%)",  bg: "rgba(59,130,246,0.12)",  icon: AlertCircle },
   in_progress: { label: "প্রক্রিয়াধীন",  color: "hsl(35,90%,60%)",  bg: "rgba(251,146,60,0.12)",  icon: Clock },
-  contacted:   { label: "যোগাযোগ হয়েছে", color: "hsl(42,70%,65%)", bg: "rgba(201,161,74,0.12)", icon: MessageSquare },
+  contacted:   { label: "যোগাযোগ হয়েছে", color: "hsl(270,92%,65%)", bg: "rgba(168,85,247,0.12)", icon: MessageSquare },
   converted:   { label: "সম্পন্ন",        color: "hsl(145,70%,50%)",  bg: "rgba(34,197,94,0.12)",  icon: CheckCircle2 },
   closed:      { label: "বন্ধ",           color: "hsl(0,70%,60%)",   bg: "rgba(239,68,68,0.12)",  icon: AlertCircle },
 };
@@ -67,7 +67,7 @@ const cardVariants: Variants = {
 };
 
 const CARD_STYLE = { background: 'rgba(14,11,28,0.82)', border: '1px solid rgba(255,255,255,0.07)', backdropFilter: 'blur(12px)' };
-const GRAD = 'linear-gradient(135deg, hsl(42,70%,65%), hsl(45,85%,48%))';
+const GRAD = 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function formatBytes(b: number | null) {
@@ -208,9 +208,9 @@ export default function DashboardPage() {
   const unreadCount = notifications.filter(n => !n.is_read).length;
 
   const stats = [
-    { label: "মোট কোটেশন",      value: leads.length,                     icon: FileText,    color: "hsl(42,70%,65%)" },
+    { label: "মোট কোটেশন",      value: leads.length,                     icon: FileText,    color: "hsl(270,92%,65%)" },
     { label: "সম্পন্ন",          value: statusCounts["converted"] || 0,   icon: CheckCircle2, color: "hsl(145,70%,50%)" },
-    { label: "পেমেন্ট",          value: payments.length,                  icon: CreditCard,  color: "hsl(45,85%,48%)" },
+    { label: "পেমেন্ট",          value: payments.length,                  icon: CreditCard,  color: "hsl(320,90%,48%)" },
     { label: "ডকুমেন্ট",         value: documents.length,                 icon: FolderOpen,  color: "hsl(35,90%,60%)" },
   ];
 
@@ -282,7 +282,7 @@ export default function DashboardPage() {
                         {unreadCount > 0 && (
                           <button onClick={markAllRead}
                             className="text-xs font-semibold flex items-center gap-1 transition-colors"
-                            style={{ color: 'hsl(42,70%,70%)' }}>
+                            style={{ color: 'hsl(270,92%,70%)' }}>
                             <Check size={11} /> সব পড়া হয়েছে
                           </button>
                         )}
@@ -294,17 +294,17 @@ export default function DashboardPage() {
                           <div key={n.id}
                             onClick={() => { markOneRead(n.id); if (n.link) navigate(n.link); setNotifOpen(false); }}
                             className="flex items-start gap-3 px-4 py-3 cursor-pointer transition-all hover:bg-white/5 border-b border-white/4 last:border-0"
-                            style={!n.is_read ? { background: 'rgba(201,161,74,0.06)' } : {}}>
+                            style={!n.is_read ? { background: 'rgba(168,85,247,0.06)' } : {}}>
                             <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
                               style={{
                                 background: n.type === 'success' ? 'rgba(34,197,94,0.15)' :
                                   n.type === 'warning' ? 'rgba(251,146,60,0.15)' :
-                                  n.type === 'error'   ? 'rgba(239,68,68,0.15)' : 'rgba(201,161,74,0.15)'
+                                  n.type === 'error'   ? 'rgba(239,68,68,0.15)' : 'rgba(168,85,247,0.15)'
                               }}>
                               <Bell size={13} style={{
                                 color: n.type === 'success' ? 'hsl(145,70%,50%)' :
                                   n.type === 'warning' ? 'hsl(35,90%,60%)' :
-                                  n.type === 'error'   ? 'hsl(0,70%,60%)' : 'hsl(42,70%,70%)'
+                                  n.type === 'error'   ? 'hsl(0,70%,60%)' : 'hsl(270,92%,70%)'
                               }} />
                             </div>
                             <div className="flex-1 min-w-0">
@@ -315,7 +315,7 @@ export default function DashboardPage() {
                               </p>
                             </div>
                             {!n.is_read && (
-                              <div className="w-2 h-2 rounded-full shrink-0 mt-1.5" style={{ background: 'hsl(42,70%,65%)' }} />
+                              <div className="w-2 h-2 rounded-full shrink-0 mt-1.5" style={{ background: 'hsl(270,92%,65%)' }} />
                             )}
                           </div>
                         ))}
@@ -329,7 +329,7 @@ export default function DashboardPage() {
                 <Link to="/admin">
                   <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
                     className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-white transition-all"
-                    style={{ background: GRAD, boxShadow: '0 4px 15px rgba(201,161,74,0.3)' }}>
+                    style={{ background: GRAD, boxShadow: '0 4px 15px rgba(168,85,247,0.3)' }}>
                     <Shield size={14} /> Admin
                   </motion.button>
                 </Link>
@@ -349,7 +349,7 @@ export default function DashboardPage() {
               <button key={key} onClick={() => setActiveTab(key)}
                 className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 whitespace-nowrap"
                 style={activeTab === key ? {
-                  background: GRAD, color: 'white', boxShadow: '0 4px 15px rgba(201,161,74,0.3)',
+                  background: GRAD, color: 'white', boxShadow: '0 4px 15px rgba(168,85,247,0.3)',
                 } : { color: 'rgba(255,255,255,0.45)' }}>
                 <Icon size={14} /> {label}
               </button>
@@ -383,8 +383,8 @@ export default function DashboardPage() {
                 </h2>
                 <div className="grid sm:grid-cols-3 gap-3">
                   {[
-                    { label: "নতুন কোটেশন অনুরোধ", href: "/get-quote",  icon: FileText,  color: "hsl(42,70%,65%)" },
-                    { label: "আমাদের Services",     href: "/services",   icon: Package,   color: "hsl(45,85%,48%)" },
+                    { label: "নতুন কোটেশন অনুরোধ", href: "/get-quote",  icon: FileText,  color: "hsl(270,92%,65%)" },
+                    { label: "আমাদের Services",     href: "/services",   icon: Package,   color: "hsl(320,90%,48%)" },
                     { label: "Portfolio দেখুন",      href: "/portfolio",  icon: Star,      color: "hsl(35,90%,60%)" },
                   ].map(({ label, href, icon: Icon, color }) => (
                     <Link key={href} to={href}>
@@ -415,7 +415,7 @@ export default function DashboardPage() {
                     </h2>
                     <button onClick={() => setActiveTab("quotes")}
                       className="text-xs font-semibold flex items-center gap-1"
-                      style={{ color: 'hsl(42,70%,70%)' }}>
+                      style={{ color: 'hsl(270,92%,70%)' }}>
                       সব দেখুন <ArrowRight size={12} />
                     </button>
                   </div>
@@ -450,7 +450,7 @@ export default function DashboardPage() {
                     </h2>
                     <button onClick={() => setActiveTab("payments")}
                       className="text-xs font-semibold flex items-center gap-1"
-                      style={{ color: 'hsl(42,70%,70%)' }}>
+                      style={{ color: 'hsl(270,92%,70%)' }}>
                       সব দেখুন <ArrowRight size={12} />
                     </button>
                   </div>
@@ -486,7 +486,7 @@ export default function DashboardPage() {
                     </h2>
                     <button onClick={() => setActiveTab("documents")}
                       className="text-xs font-semibold flex items-center gap-1"
-                      style={{ color: 'hsl(42,70%,70%)' }}>
+                      style={{ color: 'hsl(270,92%,70%)' }}>
                       সব দেখুন <ArrowRight size={12} />
                     </button>
                   </div>
@@ -511,7 +511,7 @@ export default function DashboardPage() {
               {leads.length === 0 && (
                 <motion.div custom={5} variants={cardVariants} initial="hidden" animate="visible"
                   className="rounded-2xl p-12 text-center"
-                  style={{ background: 'rgba(14,11,28,0.80)', border: '1px dashed rgba(201,161,74,0.2)' }}>
+                  style={{ background: 'rgba(14,11,28,0.80)', border: '1px dashed rgba(168,85,247,0.2)' }}>
                   <FileText size={36} className="mx-auto mb-4 text-primary/40" />
                   <h3 className="text-foreground font-bold mb-2">এখনও কোনো কোটেশন নেই</h3>
                   <p className="text-foreground/40 text-sm mb-5">প্রজেক্টের জন্য একটি কোটেশন অনুরোধ করুন</p>
@@ -542,7 +542,7 @@ export default function DashboardPage() {
               </div>
               {leads.length === 0 ? (
                 <div className="rounded-2xl p-12 text-center"
-                  style={{ background: 'rgba(14,11,28,0.80)', border: '1px dashed rgba(201,161,74,0.2)' }}>
+                  style={{ background: 'rgba(14,11,28,0.80)', border: '1px dashed rgba(168,85,247,0.2)' }}>
                   <FileText size={36} className="mx-auto mb-3 text-primary/30" />
                   <p className="text-foreground/50 text-sm">কোনো কোটেশন পাওয়া যায়নি।</p>
                 </div>
@@ -591,7 +591,7 @@ export default function DashboardPage() {
 
               {orders.length === 0 ? (
                 <div className="rounded-2xl p-14 text-center"
-                  style={{ background: 'rgba(14,11,28,0.80)', border: '1px dashed rgba(201,161,74,0.2)' }}>
+                  style={{ background: 'rgba(14,11,28,0.80)', border: '1px dashed rgba(168,85,247,0.2)' }}>
                   <Package size={40} className="mx-auto mb-4 text-primary/25" />
                   <h3 className="text-foreground font-bold mb-2">কোনো অর্ডার নেই</h3>
                   <p className="text-foreground/40 text-sm">পেমেন্ট সম্পন্ন হলে অর্ডার এখানে দেখাবে।</p>
@@ -599,7 +599,7 @@ export default function DashboardPage() {
               ) : orders.map((o, i) => {
                 const orderStatus: Record<string, { label: string; color: string; bg: string; icon: React.ElementType }> = {
                   pending:     { label: "Payment Pending", color: "hsl(35,90%,60%)",  bg: "rgba(251,146,60,0.12)",  icon: Clock },
-                  in_progress: { label: "প্রক্রিয়াধীন",   color: "hsl(42,70%,65%)", bg: "rgba(201,161,74,0.12)", icon: Zap },
+                  in_progress: { label: "প্রক্রিয়াধীন",   color: "hsl(270,92%,65%)", bg: "rgba(168,85,247,0.12)", icon: Zap },
                   delivered:   { label: "Delivered",       color: "hsl(145,70%,50%)", bg: "rgba(34,197,94,0.12)",  icon: CheckCircle2 },
                   cancelled:   { label: "Cancelled",       color: "hsl(0,70%,60%)",   bg: "rgba(239,68,68,0.12)",  icon: X },
                 };
@@ -665,7 +665,7 @@ export default function DashboardPage() {
                     {/* Delivery notes */}
                     {o.delivery_notes && (
                       <div className="mt-4 p-3 rounded-xl text-sm text-foreground/75"
-                        style={{ background: 'rgba(201,161,74,0.06)', border: '1px solid rgba(201,161,74,0.15)' }}>
+                        style={{ background: 'rgba(168,85,247,0.06)', border: '1px solid rgba(168,85,247,0.15)' }}>
                         <p className="text-xs font-semibold text-primary/80 mb-1">📋 Admin থেকে বার্তা</p>
                         {o.delivery_notes}
                       </div>
@@ -710,7 +710,7 @@ export default function DashboardPage() {
               {payments.length > 0 && (
                 <div className="grid grid-cols-3 gap-3 mb-4">
                   {[
-                    { label: "মোট পেমেন্ট",  value: `৳${payments.reduce((a, p) => a + p.amount, 0).toLocaleString()}`, color: "hsl(45,85%,48%)" },
+                    { label: "মোট পেমেন্ট",  value: `৳${payments.reduce((a, p) => a + p.amount, 0).toLocaleString()}`, color: "hsl(320,90%,48%)" },
                     { label: "Verified",      value: payments.filter(p => p.status === "verified").length, color: "hsl(145,70%,50%)" },
                     { label: "Pending",       value: payments.filter(p => p.status === "pending").length,  color: "hsl(35,90%,60%)" },
                   ].map(s => (
@@ -724,7 +724,7 @@ export default function DashboardPage() {
 
               {payments.length === 0 ? (
                 <div className="rounded-2xl p-12 text-center"
-                  style={{ background: 'rgba(14,11,28,0.80)', border: '1px dashed rgba(201,161,74,0.2)' }}>
+                  style={{ background: 'rgba(14,11,28,0.80)', border: '1px dashed rgba(168,85,247,0.2)' }}>
                   <Banknote size={36} className="mx-auto mb-3 text-primary/30" />
                   <p className="text-foreground/50 text-sm">কোনো payment পাওয়া যায়নি।</p>
                 </div>
@@ -736,7 +736,7 @@ export default function DashboardPage() {
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <div className="flex items-start gap-4">
                         <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                          style={{ background: 'rgba(201,161,74,0.12)' }}>
+                          style={{ background: 'rgba(168,85,247,0.12)' }}>
                           <CreditCard size={18} className="text-primary/70" />
                         </div>
                         <div>
@@ -770,7 +770,7 @@ export default function DashboardPage() {
               </div>
               {documents.length === 0 ? (
                 <div className="rounded-2xl p-14 text-center"
-                  style={{ background: 'rgba(14,11,28,0.80)', border: '1px dashed rgba(201,161,74,0.2)' }}>
+                  style={{ background: 'rgba(14,11,28,0.80)', border: '1px dashed rgba(168,85,247,0.2)' }}>
                   <FolderOpen size={40} className="mx-auto mb-4 text-primary/25" />
                   <h3 className="text-foreground font-bold mb-2">কোনো document নেই</h3>
                   <p className="text-foreground/40 text-sm">Admin আপনার সাথে কোনো document শেয়ার করেনি।</p>
@@ -800,7 +800,7 @@ export default function DashboardPage() {
                         <a href={doc.file_url} target="_blank" rel="noreferrer" className="flex-1">
                           <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
                             className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold transition-all"
-                            style={{ background: 'rgba(201,161,74,0.15)', color: 'hsl(42,70%,75%)', border: '1px solid rgba(201,161,74,0.2)' }}>
+                            style={{ background: 'rgba(168,85,247,0.15)', color: 'hsl(270,92%,75%)', border: '1px solid rgba(168,85,247,0.2)' }}>
                             <Eye size={14} /> View
                           </motion.button>
                         </a>
@@ -840,7 +840,7 @@ export default function DashboardPage() {
                     <button
                       onClick={() => avatarInputRef.current?.click()}
                       className="absolute -bottom-2 -right-2 w-8 h-8 rounded-xl flex items-center justify-center transition-all"
-                      style={{ background: GRAD, boxShadow: '0 2px 10px rgba(201,161,74,0.4)' }}>
+                      style={{ background: GRAD, boxShadow: '0 2px 10px rgba(168,85,247,0.4)' }}>
                       <Camera size={14} className="text-white" />
                     </button>
                     <input ref={avatarInputRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarUpload} />
@@ -850,7 +850,7 @@ export default function DashboardPage() {
                     <p className="text-xs text-foreground/40 mt-1">{user?.email}</p>
                     <button onClick={() => avatarInputRef.current?.click()}
                       className="text-xs font-semibold mt-2 flex items-center gap-1 transition-colors"
-                      style={{ color: 'hsl(42,70%,70%)' }}>
+                      style={{ color: 'hsl(270,92%,70%)' }}>
                       <Upload size={11} /> ছবি পরিবর্তন করুন
                     </button>
                   </div>
@@ -879,7 +879,7 @@ export default function DashboardPage() {
                           background: 'rgba(255,255,255,0.04)',
                           border: '1px solid rgba(255,255,255,0.08)',
                         }}
-                        onFocus={e => (e.target.style.borderColor = 'rgba(201,161,74,0.5)')}
+                        onFocus={e => (e.target.style.borderColor = 'rgba(168,85,247,0.5)')}
                         onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.08)')}
                       />
                     </div>
@@ -896,7 +896,7 @@ export default function DashboardPage() {
                         background: 'rgba(255,255,255,0.04)',
                         border: '1px solid rgba(255,255,255,0.08)',
                       }}
-                      onFocus={e => (e.target.style.borderColor = 'rgba(201,161,74,0.5)')}
+                      onFocus={e => (e.target.style.borderColor = 'rgba(168,85,247,0.5)')}
                       onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.08)')}
                     />
                   </div>

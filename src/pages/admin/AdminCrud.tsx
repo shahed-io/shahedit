@@ -310,7 +310,7 @@ const createWooCrudPage = (cfg: CrudConfig) => {
                       <div className="flex items-center gap-3">
                         {item.icon && (
                           <div className="w-9 h-9 rounded-xl flex items-center justify-center text-lg shrink-0"
-                            style={{ background: 'rgba(201,161,74,0.12)', border: '1px solid rgba(201,161,74,0.2)' }}>
+                            style={{ background: 'rgba(168,85,247,0.12)', border: '1px solid rgba(168,85,247,0.2)' }}>
                             {item.icon}
                           </div>
                         )}

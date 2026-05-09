@@ -66,9 +66,9 @@ export default function LoginPage() {
       <div className="flex items-center justify-center min-h-[calc(100vh-200px)] py-16 px-4 relative overflow-hidden">
         {/* Background orbs */}
         <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle, hsl(42,70%,65%) 0%, transparent 65%)', filter: 'blur(120px)', opacity: 0.08 }} />
+          style={{ background: 'radial-gradient(circle, hsl(270,92%,65%) 0%, transparent 65%)', filter: 'blur(120px)', opacity: 0.08 }} />
         <div className="absolute bottom-0 right-1/4 w-80 h-80 rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle, hsl(45,85%,48%) 0%, transparent 65%)', filter: 'blur(100px)', opacity: 0.07 }} />
+          style={{ background: 'radial-gradient(circle, hsl(320,90%,48%) 0%, transparent 65%)', filter: 'blur(100px)', opacity: 0.07 }} />
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -77,11 +77,11 @@ export default function LoginPage() {
         >
           {/* Card */}
           <div className="rounded-3xl p-8 relative overflow-hidden"
-            style={{ background: 'rgba(14,11,28,0.90)', border: '1px solid rgba(201,161,74,0.18)', backdropFilter: 'blur(20px)', boxShadow: '0 32px 80px rgba(0,0,0,0.5)' }}>
+            style={{ background: 'rgba(14,11,28,0.90)', border: '1px solid rgba(168,85,247,0.18)', backdropFilter: 'blur(20px)', boxShadow: '0 32px 80px rgba(0,0,0,0.5)' }}>
 
             {/* Top accent */}
             <div className="absolute top-0 left-0 right-0 h-px"
-              style={{ background: 'linear-gradient(90deg, transparent, hsl(42,70%,65%), hsl(45,85%,48%), transparent)' }} />
+              style={{ background: 'linear-gradient(90deg, transparent, hsl(270,92%,65%), hsl(320,90%,48%), transparent)' }} />
 
             {/* Logo */}
             <div className="flex justify-center mb-6">
@@ -102,7 +102,7 @@ export default function LoginPage() {
                 <button key={t} onClick={() => setTab(t)}
                   className="flex-1 py-2 text-sm font-semibold rounded-lg transition-all duration-200"
                   style={tab === t ? {
-                    background: 'linear-gradient(135deg, hsl(42,70%,65%), hsl(45,85%,48%))',
+                    background: 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))',
                     color: 'white',
                     boxShadow: '0 4px 15px hsl(258,90%,66%,0.3)',
                   } : { color: 'rgba(255,255,255,0.45)' }}>
@@ -159,7 +159,7 @@ export default function LoginPage() {
                     required
                     className="w-full pl-4 pr-4 py-3 rounded-xl text-sm text-foreground placeholder:text-foreground/30 focus:outline-none transition-all"
                     style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', }}
-                    onFocus={e => e.target.style.borderColor = 'hsl(42,70%,65%)'}
+                    onFocus={e => e.target.style.borderColor = 'hsl(270,92%,65%)'}
                     onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.08)'}
                   />
                 </div>
@@ -175,7 +175,7 @@ export default function LoginPage() {
                   required
                   className="w-full pl-10 pr-4 py-3 rounded-xl text-sm text-foreground placeholder:text-foreground/30 focus:outline-none transition-all"
                   style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}
-                  onFocus={e => e.target.style.borderColor = 'hsl(42,70%,65%)'}
+                  onFocus={e => e.target.style.borderColor = 'hsl(270,92%,65%)'}
                   onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.08)'}
                 />
               </div>
@@ -191,7 +191,7 @@ export default function LoginPage() {
                   minLength={6}
                   className="w-full pl-10 pr-11 py-3 rounded-xl text-sm text-foreground placeholder:text-foreground/30 focus:outline-none transition-all"
                   style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}
-                  onFocus={e => e.target.style.borderColor = 'hsl(42,70%,65%)'}
+                  onFocus={e => e.target.style.borderColor = 'hsl(270,92%,65%)'}
                   onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.08)'}
                 />
                 <button type="button" onClick={() => setShowPw(v => !v)}
@@ -214,7 +214,7 @@ export default function LoginPage() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold text-white transition-all"
-                style={{ background: 'linear-gradient(135deg, hsl(42,70%,65%), hsl(45,85%,48%))', boxShadow: '0 8px 30px hsl(258,90%,66%,0.3)' }}
+                style={{ background: 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))', boxShadow: '0 8px 30px hsl(258,90%,66%,0.3)' }}
               >
                 {loading ? (
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
