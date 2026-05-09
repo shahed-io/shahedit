@@ -1,15 +1,32 @@
 import { useState, useEffect, useRef, useMemo, FormEvent, KeyboardEvent } from "react";
-import { Search, X, Clock, ArrowUpRight, Package, Wrench, FileText, Sparkles, Briefcase, HelpCircle } from "lucide-react";
+import { Search, X, Clock, TrendingUp, Star, Sparkles, Package, Wrench, FileText, Briefcase, HelpCircle, ArrowUpRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { runSearch, SearchHit, SearchType, highlight } from "@/lib/search";
+import { supabase } from "@/integrations/supabase/client";
 
 const RECENT_KEY = "search_recent_v1";
-const MAX_RECENT = 6;
+const MAX_RECENT = 8;
+
+const POPULAR_SEARCHES = [
+  "Windows 11", "Office 365", "Netflix", "Adobe", "Antivirus", "VPN", "Spotify", "Canva Pro",
+];
 
 interface Props {
   variant?: "desktop" | "mobile";
   onNavigate?: () => void;
+}
+
+interface TrendingProduct {
+  id: string;
+  title: string;
+  short_description: string | null;
+  description: string | null;
+  image_url: string | null;
+  price: number | null;
+  original_price: number | null;
+  currency: string | null;
+  service_title?: string | null;
 }
 
 const iconFor = (t: SearchType) => {
@@ -37,6 +54,11 @@ const Highlighted = ({ text, query }: { text?: string; query: string }) => {
   );
 };
 
+const fmtPrice = (n: number | null | undefined) => {
+  if (n == null) return "";
+  return "৳" + Math.round(Number(n)).toLocaleString("en-US");
+};
+
 const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
@@ -45,11 +67,39 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
   const [results, setResults] = useState<SearchHit[]>([]);
   const [recent, setRecent] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+  const [trending, setTrending] = useState<TrendingProduct[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     try { const raw = localStorage.getItem(RECENT_KEY); if (raw) setRecent(JSON.parse(raw)); } catch {}
+  }, []);
+
+  // Fetch trending products once
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { data } = await supabase
+        .from("service_packages")
+        .select("id,title,short_description,description,image_url,price,original_price,currency,is_featured,sort_order,services(title)")
+        .eq("is_published", true)
+        .order("is_featured", { ascending: false })
+        .order("sort_order", { ascending: true })
+        .limit(6);
+      if (cancelled || !data) return;
+      setTrending(data.map((d: any) => ({
+        id: d.id,
+        title: d.title,
+        short_description: d.short_description,
+        description: d.description,
+        image_url: d.image_url,
+        price: d.price,
+        original_price: d.original_price,
+        currency: d.currency,
+        service_title: d.services?.title || null,
+      })));
+    })();
+    return () => { cancelled = true; };
   }, []);
 
   useEffect(() => {
@@ -82,10 +132,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
     return () => clearTimeout(t);
   }, [query]);
 
-  const items = useMemo<SearchHit[]>(() => {
-    if (query.trim()) return results;
-    return recent.map(r => ({ type: "page" as const, title: r, href: `/search?q=${encodeURIComponent(r)}`, score: 0 }));
-  }, [query, results, recent]);
+  const items = results;
 
   const saveRecent = (q: string) => {
     const next = [q, ...recent.filter(r => r !== q)].slice(0, MAX_RECENT);
@@ -93,24 +140,31 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
     try { localStorage.setItem(RECENT_KEY, JSON.stringify(next)); } catch {}
   };
 
-  const go = (s: SearchHit) => {
-    saveRecent(s.title);
-    setOpen(false);
-    setQuery("");
-    inputRef.current?.blur();
-    onNavigate?.();
-    navigate(s.href);
+  const removeRecent = (q: string) => {
+    const next = recent.filter(r => r !== q);
+    setRecent(next);
+    try { localStorage.setItem(RECENT_KEY, JSON.stringify(next)); } catch {}
   };
+
+  const close = () => { setOpen(false); setQuery(""); inputRef.current?.blur(); onNavigate?.(); };
+
+  const goTo = (href: string, saveQ?: string) => {
+    if (saveQ) saveRecent(saveQ);
+    close();
+    navigate(href);
+  };
+
+  const goHit = (s: SearchHit) => goTo(s.href, s.title);
+
+  const goRecent = (q: string) => { setQuery(q); inputRef.current?.focus(); };
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
     const q = query.trim();
     if (!q) return;
-    if (items[active]) return go(items[active]);
+    if (items[active]) return goHit(items[active]);
     saveRecent(q);
-    setOpen(false);
-    setQuery("");
-    onNavigate?.();
+    close();
     navigate(`/search?q=${encodeURIComponent(q)}`);
   };
 
@@ -122,6 +176,13 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
   };
 
   const clearRecent = () => { setRecent([]); try { localStorage.removeItem(RECENT_KEY); } catch {} };
+
+  const showEmptyState = !query.trim();
+
+  const discountPct = (orig?: number | null, p?: number | null) => {
+    if (!orig || !p || orig <= p) return null;
+    return Math.round(((orig - p) / orig) * 100);
+  };
 
   return (
     <div ref={wrapRef} className={`relative ${variant === "desktop" ? "hidden md:flex flex-1 max-w-md mx-auto" : "w-full"}`}>
@@ -144,7 +205,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
             onChange={(e) => { setQuery(e.target.value); setOpen(true); }}
             onFocus={() => setOpen(true)}
             onKeyDown={onKeyDown}
-            placeholder="প্রোডাক্ট, সার্ভিস, ব্লগ খুঁজুন..."
+            placeholder="প্রোডাক্ট খুঁজুন..."
             className="flex-1 bg-transparent outline-none text-sm font-medium placeholder:text-[rgba(226,218,245,0.45)]"
             style={{ color: "#fff" }}
             autoComplete="off"
@@ -168,85 +229,242 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
       </form>
 
       <AnimatePresence>
-        {open && (items.length > 0 || loading || query.trim()) && (
+        {open && (
           <motion.div
             initial={{ opacity: 0, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.14 }}
-            className="absolute left-0 right-0 mt-2 rounded-2xl overflow-hidden z-50"
+            className={`absolute mt-2 rounded-2xl overflow-hidden z-50 ${variant === "desktop" ? "w-[min(92vw,720px)] left-1/2 -translate-x-1/2" : "left-0 right-0"}`}
             style={{
-              background: "rgba(255,255,255,0.98)",
+              background: "rgba(255,255,255,0.99)",
               backdropFilter: "blur(20px)",
               border: "1px solid rgba(120, 100, 180, 0.18)",
               boxShadow: "0 20px 50px rgba(80, 50, 140, 0.18), 0 4px 12px rgba(0,0,0,0.04)",
             }}
           >
-            {!query.trim() && recent.length > 0 && (
-              <div className="flex items-center justify-between px-4 pt-3 pb-1">
-                <span className="text-[11px] uppercase tracking-wider font-semibold" style={{ color: "#9b8fb5" }}>সাম্প্রতিক</span>
-                <button onClick={clearRecent} className="text-[11px] font-medium hover:underline" style={{ color: "#7c3aed" }}>Clear</button>
-              </div>
-            )}
-            {query.trim() && (
-              <div className="px-4 pt-3 pb-1 flex items-center justify-between">
-                <span className="text-[11px] uppercase tracking-wider font-semibold" style={{ color: "#9b8fb5" }}>
-                  {loading ? "খোঁজা হচ্ছে..." : items.length ? `${items.length} টি Suggestion` : "কোনো ফলাফল নেই"}
-                </span>
-              </div>
-            )}
-            <ul className="max-h-[60vh] overflow-y-auto py-1">
-              {items.map((s, i) => {
-                const Icon = !query.trim() ? Clock : iconFor(s.type);
-                const isActive = i === active;
-                return (
-                  <li key={`${s.type}-${s.title}-${i}`}>
-                    <button
-                      type="button"
-                      onMouseEnter={() => setActive(i)}
-                      onClick={() => go(s)}
-                      className="w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors"
-                      style={{ background: isActive ? "linear-gradient(90deg, rgba(124,58,237,0.08), rgba(236,72,153,0.05))" : "transparent" }}
-                    >
-                      <span className="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style={{ background: "rgba(124, 58, 237, 0.1)" }}>
-                        <Icon size={14} style={{ color: "#7c3aed" }} />
-                      </span>
-                      <span className="flex-1 min-w-0">
-                        <span className="flex items-center gap-2">
-                          {query.trim() && (
-                            <span className="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded" style={{ background: "rgba(124,58,237,0.12)", color: "#7c3aed" }}>{labelFor(s.type)}</span>
-                          )}
-                          <span className="block text-sm font-semibold truncate" style={{ color: "#2a1f4a" }}>
-                            {query.trim() ? <Highlighted text={s.title} query={query} /> : s.title}
-                          </span>
+            {/* Top gradient bar */}
+            <div style={{ height: 3, background: "linear-gradient(90deg, #6366f1, #a855f7, #ec4899)" }} />
+
+            <div className="max-h-[70vh] overflow-y-auto">
+              {/* ============== EMPTY STATE ============== */}
+              {showEmptyState && (
+                <>
+                  {/* Recent Searches */}
+                  {recent.length > 0 && (
+                    <section className="pt-4">
+                      <div className="flex items-center justify-between px-5 pb-2">
+                        <span className="flex items-center gap-2 text-[12px] font-semibold" style={{ color: "#7c3aed" }}>
+                          <Clock size={13} /> সাম্প্রতিক সার্চ
                         </span>
-                        {s.subtitle && <span className="block text-xs truncate mt-0.5" style={{ color: "#9b8fb5" }}>
-                          {query.trim() ? <Highlighted text={s.subtitle} query={query} /> : s.subtitle}
-                        </span>}
+                        <button onClick={clearRecent} className="text-[11px] font-medium hover:underline" style={{ color: "#7c3aed" }}>
+                          সব মুছুন
+                        </button>
+                      </div>
+                      <ul>
+                        {recent.map((r) => (
+                          <li key={r}>
+                            <div className="group flex items-center gap-3 px-5 py-2 hover:bg-[rgba(124,58,237,0.04)] transition-colors">
+                              <Clock size={14} style={{ color: "#9b8fb5" }} className="shrink-0" />
+                              <button
+                                type="button"
+                                onClick={() => goRecent(r)}
+                                className="flex-1 text-left text-sm truncate"
+                                style={{ color: "#2a1f4a" }}
+                              >
+                                {r}
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => removeRecent(r)}
+                                className="opacity-60 hover:opacity-100 p-1 rounded-md hover:bg-[rgba(124,58,237,0.1)]"
+                                aria-label="Remove"
+                              >
+                                <X size={13} style={{ color: "#9b8fb5" }} />
+                              </button>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
+                  )}
+
+                  {/* Popular Searches */}
+                  <section className="pt-4">
+                    <div className="px-5 pb-2">
+                      <span className="flex items-center gap-2 text-[12px] font-semibold" style={{ color: "#7c3aed" }}>
+                        <TrendingUp size={13} /> জনপ্রিয় সার্চ
                       </span>
-                      <ArrowUpRight size={14} className="shrink-0" style={{ color: isActive ? "#7c3aed" : "#c8bfd8" }} />
-                    </button>
-                  </li>
-                );
-              })}
-              {query.trim() && (
-                <li>
-                  <button
-                    type="button"
-                    onClick={submit as any}
-                    className="w-full flex items-center gap-3 px-4 py-2.5 text-left border-t"
-                    style={{ borderColor: "rgba(120, 100, 180, 0.1)" }}
-                  >
-                    <span className="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style={{ background: "linear-gradient(135deg, #6366f1, #a855f7, #ec4899)" }}>
-                      <Search size={14} className="text-white" />
-                    </span>
-                    <span className="text-sm font-semibold" style={{ color: "#2a1f4a" }}>
-                      "<span style={{ color: "#7c3aed" }}>{query}</span>" দিয়ে সব ফলাফল দেখুন
-                    </span>
-                  </button>
-                </li>
+                    </div>
+                    <ul>
+                      {POPULAR_SEARCHES.map((p) => (
+                        <li key={p}>
+                          <button
+                            type="button"
+                            onClick={() => goRecent(p)}
+                            className="w-full flex items-center gap-3 px-5 py-2 text-left hover:bg-[rgba(124,58,237,0.04)] transition-colors"
+                          >
+                            <TrendingUp size={14} style={{ color: "#7c3aed" }} className="shrink-0" />
+                            <span className="text-sm" style={{ color: "#2a1f4a" }}>{p}</span>
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+
+                  {/* Trending Products */}
+                  {trending.length > 0 && (
+                    <section className="pt-4 pb-2 border-t mt-3" style={{ borderColor: "rgba(120,100,180,0.10)" }}>
+                      <div className="px-5 pt-3 pb-2">
+                        <span className="flex items-center gap-2 text-[12px] font-semibold" style={{ color: "#7c3aed" }}>
+                          <Star size={13} /> ট্রেন্ডিং প্রোডাক্ট
+                        </span>
+                      </div>
+                      <ul>
+                        {trending.map((t) => {
+                          const pct = discountPct(t.original_price, t.price);
+                          return (
+                            <li key={t.id}>
+                              <button
+                                type="button"
+                                onClick={() => goTo(`/product/${t.id}`)}
+                                className="w-full flex items-center gap-3 px-5 py-2.5 text-left hover:bg-[rgba(124,58,237,0.04)] transition-colors"
+                              >
+                                {/* Thumbnail */}
+                                <div
+                                  className="w-12 h-12 rounded-xl shrink-0 overflow-hidden flex items-center justify-center"
+                                  style={{ background: "linear-gradient(135deg, rgba(99,102,241,0.18), rgba(236,72,153,0.18))" }}
+                                >
+                                  {t.image_url ? (
+                                    <img src={t.image_url} alt={t.title} className="w-full h-full object-cover" loading="lazy" />
+                                  ) : (
+                                    <Package size={18} style={{ color: "#7c3aed" }} />
+                                  )}
+                                </div>
+
+                                {/* Body */}
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-sm font-semibold truncate" style={{ color: "#2a1f4a" }}>
+                                      {t.title}
+                                    </span>
+                                  </div>
+                                  <div className="flex items-center gap-2 mt-0.5">
+                                    {t.service_title && (
+                                      <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded shrink-0"
+                                        style={{ background: "rgba(124,58,237,0.10)", color: "#7c3aed" }}>
+                                        {t.service_title}
+                                      </span>
+                                    )}
+                                    {t.short_description && (
+                                      <span className="text-xs truncate" style={{ color: "#9b8fb5" }}>
+                                        {t.short_description}
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+
+                                {/* Price */}
+                                <div className="shrink-0 text-right">
+                                  {t.price != null && (
+                                    <div className="text-sm font-bold" style={{ color: "#7c3aed" }}>
+                                      {fmtPrice(t.price)}
+                                    </div>
+                                  )}
+                                  {t.original_price != null && t.original_price > (t.price || 0) && (
+                                    <div className="text-[11px] line-through" style={{ color: "#b8a8d0" }}>
+                                      {fmtPrice(t.original_price)}
+                                    </div>
+                                  )}
+                                  {pct && (
+                                    <div className="text-[10px] font-bold mt-0.5 px-1.5 py-0.5 rounded inline-block"
+                                      style={{ background: "rgba(252, 211, 77, 0.30)", color: "#92590a" }}>
+                                      -{pct}%
+                                    </div>
+                                  )}
+                                </div>
+                              </button>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </section>
+                  )}
+                </>
               )}
-            </ul>
+
+              {/* ============== QUERY RESULTS ============== */}
+              {!showEmptyState && (
+                <>
+                  <div className="px-5 pt-3 pb-1 flex items-center justify-between">
+                    <span className="text-[11px] uppercase tracking-wider font-semibold" style={{ color: "#9b8fb5" }}>
+                      {loading ? "খোঁজা হচ্ছে..." : items.length ? `${items.length} টি ফলাফল` : "কোনো ফলাফল নেই"}
+                    </span>
+                  </div>
+                  <ul className="py-1">
+                    {items.map((s, i) => {
+                      const Icon = iconFor(s.type);
+                      const isActive = i === active;
+                      return (
+                        <li key={`${s.type}-${s.title}-${i}`}>
+                          <button
+                            type="button"
+                            onMouseEnter={() => setActive(i)}
+                            onClick={() => goHit(s)}
+                            className="w-full flex items-center gap-3 px-5 py-2.5 text-left transition-colors"
+                            style={{ background: isActive ? "linear-gradient(90deg, rgba(124,58,237,0.08), rgba(236,72,153,0.05))" : "transparent" }}
+                          >
+                            <span className="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style={{ background: "rgba(124, 58, 237, 0.1)" }}>
+                              <Icon size={14} style={{ color: "#7c3aed" }} />
+                            </span>
+                            <span className="flex-1 min-w-0">
+                              <span className="flex items-center gap-2">
+                                <span className="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded" style={{ background: "rgba(124,58,237,0.12)", color: "#7c3aed" }}>{labelFor(s.type)}</span>
+                                <span className="block text-sm font-semibold truncate" style={{ color: "#2a1f4a" }}>
+                                  <Highlighted text={s.title} query={query} />
+                                </span>
+                              </span>
+                              {s.subtitle && <span className="block text-xs truncate mt-0.5" style={{ color: "#9b8fb5" }}>
+                                <Highlighted text={s.subtitle} query={query} />
+                              </span>}
+                            </span>
+                            <ArrowUpRight size={14} className="shrink-0" style={{ color: isActive ? "#7c3aed" : "#c8bfd8" }} />
+                          </button>
+                        </li>
+                      );
+                    })}
+                    <li>
+                      <button
+                        type="button"
+                        onClick={submit as any}
+                        className="w-full flex items-center gap-3 px-5 py-2.5 text-left border-t"
+                        style={{ borderColor: "rgba(120, 100, 180, 0.1)" }}
+                      >
+                        <span className="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style={{ background: "linear-gradient(135deg, #6366f1, #a855f7, #ec4899)" }}>
+                          <Search size={14} className="text-white" />
+                        </span>
+                        <span className="text-sm font-semibold" style={{ color: "#2a1f4a" }}>
+                          "<span style={{ color: "#7c3aed" }}>{query}</span>" দিয়ে সব ফলাফল দেখুন
+                        </span>
+                      </button>
+                    </li>
+                  </ul>
+                </>
+              )}
+            </div>
+
+            {/* Footer */}
+            <div className="flex items-center justify-between px-5 py-2 border-t text-[10px]"
+              style={{ borderColor: "rgba(120,100,180,0.10)", background: "rgba(250,247,255,0.6)", color: "#9b8fb5" }}>
+              <div className="flex items-center gap-3">
+                <span className="flex items-center gap-1"><kbd className="px-1.5 py-0.5 rounded border" style={{ borderColor: "rgba(120,100,180,0.25)" }}>↑↓</kbd> নেভিগেট</span>
+                <span className="flex items-center gap-1"><kbd className="px-1.5 py-0.5 rounded border" style={{ borderColor: "rgba(120,100,180,0.25)" }}>↵</kbd> সিলেক্ট</span>
+                <span className="flex items-center gap-1"><kbd className="px-1.5 py-0.5 rounded border" style={{ borderColor: "rgba(120,100,180,0.25)" }}>Esc</kbd> বন্ধ</span>
+              </div>
+              <span className="flex items-center gap-1 font-medium" style={{ color: "#7c3aed" }}>
+                <Sparkles size={11} /> Shahed Store Search
+              </span>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
