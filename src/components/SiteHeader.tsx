@@ -442,25 +442,9 @@ const SiteHeader = () => {
           >
             <div className="px-4 py-4 space-y-1.5">
               {/* Mobile search */}
-              <form onSubmit={handleSearch} className="mb-3">
-                <div
-                  className="flex items-center gap-2 px-3.5 py-2.5 rounded-full"
-                  style={{
-                    background: "rgba(245, 242, 250, 0.85)",
-                    border: "1px solid rgba(120, 100, 180, 0.12)",
-                  }}
-                >
-                  <Search size={16} style={{ color: "#9b8fb5" }} />
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="প্রোডাক্ট খুঁজুন..."
-                    className="flex-1 bg-transparent outline-none text-sm placeholder:text-[#9b8fb5]"
-                    style={{ color: "#2a1f4a" }}
-                  />
-                </div>
-              </form>
+              <div className="mb-3">
+                <SmartSearch variant="mobile" onNavigate={() => setMobileOpen(false)} />
+              </div>
 
               {navLinks.map((link) =>
                 link.hasDropdown ? (
