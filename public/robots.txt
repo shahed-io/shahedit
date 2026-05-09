@@ -1,5 +1,18 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/*
+Disallow: /cms
+Disallow: /cms/*
+Disallow: /dashboard
+Disallow: /login
+Disallow: /reset-password
+Disallow: /forgot-password
+
 User-agent: Googlebot
 Allow: /
+Disallow: /admin
+Disallow: /cms
 
 User-agent: Bingbot
 Allow: /
@@ -10,5 +23,6 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
-User-agent: *
-Allow: /
+Host: https://shahedit.com
+Sitemap: https://shahedit.com/sitemap.xml
+Sitemap: https://tqesyvmpdlbfmxfhdshb.functions.supabase.co/sitemap
