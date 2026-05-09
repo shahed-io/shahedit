@@ -38,7 +38,7 @@ const socials = [
   { Icon: Send, href: "https://t.me", label: "Telegram" },
 ];
 
-const payments = ["bKash", "Nagad", "Rocket", "Upay", "bKash Merchant"];
+const payments = ["Bkash", "Nagad", "Rocket", "Upay", "Bkash Merchant"];
 
 interface ColumnProps {
   title: string;

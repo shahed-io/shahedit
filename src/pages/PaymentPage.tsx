@@ -11,11 +11,11 @@ import SiteFooter from "@/components/SiteFooter";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
 const paymentMethods = [
-  { id: "bkash_send", label: "বিকাশ (Send Money)", number: "01820060046", color: "#E2136E", logo: "bKash" },
+  { id: "bkash_send", label: "বিকাশ (Send Money)", number: "01820060046", color: "#E2136E", logo: "Bkash" },
   { id: "nagad_send", label: "নগদ (Send Money)", number: "01820060046", color: "#F6821F", logo: "নগদ" },
   { id: "rocket_send", label: "রকেট (Send Money)", number: "01820060046", color: "#8B1FA8", logo: "Rocket" },
   { id: "upay_send", label: "উপায় (Send Money)", number: "01820060046", color: "#00A651", logo: "উপায়" },
-  { id: "bkash_merchant", label: "বিকাশ মার্চেন্ট", number: "01820060046", color: "#E2136E", logo: "bKash" },
+  { id: "bkash_merchant", label: "বিকাশ মার্চেন্ট", number: "01820060046", color: "#E2136E", logo: "Bkash" },
 ];
 
 const PaymentPage = () => {
