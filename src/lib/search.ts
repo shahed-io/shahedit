@@ -9,6 +9,13 @@ export type SearchHit = {
   href: string;
   score: number;
   matchedField?: string;
+  meta?: {
+    image_url?: string | null;
+    price?: number | null;
+    original_price?: number | null;
+    badge?: string | null;
+    category?: string | null;
+  };
 };
 
 export const STATIC_PAGES: { title: string; href: string; keywords: string[] }[] = [
