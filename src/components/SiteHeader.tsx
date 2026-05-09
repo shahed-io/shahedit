@@ -255,7 +255,7 @@ const SiteHeader = () => {
                     </AnimatePresence>
                   </div>
                 ) : (
-                  <Link key={link.label} to={link.href} className="block rounded-full transition-colors hover:bg-white/[0.03]">
+                  <Link key={link.label} to={link.href} className="nav-pill-link block rounded-full transition-all duration-200">
                     {content}
                   </Link>
                 );
