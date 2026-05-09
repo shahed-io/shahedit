@@ -195,14 +195,42 @@ const SiteFooter = () => {
           viewport={{ once: true }}
           className="rounded-2xl p-5 sm:p-6 bg-white/[0.04] backdrop-blur-xl border border-white/10 flex flex-col lg:flex-row items-center justify-between gap-5"
         >
-          <div className="flex items-center gap-3">
-            <span className="relative w-12 h-12 rounded-2xl flex items-center justify-center bg-gradient-to-br from-primary/25 via-fuchsia-500/15 to-accent/25 border border-white/15 shadow-[0_0_18px_-2px_hsla(280,80%,60%,0.55)] overflow-hidden">
-              <span className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.25),transparent_60%)]" />
-              <img src={deeplIdLogo} alt="DeepL ID" className="relative w-8 h-8 object-contain drop-shadow-[0_2px_6px_rgba(168,85,247,0.45)]" />
-            </span>
+          <div className="flex items-center gap-4">
+            <motion.span
+              whileHover={{ scale: 1.05, rotate: -2 }}
+              transition={{ type: "spring", stiffness: 280, damping: 18 }}
+              className="relative w-20 h-20 rounded-3xl flex items-center justify-center bg-gradient-to-br from-primary/30 via-fuchsia-500/20 to-accent/30 border border-white/20 shadow-[0_0_32px_-4px_hsla(280,85%,60%,0.7)] overflow-hidden shrink-0"
+            >
+              {/* animated conic ring */}
+              <span
+                className="absolute -inset-[1px] rounded-3xl opacity-70"
+                style={{
+                  background:
+                    "conic-gradient(from 0deg, hsla(258,90%,66%,0.6), hsla(185,100%,55%,0.6), hsla(315,80%,65%,0.6), hsla(258,90%,66%,0.6))",
+                  filter: "blur(6px)",
+                }}
+              />
+              {/* inner glass */}
+              <span className="absolute inset-[2px] rounded-[1.3rem] bg-gradient-to-br from-[#1a1030]/95 via-[#15102a]/95 to-[#0f0a20]/95 backdrop-blur-xl" />
+              {/* top sheen */}
+              <span className="absolute inset-[2px] rounded-[1.3rem] bg-[radial-gradient(circle_at_30%_15%,rgba(255,255,255,0.28),transparent_55%)]" />
+              <img
+                src={deeplIdLogo}
+                alt="DeepL ID"
+                className="relative w-14 h-14 object-contain drop-shadow-[0_4px_10px_rgba(168,85,247,0.6)]"
+              />
+            </motion.span>
             <div className="text-left">
-              <div className="text-sm font-bold tracking-wider text-foreground/90">GOVT. CERTIFIED BUSINESS</div>
-              <div className="text-xs text-muted-foreground mt-0.5">DBID: 623962552</div>
+              <div className="flex items-center gap-2">
+                <BadgeCheck size={16} className="text-emerald-400" />
+                <span className="text-[10px] font-bold tracking-[0.25em] text-emerald-400/90 uppercase">Verified</span>
+              </div>
+              <div className="text-base sm:text-lg font-extrabold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground/95 to-foreground/80 mt-0.5">
+                GOVT. CERTIFIED BUSINESS
+              </div>
+              <div className="text-xs sm:text-sm font-semibold text-muted-foreground mt-1 tracking-wide">
+                DBID: <span className="text-foreground/90 font-bold">623962552</span>
+              </div>
             </div>
           </div>
 
