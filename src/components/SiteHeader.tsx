@@ -213,12 +213,14 @@ const SiteHeader = () => {
           </form>
 
 
-          {/* ── Pill Nav ── */}
+          {/* ── Premium Pill Nav ── */}
           <nav
-            className="hidden lg:flex items-center gap-1 p-1 rounded-full shrink-0"
+            className="hidden lg:flex items-center gap-0.5 p-1 rounded-full shrink-0 relative"
             style={{
-              background: "rgba(245, 242, 250, 0.8)",
-              border: "1px solid rgba(120, 100, 180, 0.10)",
+              background: "linear-gradient(180deg, rgba(255,255,255,0.7), rgba(245, 242, 250, 0.85))",
+              border: "1px solid rgba(120, 100, 180, 0.12)",
+              boxShadow:
+                "inset 0 1px 0 rgba(255,255,255,0.95), 0 2px 8px rgba(80, 50, 140, 0.04)",
             }}
           >
             {navLinks.map((link) =>
@@ -236,13 +238,14 @@ const SiteHeader = () => {
                 >
                   <Link to={link.href}>
                     <span
-                      className="px-3.5 py-1.5 text-sm font-semibold rounded-full flex items-center gap-1 transition-all cursor-pointer"
+                      className="relative px-4 py-1.5 text-sm font-semibold rounded-full flex items-center gap-1 transition-all cursor-pointer"
                       style={
                         isActive(link.href) || servicesOpen
                           ? {
-                              background: "#ffffff",
+                              background: "linear-gradient(180deg, #ffffff, #faf7ff)",
                               color: "#7c3aed",
-                              boxShadow: "0 2px 8px rgba(124, 58, 237, 0.12), 0 0 0 1px rgba(124, 58, 237, 0.08)",
+                              boxShadow:
+                                "0 4px 12px rgba(124, 58, 237, 0.18), 0 0 0 1px rgba(124, 58, 237, 0.12), inset 0 1px 0 rgba(255,255,255,1)",
                             }
                           : { color: "#5b4d7e" }
                       }
@@ -311,13 +314,14 @@ const SiteHeader = () => {
               ) : (
                 <Link key={link.label} to={link.href}>
                   <span
-                    className="px-3.5 py-1.5 text-sm font-semibold rounded-full transition-all"
+                    className="relative px-4 py-1.5 text-sm font-semibold rounded-full transition-all hover:text-[#7c3aed]"
                     style={
                       isActive(link.href)
                         ? {
-                            background: "#ffffff",
+                            background: "linear-gradient(180deg, #ffffff, #faf7ff)",
                             color: "#7c3aed",
-                            boxShadow: "0 2px 8px rgba(124, 58, 237, 0.12), 0 0 0 1px rgba(124, 58, 237, 0.08)",
+                            boxShadow:
+                              "0 4px 12px rgba(124, 58, 237, 0.18), 0 0 0 1px rgba(124, 58, 237, 0.12), inset 0 1px 0 rgba(255,255,255,1)",
                           }
                         : { color: "#5b4d7e" }
                     }
