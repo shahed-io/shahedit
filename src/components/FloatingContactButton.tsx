@@ -78,84 +78,142 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
         )}
       </AnimatePresence>
 
-      {/* Main Toggle Button - Support Pill */}
+      {/* Floating "Need help?" tooltip - hides when open */}
+      <AnimatePresence>
+        {!open && (
+          <motion.div
+            initial={{ opacity: 0, x: 10, scale: 0.9 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: 10, scale: 0.9 }}
+            transition={{ delay: 1.6, type: "spring", stiffness: 280 }}
+            className="absolute right-[5.25rem] bottom-3 pointer-events-none select-none"
+          >
+            <div
+              className="relative px-3.5 py-2 rounded-xl shadow-2xl whitespace-nowrap"
+              style={{
+                background: "linear-gradient(135deg, hsl(222,45%,8%), hsl(222,45%,12%))",
+                border: "1px solid rgba(139,92,246,0.35)",
+                boxShadow: "0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(139,92,246,0.25)",
+              }}
+            >
+              <div className="flex items-center gap-2">
+                <span className="relative flex w-2 h-2">
+                  <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+                </span>
+                <span className="text-white text-[12px] font-bold leading-none">সাহায্য চাই?</span>
+              </div>
+              <p className="text-slate-400 text-[10px] mt-1 leading-none">২৪/৭ লাইভ সাপোর্ট</p>
+              {/* Arrow */}
+              <span
+                className="absolute top-1/2 -right-1.5 -translate-y-1/2 w-3 h-3 rotate-45"
+                style={{
+                  background: "linear-gradient(135deg, hsl(222,45%,8%), hsl(222,45%,12%))",
+                  borderRight: "1px solid rgba(139,92,246,0.35)",
+                  borderTop: "1px solid rgba(139,92,246,0.35)",
+                }}
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Main Toggle Button - Round Support Orb */}
       <motion.button
         onClick={() => setOpen(v => !v)}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
+        whileHover={{ scale: 1.08 }}
+        whileTap={{ scale: 0.92 }}
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 1.2, type: "spring", stiffness: 200 }}
         aria-label="Support"
-        className="relative flex items-center gap-2.5 pl-3 pr-4 h-14 rounded-full shadow-2xl group"
+        className="relative w-16 h-16 rounded-full flex items-center justify-center"
         style={{
           background: open
             ? "linear-gradient(135deg, hsl(222,45%,12%), hsl(222,40%,16%))"
-            : "linear-gradient(135deg, hsl(258,90%,58%), hsl(185,100%,42%))",
-          border: open ? "1px solid rgba(255,255,255,0.12)" : "1px solid rgba(255,255,255,0.18)",
+            : "radial-gradient(circle at 30% 25%, hsl(258,95%,72%) 0%, hsl(258,90%,58%) 35%, hsl(220,90%,45%) 75%, hsl(185,100%,38%) 100%)",
+          border: open ? "1px solid rgba(255,255,255,0.12)" : "1.5px solid rgba(255,255,255,0.35)",
           boxShadow: open
             ? "0 8px 24px rgba(0,0,0,0.4)"
-            : "0 10px 36px rgba(139,92,246,0.55), inset 0 1px 0 rgba(255,255,255,0.25)",
+            : "0 12px 40px rgba(139,92,246,0.6), 0 0 0 1px rgba(255,255,255,0.08), inset 0 2px 8px rgba(255,255,255,0.35), inset 0 -4px 10px rgba(0,0,0,0.25)",
         }}
       >
-        {/* Icon disc */}
-        <span
-          className="relative w-9 h-9 rounded-full flex items-center justify-center shrink-0"
-          style={{
-            background: open
-              ? "rgba(255,255,255,0.08)"
-              : "rgba(255,255,255,0.18)",
-            backdropFilter: "blur(6px)",
-          }}
-        >
-          <AnimatePresence mode="wait">
-            {open ? (
-              <motion.span key="x"
-                initial={{ rotate: -90, opacity: 0 }}
-                animate={{ rotate: 0, opacity: 1 }}
-                exit={{ rotate: 90, opacity: 0 }}
-                transition={{ duration: 0.18 }}
-              >
-                <X size={18} className="text-white" />
-              </motion.span>
-            ) : (
-              <motion.span key="hp"
-                initial={{ rotate: 90, opacity: 0 }}
-                animate={{ rotate: 0, opacity: 1 }}
-                exit={{ rotate: -90, opacity: 0 }}
-                transition={{ duration: 0.18 }}
-              >
-                <Headphones size={18} className="text-white" />
-              </motion.span>
-            )}
-          </AnimatePresence>
-        </span>
-
-        {/* Label */}
-        <span className="flex flex-col items-start leading-tight pr-1">
-          <span className="text-white text-[13px] font-bold tracking-wide">
-            {open ? "বন্ধ করুন" : "সাহায্য চাই?"}
-          </span>
-          {!open && (
-            <span className="text-white/85 text-[10.5px] font-medium flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              ২৪/৭ লাইভ সাপোর্ট
-            </span>
-          )}
-        </span>
-
-        {/* Pulse rings */}
+        {/* Rotating conic glow ring (closed only) */}
         {!open && (
-          <>
-            <span className="absolute inset-0 rounded-full animate-ping pointer-events-none"
-              style={{ background: "rgba(139,92,246,0.20)" }} />
-            <span className="absolute -inset-1 rounded-full pointer-events-none opacity-60"
-              style={{
-                background: "conic-gradient(from 0deg, hsl(258,90%,58%), hsl(185,100%,42%), hsl(258,90%,58%))",
-                filter: "blur(10px)",
-                zIndex: -1,
-              }} />
-          </>
+          <motion.span
+            aria-hidden
+            animate={{ rotate: 360 }}
+            transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+            className="absolute -inset-1.5 rounded-full pointer-events-none"
+            style={{
+              background:
+                "conic-gradient(from 0deg, hsl(258,90%,58%) 0%, hsl(185,100%,42%) 25%, transparent 45%, hsl(258,90%,58%) 75%, hsl(185,100%,42%) 100%)",
+              filter: "blur(8px)",
+              opacity: 0.7,
+              zIndex: -1,
+            }}
+          />
+        )}
+
+        {/* Soft pulse halo */}
+        {!open && (
+          <span
+            className="absolute inset-0 rounded-full animate-ping pointer-events-none"
+            style={{ background: "rgba(139,92,246,0.25)" }}
+          />
+        )}
+
+        {/* Glossy top highlight */}
+        {!open && (
+          <span
+            aria-hidden
+            className="absolute inset-[3px] rounded-full pointer-events-none"
+            style={{
+              background:
+                "radial-gradient(ellipse at 30% 15%, rgba(255,255,255,0.55), transparent 55%)",
+            }}
+          />
+        )}
+
+        {/* Icon */}
+        <AnimatePresence mode="wait">
+          {open ? (
+            <motion.span key="x"
+              initial={{ rotate: -90, opacity: 0, scale: 0.6 }}
+              animate={{ rotate: 0, opacity: 1, scale: 1 }}
+              exit={{ rotate: 90, opacity: 0, scale: 0.6 }}
+              transition={{ duration: 0.2 }}
+              className="relative z-10"
+            >
+              <X size={24} className="text-white" strokeWidth={2.5} />
+            </motion.span>
+          ) : (
+            <motion.span key="hp"
+              initial={{ rotate: 90, opacity: 0, scale: 0.6 }}
+              animate={{ rotate: 0, opacity: 1, scale: 1 }}
+              exit={{ rotate: -90, opacity: 0, scale: 0.6 }}
+              transition={{ duration: 0.2 }}
+              className="relative z-10 drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]"
+            >
+              <Headphones size={26} className="text-white" strokeWidth={2.4} />
+            </motion.span>
+          )}
+        </AnimatePresence>
+
+        {/* Online status dot */}
+        {!open && (
+          <span
+            className="absolute bottom-0.5 right-0.5 w-4 h-4 rounded-full flex items-center justify-center z-10"
+            style={{
+              background: "hsl(222,45%,8%)",
+              boxShadow: "0 2px 6px rgba(0,0,0,0.4)",
+            }}
+          >
+            <span className="relative flex w-2.5 h-2.5">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400" />
+            </span>
+          </span>
         )}
       </motion.button>
     </div>
