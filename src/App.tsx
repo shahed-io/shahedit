@@ -40,6 +40,7 @@ const AdminClients = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ d
 const AdminPricing = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminPricing })));
 const AdminFAQ = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminFAQ })));
 const AdminCareers = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminCareers })));
+const AdminPopularSearches = lazy(() => import("./pages/admin/AdminPopularSearches"));
 
 // Auth / user pages
 const DashboardPage = lazy(() => import("./pages/DashboardPage"));
