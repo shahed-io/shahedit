@@ -1,28 +1,8 @@
 import { useState, useEffect, useRef, useMemo, FormEvent, KeyboardEvent } from "react";
-import { Search, X, Clock, ArrowUpRight, Package, Wrench, FileText, Sparkles } from "lucide-react";
+import { Search, X, Clock, ArrowUpRight, Package, Wrench, FileText, Sparkles, Briefcase, HelpCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
-
-type Suggestion = {
-  type: "service" | "package" | "blog" | "page";
-  title: string;
-  subtitle?: string;
-  href: string;
-};
-
-const STATIC_PAGES: Suggestion[] = [
-  { type: "page", title: "Home", href: "/" },
-  { type: "page", title: "Services", href: "/services" },
-  { type: "page", title: "Portfolio", href: "/portfolio" },
-  { type: "page", title: "Pricing", href: "/pricing" },
-  { type: "page", title: "Blog", href: "/blog" },
-  { type: "page", title: "Contact", href: "/contact" },
-  { type: "page", title: "About Us", href: "/about" },
-  { type: "page", title: "Get Quote", href: "/get-quote" },
-  { type: "page", title: "FAQ", href: "/faq" },
-  { type: "page", title: "Dashboard", href: "/dashboard" },
-];
+import { runSearch, SearchHit, SearchType, highlight } from "@/lib/search";
 
 const RECENT_KEY = "search_recent_v1";
 const MAX_RECENT = 6;
@@ -32,13 +12,29 @@ interface Props {
   onNavigate?: () => void;
 }
 
-const iconFor = (t: Suggestion["type"]) => {
+const iconFor = (t: SearchType) => {
   switch (t) {
     case "service": return Wrench;
     case "package": return Package;
     case "blog": return FileText;
+    case "project": return Briefcase;
+    case "faq": return HelpCircle;
     default: return Sparkles;
   }
+};
+
+const labelFor = (t: SearchType) =>
+  t === "service" ? "Service" : t === "package" ? "Package" : t === "blog" ? "Blog" : t === "project" ? "Project" : t === "faq" ? "FAQ" : "Page";
+
+const Highlighted = ({ text, query }: { text?: string; query: string }) => {
+  if (!text) return null;
+  const h = highlight(text, query);
+  if (!h) return <>{text}</>;
+  return (
+    <>
+      {h.before}<mark style={{ background: "rgba(124,58,237,0.18)", color: "#7c3aed", padding: "0 2px", borderRadius: 3, fontWeight: 700 }}>{h.match}</mark>{h.after}
+    </>
+  );
 };
 
 const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
@@ -46,70 +42,49 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(0);
-  const [results, setResults] = useState<Suggestion[]>([]);
+  const [results, setResults] = useState<SearchHit[]>([]);
   const [recent, setRecent] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
 
-  // Load recent
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(RECENT_KEY);
-      if (raw) setRecent(JSON.parse(raw));
-    } catch {}
+    try { const raw = localStorage.getItem(RECENT_KEY); if (raw) setRecent(JSON.parse(raw)); } catch {}
   }, []);
 
-  // Ctrl+K
   useEffect(() => {
     if (variant !== "desktop") return;
     const onKey = (e: globalThis.KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
-        e.preventDefault();
-        inputRef.current?.focus();
-      }
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") { e.preventDefault(); inputRef.current?.focus(); }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [variant]);
 
-  // Click outside
   useEffect(() => {
-    const onClick = (e: MouseEvent) => {
-      if (!wrapRef.current?.contains(e.target as Node)) setOpen(false);
-    };
+    const onClick = (e: MouseEvent) => { if (!wrapRef.current?.contains(e.target as Node)) setOpen(false); };
     document.addEventListener("mousedown", onClick);
     return () => document.removeEventListener("mousedown", onClick);
   }, []);
 
-  // Debounced fetch
   useEffect(() => {
     const q = query.trim();
     if (!q) { setResults([]); setLoading(false); return; }
     setLoading(true);
     const t = setTimeout(async () => {
-      const like = `%${q}%`;
-      const [svc, pkg, blog] = await Promise.all([
-        supabase.from("services").select("title,slug,short_description").eq("is_published", true).ilike("title", like).limit(4),
-        supabase.from("service_packages").select("title,id,short_description").eq("is_published", true).ilike("title", like).limit(4),
-        supabase.from("blog_posts").select("title,slug,excerpt").eq("is_published", true).ilike("title", like).limit(3),
-      ]);
-      const out: Suggestion[] = [];
-      svc.data?.forEach((s: any) => out.push({ type: "service", title: s.title, subtitle: s.short_description, href: `/services` }));
-      pkg.data?.forEach((p: any) => out.push({ type: "package", title: p.title, subtitle: p.short_description, href: `/product/${p.id}` }));
-      blog.data?.forEach((b: any) => out.push({ type: "blog", title: b.title, subtitle: b.excerpt, href: `/blog` }));
-      const ql = q.toLowerCase();
-      STATIC_PAGES.filter(p => p.title.toLowerCase().includes(ql)).slice(0, 3).forEach(p => out.push(p));
-      setResults(out);
+      try {
+        const hits = await runSearch(q, { limitPerType: 4 });
+        setResults(hits.slice(0, 10));
+      } catch { setResults([]); }
       setLoading(false);
       setActive(0);
-    }, 220);
+    }, 200);
     return () => clearTimeout(t);
   }, [query]);
 
-  const items = useMemo(() => {
+  const items = useMemo<SearchHit[]>(() => {
     if (query.trim()) return results;
-    return recent.map(r => ({ type: "page" as const, title: r, href: `/search?q=${encodeURIComponent(r)}` }));
+    return recent.map(r => ({ type: "page" as const, title: r, href: `/search?q=${encodeURIComponent(r)}`, score: 0 }));
   }, [query, results, recent]);
 
   const saveRecent = (q: string) => {
@@ -118,7 +93,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
     try { localStorage.setItem(RECENT_KEY, JSON.stringify(next)); } catch {}
   };
 
-  const go = (s: Suggestion) => {
+  const go = (s: SearchHit) => {
     saveRecent(s.title);
     setOpen(false);
     setQuery("");
@@ -194,7 +169,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
       </form>
 
       <AnimatePresence>
-        {open && (items.length > 0 || loading || (!query && recent.length === 0)) && (
+        {open && (items.length > 0 || loading || query.trim()) && (
           <motion.div
             initial={{ opacity: 0, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
@@ -215,9 +190,9 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
               </div>
             )}
             {query.trim() && (
-              <div className="px-4 pt-3 pb-1">
+              <div className="px-4 pt-3 pb-1 flex items-center justify-between">
                 <span className="text-[11px] uppercase tracking-wider font-semibold" style={{ color: "#9b8fb5" }}>
-                  {loading ? "খোঁজা হচ্ছে..." : items.length ? "Suggestions" : "কোনো ফলাফল নেই"}
+                  {loading ? "খোঁজা হচ্ছে..." : items.length ? `${items.length} টি Suggestion` : "কোনো ফলাফল নেই"}
                 </span>
               </div>
             )}
@@ -238,8 +213,17 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
                         <Icon size={14} style={{ color: "#7c3aed" }} />
                       </span>
                       <span className="flex-1 min-w-0">
-                        <span className="block text-sm font-semibold truncate" style={{ color: "#2a1f4a" }}>{s.title}</span>
-                        {s.subtitle && <span className="block text-xs truncate" style={{ color: "#9b8fb5" }}>{s.subtitle}</span>}
+                        <span className="flex items-center gap-2">
+                          {query.trim() && (
+                            <span className="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded" style={{ background: "rgba(124,58,237,0.12)", color: "#7c3aed" }}>{labelFor(s.type)}</span>
+                          )}
+                          <span className="block text-sm font-semibold truncate" style={{ color: "#2a1f4a" }}>
+                            {query.trim() ? <Highlighted text={s.title} query={query} /> : s.title}
+                          </span>
+                        </span>
+                        {s.subtitle && <span className="block text-xs truncate mt-0.5" style={{ color: "#9b8fb5" }}>
+                          {query.trim() ? <Highlighted text={s.subtitle} query={query} /> : s.subtitle}
+                        </span>}
                       </span>
                       <ArrowUpRight size={14} className="shrink-0" style={{ color: isActive ? "#7c3aed" : "#c8bfd8" }} />
                     </button>
