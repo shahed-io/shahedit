@@ -5,6 +5,7 @@ import { ArrowLeft, CheckCircle, CreditCard, MessageCircle, Info, PenLine, Zap }
 import { supabase } from "@/integrations/supabase/client";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import { SEO } from "@/components/SEO";
 import {
   PaymentModal,
   CustomOrderForm,
