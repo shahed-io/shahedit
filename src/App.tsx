@@ -65,19 +65,6 @@ const ComplaintPolicyPage = lazy(() => import("./pages/ComplaintPolicyPage"));
 const PaymentPage = lazy(() => import("./pages/PaymentPage"));
 const ProductDetailsPage = lazy(() => import("./pages/ProductDetailsPage"));
 
-// CMS
-const CmsDashboard = lazy(() => import("./pages/cms/CmsDashboard"));
-const ContentListPage = lazy(() => import("./pages/cms/ContentListPage"));
-const ContentEditorPage = lazy(() => import("./pages/cms/ContentEditorPage"));
-const MediaLibraryPage = lazy(() => import("./pages/cms/MediaLibraryPage"));
-const TaxonomyPage = lazy(() => import("./pages/cms/TaxonomyPage"));
-const MenusPage = lazy(() => import("./pages/cms/MenusPage"));
-const SeoManagerPage = lazy(() => import("./pages/cms/SeoManagerPage"));
-const CmsSettingsPage = lazy(() => import("./pages/cms/CmsSettingsPage"));
-const CmsUsersPage = lazy(() => import("./pages/cms/CmsUsersPage"));
-const AuditLogsPage = lazy(() => import("./pages/cms/AuditLogsPage"));
-const CmsBlogPublicPage = lazy(() => import("./pages/cms/CmsBlogPublicPage"));
-const PublicContentPage = lazy(() => import("./pages/cms/PublicContentPage"));
 
 const queryClient = new QueryClient();
 
@@ -123,25 +110,6 @@ const AdminRoutes = () => (
   </ProtectedRoute>
 );
 
-const CmsRoutes = () => (
-  <ProtectedRoute>
-    <Routes>
-      <Route path="" element={<CmsDashboard />} />
-      <Route path="posts" element={<ContentListPage type="post" />} />
-      <Route path="posts/:id" element={<ContentEditorPage type="post" />} />
-      <Route path="pages" element={<ContentListPage type="page" />} />
-      <Route path="pages/:id" element={<ContentEditorPage type="page" />} />
-      <Route path="media" element={<MediaLibraryPage />} />
-      <Route path="categories" element={<TaxonomyPage taxonomySlug="category" />} />
-      <Route path="tags" element={<TaxonomyPage taxonomySlug="tag" />} />
-      <Route path="menus" element={<MenusPage />} />
-      <Route path="seo" element={<SeoManagerPage />} />
-      <Route path="settings" element={<CmsSettingsPage />} />
-      <Route path="users" element={<CmsUsersPage />} />
-      <Route path="audit" element={<AuditLogsPage />} />
-    </Routes>
-  </ProtectedRoute>
-);
 
 // Root component that injects analytics on every page load
 const AppWithAnalytics = () => {
@@ -174,15 +142,9 @@ const AppWithAnalytics = () => {
         <Route path="/complaint-policy" element={<ComplaintPolicyPage />} />
         <Route path="/payment" element={<PaymentPage />} />
         <Route path="/product/:id" element={<ProductDetailsPage />} />
-        {/* CMS Public Routes */}
-        <Route path="/cms-blog" element={<CmsBlogPublicPage />} />
-        <Route path="/post/:slug" element={<PublicContentPage type="post" />} />
-        <Route path="/page/:slug" element={<PublicContentPage type="page" />} />
         {/* Admin Routes */}
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/*" element={<AdminRoutes />} />
-        {/* CMS Routes */}
-        <Route path="/cms/*" element={<CmsRoutes />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <GlobalSupport />
