@@ -90,8 +90,61 @@ export default function ProductDetailsPage() {
     `হ্যালো! আমি "${pkg.title}" প্যাকেজটি সম্পর্কে জানতে চাই।${pkg.price ? ` মূল্য: ৳${pkg.price.toLocaleString()}` : ""}`
   );
 
+  // Build dynamic SEO for this product
+  const cleanDesc = (pkg.short_description || (pkg.description || "").replace(/<[^>]+>/g, "")).slice(0, 160).trim();
+  const seoTitle = `${pkg.title} — মূল্য ৳${pkg.price?.toLocaleString() ?? "যোগাযোগ"} | Shahed IT Bangladesh`;
+  const seoDesc = cleanDesc || `${pkg.title} সার্ভিস সাশ্রয়ী মূল্যে নিন Shahed IT থেকে। বাংলাদেশের সেরা আইটি সলিউশন পার্টনার।`;
+  const productSchema: any = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: pkg.title,
+    description: cleanDesc,
+    image: pkg.image_url || undefined,
+    sku: pkg.id,
+    brand: { "@type": "Brand", name: "Shahed IT" },
+    category: pkg.services?.title || "IT Services",
+    url: `https://shahedit.com/product/${pkg.id}`,
+    ...(pkg.price && {
+      offers: {
+        "@type": "Offer",
+        price: pkg.price,
+        priceCurrency: "BDT",
+        availability: "https://schema.org/InStock",
+        url: `https://shahedit.com/product/${pkg.id}`,
+        seller: { "@type": "Organization", name: "Shahed IT" },
+      },
+    }),
+    ...(ratingStat.count > 0 && {
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: ratingStat.average.toFixed(1),
+        reviewCount: ratingStat.count,
+        bestRating: "5",
+        worstRating: "1",
+      },
+    }),
+  };
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://shahedit.com" },
+      { "@type": "ListItem", position: 2, name: pkg.services?.title || "Services", item: "https://shahedit.com/services" },
+      { "@type": "ListItem", position: 3, name: pkg.title, item: `https://shahedit.com/product/${pkg.id}` },
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title={seoTitle}
+        description={seoDesc}
+        image={pkg.image_url || undefined}
+        type="product"
+        canonical={`https://shahedit.com/product/${pkg.id}`}
+        keywords={`${pkg.title}, ${pkg.services?.title ?? ""}, Shahed IT, shahedit, IT service Bangladesh, ${pkg.title} price BD, web development Bangladesh`}
+        schema={[productSchema, breadcrumbSchema]}
+      />
       <SiteHeader />
 
       <main className="container mx-auto px-4 py-10 md:py-16 max-w-6xl">
