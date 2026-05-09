@@ -12,6 +12,7 @@ export interface ServicePackageRow {
   id: string;
   title: string;
   description: string | null;
+  short_description?: string | null;
   price: number | null;
   original_price: number | null;
   currency: string;
