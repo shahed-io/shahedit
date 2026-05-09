@@ -806,62 +806,6 @@ const ProductsSection = () => {
           </motion.a>
         </div>
 
-        {/* Search + Category filter */}
-        <div className="mb-12 space-y-4">
-          <div className="relative max-w-xl mx-auto">
-            <Search
-              size={18}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/40 pointer-events-none"
-            />
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value.slice(0, 100))}
-              placeholder="প্রোডাক্ট খুঁজুন... (নাম, বিবরণ, ক্যাটাগরি)"
-              className="w-full pl-11 pr-10 py-3 rounded-2xl text-sm text-foreground placeholder:text-foreground/40 focus:outline-none transition-all"
-              style={{
-                background: "rgba(255,255,255,0.04)",
-                border: "1px solid rgba(255,255,255,0.10)",
-                backdropFilter: "blur(10px)",
-              }}
-            />
-            {search && (
-              <button
-                type="button"
-                onClick={() => setSearch("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/40 hover:text-foreground p-1 rounded-full hover:bg-white/10 transition"
-                aria-label="Clear search"
-              >
-                <X size={14} />
-              </button>
-            )}
-          </div>
-
-          <div className="flex flex-wrap items-center justify-center gap-2">
-            <FilterChip
-              active={activeCategory === "all"}
-              onClick={() => setActiveCategory("all")}
-              label="সব"
-            />
-            {groups.map((g) => (
-              <FilterChip
-                key={g.service_id}
-                active={activeCategory === g.service_id}
-                onClick={() => setActiveCategory(g.service_id)}
-                label={g.service_title}
-              />
-            ))}
-          </div>
-
-          {(search || activeCategory !== "all") && (
-            <p className="text-center text-xs text-foreground/50">
-              {totalMatches > 0
-                ? `${totalMatches}টি প্রোডাক্ট পাওয়া গেছে`
-                : "কোনো প্রোডাক্ট পাওয়া যায়নি"}
-            </p>
-          )}
-        </div>
-
         {/* Per-service groups */}
         {filteredGroups.length === 0 ? (
           <div className="text-center py-20 text-foreground/50">
