@@ -116,6 +116,7 @@
       linear-gradient(90deg, rgba(56, 189, 248, 0.04) 1px, transparent 1px),
       linear-gradient(180deg, hsl(215, 52%, 5%) 0%, hsl(218, 50%, 4%) 100%);
   }
+}
 
 @layer base {
   * { @apply border-border; }
