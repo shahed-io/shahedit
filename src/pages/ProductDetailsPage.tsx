@@ -263,7 +263,7 @@ export default function ProductDetailsPage() {
                 className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-sm font-bold transition-all"
                 style={
                   activeTab === "custom"
-                    ? { background: 'linear-gradient(135deg, rgba(139,92,246,0.25), rgba(6,182,212,0.15))', color: 'hsl(258,90%,75%)', border: '1px solid rgba(139,92,246,0.3)' }
+                    ? { background: 'linear-gradient(135deg, rgba(168,85,247,0.25), rgba(236,72,153,0.15))', color: 'hsl(270,92%,75%)', border: '1px solid rgba(168,85,247,0.3)' }
                     : { color: 'rgba(255,255,255,0.4)' }
                 }
               >
@@ -369,7 +369,7 @@ export default function ProductDetailsPage() {
                 exit={{ opacity: 0, y: -12 }}
                 transition={{ duration: 0.2 }}
                 className="max-w-2xl mx-auto rounded-3xl p-6 md:p-8"
-                style={{ background: 'rgba(139,92,246,0.06)', border: '1px solid rgba(139,92,246,0.2)' }}
+                style={{ background: 'rgba(168,85,247,0.06)', border: '1px solid rgba(168,85,247,0.2)' }}
               >
                 <h2 className="text-2xl font-black text-foreground mb-2">কাস্টম অর্ডার দিন</h2>
                 <CustomOrderForm pkg={pkg} c={c} onClose={() => setActiveTab("details")} />

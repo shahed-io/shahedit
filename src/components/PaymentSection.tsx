@@ -53,7 +53,7 @@ const PaymentSection = () => (
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.97 }}
             className="inline-flex items-center gap-2 px-8 py-3.5 rounded-2xl text-white font-semibold glossy-btn"
-            style={{ background: "linear-gradient(135deg, hsl(258,90%,66%), hsl(185,100%,48%))" }}
+            style={{ background: "linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))" }}
           >
             পেমেন্ট করুন ও Transaction ID জমা দিন
             <ArrowRight size={16} />

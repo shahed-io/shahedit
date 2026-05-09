@@ -286,7 +286,7 @@ const AdminServices = () => {
                   <td className="px-3 py-3.5">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0"
-                        style={{ background: 'rgba(139,92,246,0.12)', border: '1px solid rgba(139,92,246,0.2)' }}>
+                        style={{ background: 'rgba(168,85,247,0.12)', border: '1px solid rgba(168,85,247,0.2)' }}>
                         {s.icon || "🔧"}
                       </div>
                       <div className="min-w-0">

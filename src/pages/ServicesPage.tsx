@@ -22,15 +22,15 @@ interface ServicePackage {
 }
 
 const emojiColors: Record<string, { bg: string; border: string; glow: string; badge: string }> = {
-  "💻": { bg: "rgba(139,92,246,0.10)", border: "rgba(139,92,246,0.25)", glow: "rgba(139,92,246,0.15)", badge: "rgba(139,92,246,0.15)" },
+  "💻": { bg: "rgba(168,85,247,0.10)", border: "rgba(168,85,247,0.25)", glow: "rgba(168,85,247,0.15)", badge: "rgba(168,85,247,0.15)" },
   "📱": { bg: "rgba(59,130,246,0.10)", border: "rgba(59,130,246,0.25)", glow: "rgba(59,130,246,0.15)", badge: "rgba(59,130,246,0.15)" },
   "🎨": { bg: "rgba(236,72,153,0.10)", border: "rgba(236,72,153,0.25)", glow: "rgba(236,72,153,0.15)", badge: "rgba(236,72,153,0.15)" },
-  "📊": { bg: "rgba(6,182,212,0.10)", border: "rgba(6,182,212,0.25)", glow: "rgba(6,182,212,0.15)", badge: "rgba(6,182,212,0.15)" },
+  "📊": { bg: "rgba(236,72,153,0.10)", border: "rgba(236,72,153,0.25)", glow: "rgba(236,72,153,0.15)", badge: "rgba(236,72,153,0.15)" },
   "☁️": { bg: "rgba(234,179,8,0.10)", border: "rgba(234,179,8,0.25)", glow: "rgba(234,179,8,0.15)", badge: "rgba(234,179,8,0.15)" },
   "🔐": { bg: "rgba(34,197,94,0.10)", border: "rgba(34,197,94,0.25)", glow: "rgba(34,197,94,0.15)", badge: "rgba(34,197,94,0.15)" },
 };
 
-const defaultColors = { bg: "rgba(139,92,246,0.10)", border: "rgba(139,92,246,0.25)", glow: "rgba(139,92,246,0.15)", badge: "rgba(139,92,246,0.15)" };
+const defaultColors = { bg: "rgba(168,85,247,0.10)", border: "rgba(168,85,247,0.25)", glow: "rgba(168,85,247,0.15)", badge: "rgba(168,85,247,0.15)" };
 
 const ServicesPage = () => {
   const [services, setServices] = useState<Service[]>([]);
@@ -60,12 +60,12 @@ const ServicesPage = () => {
       <section className="py-24 relative overflow-hidden">
         <div className="absolute inset-0 dot-grid opacity-20" />
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[400px] rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse, hsl(258,90%,66%) 0%, transparent 65%)', filter: 'blur(130px)', opacity: 0.09 }} />
+          style={{ background: 'radial-gradient(ellipse, hsl(270,92%,65%) 0%, transparent 65%)', filter: 'blur(130px)', opacity: 0.09 }} />
         <div className="container mx-auto px-4 relative text-center">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}>
             <span
               className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] px-4 py-2 rounded-full mb-5"
-              style={{ background: 'rgba(6,182,212,0.10)', border: '1px solid rgba(6,182,212,0.25)', color: 'hsl(185,100%,55%)' }}
+              style={{ background: 'rgba(236,72,153,0.10)', border: '1px solid rgba(236,72,153,0.25)', color: 'hsl(320,90%,55%)' }}
             >
               ◈ What We Offer
             </span>
@@ -237,7 +237,7 @@ const ServicesPage = () => {
               <Link
                 to="/get-quote"
                 className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-bold text-white text-sm transition-all hover:scale-105 hover:shadow-xl"
-                style={{ background: 'linear-gradient(135deg, hsl(258,90%,60%), hsl(185,100%,48%))' }}
+                style={{ background: 'linear-gradient(135deg, hsl(270,92%,60%), hsl(320,90%,48%))' }}
               >
                 ফ্রি কোটেশন নিন <ArrowRight size={16} />
               </Link>
