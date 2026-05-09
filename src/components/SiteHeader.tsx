@@ -46,6 +46,10 @@ const SiteHeader = () => {
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const servicesTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const drawerRef = useRef<HTMLElement | null>(null);
+  const searchModalRef = useRef<HTMLDivElement | null>(null);
+  const menuTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const searchTriggerRef = useRef<HTMLButtonElement | null>(null);
 
   const isActive = (href: string) => location.pathname === href;
   const activeKey = navLinks.find(l => isActive(l.href))?.label || (servicesOpen ? "Services" : null);
@@ -120,6 +124,59 @@ const SiteHeader = () => {
       html.style.overflow = prev.htmlOverflow;
       (html.style as any).overscrollBehavior = prev.htmlOverscroll ?? "";
       window.scrollTo(0, scrollY);
+    };
+  }, [mobileOpen, searchOpen]);
+
+  // Keyboard: Escape to close + focus trap (Tab cycles within drawer/modal)
+  useEffect(() => {
+    if (!mobileOpen && !searchOpen) return;
+
+    const container: HTMLElement | null =
+      mobileOpen ? drawerRef.current : searchModalRef.current;
+    const trigger: HTMLButtonElement | null =
+      mobileOpen ? menuTriggerRef.current : searchTriggerRef.current;
+
+    const getFocusables = () =>
+      container
+        ? Array.from(
+            container.querySelectorAll<HTMLElement>(
+              'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+            )
+          )
+        : [];
+
+    const t = window.setTimeout(() => {
+      const f = getFocusables();
+      (f[0] ?? container)?.focus();
+    }, 60);
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.stopPropagation();
+        if (mobileOpen) setMobileOpen(false);
+        if (searchOpen) setSearchOpen(false);
+        return;
+      }
+      if (e.key !== "Tab" || !container) return;
+      const focusables = getFocusables();
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+      if (e.shiftKey && active === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      window.clearTimeout(t);
+      document.removeEventListener("keydown", onKeyDown);
+      trigger?.focus?.();
     };
   }, [mobileOpen, searchOpen]);
 
@@ -460,6 +517,7 @@ const SiteHeader = () => {
           {/* Mobile actions */}
           <div className="md:hidden ml-auto flex items-center gap-1.5 sm:gap-2 shrink-0">
             <motion.button
+              ref={searchTriggerRef as any}
               whileTap={{ scale: 0.92 }}
               className="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shrink-0"
               style={{
@@ -469,12 +527,16 @@ const SiteHeader = () => {
                 boxShadow: "0 4px 14px rgba(168, 85, 247, 0.30), inset 0 1px 0 rgba(255,255,255,0.08)",
               }}
               onClick={() => setSearchOpen(true)}
-              aria-label="Search"
+              aria-label={searchOpen ? "Close search" : "Open search"}
+              aria-haspopup="dialog"
+              aria-expanded={searchOpen}
+              aria-controls="mobile-search-dialog"
             >
               <Search size={16} className="sm:hidden" />
               <Search size={17} className="hidden sm:block" />
             </motion.button>
             <motion.button
+              ref={menuTriggerRef as any}
               whileTap={{ scale: 0.92 }}
               className="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white shrink-0"
               style={{
@@ -487,7 +549,10 @@ const SiteHeader = () => {
                   : "inset 0 1px 0 rgba(255,255,255,0.06)",
               }}
               onClick={() => setMobileOpen(!mobileOpen)}
-              aria-label="Toggle menu"
+              aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-haspopup="dialog"
+              aria-expanded={mobileOpen}
+              aria-controls="mobile-nav-drawer"
             >
               {mobileOpen ? <X size={17} /> : <Menu size={17} />}
             </motion.button>
@@ -507,11 +572,17 @@ const SiteHeader = () => {
               onClick={() => setSearchOpen(false)}
             />
             <motion.div
+              ref={searchModalRef}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Search the website"
+              id="mobile-search-dialog"
+              tabIndex={-1}
               initial={{ opacity: 0, y: -16, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -16, scale: 0.98 }}
               transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
-              className="md:hidden fixed left-3 right-3 top-4 z-[61] rounded-3xl overflow-hidden"
+              className="md:hidden fixed left-3 right-3 top-4 z-[61] rounded-3xl overflow-hidden focus:outline-none"
               style={{
                 background: "linear-gradient(180deg, rgba(16, 11, 38, 0.98), rgba(22, 14, 52, 0.98))",
                 backdropFilter: "blur(24px) saturate(180%)",
@@ -532,7 +603,7 @@ const SiteHeader = () => {
                     background: "rgba(255,255,255,0.06)",
                     border: "1px solid rgba(168, 85, 247, 0.35)",
                   }}
-                  aria-label="Close search"
+                  aria-label="Close search dialog"
                 >
                   <X size={18} />
                 </button>
@@ -563,11 +634,17 @@ const SiteHeader = () => {
 
             {/* Side Sheet */}
             <motion.aside
+              ref={drawerRef as any}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Main navigation menu"
+              id="mobile-nav-drawer"
+              tabIndex={-1}
               initial={{ x: "100%", opacity: 0.6 }}
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: "100%", opacity: 0.4 }}
               transition={{ type: "spring", stiffness: 320, damping: 36 }}
-              className="md:hidden fixed top-0 right-0 bottom-0 z-50 w-[88%] max-w-[400px] flex flex-col overflow-hidden"
+              className="md:hidden fixed top-0 right-0 bottom-0 z-50 w-[88%] max-w-[400px] flex flex-col overflow-hidden focus:outline-none"
               style={{
                 background:
                   "linear-gradient(180deg, rgba(14, 9, 32, 0.97) 0%, rgba(20, 12, 48, 0.97) 50%, rgba(14, 9, 32, 0.98) 100%)",
@@ -646,7 +723,7 @@ const SiteHeader = () => {
                     border: "1px solid rgba(168,85,247,0.40)",
                     boxShadow: "0 4px 14px rgba(168,85,247,0.25), inset 0 1px 0 rgba(255,255,255,0.10)",
                   }}
-                  aria-label="Close menu"
+                  aria-label="Close navigation menu"
                 >
                   <X size={16} />
                 </motion.button>
