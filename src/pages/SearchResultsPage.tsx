@@ -80,7 +80,7 @@ const SearchResultsPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: "linear-gradient(180deg, #0a0a1a, #141432)" }}>
-      <SEO title={q ? `Search: ${q} — Shah ED IT` : "Search — Shah ED IT"} description={`Search results for "${q}"`} />
+      <SEO title={q ? `Search: ${q} — Shahed IT` : "Search — Shahed IT"} description={`Search results for "${q}"`} />
       <SiteHeader />
       <main className="flex-1 container mx-auto px-4 py-10 max-w-5xl">
         {/* Search bar */}
