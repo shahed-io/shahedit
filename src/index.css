@@ -60,7 +60,62 @@
     --sidebar-border: 270 25% 18%;
     --sidebar-ring: 270 92% 65%;
   }
-}
+
+  /* ─── Alternate Theme: Deep Ocean (Blue + Cyan) ─── */
+  [data-theme="ocean"] {
+    --background: 215 50% 5%;
+    --foreground: 200 25% 97%;
+
+    --card: 215 45% 8%;
+    --card-foreground: 200 25% 97%;
+
+    --popover: 215 45% 8%;
+    --popover-foreground: 200 25% 97%;
+
+    --primary: 205 95% 58%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 215 40% 12%;
+    --secondary-foreground: 200 25% 97%;
+
+    --muted: 215 30% 14%;
+    --muted-foreground: 210 15% 65%;
+
+    --accent: 175 85% 50%;
+    --accent-foreground: 215 50% 5%;
+
+    --border: 210 30% 18%;
+    --input: 210 30% 16%;
+    --ring: 205 95% 58%;
+
+    --glow-purple: 205 95% 58%;
+    --glow-violet: 220 95% 65%;
+    --glow-magenta: 175 85% 50%;
+    --glow-pink: 190 90% 60%;
+    --glow-gold: 42 95% 62%;
+    --glow-blue: 210 100% 65%;
+
+    --sidebar-background: 215 50% 5%;
+    --sidebar-foreground: 200 25% 97%;
+    --sidebar-primary: 205 95% 58%;
+    --sidebar-accent: 215 40% 12%;
+    --sidebar-accent-foreground: 200 25% 97%;
+    --sidebar-border: 210 30% 18%;
+    --sidebar-ring: 205 95% 58%;
+  }
+
+  [data-theme="ocean"] body {
+    background-color: hsl(215, 50%, 5%);
+    background-image:
+      radial-gradient(ellipse 75% 65% at -5% -5%, hsla(205, 95%, 50%, 0.26) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 55% at 105% 0%, hsla(220, 95%, 60%, 0.20) 0%, transparent 55%),
+      radial-gradient(ellipse 70% 50% at 50% 40%, hsla(175, 85%, 45%, 0.10) 0%, transparent 70%),
+      radial-gradient(ellipse 65% 55% at -10% 100%, hsla(175, 85%, 50%, 0.16) 0%, transparent 55%),
+      radial-gradient(ellipse 70% 60% at 110% 100%, hsla(205, 95%, 50%, 0.18) 0%, transparent 55%),
+      linear-gradient(rgba(56, 189, 248, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(56, 189, 248, 0.04) 1px, transparent 1px),
+      linear-gradient(180deg, hsl(215, 52%, 5%) 0%, hsl(218, 50%, 4%) 100%);
+  }
 
 @layer base {
   * { @apply border-border; }
