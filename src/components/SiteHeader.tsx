@@ -723,7 +723,7 @@ const SiteHeader = () => {
                     border: "1px solid rgba(168,85,247,0.40)",
                     boxShadow: "0 4px 14px rgba(168,85,247,0.25), inset 0 1px 0 rgba(255,255,255,0.10)",
                   }}
-                  aria-label="Close menu"
+                  aria-label="Close navigation menu"
                 >
                   <X size={16} />
                 </motion.button>
