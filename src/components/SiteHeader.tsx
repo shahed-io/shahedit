@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Phone, Mail, Menu, X, ChevronRight, ChevronDown, Globe, Wrench, Palette, Facebook, TrendingUp, Building2, LogIn, Sparkles, Waves } from "lucide-react";
+import { Phone, Mail, Menu, X, ChevronRight, ChevronDown, Globe, Wrench, Palette, Facebook, TrendingUp, Building2, LogIn, Sparkles, Waves, Gem } from "lucide-react";
 import logoImg from "@/assets/logo-glossy.png";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -203,40 +203,39 @@ const SiteHeader = () => {
               onClick={toggleTheme}
               whileHover={{ scale: 1.08, rotate: 12 }}
               whileTap={{ scale: 0.92 }}
-              title={theme === "royal" ? "Switch to Ocean theme" : "Switch to Royal Purple theme"}
+              title={
+                theme === "royal" ? "Switch to Ocean theme"
+                : theme === "ocean" ? "Switch to Glassmorphism Premium"
+                : "Switch to Royal Purple theme"
+              }
               className="relative w-10 h-10 rounded-xl flex items-center justify-center transition-all overflow-hidden group"
               style={{
-                background: theme === "royal"
-                  ? "linear-gradient(135deg, hsl(270,92%,55%), hsl(320,90%,55%))"
-                  : "linear-gradient(135deg, hsl(205,95%,55%), hsl(175,85%,45%))",
-                boxShadow: theme === "royal"
-                  ? "0 4px 18px hsl(270,92%,55%,0.45), inset 0 1px 0 rgba(255,255,255,0.18)"
-                  : "0 4px 18px hsl(205,95%,55%,0.45), inset 0 1px 0 rgba(255,255,255,0.18)",
-                border: "1px solid rgba(255,255,255,0.12)",
+                background:
+                  theme === "royal" ? "linear-gradient(135deg, hsl(270,92%,55%), hsl(320,90%,55%))"
+                  : theme === "ocean" ? "linear-gradient(135deg, hsl(205,95%,55%), hsl(175,85%,45%))"
+                  : "linear-gradient(135deg, hsl(280,95%,65%), hsl(195,100%,60%))",
+                boxShadow:
+                  theme === "royal" ? "0 4px 18px hsl(270,92%,55%,0.45), inset 0 1px 0 rgba(255,255,255,0.18)"
+                  : theme === "ocean" ? "0 4px 18px hsl(205,95%,55%,0.45), inset 0 1px 0 rgba(255,255,255,0.18)"
+                  : "0 4px 18px hsl(280,95%,60%,0.45), inset 0 1px 0 rgba(255,255,255,0.25)",
+                border: "1px solid rgba(255,255,255,0.16)",
+                backdropFilter: theme === "glass" ? "blur(20px)" : undefined,
               }}
             >
               <AnimatePresence mode="wait">
-                {theme === "royal" ? (
-                  <motion.span
-                    key="royal"
-                    initial={{ opacity: 0, rotate: -90, scale: 0.6 }}
-                    animate={{ opacity: 1, rotate: 0, scale: 1 }}
-                    exit={{ opacity: 0, rotate: 90, scale: 0.6 }}
-                    transition={{ duration: 0.25 }}
-                    className="absolute inset-0 flex items-center justify-center"
-                  >
+                {theme === "royal" && (
+                  <motion.span key="royal" initial={{ opacity: 0, rotate: -90, scale: 0.6 }} animate={{ opacity: 1, rotate: 0, scale: 1 }} exit={{ opacity: 0, rotate: 90, scale: 0.6 }} transition={{ duration: 0.25 }} className="absolute inset-0 flex items-center justify-center">
                     <Sparkles size={16} className="text-white drop-shadow" />
                   </motion.span>
-                ) : (
-                  <motion.span
-                    key="ocean"
-                    initial={{ opacity: 0, rotate: -90, scale: 0.6 }}
-                    animate={{ opacity: 1, rotate: 0, scale: 1 }}
-                    exit={{ opacity: 0, rotate: 90, scale: 0.6 }}
-                    transition={{ duration: 0.25 }}
-                    className="absolute inset-0 flex items-center justify-center"
-                  >
+                )}
+                {theme === "ocean" && (
+                  <motion.span key="ocean" initial={{ opacity: 0, rotate: -90, scale: 0.6 }} animate={{ opacity: 1, rotate: 0, scale: 1 }} exit={{ opacity: 0, rotate: 90, scale: 0.6 }} transition={{ duration: 0.25 }} className="absolute inset-0 flex items-center justify-center">
                     <Waves size={16} className="text-white drop-shadow" />
+                  </motion.span>
+                )}
+                {theme === "glass" && (
+                  <motion.span key="glass" initial={{ opacity: 0, rotate: -90, scale: 0.6 }} animate={{ opacity: 1, rotate: 0, scale: 1 }} exit={{ opacity: 0, rotate: 90, scale: 0.6 }} transition={{ duration: 0.25 }} className="absolute inset-0 flex items-center justify-center">
+                    <Gem size={16} className="text-white drop-shadow" />
                   </motion.span>
                 )}
               </AnimatePresence>
