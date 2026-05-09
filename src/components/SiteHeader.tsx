@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import {
-  Menu, X, ChevronRight, ChevronDown, LogIn, LogOut,
+  Menu, X, ChevronRight, ChevronDown, LogIn, LogOut, Search,
   Globe, Wrench, Palette, Facebook, TrendingUp, Building2, Sparkles,
 } from "lucide-react";
 import logoImg from "@/assets/logo-glossy.png";
@@ -59,20 +59,20 @@ const SiteHeader = () => {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ type: "spring", stiffness: 90, damping: 18 }}
-      className="sticky top-0 z-50"
+      className="sticky top-0 z-50 md:px-0 px-3 md:pt-0 pt-2"
     >
       <div
-        className="relative transition-all duration-300"
+        className="relative transition-all duration-300 md:rounded-none rounded-full md:border-x-0"
         style={{
           background: scrolled
             ? "linear-gradient(180deg, rgba(10, 8, 26, 0.92) 0%, rgba(16, 12, 40, 0.88) 100%)"
-            : "linear-gradient(180deg, rgba(14, 10, 32, 0.78) 0%, rgba(20, 15, 48, 0.68) 100%)",
+            : "linear-gradient(180deg, rgba(14, 10, 32, 0.85) 0%, rgba(20, 15, 48, 0.78) 100%)",
           backdropFilter: "blur(28px) saturate(180%)",
           WebkitBackdropFilter: "blur(28px) saturate(180%)",
-          borderBottom: scrolled ? "1px solid rgba(168, 85, 247, 0.18)" : "1px solid rgba(168, 85, 247, 0.08)",
+          border: "1px solid rgba(168, 85, 247, 0.22)",
           boxShadow: scrolled
-            ? "0 12px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255,255,255,0.04)"
-            : "0 4px 18px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255,255,255,0.04)",
+            ? "0 12px 40px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(168,85,247,0.10), inset 0 1px 0 rgba(255,255,255,0.05)"
+            : "0 8px 28px rgba(99, 39, 178, 0.30), inset 0 1px 0 rgba(255,255,255,0.05)",
         }}
       >
         {/* Aurora top edge */}
@@ -99,7 +99,7 @@ const SiteHeader = () => {
           />
         </div>
 
-        <div className="container mx-auto px-4 lg:px-6 py-3 flex items-center gap-3 lg:gap-5 relative">
+        <div className="container mx-auto px-3 md:px-4 lg:px-6 py-2 md:py-3 flex items-center gap-2 md:gap-3 lg:gap-5 relative">
           {/* ── Logo ── */}
           <Link to="/" className="shrink-0">
             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} className="flex items-center gap-2.5 group">
@@ -111,7 +111,7 @@ const SiteHeader = () => {
                   transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
                 />
                 <div
-                  className="relative w-11 h-11 rounded-xl flex items-center justify-center overflow-hidden"
+                  className="relative w-9 h-9 md:w-11 md:h-11 rounded-xl flex items-center justify-center overflow-hidden"
                   style={{
                     background: "linear-gradient(135deg, #1a1233 0%, #251847 100%)",
                     border: "1px solid rgba(168, 85, 247, 0.45)",
@@ -123,17 +123,17 @@ const SiteHeader = () => {
                     className="absolute inset-0 opacity-30 pointer-events-none"
                     style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.5) 0%, transparent 50%)" }}
                   />
-                  <img src={logoImg} alt="Shahed IT" className="w-9 h-9 object-contain relative" />
+                  <img src={logoImg} alt="Shahed IT" className="w-7 h-7 md:w-9 md:h-9 object-contain relative" />
                 </div>
               </div>
-              <div className="hidden sm:flex flex-col leading-tight">
-                <span className="text-[20px] font-extrabold tracking-tight" style={{ fontFamily: "'Syne', sans-serif" }}>
+              <div className="flex flex-col leading-tight">
+                <span className="text-[16px] md:text-[20px] font-extrabold tracking-tight" style={{ fontFamily: "'Syne', sans-serif" }}>
                   <span style={{ color: "#fff" }}>Shahed </span>
                   <span style={{ background: "linear-gradient(135deg, #818cf8 0%, #c4b5fd 40%, #f0abfc 80%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                     IT
                   </span>
                 </span>
-                <span className="text-[9px] uppercase tracking-[0.2em] font-bold" style={{ color: "#a78bfa" }}>
+                <span className="text-[8px] md:text-[9px] uppercase tracking-[0.2em] font-bold" style={{ color: "#a78bfa" }}>
                   Digital Agency
                 </span>
               </div>
@@ -387,18 +387,40 @@ const SiteHeader = () => {
             }
           `}</style>
 
-          {/* Mobile toggle */}
-          <button
-            className="md:hidden ml-auto p-2.5 rounded-xl text-white"
-            style={{
-              background: "rgba(255, 255, 255, 0.06)",
-              border: "1px solid rgba(255, 255, 255, 0.12)",
-            }}
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle menu"
-          >
-            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
+          {/* Mobile actions */}
+          <div className="md:hidden ml-auto flex items-center gap-2">
+            <motion.button
+              whileTap={{ scale: 0.92 }}
+              className="w-10 h-10 rounded-full flex items-center justify-center"
+              style={{
+                background: "linear-gradient(135deg, rgba(124,58,237,0.18), rgba(236,72,153,0.14))",
+                border: "1px solid rgba(168, 85, 247, 0.40)",
+                color: "#f0abfc",
+                boxShadow: "0 4px 14px rgba(168, 85, 247, 0.30), inset 0 1px 0 rgba(255,255,255,0.08)",
+              }}
+              onClick={() => setMobileOpen(true)}
+              aria-label="Search"
+            >
+              <Search size={17} />
+            </motion.button>
+            <motion.button
+              whileTap={{ scale: 0.92 }}
+              className="w-10 h-10 rounded-full flex items-center justify-center text-white"
+              style={{
+                background: mobileOpen
+                  ? "linear-gradient(135deg, #6366f1, #a855f7 55%, #ec4899)"
+                  : "rgba(255, 255, 255, 0.06)",
+                border: "1px solid rgba(168, 85, 247, 0.35)",
+                boxShadow: mobileOpen
+                  ? "0 6px 18px rgba(168, 85, 247, 0.45), inset 0 1px 0 rgba(255,255,255,0.20)"
+                  : "inset 0 1px 0 rgba(255,255,255,0.06)",
+              }}
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label="Toggle menu"
+            >
+              {mobileOpen ? <X size={18} /> : <Menu size={18} />}
+            </motion.button>
+          </div>
         </div>
       </div>
 
