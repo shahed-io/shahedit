@@ -273,7 +273,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.18 }}
               onClick={() => setOpen(false)}
-              className="hidden md:block fixed inset-0 z-40"
+              className="hidden md:block fixed inset-0 z-[55]"
               style={{
                 background: "rgba(8, 4, 22, 0.55)",
                 backdropFilter: "blur(8px) saturate(120%)",
