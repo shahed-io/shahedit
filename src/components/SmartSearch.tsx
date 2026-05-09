@@ -382,9 +382,9 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
 
                   {/* Trending Products */}
                   {trending.length > 0 && (
-                    <section className="pt-4 pb-2 border-t mt-3" style={{ borderColor: "rgba(120,100,180,0.10)" }}>
+                    <section className="pt-4 pb-2 border-t mt-3" style={{ borderColor: "rgba(168,85,247,0.18)" }}>
                       <div className="px-5 pt-3 pb-2">
-                        <span className="flex items-center gap-2 text-[12px] font-semibold" style={{ color: "#7c3aed" }}>
+                        <span className="flex items-center gap-2 text-[12px] font-semibold" style={{ color: "#c4b5fd" }}>
                           <Star size={13} /> ট্রেন্ডিং প্রোডাক্ট
                         </span>
                       </div>
@@ -396,36 +396,36 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
                               <button
                                 type="button"
                                 onClick={() => goTo(`/product/${t.id}`)}
-                                className="w-full flex items-center gap-3 px-5 py-2.5 text-left hover:bg-[rgba(124,58,237,0.04)] transition-colors"
+                                className="w-full flex items-center gap-3 px-5 py-2.5 text-left hover:bg-[rgba(168,85,247,0.10)] transition-colors"
                               >
                                 {/* Thumbnail */}
                                 <div
                                   className="w-12 h-12 rounded-xl shrink-0 overflow-hidden flex items-center justify-center"
-                                  style={{ background: "linear-gradient(135deg, rgba(99,102,241,0.18), rgba(236,72,153,0.18))" }}
+                                  style={{ background: "linear-gradient(135deg, rgba(99,102,241,0.30), rgba(236,72,153,0.30))", border: "1px solid rgba(168,85,247,0.25)" }}
                                 >
                                   {t.image_url ? (
                                     <img src={t.image_url} alt={t.title} className="w-full h-full object-cover" loading="lazy" />
                                   ) : (
-                                    <Package size={18} style={{ color: "#7c3aed" }} />
+                                    <Package size={18} style={{ color: "#c4b5fd" }} />
                                   )}
                                 </div>
 
                                 {/* Body */}
                                 <div className="flex-1 min-w-0">
                                   <div className="flex items-center gap-2">
-                                    <span className="text-sm font-semibold truncate" style={{ color: "#2a1f4a" }}>
+                                    <span className="text-sm font-semibold truncate" style={{ color: "rgba(255,255,255,0.95)" }}>
                                       {t.title}
                                     </span>
                                   </div>
                                   <div className="flex items-center gap-2 mt-0.5">
                                     {t.service_title && (
                                       <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded shrink-0"
-                                        style={{ background: "rgba(124,58,237,0.10)", color: "#7c3aed" }}>
+                                        style={{ background: "rgba(168,85,247,0.20)", color: "#d8b4fe", border: "1px solid rgba(168,85,247,0.30)" }}>
                                         {t.service_title}
                                       </span>
                                     )}
                                     {t.short_description && (
-                                      <span className="text-xs truncate" style={{ color: "#9b8fb5" }}>
+                                      <span className="text-xs truncate" style={{ color: "rgba(226,218,245,0.55)" }}>
                                         {t.short_description}
                                       </span>
                                     )}
@@ -435,18 +435,18 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
                                 {/* Price */}
                                 <div className="shrink-0 text-right">
                                   {t.price != null && (
-                                    <div className="text-sm font-bold" style={{ color: "#7c3aed" }}>
+                                    <div className="text-sm font-bold" style={{ color: "#f0abfc" }}>
                                       {fmtPrice(t.price)}
                                     </div>
                                   )}
                                   {t.original_price != null && t.original_price > (t.price || 0) && (
-                                    <div className="text-[11px] line-through" style={{ color: "#b8a8d0" }}>
+                                    <div className="text-[11px] line-through" style={{ color: "rgba(226,218,245,0.45)" }}>
                                       {fmtPrice(t.original_price)}
                                     </div>
                                   )}
                                   {pct && (
                                     <div className="text-[10px] font-bold mt-0.5 px-1.5 py-0.5 rounded inline-block"
-                                      style={{ background: "rgba(252, 211, 77, 0.30)", color: "#92590a" }}>
+                                      style={{ background: "linear-gradient(135deg, rgba(236,72,153,0.30), rgba(168,85,247,0.30))", color: "#fbcfe8", border: "1px solid rgba(236,72,153,0.40)" }}>
                                       -{pct}%
                                     </div>
                                   )}
