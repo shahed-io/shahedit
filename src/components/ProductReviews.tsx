@@ -29,6 +29,26 @@ const reviewSchema = z.object({
 const toBn = (n: number | string) =>
   String(n).replace(/\d/g, (d) => "০১২৩৪৫৬৭৮৯"[+d]);
 
+// Random Bangladeshi names pool — deterministic pick by review id keeps name stable per review
+const RANDOM_NAMES = [
+  "Rahim Uddin", "Karim Hossain", "Sadia Akter", "Tanvir Ahmed", "Mehedi Hasan",
+  "Nusrat Jahan", "Arif Khan", "Sumaiya Islam", "Farhan Rahman", "Jannatul Ferdous",
+  "Shakib Mahmud", "Tasnim Sultana", "Imran Hossain", "Maria Akter", "Rakib Hasan",
+  "Fahim Reza", "Sabbir Ahmed", "Mahmuda Khatun", "Tanjila Akter", "Hasibul Islam",
+  "Naimur Rahman", "Mahfuzur Rahman", "Sumon Mia", "Rabeya Sultana", "Kamrul Hasan",
+  "Mizanur Rahman", "Asif Iqbal", "Tasnova Tabassum", "Rifat Chowdhury", "Sharmin Akter",
+  "Shahriar Kabir", "Nadia Islam", "Mahin Sarkar", "Tania Rahman", "Junaid Ahmed",
+  "Rezaul Karim", "Suborna Akter", "Nayeem Hossain", "Ishrat Jahan", "Tahmid Hasan",
+  "Foysal Ahmed", "Lamia Akter", "Rifa Tasnim", "Saiful Islam", "Mehnaz Hossain",
+  "Anisur Rahman", "Sharmili Sultana", "Tousif Mahmud", "Adiba Khan", "Rumana Akter",
+];
+
+const pickName = (id: string): string => {
+  let h = 0;
+  for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) >>> 0;
+  return RANDOM_NAMES[h % RANDOM_NAMES.length];
+};
+
 export function ProductReviews({
   packageId,
   accentColor = "hsl(270,92%,65%)",
@@ -279,7 +299,7 @@ export function ProductReviews({
         <div className="space-y-3">
           <AnimatePresence>
             {reviews.map((r) => {
-              const name = r.profiles?.full_name?.trim() || "একজন ক্রেতা";
+              const name = pickName(r.id);
               const initial = name.charAt(0).toUpperCase();
               return (
                 <motion.div
@@ -294,22 +314,14 @@ export function ProductReviews({
                   }}
                 >
                   <div className="flex items-center gap-3 mb-2">
-                    {r.profiles?.avatar_url ? (
-                      <img
-                        src={r.profiles.avatar_url}
-                        alt={name}
-                        className="w-9 h-9 rounded-full object-cover"
-                      />
-                    ) : (
-                      <div
-                        className="w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-bold"
-                        style={{
-                          background: `linear-gradient(135deg, ${accentColor}, ${accentColor}99)`,
-                        }}
-                      >
-                        {initial}
-                      </div>
-                    )}
+                    <div
+                      className="w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-bold"
+                      style={{
+                        background: `linear-gradient(135deg, ${accentColor}, ${accentColor}99)`,
+                      }}
+                    >
+                      {initial}
+                    </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-bold text-foreground truncate">
                         {name}
