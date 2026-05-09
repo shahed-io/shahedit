@@ -132,11 +132,14 @@ const SiteFooter = () => {
             {/* Tagline */}
             <p className="text-sm sm:text-base mb-6 max-w-2xl mx-auto leading-relaxed">
               <span className="text-foreground/80">বাংলাদেশের সবচেয়ে </span>
-              <span className="text-accent font-semibold">বিশ্বস্ত ডিজিটাল আইটি সলিউশন</span>
+              <span className="text-accent font-semibold">বিশ্বস্ত ডিজিটাল আইটি সলিউশন পার্টনার</span>
               <span className="text-foreground/80">। </span>
-              <span className="bg-gradient-to-r from-primary to-fuchsia-400 bg-clip-text text-transparent font-semibold">প্রিমিয়াম কোয়ালিটি</span>
-              <span className="text-foreground/80">, সেরা দামে, </span>
-              <span className="text-accent font-semibold">ইনস্ট্যান্ট ডেলিভারি।</span>
+              <span className="bg-gradient-to-r from-primary to-fuchsia-400 bg-clip-text text-transparent font-semibold">এন্টারপ্রাইজ-গ্রেড টেকনোলজি</span>
+              <span className="text-foreground/80">, </span>
+              <span className="text-accent font-semibold">স্কেলেবল আর্কিটেকচার</span>
+              <span className="text-foreground/80"> ও </span>
+              <span className="bg-gradient-to-r from-accent to-emerald-400 bg-clip-text text-transparent font-semibold">২৪/৭ ডেডিকেটেড সাপোর্টে</span>
+              <span className="text-foreground/80"> আপনার ব্যবসাকে পরবর্তী ধাপে নিয়ে যাচ্ছি।</span>
             </p>
 
             {/* Contact rows */}
