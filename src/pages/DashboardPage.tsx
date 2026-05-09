@@ -754,6 +754,13 @@ export default function DashboardPage() {
                         <p className="text-xl font-black" style={{ color: 'hsl(145,70%,50%)' }}>৳{p.amount.toLocaleString()}</p>
                         <span className="text-xs font-semibold px-3 py-1 rounded-lg w-fit"
                           style={{ background: cfg.bg, color: cfg.color }}>{cfg.label}</span>
+                        <button
+                          onClick={() => openInvoice(p as any)}
+                          className="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-lg transition-all hover:scale-105"
+                          style={{ background: 'rgba(168,85,247,0.12)', color: 'hsl(280,90%,70%)', border: '1px solid rgba(168,85,247,0.25)' }}
+                        >
+                          <Receipt size={12} /> Invoice
+                        </button>
                       </div>
                     </div>
                   </motion.div>
