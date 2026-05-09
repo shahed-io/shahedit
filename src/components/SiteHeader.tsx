@@ -654,8 +654,9 @@ const SiteHeader = () => {
 
               {/* ── Scrollable body ── */}
               <div
+                data-scroll-lock-allow
                 className="relative flex-1 overflow-y-auto overscroll-contain px-4 py-4 space-y-4"
-                style={{ scrollbarWidth: "thin" }}
+                style={{ scrollbarWidth: "thin", WebkitOverflowScrolling: "touch" }}
               >
                 <motion.div
                   initial="hidden"
