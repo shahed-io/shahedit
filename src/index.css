@@ -177,21 +177,23 @@
   [data-theme="glass"] .premium-card,
   [data-theme="glass"] .glossy-card {
     background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03)) !important;
-    backdrop-filter: blur(32px) saturate(200%) !important;
-    -webkit-backdrop-filter: blur(32px) saturate(200%) !important;
+    backdrop-filter: blur(16px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(160%) !important;
     border: 1px solid rgba(255,255,255,0.14) !important;
     box-shadow:
       0 8px 32px rgba(0,0,0,0.35),
       inset 0 1px 0 rgba(255,255,255,0.18),
       inset 0 -1px 0 rgba(255,255,255,0.04) !important;
+    transform: translateZ(0);
   }
 
   [data-theme="glass"] .bg-card,
   [data-theme="glass"] [class*="bg-card"] {
     background: rgba(255,255,255,0.05) !important;
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
     border: 1px solid rgba(255,255,255,0.10);
+    transform: translateZ(0);
   }
 }
 
@@ -224,7 +226,7 @@
       100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%,
       64px 64px, 64px 64px,
       100% 100%;
-    background-attachment: fixed;
+    /* background-attachment: fixed removed — caused major scroll repaint cost */
     min-height: 100vh;
   }
 
@@ -256,18 +258,20 @@
   /* ─── Glass Cards ─── */
   .glass-card {
     background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(168,85,247,0.03) 100%);
-    backdrop-filter: blur(28px) saturate(180%);
-    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    backdrop-filter: blur(14px) saturate(150%);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
     border: 1px solid rgba(255,255,255,0.09);
     box-shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.06);
+    transform: translateZ(0);
   }
 
   .glass-card-vivid {
     background: linear-gradient(135deg, rgba(168,85,247,0.14) 0%, rgba(236,72,153,0.06) 100%);
-    backdrop-filter: blur(28px) saturate(180%);
-    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    backdrop-filter: blur(14px) saturate(150%);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
     border: 1px solid rgba(168,85,247,0.25);
     box-shadow: 0 8px 40px rgba(168,92,246,0.12), inset 0 1px 0 rgba(255,255,255,0.08);
+    transform: translateZ(0);
   }
 
   .glossy-card {
