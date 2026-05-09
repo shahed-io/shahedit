@@ -264,11 +264,13 @@ const SiteFooter = () => {
               backdropFilter: "blur(10px)",
             }}
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-foreground/60" />
-            © {new Date().getFullYear()}{" "}
+            <span className="bg-gradient-to-r from-amber-300 to-yellow-500 bg-clip-text text-transparent font-semibold">© {new Date().getFullYear()}</span>{" "}
             <span className="font-bold bg-gradient-to-r from-primary via-fuchsia-400 to-accent bg-clip-text text-transparent">Shahed IT</span>
-            · All Rights Reserved · Designed &amp; Developed by{" "}
-            <span className="font-semibold text-accent">Shahed IT</span>
+            <span className="text-foreground/40"> · </span>
+            <span className="bg-gradient-to-r from-emerald-300 to-teal-400 bg-clip-text text-transparent font-medium">All Rights Reserved</span>
+            <span className="text-foreground/40"> · </span>
+            <span className="bg-gradient-to-r from-sky-300 to-indigo-400 bg-clip-text text-transparent font-medium">Designed &amp; Developed by</span>{" "}
+            <span className="font-semibold bg-gradient-to-r from-pink-400 via-fuchsia-400 to-accent bg-clip-text text-transparent">Shahed IT</span>
           </div>
         </div>
       </div>
