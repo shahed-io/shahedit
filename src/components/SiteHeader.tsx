@@ -335,19 +335,32 @@ const SiteHeader = () => {
 
           {/* ── Right cluster ── */}
           <div className="hidden md:flex items-center gap-2 shrink-0 ml-auto lg:ml-0">
-            {/* Theme toggle (compact) */}
+            {/* Theme toggle (premium) */}
             <motion.button
               onClick={toggleTheme}
-              whileHover={{ scale: 1.06 }}
-              whileTap={{ scale: 0.94 }}
+              whileHover={{ scale: 1.08, rotate: 12 }}
+              whileTap={{ scale: 0.92 }}
               title={`Theme: ${themeLabel}`}
-              className="w-9 h-9 rounded-full flex items-center justify-center"
+              className="relative w-9 h-9 rounded-full flex items-center justify-center overflow-hidden"
               style={{
-                background: "rgba(245, 242, 250, 0.85)",
-                border: "1px solid rgba(120, 100, 180, 0.14)",
+                background: "linear-gradient(180deg, #ffffff, #f8f5fd)",
+                border: "1px solid rgba(120, 100, 180, 0.18)",
+                boxShadow:
+                  "inset 0 1px 0 rgba(255,255,255,1), 0 2px 8px rgba(124, 58, 237, 0.10)",
               }}
             >
-              <ThemeIcon size={14} style={{ color: "#7c3aed" }} />
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={theme}
+                  initial={{ opacity: 0, rotate: -90, scale: 0.5 }}
+                  animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                  exit={{ opacity: 0, rotate: 90, scale: 0.5 }}
+                  transition={{ duration: 0.25 }}
+                  className="absolute inset-0 flex items-center justify-center"
+                >
+                  <ThemeIcon size={14} style={{ color: "#7c3aed" }} />
+                </motion.span>
+              </AnimatePresence>
             </motion.button>
 
             {user ? (
@@ -356,42 +369,63 @@ const SiteHeader = () => {
                   <motion.div
                     whileHover={{ y: -1 }}
                     whileTap={{ scale: 0.97 }}
-                    className="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full"
+                    className="flex items-center gap-2 pl-1 pr-3.5 py-1 rounded-full transition-all"
                     style={{
-                      background: "transparent",
+                      background: "linear-gradient(180deg, rgba(255,255,255,0.7), rgba(245, 242, 250, 0.85))",
+                      border: "1px solid rgba(120, 100, 180, 0.12)",
+                      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.95)",
                     }}
                   >
-                    <div
-                      className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-black text-white shrink-0"
-                      style={{
-                        background: "linear-gradient(135deg, #a855f7, #ec4899)",
-                        boxShadow: "0 2px 8px rgba(168, 85, 247, 0.35), inset 0 1px 0 rgba(255,255,255,0.30)",
-                      }}
-                    >
-                      {user.email?.[0].toUpperCase()}
+                    <div className="relative">
+                      <div
+                        className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-black text-white shrink-0"
+                        style={{
+                          background: "linear-gradient(135deg, #6366f1, #a855f7 55%, #ec4899)",
+                          boxShadow:
+                            "0 3px 10px rgba(168, 85, 247, 0.40), inset 0 1px 0 rgba(255,255,255,0.35), 0 0 0 2px #ffffff",
+                        }}
+                      >
+                        {user.email?.[0].toUpperCase()}
+                      </div>
+                      {/* online indicator */}
+                      <span
+                        className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full"
+                        style={{
+                          background: "linear-gradient(135deg, #10b981, #059669)",
+                          boxShadow: "0 0 0 2px #ffffff, 0 0 6px rgba(16, 185, 129, 0.6)",
+                        }}
+                      />
                     </div>
-                    <span className="text-sm font-semibold" style={{ color: "#2a1f4a" }}>Dashboard</span>
+                    <span className="text-sm font-bold" style={{ color: "#2a1f4a" }}>Dashboard</span>
                   </motion.div>
                 </Link>
-                <button
+                <motion.button
                   onClick={() => signOut()}
+                  whileHover={{ scale: 1.08 }}
+                  whileTap={{ scale: 0.92 }}
                   title="Logout"
-                  className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:bg-[rgba(168,85,247,0.08)]"
-                  style={{ color: "#5b4d7e" }}
+                  className="w-9 h-9 rounded-full flex items-center justify-center transition-all"
+                  style={{
+                    background: "linear-gradient(180deg, #ffffff, #f8f5fd)",
+                    border: "1px solid rgba(120, 100, 180, 0.14)",
+                    boxShadow: "inset 0 1px 0 rgba(255,255,255,1)",
+                    color: "#5b4d7e",
+                  }}
                 >
-                  <LogOut size={16} />
-                </button>
+                  <LogOut size={14} />
+                </motion.button>
               </>
             ) : (
               <Link to="/login">
                 <motion.button
-                  whileHover={{ y: -1 }}
+                  whileHover={{ y: -1, scale: 1.02 }}
                   whileTap={{ scale: 0.97 }}
                   className="flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-semibold"
                   style={{
-                    background: "rgba(245, 242, 250, 0.85)",
-                    border: "1px solid rgba(120, 100, 180, 0.14)",
-                    color: "#5b4d7e",
+                    background: "linear-gradient(180deg, #ffffff, #f8f5fd)",
+                    border: "1px solid rgba(120, 100, 180, 0.16)",
+                    color: "#2a1f4a",
+                    boxShadow: "inset 0 1px 0 rgba(255,255,255,1), 0 2px 6px rgba(80, 50, 140, 0.05)",
                   }}
                 >
                   <LogIn size={14} /> Login
@@ -399,26 +433,44 @@ const SiteHeader = () => {
               </Link>
             )}
 
-            {/* CTA — Quote */}
+            {/* CTA — Premium Quote button */}
             <Link to="/get-quote">
               <motion.button
-                whileHover={{ scale: 1.04, y: -1 }}
-                whileTap={{ scale: 0.96 }}
-                className="relative flex items-center gap-1.5 pl-3 pr-4 py-2 rounded-full text-sm font-bold text-white overflow-hidden"
+                whileHover={{ scale: 1.05, y: -1 }}
+                whileTap={{ scale: 0.95 }}
+                className="relative flex items-center gap-1.5 pl-3.5 pr-4 py-2 rounded-full text-sm font-bold text-white overflow-hidden group"
                 style={{
-                  background: "linear-gradient(135deg, #6366f1, #a855f7 55%, #ec4899)",
-                  boxShadow: "0 6px 20px rgba(168, 85, 247, 0.40), inset 0 1px 0 rgba(255,255,255,0.25)",
+                  background: "linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%)",
+                  boxShadow:
+                    "0 8px 24px rgba(168, 85, 247, 0.45), 0 2px 6px rgba(236, 72, 153, 0.25), inset 0 1px 0 rgba(255,255,255,0.30), inset 0 -1px 0 rgba(0,0,0,0.10)",
                 }}
               >
+                {/* Glossy top sheen */}
                 <span
-                  className="absolute inset-0 opacity-50 pointer-events-none"
-                  style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.22), transparent 55%)" }}
+                  className="absolute inset-0 opacity-60 pointer-events-none"
+                  style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.30) 0%, transparent 55%)" }}
                 />
-                <Sparkles size={14} className="relative" />
-                <span className="relative">Quote</span>
+                {/* Animated shimmer sweep */}
+                <span
+                  className="absolute inset-y-0 -left-full w-1/2 opacity-70 pointer-events-none"
+                  style={{
+                    background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent)",
+                    animation: "header-shimmer 2.8s ease-in-out infinite",
+                  }}
+                />
+                <Sparkles size={14} className="relative drop-shadow" />
+                <span className="relative tracking-wide">Quote</span>
               </motion.button>
             </Link>
           </div>
+
+          {/* keyframes */}
+          <style>{`
+            @keyframes header-shimmer {
+              0% { transform: translateX(0); }
+              60%, 100% { transform: translateX(400%); }
+            }
+          `}</style>
 
           {/* Mobile toggle */}
           <button
