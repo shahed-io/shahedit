@@ -51,10 +51,10 @@ const FooterColumn = ({ title, Icon, accent, items }: ColumnProps) => (
     initial={{ opacity: 0, y: 16 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
-    className="group relative rounded-2xl p-6 sm:p-7 bg-white/[0.03] backdrop-blur-xl border border-white/10 hover:border-white/20 transition-colors overflow-hidden"
+    className="group relative rounded-2xl p-6 sm:p-7 bg-white/[0.03] backdrop-blur-xl border border-white/10 hover:border-white/20 hover:bg-white/[0.05] transition-all duration-300 overflow-hidden"
   >
-    {/* hover glow */}
-    <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-br ${accent} mix-blend-overlay`} style={{ filter: "blur(40px)" }} />
+    {/* subtle top shimmer line on hover */}
+    <div className={`absolute top-0 left-0 right-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-transparent ${accent.includes('primary') ? 'via-primary' : accent.includes('blue') ? 'via-accent' : 'via-emerald-400'} to-transparent`} />
     <div className="relative">
       <div className="flex items-center gap-3 mb-5">
         <span className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 bg-gradient-to-br ${accent} shadow-lg`}>
