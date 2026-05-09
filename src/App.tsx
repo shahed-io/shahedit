@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 import { useAnalyticsInjection } from "@/hooks/useAnalyticsInjection";
 import { SEO } from "@/components/SEO";
 import GlobalSupport from "@/components/GlobalSupport";
@@ -196,9 +197,11 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <AuthProvider>
-            <AppWithAnalytics />
-          </AuthProvider>
+          <ThemeProvider>
+            <AuthProvider>
+              <AppWithAnalytics />
+            </AuthProvider>
+          </ThemeProvider>
         </BrowserRouter>
       </TooltipProvider>
     </HelmetProvider>
