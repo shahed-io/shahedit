@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 const RECENT_KEY = "search_recent_v1";
 const MAX_RECENT = 8;
 
-const POPULAR_SEARCHES = [
+const POPULAR_FALLBACK = [
   "Windows 11", "Office 365", "Netflix", "Adobe", "Antivirus", "VPN", "Spotify", "Canva Pro",
 ];
 
@@ -68,6 +68,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
   const [recent, setRecent] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [trending, setTrending] = useState<TrendingProduct[]>([]);
+  const [popular, setPopular] = useState<string[]>(POPULAR_FALLBACK);
   const inputRef = useRef<HTMLInputElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
 
@@ -98,6 +99,23 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
         currency: d.currency,
         service_title: d.services?.title || null,
       })));
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
+  // Fetch popular searches once
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { data } = await supabase
+        .from("popular_searches")
+        .select("term")
+        .eq("is_active", true)
+        .order("sort_order", { ascending: true })
+        .limit(20);
+      if (cancelled) return;
+      const list = (data || []).map((d: any) => d.term).filter(Boolean);
+      if (list.length) setPopular(list);
     })();
     return () => { cancelled = true; };
   }, []);
@@ -305,7 +323,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
                       </span>
                     </div>
                     <ul>
-                      {POPULAR_SEARCHES.map((p) => (
+                      {popular.map((p) => (
                         <li key={p}>
                           <button
                             type="button"

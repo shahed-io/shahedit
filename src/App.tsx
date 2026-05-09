@@ -40,6 +40,7 @@ const AdminClients = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ d
 const AdminPricing = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminPricing })));
 const AdminFAQ = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminFAQ })));
 const AdminCareers = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminCareers })));
+const AdminPopularSearches = lazy(() => import("./pages/admin/AdminPopularSearches"));
 
 // Auth / user pages
 const DashboardPage = lazy(() => import("./pages/DashboardPage"));
@@ -106,6 +107,7 @@ const AdminRoutes = () => (
         <Route path="users" element={<AdminUsers />} />
         <Route path="footer" element={<AdminFooterEditor />} />
         <Route path="client-docs" element={<AdminClientDocuments />} />
+        <Route path="popular-searches" element={<AdminPopularSearches />} />
       </Routes>
     </AdminLayout>
   </ProtectedRoute>

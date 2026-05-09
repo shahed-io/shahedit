@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard, Settings, Users, Briefcase, FolderOpen, FileText,
   MessageSquare, Star, UserCheck, Building2, DollarSign, HelpCircle,
-  Inbox, ChevronLeft, Menu, LogOut, Bell, Shield, Package, CreditCard, LayoutTemplate, Search
+  Inbox, ChevronLeft, Menu, LogOut, Bell, Shield, Package, CreditCard, LayoutTemplate, Search, TrendingUp
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -31,6 +31,7 @@ const navItems = [
   { label: "Admin Users", icon: Shield, href: "/admin/users" },
   { label: "Footer Editor", icon: LayoutTemplate, href: "/admin/footer" },
   { label: "SEO & Analytics", icon: Search, href: "/admin/seo" },
+  { label: "Popular Searches", icon: TrendingUp, href: "/admin/popular-searches" },
   { label: "Site Settings", icon: Settings, href: "/admin/settings" },
 ];
 
