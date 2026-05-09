@@ -5,7 +5,7 @@ import {
 } from "lucide-react";
 import logoImg from "@/assets/logo-glossy.png";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import SmartSearch from "@/components/SmartSearch";
 
