@@ -42,33 +42,9 @@ const SiteHeader = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const searchInputRef = useRef<HTMLInputElement>(null);
   const servicesTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Ctrl+K to focus search
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
-        e.preventDefault();
-        searchInputRef.current?.focus();
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
-
   const isActive = (href: string) => location.pathname === href;
-
-
-  const handleSearch = (e: FormEvent) => {
-    e.preventDefault();
-    const q = searchQuery.trim();
-    if (!q) return;
-    navigate(`/services?q=${encodeURIComponent(q)}`);
-    setSearchQuery("");
-    searchInputRef.current?.blur();
-  };
 
   return (
     <motion.header
