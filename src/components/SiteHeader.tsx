@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import {
-  Menu, X, ChevronRight, ChevronDown, LogIn, LogOut,
+  Menu, X, ChevronRight, ChevronDown, LogIn, LogOut, Search,
   Globe, Wrench, Palette, Facebook, TrendingUp, Building2, Sparkles,
 } from "lucide-react";
 import logoImg from "@/assets/logo-glossy.png";
