@@ -161,6 +161,10 @@ const SearchResultsPage = () => {
         <div className="space-y-3">
           {filtered.map((s, i) => {
             const Icon = iconFor(s.type);
+            const m = s.meta;
+            const pct = m?.original_price && m?.price && m.original_price > m.price
+              ? Math.round(((m.original_price - m.price) / m.original_price) * 100) : null;
+            const fmt = (n?: number | null) => n == null ? "" : "৳" + Math.round(Number(n)).toLocaleString("en-US");
             return (
               <Link
                 key={`${s.type}-${i}`}
@@ -168,23 +172,59 @@ const SearchResultsPage = () => {
                 className="group block p-4 rounded-2xl transition-all hover:scale-[1.005]"
                 style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}
               >
-                <div className="flex items-center gap-2 mb-1.5">
+                <div className="flex items-center gap-2 mb-2 flex-wrap">
                   <span className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
                     style={{ background: "linear-gradient(135deg, rgba(124,58,237,0.25), rgba(236,72,153,0.15))" }}>
                     <Icon size={14} style={{ color: "#a78bfa" }} />
                   </span>
                   <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded"
                     style={{ background: "rgba(124,58,237,0.15)", color: "#c4b5fd" }}>{labelFor(s.type)}</span>
-                  <span className="text-xs ml-auto" style={{ color: "#9b8fb5" }}>{s.href}</span>
+                  {m?.category && (
+                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded"
+                      style={{ background: "rgba(236,72,153,0.15)", color: "#f9a8d4" }}>{m.category}</span>
+                  )}
+                  {m?.badge && (
+                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded"
+                      style={{ background: "rgba(252,211,77,0.20)", color: "#fcd34d" }}>{m.badge}</span>
+                  )}
+                  <span className="text-xs ml-auto truncate max-w-[40%]" style={{ color: "#9b8fb5" }}>{s.href}</span>
                 </div>
-                <h3 className="text-white text-lg font-semibold mb-1 group-hover:underline">
-                  <Highlighted text={s.title} query={q} />
-                </h3>
-                {s.subtitle && (
-                  <p className="text-sm leading-relaxed line-clamp-2" style={{ color: "#b8acce" }}>
-                    <Highlighted text={s.subtitle} query={q} />
-                  </p>
-                )}
+                <div className="flex items-start gap-3">
+                  {s.type === "package" && (
+                    <div
+                      className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl shrink-0 overflow-hidden flex items-center justify-center"
+                      style={{ background: "linear-gradient(135deg, rgba(124,58,237,0.25), rgba(236,72,153,0.18))" }}
+                    >
+                      {m?.image_url ? (
+                        <img src={m.image_url} alt={s.title} className="w-full h-full object-cover" loading="lazy" />
+                      ) : (
+                        <Package size={22} style={{ color: "#a78bfa" }} />
+                      )}
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-white text-lg font-semibold mb-1 group-hover:underline">
+                      <Highlighted text={s.title} query={q} />
+                    </h3>
+                    {s.subtitle && (
+                      <p className="text-sm leading-relaxed line-clamp-2" style={{ color: "#b8acce" }}>
+                        <Highlighted text={s.subtitle} query={q} />
+                      </p>
+                    )}
+                    {s.type === "package" && m?.price != null && (
+                      <div className="flex items-center gap-2 mt-2">
+                        <span className="text-base font-bold" style={{ color: "#a78bfa" }}>{fmt(m.price)}</span>
+                        {m.original_price != null && m.original_price > m.price && (
+                          <span className="text-xs line-through" style={{ color: "#6b5d8a" }}>{fmt(m.original_price)}</span>
+                        )}
+                        {pct && (
+                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded"
+                            style={{ background: "rgba(252,211,77,0.20)", color: "#fcd34d" }}>-{pct}%</span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
               </Link>
             );
           })}
