@@ -2,10 +2,10 @@ import { motion } from "framer-motion";
 import { Code2, Smartphone, Palette, BarChart3, Cloud, ShieldCheck } from "lucide-react";
 
 const categories = [
-  { name: "Web Design & Development", sub: "বিজনেস · ই-কমার্স · WordPress", icon: Code2, color: "hsl(270,92%,65%)", bg: "rgba(168,85,247,0.12)", border: "rgba(168,85,247,0.25)" },
+  { name: "Web Design & Development", sub: "বিজনেস · ই-কমার্স · WordPress", icon: Code2, color: "hsl(42,70%,65%)", bg: "rgba(201,161,74,0.12)", border: "rgba(201,161,74,0.25)" },
   { name: "App Development", sub: "Android · iOS · Flutter", icon: Smartphone, color: "hsl(217,89%,61%)", bg: "rgba(59,130,246,0.12)", border: "rgba(59,130,246,0.25)" },
-  { name: "Graphic Design", sub: "Logo · Branding · Video", icon: Palette, color: "hsl(315,80%,65%)", bg: "rgba(236,72,153,0.12)", border: "rgba(236,72,153,0.25)" },
-  { name: "Digital Marketing", sub: "Facebook · Google · SEO", icon: BarChart3, color: "hsl(320,90%,48%)", bg: "rgba(236,72,153,0.12)", border: "rgba(236,72,153,0.25)" },
+  { name: "Graphic Design", sub: "Logo · Branding · Video", icon: Palette, color: "hsl(315,80%,65%)", bg: "rgba(244,215,122,0.12)", border: "rgba(244,215,122,0.25)" },
+  { name: "Digital Marketing", sub: "Facebook · Google · SEO", icon: BarChart3, color: "hsl(45,85%,48%)", bg: "rgba(244,215,122,0.12)", border: "rgba(244,215,122,0.25)" },
   { name: "Cloud & Hosting", sub: "Domain · Hosting · VPS", icon: Cloud, color: "hsl(45,93%,58%)", bg: "rgba(234,179,8,0.12)", border: "rgba(234,179,8,0.25)" },
   { name: "IT Support & Security", sub: "Cyber · Network · Repair", icon: ShieldCheck, color: "hsl(160,80%,55%)", bg: "rgba(34,197,94,0.12)", border: "rgba(34,197,94,0.25)" },
 ];
@@ -19,7 +19,7 @@ const PopularCategories = () => {
       {/* Background */}
       <div className="absolute inset-0 dot-grid opacity-25" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full"
-        style={{ background: 'radial-gradient(ellipse, hsl(270,92%,65%) 0%, transparent 70%)', filter: 'blur(120px)', opacity: 0.07 }} />
+        style={{ background: 'radial-gradient(ellipse, hsl(42,70%,65%) 0%, transparent 70%)', filter: 'blur(120px)', opacity: 0.07 }} />
 
       <div className="container mx-auto px-4 relative">
         <motion.div
@@ -33,14 +33,14 @@ const PopularCategories = () => {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] px-4 py-2 rounded-full mb-4"
-            style={{ background: 'rgba(236,72,153,0.10)', border: '1px solid rgba(236,72,153,0.25)', color: 'hsl(320,90%,55%)' }}
+            style={{ background: 'rgba(244,215,122,0.10)', border: '1px solid rgba(244,215,122,0.25)', color: 'hsl(45,85%,55%)' }}
           >
             ◈ Our Services
           </motion.span>
           <h2 className="text-4xl md:text-5xl font-black text-foreground mt-2">
             Popular <span className="gradient-text">Categories</span>
           </h2>
-          <div className="mt-4 mx-auto w-20 h-1 rounded-full" style={{ background: 'linear-gradient(90deg, hsl(270,92%,65%), hsl(320,90%,48%))' }} />
+          <div className="mt-4 mx-auto w-20 h-1 rounded-full" style={{ background: 'linear-gradient(90deg, hsl(42,70%,65%), hsl(45,85%,48%))' }} />
         </motion.div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">

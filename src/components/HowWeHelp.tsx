@@ -5,17 +5,17 @@ const steps = [
   {
     icon: Headset, step: "01", title: "Consultation",
     desc: "We take time to understand your business, goals, and challenges through an in-depth discovery session.",
-    color: "hsl(270,92%,65%)", bg: "rgba(168,85,247,0.10)", border: "rgba(168,85,247,0.22)",
+    color: "hsl(42,70%,65%)", bg: "rgba(201,161,74,0.10)", border: "rgba(201,161,74,0.22)",
   },
   {
     icon: LayoutGrid, step: "02", title: "Customization",
     desc: "We architect tailored solutions designed precisely around your unique business requirements.",
-    color: "hsl(320,90%,48%)", bg: "rgba(236,72,153,0.10)", border: "rgba(236,72,153,0.22)",
+    color: "hsl(45,85%,48%)", bg: "rgba(244,215,122,0.10)", border: "rgba(244,215,122,0.22)",
   },
   {
     icon: Hammer, step: "03", title: "Implementation",
     desc: "Our expert engineers bring your solution to life — on time, on budget, and beyond expectations.",
-    color: "hsl(315,80%,65%)", bg: "rgba(236,72,153,0.10)", border: "rgba(236,72,153,0.22)",
+    color: "hsl(315,80%,65%)", bg: "rgba(244,215,122,0.10)", border: "rgba(244,215,122,0.22)",
   },
   {
     icon: ShieldCheck, step: "04", title: "Ongoing Support",
@@ -30,7 +30,7 @@ const HowWeHelp = () => {
       <div className="absolute inset-0 tech-grid-bg opacity-40" />
       <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(10,8,20,0.4) 50%, transparent 100%)' }} />
       <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full"
-        style={{ background: 'radial-gradient(circle, hsl(320,90%,48%) 0%, transparent 65%)', filter: 'blur(120px)', opacity: 0.07 }} />
+        style={{ background: 'radial-gradient(circle, hsl(45,85%,48%) 0%, transparent 65%)', filter: 'blur(120px)', opacity: 0.07 }} />
 
       <div className="container mx-auto px-4 relative">
         <motion.div
@@ -44,7 +44,7 @@ const HowWeHelp = () => {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] px-4 py-2 rounded-full mb-4"
-            style={{ background: 'rgba(168,85,247,0.10)', border: '1px solid rgba(168,85,247,0.25)', color: 'hsl(270,92%,75%)' }}
+            style={{ background: 'rgba(201,161,74,0.10)', border: '1px solid rgba(201,161,74,0.25)', color: 'hsl(42,70%,75%)' }}
           >
             ◈ Our Process
           </motion.span>
@@ -54,7 +54,7 @@ const HowWeHelp = () => {
           <p className="text-foreground/45 mt-4 max-w-xl mx-auto text-base">
             4 proven steps Shahed IT takes to transform your ideas into successful digital products.
           </p>
-          <div className="mt-5 mx-auto w-20 h-1 rounded-full" style={{ background: 'linear-gradient(90deg, hsl(270,92%,65%), hsl(320,90%,48%))' }} />
+          <div className="mt-5 mx-auto w-20 h-1 rounded-full" style={{ background: 'linear-gradient(90deg, hsl(42,70%,65%), hsl(45,85%,48%))' }} />
         </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">

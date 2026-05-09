@@ -79,7 +79,7 @@ const AdminAISupport = () => {
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-            style={{ background: "linear-gradient(135deg, hsl(270,92%,58%), hsl(270,75%,42%))" }}>
+            style={{ background: "linear-gradient(135deg, hsl(42,70%,58%), hsl(38,60%,42%))" }}>
             <Bot size={20} className="text-white" />
           </div>
           <div>

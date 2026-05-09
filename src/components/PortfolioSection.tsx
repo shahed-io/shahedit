@@ -25,9 +25,9 @@ const PortfolioSection = () => {
     <section id="portfolio" className="py-24 relative overflow-hidden">
       <div className="absolute inset-0 tech-grid-bg opacity-35" />
       <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full"
-        style={{ background: 'radial-gradient(circle, hsl(270,92%,65%) 0%, transparent 65%)', filter: 'blur(120px)', opacity: 0.07 }} />
+        style={{ background: 'radial-gradient(circle, hsl(42,70%,65%) 0%, transparent 65%)', filter: 'blur(120px)', opacity: 0.07 }} />
       <div className="absolute right-0 bottom-0 w-[400px] h-[400px] rounded-full"
-        style={{ background: 'radial-gradient(circle, hsl(320,90%,48%) 0%, transparent 65%)', filter: 'blur(100px)', opacity: 0.07 }} />
+        style={{ background: 'radial-gradient(circle, hsl(45,85%,48%) 0%, transparent 65%)', filter: 'blur(100px)', opacity: 0.07 }} />
 
       <div className="container mx-auto px-4 relative">
         <div className="flex items-end justify-between mb-16">
@@ -37,14 +37,14 @@ const PortfolioSection = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] px-4 py-2 rounded-full mb-4"
-              style={{ background: 'rgba(315,80%,65%,0.10)', border: '1px solid rgba(236,72,153,0.25)', color: 'hsl(315,80%,70%)' }}
+              style={{ background: 'rgba(315,80%,65%,0.10)', border: '1px solid rgba(244,215,122,0.25)', color: 'hsl(315,80%,70%)' }}
             >
               ◈ Our Work
             </motion.span>
             <h2 className="text-4xl md:text-5xl font-black text-foreground mt-2">
               Recent <span className="gradient-text-pink">Projects</span>
             </h2>
-            <div className="mt-4 w-20 h-1 rounded-full" style={{ background: 'linear-gradient(90deg, hsl(315,80%,65%), hsl(270,92%,65%))' }} />
+            <div className="mt-4 w-20 h-1 rounded-full" style={{ background: 'linear-gradient(90deg, hsl(315,80%,65%), hsl(42,70%,65%))' }} />
           </motion.div>
           <motion.a
             href="/portfolio"
@@ -52,7 +52,7 @@ const PortfolioSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             className="hidden md:flex items-center gap-2 text-sm font-semibold transition-all duration-300 group px-5 py-2.5 rounded-xl"
-            style={{ background: 'rgba(168,85,247,0.10)', border: '1px solid rgba(168,85,247,0.22)', color: 'hsl(270,92%,75%)' }}
+            style={{ background: 'rgba(201,161,74,0.10)', border: '1px solid rgba(201,161,74,0.22)', color: 'hsl(42,70%,75%)' }}
           >
             View All Projects <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
           </motion.a>
@@ -62,7 +62,7 @@ const PortfolioSection = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {[...Array(6)].map((_, i) => (
               <div key={i} className="aspect-[4/3] rounded-2xl animate-pulse"
-                style={{ background: 'rgba(168,85,247,0.06)', border: '1px solid rgba(168,85,247,0.12)' }} />
+                style={{ background: 'rgba(201,161,74,0.06)', border: '1px solid rgba(201,161,74,0.12)' }} />
             ))}
           </div>
         ) : projects.length === 0 ? (
@@ -101,7 +101,7 @@ const PortfolioSection = () => {
 
                 {project.category && (
                   <div className="absolute top-3 left-3 px-3 py-1 text-xs font-bold rounded-full"
-                    style={{ background: 'rgba(10,8,20,0.80)', border: '1px solid rgba(168,85,247,0.30)', color: 'hsl(270,92%,75%)', backdropFilter: 'blur(10px)' }}>
+                    style={{ background: 'rgba(10,8,20,0.80)', border: '1px solid rgba(201,161,74,0.30)', color: 'hsl(42,70%,75%)', backdropFilter: 'blur(10px)' }}>
                     {project.category}
                   </div>
                 )}
@@ -116,7 +116,7 @@ const PortfolioSection = () => {
                     <motion.div
                       whileHover={{ scale: 1.2, rotate: 45 }}
                       className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                      style={{ background: 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))' }}
+                      style={{ background: 'linear-gradient(135deg, hsl(42,70%,65%), hsl(45,85%,48%))' }}
                     >
                       <ExternalLink size={15} className="text-white" />
                     </motion.div>

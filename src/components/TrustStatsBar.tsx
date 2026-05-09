@@ -2,12 +2,12 @@ import { motion } from "framer-motion";
 import { Award, Users, Code2, Headphones, ShieldCheck, Rocket } from "lucide-react";
 
 const stats = [
-  { icon: Code2, value: "১০০+", label: "Successful Projects", color: "hsl(270,92%,65%)" },
-  { icon: Users, value: "৮০+", label: "Happy Clients", color: "hsl(320,90%,48%)" },
+  { icon: Code2, value: "১০০+", label: "Successful Projects", color: "hsl(42,70%,65%)" },
+  { icon: Users, value: "৮০+", label: "Happy Clients", color: "hsl(45,85%,48%)" },
   { icon: Award, value: "৫+", label: "Years of Excellence", color: "hsl(315,80%,65%)" },
   { icon: Headphones, value: "২৪/৭", label: "Dedicated Support", color: "hsl(45,93%,58%)" },
   { icon: ShieldCheck, value: "১০০%", label: "Secure & Reliable", color: "hsl(165,80%,50%)" },
-  { icon: Rocket, value: "৯৫+", label: "PageSpeed Score", color: "hsl(270,92%,65%)" },
+  { icon: Rocket, value: "৯৫+", label: "PageSpeed Score", color: "hsl(42,70%,65%)" },
 ];
 
 const TrustStatsBar = () => {
@@ -26,7 +26,7 @@ const TrustStatsBar = () => {
           </p>
           <h2 className="text-2xl md:text-4xl font-bold">
             <span className="bg-clip-text text-transparent"
-              style={{ backgroundImage: "linear-gradient(135deg, hsl(270,92%,72%), hsl(320,90%,55%))" }}>
+              style={{ backgroundImage: "linear-gradient(135deg, hsl(42,70%,72%), hsl(45,85%,55%))" }}>
               Bangladesh's Most Trusted
             </span>{" "}
             IT Solutions Partner
@@ -36,7 +36,7 @@ const TrustStatsBar = () => {
         <div
           className="rounded-3xl backdrop-blur-xl p-6 md:p-8"
           style={{
-            background: "linear-gradient(135deg, rgba(168,85,247,0.06), rgba(236,72,153,0.06))",
+            background: "linear-gradient(135deg, rgba(201,161,74,0.06), rgba(244,215,122,0.06))",
             border: "1px solid rgba(255,255,255,0.08)",
           }}
         >

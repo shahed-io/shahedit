@@ -2,11 +2,11 @@ import { ShoppingCart, UtensilsCrossed, Building2, Monitor, Ticket, FileText, Se
 import { motion } from "framer-motion";
 
 const solutions = [
-  { icon: ShoppingCart, title: "Ecommerce", desc: "Powerful online store platforms for growth.", color: "hsl(270,92%,65%)", glow: "rgba(168,85,247,0.35)", border: "rgba(168,85,247,0.30)" },
+  { icon: ShoppingCart, title: "Ecommerce", desc: "Powerful online store platforms for growth.", color: "hsl(42,70%,65%)", glow: "rgba(201,161,74,0.35)", border: "rgba(201,161,74,0.30)" },
   { icon: UtensilsCrossed, title: "Restaurant", desc: "Digital menus & ordering management.", color: "hsl(25,95%,60%)", glow: "rgba(249,115,22,0.30)", border: "rgba(249,115,22,0.28)" },
   { icon: Building2, title: "ERP Systems", desc: "Integrated management for business ops.", color: "hsl(270,80%,65%)", glow: "rgba(147,51,234,0.30)", border: "rgba(147,51,234,0.28)" },
-  { icon: Monitor, title: "POS Solutions", desc: "Fast & reliable point-of-sale systems.", color: "hsl(320,90%,50%)", glow: "rgba(0,188,212,0.28)", border: "rgba(0,188,212,0.28)" },
-  { icon: Ticket, title: "Ticketing", desc: "Booking, reservation & event tools.", color: "hsl(315,80%,65%)", glow: "rgba(236,72,153,0.30)", border: "rgba(236,72,153,0.28)" },
+  { icon: Monitor, title: "POS Solutions", desc: "Fast & reliable point-of-sale systems.", color: "hsl(45,85%,50%)", glow: "rgba(0,188,212,0.28)", border: "rgba(0,188,212,0.28)" },
+  { icon: Ticket, title: "Ticketing", desc: "Booking, reservation & event tools.", color: "hsl(315,80%,65%)", glow: "rgba(244,215,122,0.30)", border: "rgba(244,215,122,0.28)" },
   { icon: FileText, title: "Content CMS", desc: "Custom blogs & content management.", color: "hsl(155,70%,45%)", glow: "rgba(34,197,94,0.28)", border: "rgba(34,197,94,0.28)" },
   { icon: Settings, title: "Management", desc: "Bespoke workflow optimization tools.", color: "hsl(45,93%,58%)", glow: "rgba(234,179,8,0.28)", border: "rgba(234,179,8,0.28)" },
   { icon: Smartphone, title: "Mobile Apps", desc: "iOS & Android high-performance apps.", color: "hsl(210,100%,62%)", glow: "rgba(59,130,246,0.30)", border: "rgba(59,130,246,0.28)" },
@@ -18,9 +18,9 @@ const IndustrySolutions = () => {
       {/* Background layers */}
       <div className="absolute inset-0 dot-grid opacity-20" />
       <div className="absolute left-[-200px] top-[20%] w-[600px] h-[600px] rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(circle, hsl(270,92%,65%) 0%, transparent 60%)', filter: 'blur(100px)', opacity: 0.10 }} />
+        style={{ background: 'radial-gradient(circle, hsl(42,70%,65%) 0%, transparent 60%)', filter: 'blur(100px)', opacity: 0.10 }} />
       <div className="absolute right-[-200px] bottom-[10%] w-[500px] h-[500px] rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(circle, hsl(320,90%,50%) 0%, transparent 60%)', filter: 'blur(100px)', opacity: 0.08 }} />
+        style={{ background: 'radial-gradient(circle, hsl(45,85%,50%) 0%, transparent 60%)', filter: 'blur(100px)', opacity: 0.08 }} />
 
       <div className="container mx-auto px-4 relative">
         {/* Header */}
@@ -38,9 +38,9 @@ const IndustrySolutions = () => {
             transition={{ delay: 0.1 }}
             className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] px-5 py-2 rounded-full mb-5"
             style={{
-              background: 'rgba(236,72,153,0.08)',
-              border: '1px solid rgba(236,72,153,0.25)',
-              color: 'hsl(320,90%,55%)',
+              background: 'rgba(244,215,122,0.08)',
+              border: '1px solid rgba(244,215,122,0.25)',
+              color: 'hsl(45,85%,55%)',
               backdropFilter: 'blur(10px)',
             }}
           >
@@ -52,7 +52,7 @@ const IndustrySolutions = () => {
           <p className="text-foreground/45 mt-4 max-w-2xl mx-auto text-sm leading-relaxed">
             Robust, scalable & innovative technology services to modernize your business across all sectors.
           </p>
-          <div className="mt-5 mx-auto w-20 h-[3px] rounded-full" style={{ background: 'linear-gradient(90deg, hsl(320,90%,48%), hsl(270,92%,65%))' }} />
+          <div className="mt-5 mx-auto w-20 h-[3px] rounded-full" style={{ background: 'linear-gradient(90deg, hsl(45,85%,48%), hsl(42,70%,65%))' }} />
         </motion.div>
 
         {/* Cards Grid */}

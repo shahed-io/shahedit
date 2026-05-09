@@ -21,11 +21,11 @@ const TechStack = () => {
   return (
     <section className="py-24 relative overflow-hidden">
       <div className="absolute inset-0 cross-grid opacity-40" />
-      <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(168,85,247,0.05) 0%, transparent 50%, rgba(236,72,153,0.05) 100%)' }} />
+      <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(201,161,74,0.05) 0%, transparent 50%, rgba(244,215,122,0.05) 100%)' }} />
       <div className="absolute top-10 left-10 w-[500px] h-[400px] rounded-full float-anim"
-        style={{ background: 'radial-gradient(ellipse, hsl(270,92%,65%) 0%, transparent 65%)', filter: 'blur(120px)', opacity: 0.10 }} />
+        style={{ background: 'radial-gradient(ellipse, hsl(42,70%,65%) 0%, transparent 65%)', filter: 'blur(120px)', opacity: 0.10 }} />
       <div className="absolute bottom-10 right-10 w-[400px] h-[350px] rounded-full float-anim"
-        style={{ background: 'radial-gradient(ellipse, hsl(320,90%,48%) 0%, transparent 65%)', filter: 'blur(100px)', opacity: 0.09, animationDelay: '3s' }} />
+        style={{ background: 'radial-gradient(ellipse, hsl(45,85%,48%) 0%, transparent 65%)', filter: 'blur(100px)', opacity: 0.09, animationDelay: '3s' }} />
 
       <div className="container mx-auto px-4 relative">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -36,7 +36,7 @@ const TechStack = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] px-4 py-2 rounded-full mb-6"
-              style={{ background: 'rgba(168,85,247,0.10)', border: '1px solid rgba(168,85,247,0.25)', color: 'hsl(270,92%,75%)' }}
+              style={{ background: 'rgba(201,161,74,0.10)', border: '1px solid rgba(201,161,74,0.25)', color: 'hsl(42,70%,75%)' }}
             >
               ◈ Our Tech Stack
             </motion.span>
@@ -46,7 +46,7 @@ const TechStack = () => {
               <span className="gradient-text">Best-in-Class</span><br />
               Technology
             </h2>
-            <div className="w-20 h-1 rounded-full mb-7" style={{ background: 'linear-gradient(90deg, hsl(270,92%,65%), hsl(320,90%,48%))' }} />
+            <div className="w-20 h-1 rounded-full mb-7" style={{ background: 'linear-gradient(90deg, hsl(42,70%,65%), hsl(45,85%,48%))' }} />
 
             <p className="text-foreground/50 leading-relaxed mb-4 text-base">
               We leverage the latest and most powerful technologies to build scalable, high-performance solutions. Our tech stack is carefully selected for reliability, speed, and flexibility.
@@ -60,7 +60,7 @@ const TechStack = () => {
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 className="flex items-center gap-2.5 px-7 py-3.5 rounded-2xl text-base font-bold text-hsl group glossy-btn"
-                style={{ background: 'linear-gradient(135deg, hsl(320,90%,48%), hsl(210,100%,55%))', boxShadow: '0 6px 25px rgba(236,72,153,0.40)', color: 'hsl(265,45%,4%)' }}
+                style={{ background: 'linear-gradient(135deg, hsl(45,85%,48%), hsl(210,100%,55%))', boxShadow: '0 6px 25px rgba(244,215,122,0.40)', color: 'hsl(240,22%,4%)' }}
               >
                 Explore Our Services <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </motion.button>
