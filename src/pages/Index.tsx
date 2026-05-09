@@ -49,8 +49,6 @@ const Index = () => {
         
         <FaqSection />
         <SiteFooter />
-        <FloatingContactButton onOpenAI={() => setAiOpen(true)} />
-        <AISupportChat externalOpen={aiOpen} onExternalOpenChange={setAiOpen} />
       </div>
     </div>
   );
