@@ -107,6 +107,7 @@ const AdminRoutes = () => (
         <Route path="users" element={<AdminUsers />} />
         <Route path="footer" element={<AdminFooterEditor />} />
         <Route path="client-docs" element={<AdminClientDocuments />} />
+        <Route path="popular-searches" element={<AdminPopularSearches />} />
       </Routes>
     </AdminLayout>
   </ProtectedRoute>
