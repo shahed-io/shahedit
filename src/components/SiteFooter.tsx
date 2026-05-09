@@ -195,10 +195,38 @@ const SiteFooter = () => {
           viewport={{ once: true }}
           className="rounded-2xl p-5 sm:p-6 bg-white/[0.04] backdrop-blur-xl border border-white/10 flex flex-col lg:flex-row items-center justify-between gap-5"
         >
-          <div className="flex items-center gap-3">
-            <span className="relative w-14 h-14 rounded-full flex items-center justify-center bg-white border border-white/20 shadow-[0_0_22px_-2px_hsla(280,80%,60%,0.6)] overflow-hidden shrink-0">
-              <img src={deeplIdLogo} alt="DeepL ID" className="w-full h-full object-cover" />
-            </span>
+          <div className="flex items-center gap-4">
+            <div className="relative shrink-0">
+              {/* Rotating conic glow ring */}
+              <span
+                className="absolute -inset-1.5 rounded-full opacity-80 blur-[6px] animate-spin"
+                style={{
+                  background:
+                    "conic-gradient(from 0deg, hsl(280,80%,60%), hsl(185,100%,55%), hsl(315,80%,65%), hsl(258,90%,66%), hsl(280,80%,60%))",
+                  animationDuration: "6s",
+                }}
+                aria-hidden
+              />
+              {/* Soft pulsing halo */}
+              <span
+                className="absolute -inset-3 rounded-full animate-pulse"
+                style={{
+                  background:
+                    "radial-gradient(circle, hsla(280,80%,60%,0.35), transparent 70%)",
+                }}
+                aria-hidden
+              />
+              {/* Logo badge */}
+              <span className="relative block w-14 h-14 rounded-full bg-white border border-white/30 shadow-[0_0_24px_-2px_hsla(280,80%,60%,0.7)] overflow-hidden">
+                <img src={deeplIdLogo} alt="DeepL ID" className="w-full h-full object-cover" />
+                {/* Glossy highlight */}
+                <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.55),transparent_55%)]" />
+              </span>
+              {/* Verified check chip */}
+              <span className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 border-2 border-background flex items-center justify-center shadow-md">
+                <BadgeCheck size={11} className="text-white" strokeWidth={3} />
+              </span>
+            </div>
             <div className="text-left">
               <div className="text-sm font-bold tracking-wider text-foreground/90">GOVT. CERTIFIED BUSINESS</div>
               <div className="text-xs text-muted-foreground mt-0.5">DBID: 623962552</div>
