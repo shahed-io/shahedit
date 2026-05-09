@@ -72,7 +72,7 @@ export async function runSearch(query: string, opts?: { limitPerType?: number })
   const [svc, pkg, blog, proj, faq] = await Promise.all([
     supabase.from("services").select("title,slug,short_description,description")
       .eq("is_published", true).or(orFilter(q, ["title", "short_description", "description", "slug"])).limit(limit),
-    supabase.from("service_packages").select("id,title,short_description,description")
+    supabase.from("service_packages").select("id,title,short_description,description,image_url,price,original_price,badge,services(title)")
       .eq("is_published", true).or(orFilter(q, ["title", "short_description", "description"])).limit(limit),
     supabase.from("blog_posts").select("title,slug,excerpt,content")
       .eq("is_published", true).or(orFilter(q, ["title", "excerpt", "content"])).limit(limit),
@@ -98,7 +98,16 @@ export async function runSearch(query: string, opts?: { limitPerType?: number })
       { value: p.short_description, weight: 1.5 },
       { value: p.description, weight: 1 },
     ]);
-    hits.push({ type: "package", title: p.title, subtitle: p.short_description, href: `/product/${p.id}`, score, matchedField: field });
+    hits.push({
+      type: "package", title: p.title, subtitle: p.short_description, href: `/product/${p.id}`, score, matchedField: field,
+      meta: {
+        image_url: p.image_url,
+        price: p.price,
+        original_price: p.original_price,
+        badge: p.badge,
+        category: p.services?.title || null,
+      },
+    });
   });
   blog.data?.forEach((b: any) => {
     const { score, field } = scoreMatch(q, [
