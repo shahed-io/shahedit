@@ -603,7 +603,7 @@ const SiteHeader = () => {
                     background: "rgba(255,255,255,0.06)",
                     border: "1px solid rgba(168, 85, 247, 0.35)",
                   }}
-                  aria-label="Close search"
+                  aria-label="Close search dialog"
                 >
                   <X size={18} />
                 </button>
