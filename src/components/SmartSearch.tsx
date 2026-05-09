@@ -50,7 +50,7 @@ const Highlighted = ({ text, query }: { text?: string; query: string }) => {
   if (!h) return <>{text}</>;
   return (
     <>
-      {h.before}<mark style={{ background: "rgba(124,58,237,0.18)", color: "#7c3aed", padding: "0 2px", borderRadius: 3, fontWeight: 700 }}>{h.match}</mark>{h.after}
+      {h.before}<mark style={{ background: "linear-gradient(90deg, rgba(168,85,247,0.45), rgba(236,72,153,0.35))", color: "#fff", padding: "0 3px", borderRadius: 4, fontWeight: 700 }}>{h.match}</mark>{h.after}
     </>
   );
 };
@@ -264,27 +264,28 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
             transition={{ duration: 0.14 }}
             className={`absolute mt-2 rounded-2xl overflow-hidden z-50 ${variant === "desktop" ? "w-[min(92vw,720px)] left-1/2 -translate-x-1/2" : "left-0 right-0"}`}
             style={{
-              background: "rgba(255,255,255,0.99)",
-              backdropFilter: "blur(20px)",
-              border: "1px solid rgba(120, 100, 180, 0.18)",
-              boxShadow: "0 20px 50px rgba(80, 50, 140, 0.18), 0 4px 12px rgba(0,0,0,0.04)",
+              background: "linear-gradient(180deg, rgba(20,12,40,0.96), rgba(12,6,28,0.98))",
+              backdropFilter: "blur(24px)",
+              WebkitBackdropFilter: "blur(24px)",
+              border: "1px solid rgba(168, 85, 247, 0.25)",
+              boxShadow: "0 24px 60px rgba(0,0,0,0.55), 0 0 0 1px rgba(168,85,247,0.08), 0 8px 32px rgba(124,58,237,0.25)",
             }}
           >
             {/* Top gradient bar */}
             <div style={{ height: 3, background: "linear-gradient(90deg, #6366f1, #a855f7, #ec4899)" }} />
 
             {/* Hero search bar inside dropdown */}
-            <div className="px-4 pt-4 pb-3" style={{ background: "linear-gradient(180deg, rgba(243,238,255,0.7), rgba(255,255,255,0))" }}>
+            <div className="px-4 pt-4 pb-3" style={{ background: "linear-gradient(180deg, rgba(124,58,237,0.12), rgba(124,58,237,0))" }}>
               <form onSubmit={submit} className="relative">
                 <div
                   className="flex items-center gap-2 px-4 py-3 rounded-2xl"
                   style={{
-                    background: "#fff",
-                    border: "1.5px solid rgba(124,58,237,0.25)",
-                    boxShadow: "0 4px 18px rgba(124,58,237,0.12), inset 0 1px 0 rgba(255,255,255,0.8)",
+                    background: "rgba(255,255,255,0.04)",
+                    border: "1.5px solid rgba(168,85,247,0.35)",
+                    boxShadow: "0 4px 22px rgba(124,58,237,0.25), inset 0 1px 0 rgba(255,255,255,0.06)",
                   }}
                 >
-                  <Search size={18} style={{ color: "#7c3aed" }} className="shrink-0" />
+                  <Search size={18} style={{ color: "#c4b5fd" }} className="shrink-0" />
                   <input
                     type="text"
                     value={query}
@@ -292,19 +293,19 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
                     onKeyDown={onKeyDown}
                     autoFocus
                     placeholder="Shahed IT-তে যেকোনো সার্ভিস খুঁজুন..."
-                    className="flex-1 bg-transparent outline-none text-[15px] font-medium"
-                    style={{ color: "#2a1f4a" }}
+                    className="flex-1 bg-transparent outline-none text-[15px] font-medium placeholder:text-[rgba(226,218,245,0.45)]"
+                    style={{ color: "#fff" }}
                     autoComplete="off"
                   />
                   {query && (
-                    <button type="button" onClick={() => setQuery("")} className="p-1 rounded-full hover:bg-purple-50">
-                      <X size={15} style={{ color: "#7c3aed" }} />
+                    <button type="button" onClick={() => setQuery("")} className="p-1 rounded-full hover:bg-white/10">
+                      <X size={15} style={{ color: "#c4b5fd" }} />
                     </button>
                   )}
                   <button
                     type="submit"
                     className="shrink-0 w-9 h-9 rounded-xl flex items-center justify-center transition-transform hover:scale-105"
-                    style={{ background: "linear-gradient(135deg, #6366f1, #a855f7, #ec4899)" }}
+                    style={{ background: "linear-gradient(135deg, #6366f1, #a855f7, #ec4899)", boxShadow: "0 4px 14px rgba(168,85,247,0.45)" }}
                     aria-label="Search"
                   >
                     <Search size={16} className="text-white" />
@@ -321,33 +322,33 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
                   {recent.length > 0 && (
                     <section className="pt-4">
                       <div className="flex items-center justify-between px-5 pb-2">
-                        <span className="flex items-center gap-2 text-[12px] font-semibold" style={{ color: "#7c3aed" }}>
+                        <span className="flex items-center gap-2 text-[12px] font-semibold" style={{ color: "#c4b5fd" }}>
                           <Clock size={13} /> সাম্প্রতিক সার্চ
                         </span>
-                        <button onClick={clearRecent} className="text-[11px] font-medium hover:underline" style={{ color: "#7c3aed" }}>
+                        <button onClick={clearRecent} className="text-[11px] font-medium hover:underline" style={{ color: "#ec4899" }}>
                           সব মুছুন
                         </button>
                       </div>
                       <ul>
                         {recent.map((r) => (
                           <li key={r}>
-                            <div className="group flex items-center gap-3 px-5 py-2 hover:bg-[rgba(124,58,237,0.04)] transition-colors">
-                              <Clock size={14} style={{ color: "#9b8fb5" }} className="shrink-0" />
+                            <div className="group flex items-center gap-3 px-5 py-2 hover:bg-[rgba(168,85,247,0.10)] transition-colors">
+                              <Clock size={14} style={{ color: "rgba(226,218,245,0.5)" }} className="shrink-0" />
                               <button
                                 type="button"
                                 onClick={() => goRecent(r)}
                                 className="flex-1 text-left text-sm truncate"
-                                style={{ color: "#2a1f4a" }}
+                                style={{ color: "rgba(255,255,255,0.92)" }}
                               >
                                 {r}
                               </button>
                               <button
                                 type="button"
                                 onClick={() => removeRecent(r)}
-                                className="opacity-60 hover:opacity-100 p-1 rounded-md hover:bg-[rgba(124,58,237,0.1)]"
+                                className="opacity-60 hover:opacity-100 p-1 rounded-md hover:bg-white/10"
                                 aria-label="Remove"
                               >
-                                <X size={13} style={{ color: "#9b8fb5" }} />
+                                <X size={13} style={{ color: "rgba(226,218,245,0.6)" }} />
                               </button>
                             </div>
                           </li>
@@ -359,7 +360,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
                   {/* Popular Searches */}
                   <section className="pt-4">
                     <div className="px-5 pb-2">
-                      <span className="flex items-center gap-2 text-[12px] font-semibold" style={{ color: "#7c3aed" }}>
+                      <span className="flex items-center gap-2 text-[12px] font-semibold" style={{ color: "#c4b5fd" }}>
                         <TrendingUp size={13} /> জনপ্রিয় সার্চ
                       </span>
                     </div>
@@ -369,10 +370,10 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
                           <button
                             type="button"
                             onClick={() => goRecent(p)}
-                            className="w-full flex items-center gap-3 px-5 py-2 text-left hover:bg-[rgba(124,58,237,0.04)] transition-colors"
+                            className="w-full flex items-center gap-3 px-5 py-2 text-left hover:bg-[rgba(168,85,247,0.10)] transition-colors"
                           >
-                            <TrendingUp size={14} style={{ color: "#7c3aed" }} className="shrink-0" />
-                            <span className="text-sm" style={{ color: "#2a1f4a" }}>{p}</span>
+                            <TrendingUp size={14} style={{ color: "#a855f7" }} className="shrink-0" />
+                            <span className="text-sm" style={{ color: "rgba(255,255,255,0.92)" }}>{p}</span>
                           </button>
                         </li>
                       ))}
@@ -381,9 +382,9 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
 
                   {/* Trending Products */}
                   {trending.length > 0 && (
-                    <section className="pt-4 pb-2 border-t mt-3" style={{ borderColor: "rgba(120,100,180,0.10)" }}>
+                    <section className="pt-4 pb-2 border-t mt-3" style={{ borderColor: "rgba(168,85,247,0.18)" }}>
                       <div className="px-5 pt-3 pb-2">
-                        <span className="flex items-center gap-2 text-[12px] font-semibold" style={{ color: "#7c3aed" }}>
+                        <span className="flex items-center gap-2 text-[12px] font-semibold" style={{ color: "#c4b5fd" }}>
                           <Star size={13} /> ট্রেন্ডিং প্রোডাক্ট
                         </span>
                       </div>
@@ -395,36 +396,36 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
                               <button
                                 type="button"
                                 onClick={() => goTo(`/product/${t.id}`)}
-                                className="w-full flex items-center gap-3 px-5 py-2.5 text-left hover:bg-[rgba(124,58,237,0.04)] transition-colors"
+                                className="w-full flex items-center gap-3 px-5 py-2.5 text-left hover:bg-[rgba(168,85,247,0.10)] transition-colors"
                               >
                                 {/* Thumbnail */}
                                 <div
                                   className="w-12 h-12 rounded-xl shrink-0 overflow-hidden flex items-center justify-center"
-                                  style={{ background: "linear-gradient(135deg, rgba(99,102,241,0.18), rgba(236,72,153,0.18))" }}
+                                  style={{ background: "linear-gradient(135deg, rgba(99,102,241,0.30), rgba(236,72,153,0.30))", border: "1px solid rgba(168,85,247,0.25)" }}
                                 >
                                   {t.image_url ? (
                                     <img src={t.image_url} alt={t.title} className="w-full h-full object-cover" loading="lazy" />
                                   ) : (
-                                    <Package size={18} style={{ color: "#7c3aed" }} />
+                                    <Package size={18} style={{ color: "#c4b5fd" }} />
                                   )}
                                 </div>
 
                                 {/* Body */}
                                 <div className="flex-1 min-w-0">
                                   <div className="flex items-center gap-2">
-                                    <span className="text-sm font-semibold truncate" style={{ color: "#2a1f4a" }}>
+                                    <span className="text-sm font-semibold truncate" style={{ color: "rgba(255,255,255,0.95)" }}>
                                       {t.title}
                                     </span>
                                   </div>
                                   <div className="flex items-center gap-2 mt-0.5">
                                     {t.service_title && (
                                       <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded shrink-0"
-                                        style={{ background: "rgba(124,58,237,0.10)", color: "#7c3aed" }}>
+                                        style={{ background: "rgba(168,85,247,0.20)", color: "#d8b4fe", border: "1px solid rgba(168,85,247,0.30)" }}>
                                         {t.service_title}
                                       </span>
                                     )}
                                     {t.short_description && (
-                                      <span className="text-xs truncate" style={{ color: "#9b8fb5" }}>
+                                      <span className="text-xs truncate" style={{ color: "rgba(226,218,245,0.55)" }}>
                                         {t.short_description}
                                       </span>
                                     )}
@@ -434,18 +435,18 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
                                 {/* Price */}
                                 <div className="shrink-0 text-right">
                                   {t.price != null && (
-                                    <div className="text-sm font-bold" style={{ color: "#7c3aed" }}>
+                                    <div className="text-sm font-bold" style={{ color: "#f0abfc" }}>
                                       {fmtPrice(t.price)}
                                     </div>
                                   )}
                                   {t.original_price != null && t.original_price > (t.price || 0) && (
-                                    <div className="text-[11px] line-through" style={{ color: "#b8a8d0" }}>
+                                    <div className="text-[11px] line-through" style={{ color: "rgba(226,218,245,0.45)" }}>
                                       {fmtPrice(t.original_price)}
                                     </div>
                                   )}
                                   {pct && (
                                     <div className="text-[10px] font-bold mt-0.5 px-1.5 py-0.5 rounded inline-block"
-                                      style={{ background: "rgba(252, 211, 77, 0.30)", color: "#92590a" }}>
+                                      style={{ background: "linear-gradient(135deg, rgba(236,72,153,0.30), rgba(168,85,247,0.30))", color: "#fbcfe8", border: "1px solid rgba(236,72,153,0.40)" }}>
                                       -{pct}%
                                     </div>
                                   )}
@@ -464,7 +465,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
               {!showEmptyState && (
                 <>
                   <div className="px-5 pt-3 pb-1 flex items-center justify-between">
-                    <span className="text-[11px] uppercase tracking-wider font-semibold" style={{ color: "#9b8fb5" }}>
+                    <span className="text-[11px] uppercase tracking-wider font-semibold" style={{ color: "rgba(226,218,245,0.55)" }}>
                       {loading ? "খোঁজা হচ্ছে..." : items.length ? `${items.length} টি ফলাফল` : "কোনো ফলাফল নেই"}
                     </span>
                   </div>
@@ -479,23 +480,23 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
                             onMouseEnter={() => setActive(i)}
                             onClick={() => goHit(s)}
                             className="w-full flex items-center gap-3 px-5 py-2.5 text-left transition-colors"
-                            style={{ background: isActive ? "linear-gradient(90deg, rgba(124,58,237,0.08), rgba(236,72,153,0.05))" : "transparent" }}
+                            style={{ background: isActive ? "linear-gradient(90deg, rgba(168,85,247,0.18), rgba(236,72,153,0.10))" : "transparent" }}
                           >
-                            <span className="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style={{ background: "rgba(124, 58, 237, 0.1)" }}>
-                              <Icon size={14} style={{ color: "#7c3aed" }} />
+                            <span className="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style={{ background: "rgba(168, 85, 247, 0.18)", border: "1px solid rgba(168,85,247,0.25)" }}>
+                              <Icon size={14} style={{ color: "#c4b5fd" }} />
                             </span>
                             <span className="flex-1 min-w-0">
                               <span className="flex items-center gap-2">
-                                <span className="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded" style={{ background: "rgba(124,58,237,0.12)", color: "#7c3aed" }}>{labelFor(s.type)}</span>
-                                <span className="block text-sm font-semibold truncate" style={{ color: "#2a1f4a" }}>
+                                <span className="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded" style={{ background: "rgba(168,85,247,0.20)", color: "#d8b4fe", border: "1px solid rgba(168,85,247,0.30)" }}>{labelFor(s.type)}</span>
+                                <span className="block text-sm font-semibold truncate" style={{ color: "rgba(255,255,255,0.95)" }}>
                                   <Highlighted text={s.title} query={query} />
                                 </span>
                               </span>
-                              {s.subtitle && <span className="block text-xs truncate mt-0.5" style={{ color: "#9b8fb5" }}>
+                              {s.subtitle && <span className="block text-xs truncate mt-0.5" style={{ color: "rgba(226,218,245,0.55)" }}>
                                 <Highlighted text={s.subtitle} query={query} />
                               </span>}
                             </span>
-                            <ArrowUpRight size={14} className="shrink-0" style={{ color: isActive ? "#7c3aed" : "#c8bfd8" }} />
+                            <ArrowUpRight size={14} className="shrink-0" style={{ color: isActive ? "#f0abfc" : "rgba(226,218,245,0.4)" }} />
                           </button>
                         </li>
                       );
@@ -504,14 +505,14 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
                       <button
                         type="button"
                         onClick={submit as any}
-                        className="w-full flex items-center gap-3 px-5 py-2.5 text-left border-t"
-                        style={{ borderColor: "rgba(120, 100, 180, 0.1)" }}
+                        className="w-full flex items-center gap-3 px-5 py-2.5 text-left border-t hover:bg-[rgba(168,85,247,0.10)] transition-colors"
+                        style={{ borderColor: "rgba(168,85,247,0.18)" }}
                       >
-                        <span className="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style={{ background: "linear-gradient(135deg, #6366f1, #a855f7, #ec4899)" }}>
+                        <span className="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style={{ background: "linear-gradient(135deg, #6366f1, #a855f7, #ec4899)", boxShadow: "0 4px 12px rgba(168,85,247,0.40)" }}>
                           <Search size={14} className="text-white" />
                         </span>
-                        <span className="text-sm font-semibold" style={{ color: "#2a1f4a" }}>
-                          "<span style={{ color: "#7c3aed" }}>{query}</span>" দিয়ে সব ফলাফল দেখুন
+                        <span className="text-sm font-semibold" style={{ color: "rgba(255,255,255,0.95)" }}>
+                          "<span style={{ color: "#f0abfc" }}>{query}</span>" দিয়ে সব ফলাফল দেখুন
                         </span>
                       </button>
                     </li>
@@ -522,13 +523,13 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
 
             {/* Footer */}
             <div className="flex items-center justify-between px-5 py-2 border-t text-[10px]"
-              style={{ borderColor: "rgba(120,100,180,0.10)", background: "rgba(250,247,255,0.6)", color: "#9b8fb5" }}>
+              style={{ borderColor: "rgba(168,85,247,0.18)", background: "linear-gradient(180deg, rgba(124,58,237,0.06), rgba(124,58,237,0.12))", color: "rgba(226,218,245,0.6)" }}>
               <div className="flex items-center gap-3">
-                <span className="flex items-center gap-1"><kbd className="px-1.5 py-0.5 rounded border" style={{ borderColor: "rgba(120,100,180,0.25)" }}>↑↓</kbd> নেভিগেট</span>
-                <span className="flex items-center gap-1"><kbd className="px-1.5 py-0.5 rounded border" style={{ borderColor: "rgba(120,100,180,0.25)" }}>↵</kbd> সিলেক্ট</span>
-                <span className="flex items-center gap-1"><kbd className="px-1.5 py-0.5 rounded border" style={{ borderColor: "rgba(120,100,180,0.25)" }}>Esc</kbd> বন্ধ</span>
+                <span className="flex items-center gap-1"><kbd className="px-1.5 py-0.5 rounded border" style={{ borderColor: "rgba(168,85,247,0.35)", color: "#c4b5fd", background: "rgba(168,85,247,0.10)" }}>↑↓</kbd> নেভিগেট</span>
+                <span className="flex items-center gap-1"><kbd className="px-1.5 py-0.5 rounded border" style={{ borderColor: "rgba(168,85,247,0.35)", color: "#c4b5fd", background: "rgba(168,85,247,0.10)" }}>↵</kbd> সিলেক্ট</span>
+                <span className="flex items-center gap-1"><kbd className="px-1.5 py-0.5 rounded border" style={{ borderColor: "rgba(168,85,247,0.35)", color: "#c4b5fd", background: "rgba(168,85,247,0.10)" }}>Esc</kbd> বন্ধ</span>
               </div>
-              <span className="flex items-center gap-1 font-medium" style={{ color: "#7c3aed" }}>
+              <span className="flex items-center gap-1 font-medium" style={{ color: "#f0abfc" }}>
                 <Sparkles size={11} /> Shahed IT Search
               </span>
             </div>
