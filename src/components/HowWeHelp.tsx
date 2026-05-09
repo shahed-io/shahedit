@@ -28,7 +28,7 @@ const HowWeHelp = () => {
   return (
     <section className="py-24 relative overflow-hidden">
       <div className="absolute inset-0 tech-grid-bg opacity-40" />
-      <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(10,8,20,0.4) 50%, transparent 100%)' }} />
+      <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(168,85,247,0.05) 50%, transparent 100%)' }} />
       <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full"
         style={{ background: 'radial-gradient(circle, hsl(320,90%,48%) 0%, transparent 65%)', filter: 'blur(120px)', opacity: 0.07 }} />
 
