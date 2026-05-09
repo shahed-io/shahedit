@@ -184,6 +184,7 @@ const AppWithAnalytics = () => {
         <Route path="/cms/*" element={<CmsRoutes />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <GlobalSupport />
     </Suspense>
   );
 };
