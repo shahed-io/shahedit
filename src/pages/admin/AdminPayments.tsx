@@ -154,7 +154,7 @@ const AdminPayments = () => {
               <span className={`font-semibold text-sm ${mode === "auto" ? "text-white" : "text-slate-300"}`}>অটো (API)</span>
               {mode === "auto" && <span className="ml-auto text-xs bg-teal-500/20 text-teal-400 px-2 py-0.5 rounded-full">সক্রিয়</span>}
             </div>
-            <p className="text-slate-500 text-xs">bKash/Nagad API দিয়ে স্বয়ংক্রিয়ভাবে ভেরিফাই হবে (API credentials লাগবে)</p>
+            <p className="text-slate-500 text-xs">Bkash/Nagad API দিয়ে স্বয়ংক্রিয়ভাবে ভেরিফাই হবে (API credentials লাগবে)</p>
           </button>
         </div>
         <Button onClick={saveMode} disabled={savingMode} size="sm" className="bg-gradient-to-r from-purple-600 to-teal-600 text-white">
@@ -162,7 +162,7 @@ const AdminPayments = () => {
         </Button>
         {mode === "auto" && (
           <p className="text-yellow-400 text-xs mt-3 flex items-center gap-1.5">
-            ⚠️ Auto মোডের জন্য Admin Settings-এ bKash/Nagad API credentials যোগ করুন
+            ⚠️ Auto মোডের জন্য Admin Settings-এ Bkash/Nagad API credentials যোগ করুন
           </p>
         )}
       </div>
