@@ -49,11 +49,17 @@ const Highlighted = ({ text, query }: { text?: string; query: string }) => {
   if (!text) return null;
   const h = highlight(text, query);
   if (!h) return <>{text}</>;
-  return (
+  const searchUi = (
     <>
       {h.before}<mark style={{ background: "linear-gradient(90deg, rgba(168,85,247,0.45), rgba(236,72,153,0.35))", color: "#fff", padding: "0 3px", borderRadius: 4, fontWeight: 700 }}>{h.match}</mark>{h.after}
     </>
   );
+
+  if (variant === "desktop" && open && typeof document !== "undefined") {
+    return createPortal(searchUi, document.body);
+  }
+
+  return searchUi;
 };
 
 const fmtPrice = (n: number | null | undefined) => {
