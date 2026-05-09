@@ -175,7 +175,7 @@ const ServicesPage = () => {
                                       {pkg.title}
                                     </p>
                                     {pkg.description && (
-                                      <p className="text-foreground/45 text-xs truncate">{pkg.description}</p>
+                                      <p className="text-foreground/45 text-xs truncate">{pkg.description.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').trim()}</p>
                                     )}
                                   </div>
                                 </div>
