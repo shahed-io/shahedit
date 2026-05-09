@@ -109,7 +109,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
 
   const items = useMemo(() => {
     if (query.trim()) return results;
-    return recent.map(r => ({ type: "page" as const, title: r, href: `/services?q=${encodeURIComponent(r)}` }));
+    return recent.map(r => ({ type: "page" as const, title: r, href: `/search?q=${encodeURIComponent(r)}` }));
   }, [query, results, recent]);
 
   const saveRecent = (q: string) => {
@@ -136,7 +136,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
     setOpen(false);
     setQuery("");
     onNavigate?.();
-    navigate(`/services?q=${encodeURIComponent(q)}`);
+    navigate(`/search?q=${encodeURIComponent(q)}`);
   };
 
   const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
