@@ -314,22 +314,14 @@ export function ProductReviews({
                   }}
                 >
                   <div className="flex items-center gap-3 mb-2">
-                    {r.profiles?.avatar_url ? (
-                      <img
-                        src={r.profiles.avatar_url}
-                        alt={name}
-                        className="w-9 h-9 rounded-full object-cover"
-                      />
-                    ) : (
-                      <div
-                        className="w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-bold"
-                        style={{
-                          background: `linear-gradient(135deg, ${accentColor}, ${accentColor}99)`,
-                        }}
-                      >
-                        {initial}
-                      </div>
-                    )}
+                    <div
+                      className="w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-bold"
+                      style={{
+                        background: `linear-gradient(135deg, ${accentColor}, ${accentColor}99)`,
+                      }}
+                    >
+                      {initial}
+                    </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-bold text-foreground truncate">
                         {name}
