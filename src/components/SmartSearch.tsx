@@ -50,7 +50,7 @@ const Highlighted = ({ text, query }: { text?: string; query: string }) => {
   if (!h) return <>{text}</>;
   return (
     <>
-      {h.before}<mark style={{ background: "rgba(124,58,237,0.18)", color: "#7c3aed", padding: "0 2px", borderRadius: 3, fontWeight: 700 }}>{h.match}</mark>{h.after}
+      {h.before}<mark style={{ background: "linear-gradient(90deg, rgba(168,85,247,0.45), rgba(236,72,153,0.35))", color: "#fff", padding: "0 3px", borderRadius: 4, fontWeight: 700 }}>{h.match}</mark>{h.after}
     </>
   );
 };
