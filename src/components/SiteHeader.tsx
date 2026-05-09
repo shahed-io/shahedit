@@ -36,7 +36,8 @@ const navLinks = [
 
 const SiteHeader = () => {
   const { user, signOut } = useAuth();
-  const { theme, toggleTheme } = useTheme();
+  const { signOut } = useAuth() as any;
+  const _auth = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
