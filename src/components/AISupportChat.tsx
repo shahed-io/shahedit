@@ -234,37 +234,39 @@ export default function AISupportChat({ externalOpen, onExternalOpenChange }: AI
                   transition={{ duration: 0.18 }}
                   className={`flex gap-2 ${msg.role === "user" ? "flex-row-reverse" : "flex-row"}`}
                 >
-                  <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-1 ${
+                  <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-1 ${
                     msg.role === "assistant"
                       ? "bg-purple-600/30 border border-purple-500/30"
                       : "bg-slate-700"
                   }`}>
                     {msg.role === "assistant"
-                      ? <Bot size={12} className="text-purple-400" />
-                      : <User size={12} className="text-slate-300" />
+                      ? <Bot size={14} className="text-purple-300" />
+                      : <User size={14} className="text-slate-200" />
                     }
                   </div>
                   <div
-                    className={`max-w-[80%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${
+                    className={`max-w-[82%] rounded-2xl px-4 py-3 text-[15px] leading-[1.75] tracking-[0.01em] ${
                       msg.role === "user"
-                        ? "rounded-tr-sm text-white"
-                        : "rounded-tl-sm text-slate-200"
+                        ? "rounded-tr-sm text-white font-medium"
+                        : "rounded-tl-sm text-slate-50"
                     }`}
                     style={
                       msg.role === "user"
-                        ? { background: "linear-gradient(135deg, hsl(258,90%,50%), hsl(258,70%,38%))" }
-                        : { background: "rgba(255,255,255,0.055)", border: "1px solid rgba(255,255,255,0.07)" }
+                        ? { background: "linear-gradient(135deg, hsl(258,90%,52%), hsl(258,70%,40%))" }
+                        : { background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.09)" }
                     }
                   >
                     {msg.content ? (
                       msg.role === "assistant" ? (
                         <div className="prose prose-sm prose-invert max-w-none
-                          [&>p]:my-1 [&>p]:leading-relaxed
-                          [&>ul]:my-1.5 [&>ul]:pl-4 [&>ul>li]:my-0.5
-                          [&>ol]:my-1.5 [&>ol]:pl-4
-                          [&>strong]:text-purple-300 [&>strong]:font-semibold
-                          [&>h3]:text-white [&>h3]:font-bold [&>h3]:text-sm [&>h3]:mt-2
-                          [&>p>strong]:text-purple-300">
+                          [&_p]:my-2 [&_p]:leading-[1.8] [&_p]:text-[15px] [&_p]:text-slate-50
+                          [&_ul]:my-2 [&_ul]:pl-5 [&_ul]:space-y-1.5 [&_ul>li]:text-slate-50 [&_ul>li]:leading-[1.7] [&_ul>li]:marker:text-purple-400
+                          [&_ol]:my-2 [&_ol]:pl-5 [&_ol]:space-y-1.5 [&_ol>li]:text-slate-50 [&_ol>li]:leading-[1.7] [&_ol>li]:marker:text-purple-400
+                          [&_strong]:text-purple-200 [&_strong]:font-bold
+                          [&_h3]:text-white [&_h3]:font-bold [&_h3]:text-[15px] [&_h3]:mt-3 [&_h3]:mb-1.5
+                          [&_h4]:text-white [&_h4]:font-semibold [&_h4]:text-[14px] [&_h4]:mt-2.5 [&_h4]:mb-1
+                          [&_a]:text-cyan-300 [&_a]:underline [&_a]:underline-offset-2
+                          [&_code]:bg-purple-500/15 [&_code]:text-purple-200 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-[13px]">
                           <ReactMarkdown>{msg.content}</ReactMarkdown>
                         </div>
                       ) : (
@@ -281,6 +283,7 @@ export default function AISupportChat({ externalOpen, onExternalOpenChange }: AI
                 </motion.div>
               ))}
               <div ref={bottomRef} />
+            </div>
             </div>
 
             {/* Scroll to bottom button */}
