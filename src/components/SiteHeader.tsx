@@ -36,8 +36,6 @@ const navLinks = [
 
 const SiteHeader = () => {
   const { user, signOut } = useAuth();
-  const { signOut } = useAuth() as any;
-  const _auth = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -61,9 +59,6 @@ const SiteHeader = () => {
 
   const isActive = (href: string) => location.pathname === href;
 
-  const themeLabel =
-    theme === "royal" ? "Royal Purple" : theme === "ocean" ? "Deep Ocean" : "Glass Premium";
-  const ThemeIcon = theme === "royal" ? Sparkles : theme === "ocean" ? Waves : Gem;
 
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
