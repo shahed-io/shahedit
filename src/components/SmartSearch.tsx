@@ -234,8 +234,16 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
   };
 
   return (
-    <div ref={wrapRef} className={`relative ${variant === "desktop" ? "hidden md:flex flex-1 max-w-md mx-auto" : "w-full"} ${open && variant === "desktop" ? "z-[60]" : ""}`}>
-      <form onSubmit={submit} className="w-full">
+    <div
+      ref={wrapRef}
+      className={variant === "desktop"
+        ? open
+          ? "hidden md:flex fixed top-20 left-0 right-0 z-[90] mx-auto w-[min(92vw,720px)] max-w-[720px]"
+          : "hidden md:flex relative flex-1 max-w-md mx-auto"
+        : "relative w-full"
+      }
+    >
+      <form onSubmit={submit} className="relative z-10 w-full">
         <div
           className="group relative w-full flex items-center gap-2 pl-4 pr-1.5 py-1.5 rounded-2xl transition-all focus-within:scale-[1.005]"
           style={{
@@ -295,11 +303,11 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.18 }}
               onClick={() => setOpen(false)}
-              className="hidden md:block fixed inset-0 z-[55]"
+              className="hidden md:block fixed inset-0 z-0 cursor-default"
               style={{
-                background: "rgba(8, 4, 22, 0.55)",
-                backdropFilter: "blur(8px) saturate(120%)",
-                WebkitBackdropFilter: "blur(8px) saturate(120%)",
+                background: "rgba(6, 3, 16, 0.72)",
+                backdropFilter: "blur(14px) saturate(120%)",
+                WebkitBackdropFilter: "blur(14px) saturate(120%)",
               }}
             />
           )}
@@ -313,7 +321,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.14 }}
-            className={`absolute mt-2 rounded-2xl overflow-hidden z-50 ${variant === "desktop" ? "w-[min(92vw,720px)] left-1/2 -translate-x-1/2" : "left-0 right-0"}`}
+            className={`absolute mt-2 rounded-2xl overflow-hidden z-10 ${variant === "desktop" ? "left-0 right-0 w-full" : "left-0 right-0"}`}
             style={{
               background: "linear-gradient(180deg, rgba(20,12,40,0.96), rgba(12,6,28,0.98))",
               backdropFilter: "blur(24px)",
