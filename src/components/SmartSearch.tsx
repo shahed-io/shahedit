@@ -68,6 +68,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
   const [recent, setRecent] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [trending, setTrending] = useState<TrendingProduct[]>([]);
+  const [popular, setPopular] = useState<string[]>(POPULAR_FALLBACK);
   const inputRef = useRef<HTMLInputElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
 
