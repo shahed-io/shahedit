@@ -569,3 +569,29 @@
   color: #7c3aed !important;
   box-shadow: 0 4px 12px rgba(124, 58, 237, 0.18), 0 0 0 1px rgba(124, 58, 237, 0.12), inset 0 1px 0 rgba(255,255,255,1);
 }
+
+/* Header nav links: hover-state pill that mirrors the active gradient pill */
+.nav-pill-link {
+  position: relative;
+}
+.nav-pill-link::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.28), rgba(236, 72, 153, 0.22));
+  border: 1px solid rgba(168, 85, 247, 0.40);
+  box-shadow: 0 4px 16px rgba(168, 85, 247, 0.30), inset 0 1px 0 rgba(255,255,255,0.12);
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 180ms ease, transform 220ms cubic-bezier(.34,1.56,.64,1);
+  pointer-events: none;
+  z-index: 0;
+}
+.nav-pill-link:hover::before {
+  opacity: 1;
+  transform: scale(1);
+}
+.nav-pill-link:hover span[style*="rgba(226, 218, 245"] {
+  color: #fff !important;
+}

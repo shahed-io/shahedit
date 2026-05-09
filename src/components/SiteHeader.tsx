@@ -192,7 +192,10 @@ const SiteHeader = () => {
                       servicesTimeout.current = setTimeout(() => setServicesOpen(false), 160);
                     }}
                   >
-                    <Link to={link.href} className="block rounded-full transition-colors hover:bg-white/[0.03]">{content}</Link>
+                    <Link
+                      to={link.href}
+                      className="nav-pill-link block rounded-full transition-all duration-200"
+                    >{content}</Link>
 
                     <AnimatePresence>
                       {servicesOpen && (
@@ -252,7 +255,7 @@ const SiteHeader = () => {
                     </AnimatePresence>
                   </div>
                 ) : (
-                  <Link key={link.label} to={link.href} className="block rounded-full transition-colors hover:bg-white/[0.03]">
+                  <Link key={link.label} to={link.href} className="nav-pill-link block rounded-full transition-all duration-200">
                     {content}
                   </Link>
                 );
