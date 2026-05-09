@@ -345,16 +345,39 @@ const SiteHeader = () => {
                     }}
                   >
                     <div className="relative">
-                      <div
-                        className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-black text-white shrink-0"
-                        style={{
-                          background: "linear-gradient(135deg, #6366f1, #a855f7 55%, #ec4899)",
-                          boxShadow:
-                            "0 3px 10px rgba(168, 85, 247, 0.40), inset 0 1px 0 rgba(255,255,255,0.35), 0 0 0 2px #ffffff",
-                        }}
-                      >
-                        {user.email?.[0].toUpperCase()}
-                      </div>
+                      {(() => {
+                        const meta: any = (user as any)?.user_metadata ?? {};
+                        const avatarUrl: string | undefined =
+                          meta.avatar_url || meta.picture || meta.avatar;
+                        const fullName: string | undefined =
+                          meta.full_name || meta.name || meta.user_name;
+                        const initial =
+                          (fullName?.trim()?.[0] || user.email?.[0] || "U").toUpperCase();
+                        return avatarUrl ? (
+                          <img
+                            src={avatarUrl}
+                            alt={fullName || user.email || "User"}
+                            referrerPolicy="no-referrer"
+                            className="w-7 h-7 rounded-full object-cover shrink-0"
+                            style={{
+                              boxShadow:
+                                "0 3px 10px rgba(168, 85, 247, 0.40), 0 0 0 2px #ffffff",
+                            }}
+                          />
+                        ) : (
+                          <div
+                            className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-black text-white shrink-0"
+                            style={{
+                              background:
+                                "linear-gradient(135deg, #6366f1, #a855f7 55%, #ec4899)",
+                              boxShadow:
+                                "0 3px 10px rgba(168, 85, 247, 0.40), inset 0 1px 0 rgba(255,255,255,0.35), 0 0 0 2px #ffffff",
+                            }}
+                          >
+                            {initial}
+                          </div>
+                        );
+                      })()}
                       {/* online indicator */}
                       <span
                         className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full"
@@ -364,7 +387,13 @@ const SiteHeader = () => {
                         }}
                       />
                     </div>
-                    <span className="text-sm font-bold" style={{ color: "#2a1f4a" }}>Dashboard</span>
+                    <span className="text-sm font-bold truncate max-w-[140px]" style={{ color: "#2a1f4a" }}>
+                      {(() => {
+                        const meta: any = (user as any)?.user_metadata ?? {};
+                        const fullName: string | undefined = meta.full_name || meta.name;
+                        return fullName?.split(" ")[0] || "Dashboard";
+                      })()}
+                    </span>
                   </motion.div>
                 </Link>
                 <motion.button
