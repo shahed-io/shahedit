@@ -110,25 +110,6 @@ const AdminRoutes = () => (
   </ProtectedRoute>
 );
 
-const CmsRoutes = () => (
-  <ProtectedRoute>
-    <Routes>
-      <Route path="" element={<CmsDashboard />} />
-      <Route path="posts" element={<ContentListPage type="post" />} />
-      <Route path="posts/:id" element={<ContentEditorPage type="post" />} />
-      <Route path="pages" element={<ContentListPage type="page" />} />
-      <Route path="pages/:id" element={<ContentEditorPage type="page" />} />
-      <Route path="media" element={<MediaLibraryPage />} />
-      <Route path="categories" element={<TaxonomyPage taxonomySlug="category" />} />
-      <Route path="tags" element={<TaxonomyPage taxonomySlug="tag" />} />
-      <Route path="menus" element={<MenusPage />} />
-      <Route path="seo" element={<SeoManagerPage />} />
-      <Route path="settings" element={<CmsSettingsPage />} />
-      <Route path="users" element={<CmsUsersPage />} />
-      <Route path="audit" element={<AuditLogsPage />} />
-    </Routes>
-  </ProtectedRoute>
-);
 
 // Root component that injects analytics on every page load
 const AppWithAnalytics = () => {
