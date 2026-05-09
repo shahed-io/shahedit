@@ -25,15 +25,6 @@ const Index = () => {
       <div className="relative z-10">
         <SiteHeader />
         <HeroBanner />
-        <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 800px' }}>
-          <PopularCategories />
-        </div>
-        <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 800px' }}>
-          <HowWeHelp />
-        </div>
-        <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 800px' }}>
-          <IndustrySolutions />
-        </div>
         <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 1000px' }}>
           <ProductsSection />
         </div>
@@ -45,6 +36,15 @@ const Index = () => {
         </div>
         <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 700px' }}>
           <AboutSection />
+        </div>
+        <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 800px' }}>
+          <PopularCategories />
+        </div>
+        <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 800px' }}>
+          <HowWeHelp />
+        </div>
+        <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 800px' }}>
+          <IndustrySolutions />
         </div>
         <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 600px' }}>
           <FaqSection />
