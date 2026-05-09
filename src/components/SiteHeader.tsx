@@ -517,6 +517,7 @@ const SiteHeader = () => {
           {/* Mobile actions */}
           <div className="md:hidden ml-auto flex items-center gap-1.5 sm:gap-2 shrink-0">
             <motion.button
+              ref={searchTriggerRef as any}
               whileTap={{ scale: 0.92 }}
               className="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shrink-0"
               style={{
@@ -526,12 +527,16 @@ const SiteHeader = () => {
                 boxShadow: "0 4px 14px rgba(168, 85, 247, 0.30), inset 0 1px 0 rgba(255,255,255,0.08)",
               }}
               onClick={() => setSearchOpen(true)}
-              aria-label="Search"
+              aria-label={searchOpen ? "Close search" : "Open search"}
+              aria-haspopup="dialog"
+              aria-expanded={searchOpen}
+              aria-controls="mobile-search-dialog"
             >
               <Search size={16} className="sm:hidden" />
               <Search size={17} className="hidden sm:block" />
             </motion.button>
             <motion.button
+              ref={menuTriggerRef as any}
               whileTap={{ scale: 0.92 }}
               className="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white shrink-0"
               style={{
@@ -544,7 +549,10 @@ const SiteHeader = () => {
                   : "inset 0 1px 0 rgba(255,255,255,0.06)",
               }}
               onClick={() => setMobileOpen(!mobileOpen)}
-              aria-label="Toggle menu"
+              aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-haspopup="dialog"
+              aria-expanded={mobileOpen}
+              aria-controls="mobile-nav-drawer"
             >
               {mobileOpen ? <X size={17} /> : <Menu size={17} />}
             </motion.button>
