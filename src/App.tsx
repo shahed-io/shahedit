@@ -64,6 +64,7 @@ const DeliveryPolicyPage = lazy(() => import("./pages/DeliveryPolicyPage"));
 const ComplaintPolicyPage = lazy(() => import("./pages/ComplaintPolicyPage"));
 const PaymentPage = lazy(() => import("./pages/PaymentPage"));
 const ProductDetailsPage = lazy(() => import("./pages/ProductDetailsPage"));
+const SearchResultsPage = lazy(() => import("./pages/SearchResultsPage"));
 
 
 const queryClient = new QueryClient();
