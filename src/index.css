@@ -205,28 +205,16 @@
   body {
     @apply text-foreground antialiased;
     font-family: 'Inter', sans-serif;
-    background-color: hsl(265, 45%, 4%);
+    background-color: hsl(265, 45%, 5%);
+    /* Unified, uniform royal-purple field — no per-section hotspots */
     background-image:
-      /* Top-left royal purple aurora */
-      radial-gradient(ellipse 75% 65% at -5% -5%, hsla(270, 92%, 55%, 0.28) 0%, transparent 60%),
-      /* Top-right violet glow */
-      radial-gradient(ellipse 60% 55% at 105% 0%, hsla(285, 95%, 60%, 0.20) 0%, transparent 55%),
-      /* Center subtle magenta */
-      radial-gradient(ellipse 70% 50% at 50% 40%, hsla(320, 80%, 50%, 0.10) 0%, transparent 70%),
-      /* Bottom-left magenta accent */
-      radial-gradient(ellipse 65% 55% at -10% 100%, hsla(320, 90%, 55%, 0.16) 0%, transparent 55%),
-      /* Bottom-right deep violet */
-      radial-gradient(ellipse 70% 60% at 110% 100%, hsla(270, 92%, 55%, 0.18) 0%, transparent 55%),
-      /* Subtle grid lines */
-      linear-gradient(rgba(168, 85, 247, 0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(168, 85, 247, 0.04) 1px, transparent 1px),
-      /* Base gradient */
-      linear-gradient(180deg, hsl(265, 48%, 4%) 0%, hsl(268, 45%, 3%) 100%);
-    background-size:
-      100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%,
-      64px 64px, 64px 64px,
-      100% 100%;
-    /* background-attachment: fixed removed — caused major scroll repaint cost */
+      /* Subtle vertical purple gradient (very low contrast so every section looks identical) */
+      linear-gradient(180deg, hsl(265, 46%, 6%) 0%, hsl(268, 46%, 5%) 50%, hsl(265, 46%, 6%) 100%),
+      /* Faint global purple wash, fixed so it does not shift between sections */
+      radial-gradient(ellipse 100% 80% at 50% 50%, hsla(270, 80%, 45%, 0.10) 0%, transparent 70%);
+    background-repeat: no-repeat;
+    background-size: 100% 100%, 100% 100%;
+    background-attachment: scroll, fixed;
     min-height: 100vh;
   }
 
