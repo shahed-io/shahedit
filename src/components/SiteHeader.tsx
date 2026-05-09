@@ -149,51 +149,8 @@ const SiteHeader = () => {
             </motion.div>
           </Link>
 
-          {/* ── Premium Search Bar ── */}
-          <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-md mx-auto">
-            <div
-              className="group relative w-full flex items-center gap-2 px-4 py-2.5 rounded-full transition-all focus-within:scale-[1.01]"
-              style={{
-                background: "linear-gradient(180deg, rgba(255,255,255,0.85), rgba(245, 242, 250, 0.85))",
-                border: "1px solid rgba(120, 100, 180, 0.14)",
-                boxShadow:
-                  "inset 0 1px 2px rgba(80, 50, 140, 0.05), 0 1px 0 rgba(255,255,255,0.9)",
-              }}
-            >
-              {/* Focus glow ring */}
-              <span
-                className="absolute -inset-px rounded-full opacity-0 group-focus-within:opacity-100 transition-opacity pointer-events-none"
-                style={{
-                  background: "linear-gradient(135deg, rgba(99, 102, 241, 0.35), rgba(168, 85, 247, 0.35), rgba(236, 72, 153, 0.35))",
-                  padding: "1px",
-                  WebkitMask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
-                  WebkitMaskComposite: "xor",
-                  maskComposite: "exclude",
-                }}
-              />
-              <Search size={16} className="shrink-0 transition-colors group-focus-within:text-[#7c3aed]" style={{ color: "#9b8fb5" }} />
-              <input
-                ref={searchInputRef}
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="প্রোডাক্ট খুঁজুন..."
-                className="flex-1 bg-transparent outline-none text-sm placeholder:text-[#9b8fb5] font-medium"
-                style={{ color: "#2a1f4a" }}
-              />
-              <kbd
-                className="hidden lg:flex items-center gap-0.5 text-[10px] font-mono font-bold px-2 py-0.5 rounded-md"
-                style={{
-                  background: "linear-gradient(180deg, #ffffff, #f8f5fd)",
-                  border: "1px solid rgba(120, 100, 180, 0.18)",
-                  color: "#7c3aed",
-                  boxShadow: "0 1px 0 rgba(80, 50, 140, 0.08), inset 0 1px 0 rgba(255,255,255,1)",
-                }}
-              >
-                ⌘ K
-              </kbd>
-            </div>
-          </form>
+          {/* ── Smart Search ── */}
+          <SmartSearch variant="desktop" />
 
 
           {/* ── Premium Pill Nav ── */}
