@@ -142,15 +142,9 @@ const AppWithAnalytics = () => {
         <Route path="/complaint-policy" element={<ComplaintPolicyPage />} />
         <Route path="/payment" element={<PaymentPage />} />
         <Route path="/product/:id" element={<ProductDetailsPage />} />
-        {/* CMS Public Routes */}
-        <Route path="/cms-blog" element={<CmsBlogPublicPage />} />
-        <Route path="/post/:slug" element={<PublicContentPage type="post" />} />
-        <Route path="/page/:slug" element={<PublicContentPage type="page" />} />
         {/* Admin Routes */}
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/*" element={<AdminRoutes />} />
-        {/* CMS Routes */}
-        <Route path="/cms/*" element={<CmsRoutes />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <GlobalSupport />
