@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 const RECENT_KEY = "search_recent_v1";
 const MAX_RECENT = 8;
 
-const POPULAR_SEARCHES = [
+const POPULAR_FALLBACK = [
   "Windows 11", "Office 365", "Netflix", "Adobe", "Antivirus", "VPN", "Spotify", "Canva Pro",
 ];
 
