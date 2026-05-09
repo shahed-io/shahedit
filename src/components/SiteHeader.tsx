@@ -57,6 +57,15 @@ const SiteHeader = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Lock body scroll while mobile drawer or search modal is open
+  useEffect(() => {
+    const lock = mobileOpen || searchOpen;
+    if (!lock) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = prev; };
+  }, [mobileOpen, searchOpen]);
+
   return (
     <motion.header
       initial={{ y: -80, opacity: 0 }}
