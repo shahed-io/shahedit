@@ -260,6 +260,12 @@ export default function ProductDetailsPage() {
                 {/* Description */}
                 <div className="md:col-span-2">
                   <h2 className="text-xs font-bold uppercase tracking-widest text-foreground/40 mb-3">বিবরণ</h2>
+                  {(pkg as any).short_description && (
+                    <p className="text-lg text-foreground/90 leading-relaxed mb-5 font-medium border-l-2 pl-4"
+                      style={{ borderColor: c.color }}>
+                      {(pkg as any).short_description}
+                    </p>
+                  )}
                   {pkg.description ? (
                     <div
                       className="text-base text-foreground/80 leading-relaxed rich-description prose prose-invert max-w-none"
