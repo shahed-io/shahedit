@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import {
   Menu, X, ChevronRight, ChevronDown, LogIn, LogOut, Search,
   Globe, Wrench, Palette, Facebook, TrendingUp, Building2, Sparkles,
+  FileText, Receipt, FolderOpen, User as UserIcon, Flame, MessageCircle,
+  Briefcase, Phone, Shield, BadgeCheck,
 } from "lucide-react";
 import logoImg from "@/assets/logo-glossy.png";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
