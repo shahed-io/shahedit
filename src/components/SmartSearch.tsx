@@ -195,7 +195,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
     try { localStorage.setItem(RECENT_KEY, JSON.stringify(next)); } catch {}
   };
 
-  const close = () => { setOpen(false); setQuery(""); inputRef.current?.blur(); onNavigate?.(); };
+  const close = () => { setOpen(false); setQuery(""); blurSearchInput(); onNavigate?.(); };
 
   const goTo = (href: string, saveQ?: string) => {
     if (saveQ) saveRecent(saveQ);
@@ -205,7 +205,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
 
   const goHit = (s: SearchHit) => goTo(s.href, s.title);
 
-  const goRecent = (q: string) => { setQuery(q); inputRef.current?.focus(); };
+  const goRecent = (q: string) => { setQuery(q); focusSearchInput(); };
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
@@ -221,7 +221,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
     if (!open) return;
     if (e.key === "ArrowDown") { e.preventDefault(); setActive(a => Math.min(a + 1, items.length - 1)); }
     else if (e.key === "ArrowUp") { e.preventDefault(); setActive(a => Math.max(a - 1, 0)); }
-    else if (e.key === "Escape") { setOpen(false); inputRef.current?.blur(); }
+    else if (e.key === "Escape") { setOpen(false); blurSearchInput(); }
   };
 
   const clearRecent = () => { setRecent([]); try { localStorage.removeItem(RECENT_KEY); } catch {} };
