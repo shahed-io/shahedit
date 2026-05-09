@@ -401,7 +401,7 @@ const SiteHeader = () => {
                 color: "#f0abfc",
                 boxShadow: "0 4px 14px rgba(168, 85, 247, 0.30), inset 0 1px 0 rgba(255,255,255,0.08)",
               }}
-              onClick={() => setMobileOpen(true)}
+              onClick={() => setSearchOpen(true)}
               aria-label="Search"
             >
               <Search size={17} />
