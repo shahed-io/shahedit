@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo, FormEvent, KeyboardEvent } from "react";
+import { createPortal } from "react-dom";
 import { Search, X, Clock, TrendingUp, Star, Sparkles, Package, Wrench, FileText, Briefcase, HelpCircle, ArrowUpRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -71,7 +72,15 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
   const [trending, setTrending] = useState<TrendingProduct[]>([]);
   const [popular, setPopular] = useState<string[]>(POPULAR_FALLBACK);
   const inputRef = useRef<HTMLInputElement>(null);
+  const modalInputRef = useRef<HTMLInputElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
+
+  const getActiveInput = () => modalInputRef.current || inputRef.current;
+  const focusSearchInput = () => getActiveInput()?.focus();
+  const blurSearchInput = () => {
+    inputRef.current?.blur();
+    modalInputRef.current?.blur();
+  };
 
   useEffect(() => {
     try { const raw = localStorage.getItem(RECENT_KEY); if (raw) setRecent(JSON.parse(raw)); } catch {}
@@ -129,8 +138,9 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
         setOpen(true);
         // wait a tick so the input is mounted/visible before focusing
         setTimeout(() => {
-          inputRef.current?.focus();
-          inputRef.current?.select();
+          const activeInput = getActiveInput();
+          activeInput?.focus();
+          activeInput?.select();
         }, 0);
       }
     };
@@ -139,10 +149,22 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
   }, [variant]);
 
   useEffect(() => {
+    if (variant !== "mobile") return;
     const onClick = (e: MouseEvent) => { if (!wrapRef.current?.contains(e.target as Node)) setOpen(false); };
     document.addEventListener("mousedown", onClick);
     return () => document.removeEventListener("mousedown", onClick);
-  }, []);
+  }, [variant]);
+
+  useEffect(() => {
+    if (variant !== "desktop" || !open) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const t = window.setTimeout(() => focusSearchInput(), 0);
+    return () => {
+      window.clearTimeout(t);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [open, variant]);
 
   useEffect(() => {
     const q = query.trim();
@@ -173,7 +195,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
     try { localStorage.setItem(RECENT_KEY, JSON.stringify(next)); } catch {}
   };
 
-  const close = () => { setOpen(false); setQuery(""); inputRef.current?.blur(); onNavigate?.(); };
+  const close = () => { setOpen(false); setQuery(""); blurSearchInput(); onNavigate?.(); };
 
   const goTo = (href: string, saveQ?: string) => {
     if (saveQ) saveRecent(saveQ);
@@ -183,7 +205,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
 
   const goHit = (s: SearchHit) => goTo(s.href, s.title);
 
-  const goRecent = (q: string) => { setQuery(q); inputRef.current?.focus(); };
+  const goRecent = (q: string) => { setQuery(q); focusSearchInput(); };
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
@@ -199,7 +221,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
     if (!open) return;
     if (e.key === "ArrowDown") { e.preventDefault(); setActive(a => Math.min(a + 1, items.length - 1)); }
     else if (e.key === "ArrowUp") { e.preventDefault(); setActive(a => Math.max(a - 1, 0)); }
-    else if (e.key === "Escape") { setOpen(false); inputRef.current?.blur(); }
+    else if (e.key === "Escape") { setOpen(false); blurSearchInput(); }
   };
 
   const clearRecent = () => { setRecent([]); try { localStorage.removeItem(RECENT_KEY); } catch {} };
@@ -211,9 +233,17 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
     return Math.round(((orig - p) / orig) * 100);
   };
 
-  return (
-    <div ref={wrapRef} className={`relative ${variant === "desktop" ? "hidden md:flex flex-1 max-w-md mx-auto" : "w-full"} ${open && variant === "desktop" ? "z-[60]" : ""}`}>
-      <form onSubmit={submit} className="w-full">
+  const searchUi = (
+    <div
+      ref={wrapRef}
+      className={variant === "desktop"
+        ? open
+          ? "hidden md:flex fixed top-20 left-0 right-0 z-[90] mx-auto w-[min(92vw,720px)] max-w-[720px]"
+          : "hidden md:flex relative flex-1 max-w-md mx-auto"
+        : "relative w-full"
+      }
+    >
+      <form onSubmit={submit} className="relative z-10 w-full">
         <div
           className="group relative w-full flex items-center gap-2 pl-4 pr-1.5 py-1.5 rounded-2xl transition-all focus-within:scale-[1.005]"
           style={{
@@ -273,11 +303,11 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.18 }}
               onClick={() => setOpen(false)}
-              className="hidden md:block fixed inset-0 z-[55]"
+              className="hidden md:block fixed inset-0 z-0 cursor-default"
               style={{
-                background: "rgba(8, 4, 22, 0.55)",
-                backdropFilter: "blur(8px) saturate(120%)",
-                WebkitBackdropFilter: "blur(8px) saturate(120%)",
+                background: "rgba(6, 3, 16, 0.72)",
+                backdropFilter: "blur(14px) saturate(120%)",
+                WebkitBackdropFilter: "blur(14px) saturate(120%)",
               }}
             />
           )}
@@ -291,7 +321,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.14 }}
-            className={`absolute mt-2 rounded-2xl overflow-hidden z-50 ${variant === "desktop" ? "w-[min(92vw,720px)] left-1/2 -translate-x-1/2" : "left-0 right-0"}`}
+            className={`absolute mt-2 rounded-2xl overflow-hidden z-10 ${variant === "desktop" ? "left-0 right-0 w-full" : "left-0 right-0"}`}
             style={{
               background: "linear-gradient(180deg, rgba(20,12,40,0.96), rgba(12,6,28,0.98))",
               backdropFilter: "blur(24px)",
@@ -552,6 +582,12 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
       </AnimatePresence>
     </div>
   );
+
+  if (variant === "desktop" && open && typeof document !== "undefined") {
+    return createPortal(searchUi, document.body);
+  }
+
+  return searchUi;
 };
 
 export default SmartSearch;
