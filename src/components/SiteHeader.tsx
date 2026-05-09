@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, FormEvent } from "react";
+import { useState, useRef } from "react";
 import {
   Search, Menu, X, ChevronRight, ChevronDown, LogIn, LogOut,
   Globe, Wrench, Palette, Facebook, TrendingUp, Building2, Sparkles,
