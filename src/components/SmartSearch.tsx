@@ -263,6 +263,27 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
         </div>
       </form>
 
+      {/* Desktop full-page blur backdrop */}
+      {variant === "desktop" && (
+        <AnimatePresence>
+          {open && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.18 }}
+              onClick={() => setOpen(false)}
+              className="hidden md:block fixed inset-0 z-40"
+              style={{
+                background: "rgba(8, 4, 22, 0.55)",
+                backdropFilter: "blur(8px) saturate(120%)",
+                WebkitBackdropFilter: "blur(8px) saturate(120%)",
+              }}
+            />
+          )}
+        </AnimatePresence>
+      )}
+
       <AnimatePresence>
         {open && (
           <motion.div
