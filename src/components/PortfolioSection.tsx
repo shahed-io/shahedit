@@ -23,11 +23,11 @@ const PortfolioSection = () => {
 
   return (
     <section id="portfolio" className="py-24 relative overflow-hidden">
-      <div className="absolute inset-0 tech-grid-bg opacity-35" />
-      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full"
-        style={{ background: 'radial-gradient(circle, hsl(270,92%,65%) 0%, transparent 65%)', filter: 'blur(120px)', opacity: 0.07 }} />
-      <div className="absolute right-0 bottom-0 w-[400px] h-[400px] rounded-full"
-        style={{ background: 'radial-gradient(circle, hsl(320,90%,48%) 0%, transparent 65%)', filter: 'blur(100px)', opacity: 0.07 }} />
+      <div className="absolute inset-0 tech-grid-bg opacity-35 pointer-events-none" />
+      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(circle, hsl(270,92%,65%) 0%, transparent 65%)', opacity: 0.07 }} />
+      <div className="absolute right-0 bottom-0 w-[400px] h-[400px] rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(circle, hsl(320,90%,48%) 0%, transparent 65%)', opacity: 0.07 }} />
 
       <div className="container mx-auto px-4 relative">
         <div className="flex items-end justify-between mb-16">
