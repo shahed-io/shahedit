@@ -323,7 +323,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
                       </span>
                     </div>
                     <ul>
-                      {POPULAR_SEARCHES.map((p) => (
+                      {popular.map((p) => (
                         <li key={p}>
                           <button
                             type="button"
