@@ -57,6 +57,15 @@ const SiteHeader = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Lock body scroll while mobile drawer or search modal is open
+  useEffect(() => {
+    const lock = mobileOpen || searchOpen;
+    if (!lock) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = prev; };
+  }, [mobileOpen, searchOpen]);
+
   return (
     <motion.header
       initial={{ y: -80, opacity: 0 }}
@@ -505,8 +514,6 @@ const SiteHeader = () => {
               <div className="h-px w-full" style={{ background: "linear-gradient(90deg, transparent, rgba(99,102,241,0.7), rgba(168,85,247,0.95), rgba(236,72,153,0.7), transparent)" }} />
 
               <div className="p-4 space-y-4">
-                {/* Search */}
-                <SmartSearch variant="mobile" onNavigate={() => setMobileOpen(false)} />
 
                 {/* Welcome / Login Card */}
                 {user ? (
