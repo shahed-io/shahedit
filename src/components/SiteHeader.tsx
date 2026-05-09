@@ -137,26 +137,13 @@ const SiteHeader = () => {
                 </div>
               </div>
               <div className="hidden sm:flex flex-col leading-tight">
-                <span className="flex items-center gap-1.5">
+                <span className="flex items-center">
                   <span className="text-[20px] font-extrabold tracking-tight" style={{ fontFamily: "'Syne', sans-serif" }}>
                     <span style={{ color: "#1a1233" }}>Shahed </span>
                     <span style={{ background: "linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                       IT
                     </span>
                   </span>
-                  <span
-                    className="text-[8px] font-black tracking-[0.12em] px-1.5 py-0.5 rounded-md text-white relative top-[-2px]"
-                    style={{
-                      background: "linear-gradient(135deg, #fbbf24, #f59e0b)",
-                      boxShadow: "0 2px 6px rgba(245, 158, 11, 0.35), inset 0 1px 0 rgba(255,255,255,0.4)",
-                    }}
-                  >
-                    PRO
-                  </span>
-                </span>
-                <span className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.20em] font-bold" style={{ color: "#f97316" }}>
-                  <span className="block w-2.5 h-px" style={{ background: "linear-gradient(90deg, #f97316, transparent)" }} />
-                  SHAHEDIT.COM.BD
                 </span>
               </div>
             </motion.div>
