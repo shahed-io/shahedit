@@ -7,6 +7,7 @@ import logoImg from "@/assets/logo-glossy.png";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import SmartSearch from "@/components/SmartSearch";
 
 
 import catWebDev from "@/assets/cat-web-dev.jpg";
