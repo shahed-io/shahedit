@@ -126,23 +126,23 @@
   body {
     @apply text-foreground antialiased;
     font-family: 'Inter', sans-serif;
-    background-color: hsl(265, 45%, 4%);
+    background-color: hsl(240, 22%, 5%);
     background-image:
-      /* Top-left royal purple aurora */
-      radial-gradient(ellipse 75% 65% at -5% -5%, hsla(270, 92%, 55%, 0.28) 0%, transparent 60%),
-      /* Top-right violet glow */
-      radial-gradient(ellipse 60% 55% at 105% 0%, hsla(285, 95%, 60%, 0.20) 0%, transparent 55%),
-      /* Center subtle magenta */
-      radial-gradient(ellipse 70% 50% at 50% 40%, hsla(320, 80%, 50%, 0.10) 0%, transparent 70%),
-      /* Bottom-left magenta accent */
-      radial-gradient(ellipse 65% 55% at -10% 100%, hsla(320, 90%, 55%, 0.16) 0%, transparent 55%),
-      /* Bottom-right deep violet */
-      radial-gradient(ellipse 70% 60% at 110% 100%, hsla(270, 92%, 55%, 0.18) 0%, transparent 55%),
-      /* Subtle grid lines */
-      linear-gradient(rgba(168, 85, 247, 0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(168, 85, 247, 0.04) 1px, transparent 1px),
-      /* Base gradient */
-      linear-gradient(180deg, hsl(265, 48%, 4%) 0%, hsl(268, 45%, 3%) 100%);
+      /* Top-left warm gold halo */
+      radial-gradient(ellipse 75% 65% at -5% -5%, hsla(42, 80%, 50%, 0.18) 0%, transparent 60%),
+      /* Top-right champagne glow */
+      radial-gradient(ellipse 60% 55% at 105% 0%, hsla(45, 85%, 65%, 0.12) 0%, transparent 55%),
+      /* Center subtle warm */
+      radial-gradient(ellipse 70% 50% at 50% 40%, hsla(38, 70%, 45%, 0.08) 0%, transparent 70%),
+      /* Bottom-left amber */
+      radial-gradient(ellipse 65% 55% at -10% 100%, hsla(38, 80%, 50%, 0.10) 0%, transparent 55%),
+      /* Bottom-right deep gold */
+      radial-gradient(ellipse 70% 60% at 110% 100%, hsla(42, 75%, 50%, 0.14) 0%, transparent 55%),
+      /* Subtle gold grid lines */
+      linear-gradient(rgba(201, 161, 74, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201, 161, 74, 0.035) 1px, transparent 1px),
+      /* Base gradient — near-black with cool tint */
+      linear-gradient(180deg, hsl(240, 24%, 5%) 0%, hsl(240, 22%, 3%) 100%);
     background-size:
       100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%,
       64px 64px, 64px 64px,
