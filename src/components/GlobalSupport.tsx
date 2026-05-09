@@ -7,8 +7,8 @@ export default function GlobalSupport() {
   const [aiOpen, setAiOpen] = useState(false);
   const { pathname } = useLocation();
 
-  // Hide on admin and CMS routes
-  if (pathname.startsWith("/admin") || pathname.startsWith("/cms")) return null;
+  // Hide on admin routes
+  if (pathname.startsWith("/admin")) return null;
 
   return (
     <>
