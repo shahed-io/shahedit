@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo, FormEvent, KeyboardEvent } from "react";
+import { createPortal } from "react-dom";
 import { Search, X, Clock, TrendingUp, Star, Sparkles, Package, Wrench, FileText, Briefcase, HelpCircle, ArrowUpRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -71,7 +72,15 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
   const [trending, setTrending] = useState<TrendingProduct[]>([]);
   const [popular, setPopular] = useState<string[]>(POPULAR_FALLBACK);
   const inputRef = useRef<HTMLInputElement>(null);
+  const modalInputRef = useRef<HTMLInputElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
+
+  const getActiveInput = () => modalInputRef.current || inputRef.current;
+  const focusSearchInput = () => getActiveInput()?.focus();
+  const blurSearchInput = () => {
+    inputRef.current?.blur();
+    modalInputRef.current?.blur();
+  };
 
   useEffect(() => {
     try { const raw = localStorage.getItem(RECENT_KEY); if (raw) setRecent(JSON.parse(raw)); } catch {}
