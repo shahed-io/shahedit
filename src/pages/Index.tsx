@@ -1,4 +1,3 @@
-import { useState } from "react";
 import SiteHeader from "@/components/SiteHeader";
 import HeroBanner from "@/components/HeroBanner";
 import PopularCategories from "@/components/PopularCategories";
@@ -12,12 +11,8 @@ import FaqSection from "@/components/FaqSection";
 import TrustStatsBar from "@/components/TrustStatsBar";
 
 import SiteFooter from "@/components/SiteFooter";
-import FloatingContactButton from "@/components/FloatingContactButton";
-import AISupportChat from "@/components/AISupportChat";
 
 const Index = () => {
-  const [aiOpen, setAiOpen] = useState(false);
-
   return (
     <div className="min-h-screen relative overflow-x-hidden">
       {/* Animated background orbs */}
