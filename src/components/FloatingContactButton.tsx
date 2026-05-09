@@ -78,51 +78,84 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
         )}
       </AnimatePresence>
 
-      {/* Main Toggle Button */}
+      {/* Main Toggle Button - Support Pill */}
       <motion.button
         onClick={() => setOpen(v => !v)}
-        whileHover={{ scale: 1.08 }}
-        whileTap={{ scale: 0.92 }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 1.2, type: "spring", stiffness: 200 }}
-        className="relative w-14 h-14 rounded-full flex items-center justify-center shadow-2xl"
+        aria-label="Support"
+        className="relative flex items-center gap-2.5 pl-3 pr-4 h-14 rounded-full shadow-2xl group"
         style={{
           background: open
             ? "linear-gradient(135deg, hsl(222,45%,12%), hsl(222,40%,16%))"
             : "linear-gradient(135deg, hsl(258,90%,58%), hsl(185,100%,42%))",
-          border: open ? "1px solid rgba(255,255,255,0.12)" : "none",
+          border: open ? "1px solid rgba(255,255,255,0.12)" : "1px solid rgba(255,255,255,0.18)",
           boxShadow: open
             ? "0 8px 24px rgba(0,0,0,0.4)"
-            : "0 8px 32px rgba(139,92,246,0.45)",
+            : "0 10px 36px rgba(139,92,246,0.55), inset 0 1px 0 rgba(255,255,255,0.25)",
         }}
       >
-        <AnimatePresence mode="wait">
-          {open ? (
-            <motion.span key="x"
-              initial={{ rotate: -90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: 90, opacity: 0 }}
-              transition={{ duration: 0.18 }}
-            >
-              <X size={22} className="text-white" />
-            </motion.span>
-          ) : (
-            <motion.span key="spark"
-              initial={{ rotate: 90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: -90, opacity: 0 }}
-              transition={{ duration: 0.18 }}
-            >
-              <Headphones size={22} className="text-white" />
-            </motion.span>
-          )}
-        </AnimatePresence>
+        {/* Icon disc */}
+        <span
+          className="relative w-9 h-9 rounded-full flex items-center justify-center shrink-0"
+          style={{
+            background: open
+              ? "rgba(255,255,255,0.08)"
+              : "rgba(255,255,255,0.18)",
+            backdropFilter: "blur(6px)",
+          }}
+        >
+          <AnimatePresence mode="wait">
+            {open ? (
+              <motion.span key="x"
+                initial={{ rotate: -90, opacity: 0 }}
+                animate={{ rotate: 0, opacity: 1 }}
+                exit={{ rotate: 90, opacity: 0 }}
+                transition={{ duration: 0.18 }}
+              >
+                <X size={18} className="text-white" />
+              </motion.span>
+            ) : (
+              <motion.span key="hp"
+                initial={{ rotate: 90, opacity: 0 }}
+                animate={{ rotate: 0, opacity: 1 }}
+                exit={{ rotate: -90, opacity: 0 }}
+                transition={{ duration: 0.18 }}
+              >
+                <Headphones size={18} className="text-white" />
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </span>
 
-        {/* Pulse ring */}
+        {/* Label */}
+        <span className="flex flex-col items-start leading-tight pr-1">
+          <span className="text-white text-[13px] font-bold tracking-wide">
+            {open ? "বন্ধ করুন" : "সাহায্য চাই?"}
+          </span>
+          {!open && (
+            <span className="text-white/85 text-[10.5px] font-medium flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              ২৪/৭ লাইভ সাপোর্ট
+            </span>
+          )}
+        </span>
+
+        {/* Pulse rings */}
         {!open && (
-          <span className="absolute inset-0 rounded-full animate-ping"
-            style={{ background: "rgba(139,92,246,0.25)" }} />
+          <>
+            <span className="absolute inset-0 rounded-full animate-ping pointer-events-none"
+              style={{ background: "rgba(139,92,246,0.20)" }} />
+            <span className="absolute -inset-1 rounded-full pointer-events-none opacity-60"
+              style={{
+                background: "conic-gradient(from 0deg, hsl(258,90%,58%), hsl(185,100%,42%), hsl(258,90%,58%))",
+                filter: "blur(10px)",
+                zIndex: -1,
+              }} />
+          </>
         )}
       </motion.button>
     </div>
