@@ -484,7 +484,7 @@ const SiteHeader = () => {
         )}
       </AnimatePresence>
 
-      {/* ───── Mobile Drawer (Premium Rich Menu) ───── */}
+      {/* ───── Mobile Drawer (Premium Side Sheet) ───── */}
       <AnimatePresence>
         {mobileOpen && (
           <>
@@ -493,250 +493,396 @@ const SiteHeader = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="md:hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
+              transition={{ duration: 0.25 }}
+              className="md:hidden fixed inset-0 z-40"
+              style={{
+                background: "radial-gradient(ellipse at top right, rgba(168,85,247,0.25), rgba(0,0,0,0.78) 60%)",
+                backdropFilter: "blur(10px) saturate(150%)",
+                WebkitBackdropFilter: "blur(10px) saturate(150%)",
+              }}
               onClick={() => setMobileOpen(false)}
             />
-            <motion.div
-              initial={{ opacity: 0, y: -12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-              className="md:hidden fixed left-3 right-3 top-[68px] z-50 rounded-3xl overflow-hidden max-h-[calc(100vh-84px)] overflow-y-auto"
+
+            {/* Side Sheet */}
+            <motion.aside
+              initial={{ x: "100%", opacity: 0.6 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: "100%", opacity: 0.4 }}
+              transition={{ type: "spring", stiffness: 320, damping: 36 }}
+              className="md:hidden fixed top-0 right-0 bottom-0 z-50 w-[88%] max-w-[400px] flex flex-col overflow-hidden"
               style={{
-                background: "linear-gradient(180deg, rgba(16, 11, 38, 0.98), rgba(22, 14, 52, 0.98))",
-                backdropFilter: "blur(24px) saturate(180%)",
-                WebkitBackdropFilter: "blur(24px) saturate(180%)",
-                border: "1px solid rgba(168, 85, 247, 0.28)",
-                boxShadow: "0 24px 60px rgba(0,0,0,0.55), 0 0 0 1px rgba(168,85,247,0.10), inset 0 1px 0 rgba(255,255,255,0.05)",
+                background:
+                  "linear-gradient(180deg, rgba(14, 9, 32, 0.97) 0%, rgba(20, 12, 48, 0.97) 50%, rgba(14, 9, 32, 0.98) 100%)",
+                backdropFilter: "blur(28px) saturate(180%)",
+                WebkitBackdropFilter: "blur(28px) saturate(180%)",
+                borderLeft: "1px solid rgba(168, 85, 247, 0.35)",
+                boxShadow: "-24px 0 60px rgba(0,0,0,0.65), inset 1px 0 0 rgba(255,255,255,0.06)",
               }}
             >
-              {/* Aurora top edge */}
-              <div className="h-px w-full" style={{ background: "linear-gradient(90deg, transparent, rgba(99,102,241,0.7), rgba(168,85,247,0.95), rgba(236,72,153,0.7), transparent)" }} />
+              {/* Aurora ambient blobs */}
+              <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                <motion.div
+                  className="absolute -top-24 -right-16 w-72 h-72 rounded-full blur-3xl opacity-40"
+                  style={{ background: "radial-gradient(circle, #a855f7, transparent 70%)" }}
+                  animate={{ scale: [1, 1.15, 1], rotate: [0, 30, 0] }}
+                  transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+                />
+                <motion.div
+                  className="absolute -bottom-20 -left-12 w-64 h-64 rounded-full blur-3xl opacity-30"
+                  style={{ background: "radial-gradient(circle, #ec4899, transparent 70%)" }}
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+                />
+              </div>
 
-              <div className="p-4 space-y-4">
+              {/* Aurora left edge */}
+              <div
+                className="absolute top-0 bottom-0 left-0 w-px pointer-events-none"
+                style={{
+                  background:
+                    "linear-gradient(180deg, transparent, rgba(99,102,241,0.6) 20%, rgba(168,85,247,0.95) 50%, rgba(236,72,153,0.6) 80%, transparent)",
+                }}
+              />
 
-                {/* Welcome / Login Card */}
-                {user ? (
-                  <Link to="/dashboard" onClick={() => setMobileOpen(false)}>
+              {/* ── Sticky Header ── */}
+              <div
+                className="relative shrink-0 px-4 pt-4 pb-3 flex items-center justify-between"
+                style={{
+                  background: "linear-gradient(180deg, rgba(20,14,44,0.85), rgba(20,14,44,0.0))",
+                  borderBottom: "1px solid rgba(168,85,247,0.18)",
+                }}
+              >
+                <div className="flex items-center gap-2.5">
+                  <div className="relative">
+                    <motion.div
+                      className="absolute -inset-1 rounded-xl opacity-70 blur-md"
+                      style={{ background: "conic-gradient(from 0deg, #6366f1, #a855f7, #ec4899, #6366f1)" }}
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                    />
                     <div
-                      className="relative rounded-2xl p-4 overflow-hidden"
+                      className="relative w-9 h-9 rounded-lg flex items-center justify-center overflow-hidden"
                       style={{
-                        background: "linear-gradient(135deg, #4c1d95 0%, #7c3aed 45%, #c026d3 100%)",
-                        boxShadow: "0 12px 28px rgba(124,58,237,0.45), inset 0 1px 0 rgba(255,255,255,0.18)",
+                        background: "linear-gradient(135deg, #1a1233, #251847)",
+                        border: "1px solid rgba(168, 85, 247, 0.45)",
                       }}
                     >
-                      <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full opacity-30 blur-2xl" style={{ background: "radial-gradient(circle, #f0abfc, transparent 70%)" }} />
-                      <div className="relative flex items-center gap-3">
-                        {(() => {
-                          const meta: any = (user as any)?.user_metadata ?? {};
-                          const avatarUrl = meta.avatar_url || meta.picture;
-                          const fullName = meta.full_name || meta.name || user.email?.split("@")[0];
-                          const initial = (fullName?.[0] || "U").toUpperCase();
-                          return avatarUrl ? (
-                            <img src={avatarUrl} alt={fullName} referrerPolicy="no-referrer" className="w-14 h-14 rounded-full object-cover" style={{ boxShadow: "0 0 0 3px rgba(255,255,255,0.30)" }} />
-                          ) : (
-                            <div className="w-14 h-14 rounded-full flex items-center justify-center text-xl font-black text-white" style={{ background: "linear-gradient(135deg, #ec4899, #6366f1)", boxShadow: "0 0 0 3px rgba(255,255,255,0.30)" }}>
-                              {initial}
-                            </div>
-                          );
-                        })()}
-                        <div className="flex-1 min-w-0">
-                          <div className="text-[10px] uppercase tracking-[0.18em] font-bold text-white/75 flex items-center gap-1">
-                            Welcome Back <Sparkles size={9} />
-                          </div>
-                          <div className="text-base font-extrabold text-white truncate flex items-center gap-1.5">
-                            {(user as any)?.user_metadata?.full_name || user.email?.split("@")[0]}
-                            <BadgeCheck size={14} className="text-cyan-300" />
-                          </div>
-                          <span className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full text-[10px] font-bold text-amber-200" style={{ background: "rgba(0,0,0,0.25)", border: "1px solid rgba(251,191,36,0.40)" }}>
-                            <Sparkles size={9} /> Premium Client
-                          </span>
-                        </div>
-                        <ChevronRight size={18} className="text-white/85" />
-                      </div>
+                      <img src={logoImg} alt="Shahed IT" className="w-7 h-7 object-contain" />
                     </div>
-                  </Link>
-                ) : (
-                  <Link to="/login" onClick={() => setMobileOpen(false)}>
-                    <div
-                      className="relative rounded-2xl p-4 overflow-hidden flex items-center gap-3"
-                      style={{
-                        background: "linear-gradient(135deg, #4c1d95, #7c3aed 55%, #c026d3)",
-                        boxShadow: "0 12px 28px rgba(124,58,237,0.45), inset 0 1px 0 rgba(255,255,255,0.18)",
-                      }}
-                    >
-                      <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: "rgba(255,255,255,0.18)" }}>
-                        <LogIn size={20} className="text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="text-[10px] uppercase tracking-[0.18em] font-bold text-white/75">Get Started</div>
-                        <div className="text-base font-extrabold text-white">Login / Sign Up</div>
-                      </div>
-                      <ChevronRight size={18} className="text-white/85" />
-                    </div>
-                  </Link>
-                )}
-
-                {/* Quick Tiles */}
-                <div className="grid grid-cols-4 gap-2">
-                  {[
-                    { label: "Quotes", icon: FileText, to: "/dashboard?tab=quote", grad: "linear-gradient(135deg, #6366f1, #4338ca)" },
-                    { label: "Payments", icon: Receipt, to: "/dashboard?tab=payment", grad: "linear-gradient(135deg, #10b981, #059669)" },
-                    { label: "Documents", icon: FolderOpen, to: "/dashboard?tab=docs", grad: "linear-gradient(135deg, #ec4899, #be185d)" },
-                    { label: "Profile", icon: UserIcon, to: "/dashboard?tab=profile", grad: "linear-gradient(135deg, #f59e0b, #d97706)" },
-                  ].map((t) => (
-                    <Link key={t.label} to={t.to} onClick={() => setMobileOpen(false)}>
-                      <div className="rounded-xl p-2.5 flex flex-col items-center gap-1.5" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
-                        <div className="w-10 h-10 rounded-full flex items-center justify-center text-white" style={{ background: t.grad, boxShadow: "0 4px 12px rgba(0,0,0,0.30), inset 0 1px 0 rgba(255,255,255,0.20)" }}>
-                          <t.icon size={16} />
-                        </div>
-                        <span className="text-[10px] font-bold text-white/85 text-center leading-tight">{t.label}</span>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-
-                {/* Promo Cards */}
-                <div className="grid grid-cols-2 gap-2.5">
-                  <Link to="/pricing" onClick={() => setMobileOpen(false)}>
-                    <div className="relative rounded-2xl p-3 overflow-hidden h-full" style={{ background: "linear-gradient(135deg, #f97316, #dc2626)", boxShadow: "0 10px 22px rgba(249,115,22,0.40)" }}>
-                      <div className="flex items-center gap-1.5">
-                        <Flame size={14} className="text-amber-200" />
-                        <span className="text-[10px] font-black text-white uppercase tracking-wider">Hot Deals</span>
-                      </div>
-                      <div className="text-base font-extrabold text-white mt-1.5 leading-tight">Up to 50% OFF</div>
-                      <div className="text-[11px] text-white/85 mt-0.5">প্যাকেজ দেখুন →</div>
-                    </div>
-                  </Link>
-                  <a href="https://wa.me/8801820060046" target="_blank" rel="noopener noreferrer">
-                    <div className="relative rounded-2xl p-3 overflow-hidden h-full" style={{ background: "linear-gradient(135deg, #10b981, #047857)", boxShadow: "0 10px 22px rgba(16,185,129,0.40)" }}>
-                      <div className="flex items-center gap-1.5">
-                        <MessageCircle size={14} className="text-emerald-100" />
-                        <span className="text-[10px] font-black text-white uppercase tracking-wider">Live 24/7</span>
-                      </div>
-                      <div className="text-base font-extrabold text-white mt-1.5 leading-tight">সাহায্য নিন</div>
-                      <div className="text-[11px] text-white/85 mt-0.5">WhatsApp চ্যাট →</div>
-                    </div>
-                  </a>
-                </div>
-
-                {/* Trending Categories */}
-                <div>
-                  <div className="flex items-center justify-center gap-2 mb-2">
-                    <Sparkles size={11} style={{ color: "#f0abfc" }} />
-                    <span className="text-[10px] font-black uppercase tracking-[0.22em]" style={{ color: "#c4b5fd" }}>Trending Categories</span>
-                    <Sparkles size={11} style={{ color: "#f0abfc" }} />
                   </div>
-                  <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1" style={{ scrollbarWidth: "none" }}>
-                    {serviceCategories.map((cat) => (
-                      <Link key={cat.label} to={cat.href} onClick={() => setMobileOpen(false)} className="shrink-0">
-                        <div className="flex items-center gap-2 px-3 py-2 rounded-full whitespace-nowrap" style={{ background: "rgba(255,255,255,0.05)", border: `1px solid hsl(${cat.accent} / 0.40)` }}>
-                          <cat.icon size={13} style={{ color: `hsl(${cat.accent})` }} />
-                          <span className="text-xs font-semibold text-white">{cat.label}</span>
-                        </div>
-                      </Link>
-                    ))}
+                  <div className="leading-tight">
+                    <div className="text-[14px] font-extrabold text-white" style={{ fontFamily: "'Syne', sans-serif" }}>
+                      Shahed <span style={{ background: "linear-gradient(135deg, #818cf8, #f0abfc)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>IT</span>
+                    </div>
+                    <div className="text-[8px] uppercase tracking-[0.22em] font-bold" style={{ color: "#a78bfa" }}>
+                      Premium Menu
+                    </div>
                   </div>
                 </div>
+                <motion.button
+                  whileTap={{ scale: 0.9, rotate: 90 }}
+                  onClick={() => setMobileOpen(false)}
+                  className="w-9 h-9 rounded-full flex items-center justify-center text-white"
+                  style={{
+                    background: "linear-gradient(135deg, rgba(244,63,94,0.18), rgba(168,85,247,0.18))",
+                    border: "1px solid rgba(168,85,247,0.40)",
+                    boxShadow: "0 4px 14px rgba(168,85,247,0.25), inset 0 1px 0 rgba(255,255,255,0.10)",
+                  }}
+                  aria-label="Close menu"
+                >
+                  <X size={16} />
+                </motion.button>
+              </div>
 
-                {/* Navigation Section */}
-                <div>
-                  <div className="flex items-center justify-center gap-2 mb-2">
-                    <span className="h-px flex-1" style={{ background: "linear-gradient(90deg, transparent, rgba(168,85,247,0.40))" }} />
-                    <Sparkles size={11} style={{ color: "#a78bfa" }} />
-                    <span className="text-[10px] font-black uppercase tracking-[0.22em]" style={{ color: "#c4b5fd" }}>Navigation</span>
-                    <Sparkles size={11} style={{ color: "#a78bfa" }} />
-                    <span className="h-px flex-1" style={{ background: "linear-gradient(90deg, rgba(168,85,247,0.40), transparent)" }} />
-                  </div>
-                  <div className="space-y-1.5">
-                    {[
-                      { label: "Home", to: "/", icon: Globe, grad: "linear-gradient(135deg, #f59e0b, #ea580c)" },
-                      { label: "Services", to: "/services", icon: Briefcase, grad: "linear-gradient(135deg, #3b82f6, #1d4ed8)" },
-                      { label: "Portfolio", to: "/portfolio", icon: FolderOpen, grad: "linear-gradient(135deg, #f59e0b, #d97706)" },
-                      { label: "Blog", to: "/blog", icon: FileText, grad: "linear-gradient(135deg, #a855f7, #7e22ce)" },
-                      { label: "Pricing", to: "/pricing", icon: Receipt, grad: "linear-gradient(135deg, #6366f1, #4338ca)" },
-                      { label: "Contact", to: "/contact", icon: Phone, grad: "linear-gradient(135deg, #14b8a6, #0d9488)" },
-                    ].map((item) => (
-                      <Link key={item.label} to={item.to} onClick={() => setMobileOpen(false)}>
+              {/* ── Scrollable body ── */}
+              <div
+                className="relative flex-1 overflow-y-auto overscroll-contain px-4 py-4 space-y-4"
+                style={{ scrollbarWidth: "thin" }}
+              >
+                <motion.div
+                  initial="hidden"
+                  animate="visible"
+                  variants={{ visible: { transition: { staggerChildren: 0.04, delayChildren: 0.05 } } }}
+                  className="space-y-4"
+                >
+                  {/* Welcome / Login Card */}
+                  <motion.div variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}>
+                    {user ? (
+                      <Link to="/dashboard" onClick={() => setMobileOpen(false)}>
                         <div
-                          className="flex items-center gap-3 px-3 py-2.5 rounded-2xl"
+                          className="relative rounded-2xl p-4 overflow-hidden"
                           style={{
-                            background: isActive(item.to)
-                              ? "linear-gradient(135deg, rgba(168,85,247,0.18), rgba(236,72,153,0.12))"
-                              : "rgba(255,255,255,0.035)",
-                            border: `1px solid ${isActive(item.to) ? "rgba(168,85,247,0.45)" : "rgba(255,255,255,0.07)"}`,
+                            background: "linear-gradient(135deg, #4c1d95 0%, #7c3aed 45%, #c026d3 100%)",
+                            boxShadow: "0 14px 32px rgba(124,58,237,0.50), inset 0 1px 0 rgba(255,255,255,0.20)",
                           }}
                         >
-                          <div className="w-9 h-9 rounded-full flex items-center justify-center text-white shrink-0" style={{ background: item.grad, boxShadow: "0 4px 12px rgba(0,0,0,0.30), inset 0 1px 0 rgba(255,255,255,0.20)" }}>
-                            <item.icon size={15} />
+                          <div className="absolute -top-12 -right-12 w-44 h-44 rounded-full opacity-35 blur-2xl" style={{ background: "radial-gradient(circle, #f0abfc, transparent 70%)" }} />
+                          <div className="absolute inset-0 opacity-25 pointer-events-none" style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.30), transparent 50%)" }} />
+                          <div className="relative flex items-center gap-3">
+                            {(() => {
+                              const meta: any = (user as any)?.user_metadata ?? {};
+                              const avatarUrl = meta.avatar_url || meta.picture;
+                              const fullName = meta.full_name || meta.name || user.email?.split("@")[0];
+                              const initial = (fullName?.[0] || "U").toUpperCase();
+                              return avatarUrl ? (
+                                <img src={avatarUrl} alt={fullName} referrerPolicy="no-referrer" className="w-14 h-14 rounded-full object-cover" style={{ boxShadow: "0 0 0 3px rgba(255,255,255,0.35)" }} />
+                              ) : (
+                                <div className="w-14 h-14 rounded-full flex items-center justify-center text-xl font-black text-white" style={{ background: "linear-gradient(135deg, #ec4899, #6366f1)", boxShadow: "0 0 0 3px rgba(255,255,255,0.35)" }}>
+                                  {initial}
+                                </div>
+                              );
+                            })()}
+                            <div className="flex-1 min-w-0">
+                              <div className="text-[10px] uppercase tracking-[0.18em] font-bold text-white/80 flex items-center gap-1">
+                                Welcome Back <Sparkles size={9} />
+                              </div>
+                              <div className="text-base font-extrabold text-white truncate flex items-center gap-1.5">
+                                {(user as any)?.user_metadata?.full_name || user.email?.split("@")[0]}
+                                <BadgeCheck size={14} className="text-cyan-300" />
+                              </div>
+                              <span className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full text-[10px] font-bold text-amber-200" style={{ background: "rgba(0,0,0,0.30)", border: "1px solid rgba(251,191,36,0.45)" }}>
+                                <Sparkles size={9} /> Premium Client
+                              </span>
+                            </div>
+                            <ChevronRight size={18} className="text-white/85" />
                           </div>
-                          <span className="text-sm font-bold text-white flex-1">{item.label}</span>
-                          <ChevronRight size={14} style={{ color: "#c4b5fd" }} />
                         </div>
                       </Link>
-                    ))}
-                  </div>
-                </div>
+                    ) : (
+                      <Link to="/login" onClick={() => setMobileOpen(false)}>
+                        <div
+                          className="relative rounded-2xl p-4 overflow-hidden flex items-center gap-3"
+                          style={{
+                            background: "linear-gradient(135deg, #4c1d95, #7c3aed 55%, #c026d3)",
+                            boxShadow: "0 14px 32px rgba(124,58,237,0.50), inset 0 1px 0 rgba(255,255,255,0.20)",
+                          }}
+                        >
+                          <div className="absolute inset-0 opacity-25 pointer-events-none" style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.30), transparent 50%)" }} />
+                          <div className="relative w-12 h-12 rounded-full flex items-center justify-center" style={{ background: "rgba(255,255,255,0.20)", border: "1px solid rgba(255,255,255,0.25)" }}>
+                            <LogIn size={20} className="text-white" />
+                          </div>
+                          <div className="relative flex-1">
+                            <div className="text-[10px] uppercase tracking-[0.18em] font-bold text-white/80">Get Started</div>
+                            <div className="text-base font-extrabold text-white">Login / Sign Up</div>
+                          </div>
+                          <ChevronRight size={18} className="text-white/85 relative" />
+                        </div>
+                      </Link>
+                    )}
+                  </motion.div>
 
-                {/* Bottom Action Buttons */}
-                <div className="grid grid-cols-2 gap-2 pt-1">
-                  <Link to="/get-quote" onClick={() => setMobileOpen(false)}>
-                    <div
+                  {/* Quick Tiles */}
+                  <motion.div variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}>
+                    <div className="grid grid-cols-4 gap-2">
+                      {[
+                        { label: "Quotes", icon: FileText, to: "/dashboard?tab=quote", grad: "linear-gradient(135deg, #6366f1, #4338ca)" },
+                        { label: "Payments", icon: Receipt, to: "/dashboard?tab=payment", grad: "linear-gradient(135deg, #10b981, #059669)" },
+                        { label: "Documents", icon: FolderOpen, to: "/dashboard?tab=docs", grad: "linear-gradient(135deg, #ec4899, #be185d)" },
+                        { label: "Profile", icon: UserIcon, to: "/dashboard?tab=profile", grad: "linear-gradient(135deg, #f59e0b, #d97706)" },
+                      ].map((t) => (
+                        <Link key={t.label} to={t.to} onClick={() => setMobileOpen(false)}>
+                          <motion.div
+                            whileTap={{ scale: 0.94 }}
+                            className="rounded-2xl p-2.5 flex flex-col items-center gap-1.5 h-full"
+                            style={{
+                              background: "rgba(255,255,255,0.045)",
+                              border: "1px solid rgba(255,255,255,0.09)",
+                              boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
+                            }}
+                          >
+                            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white" style={{ background: t.grad, boxShadow: "0 6px 14px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.25)" }}>
+                              <t.icon size={16} />
+                            </div>
+                            <span className="text-[10px] font-bold text-white/85 text-center leading-tight">{t.label}</span>
+                          </motion.div>
+                        </Link>
+                      ))}
+                    </div>
+                  </motion.div>
+
+                  {/* Promo Cards */}
+                  <motion.div variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}>
+                    <div className="grid grid-cols-2 gap-2.5">
+                      <Link to="/pricing" onClick={() => setMobileOpen(false)}>
+                        <motion.div whileTap={{ scale: 0.96 }} className="relative rounded-2xl p-3 overflow-hidden h-full" style={{ background: "linear-gradient(135deg, #f97316, #dc2626)", boxShadow: "0 12px 26px rgba(249,115,22,0.45), inset 0 1px 0 rgba(255,255,255,0.20)" }}>
+                          <div className="absolute -top-6 -right-6 w-20 h-20 rounded-full blur-xl opacity-50" style={{ background: "radial-gradient(circle, #fde68a, transparent 70%)" }} />
+                          <div className="relative flex items-center gap-1.5">
+                            <Flame size={14} className="text-amber-200" />
+                            <span className="text-[10px] font-black text-white uppercase tracking-wider">Hot Deals</span>
+                          </div>
+                          <div className="relative text-base font-extrabold text-white mt-1.5 leading-tight">Up to 50% OFF</div>
+                          <div className="relative text-[11px] text-white/85 mt-0.5">প্যাকেজ দেখুন →</div>
+                        </motion.div>
+                      </Link>
+                      <a href="https://wa.me/8801820060046" target="_blank" rel="noopener noreferrer">
+                        <motion.div whileTap={{ scale: 0.96 }} className="relative rounded-2xl p-3 overflow-hidden h-full" style={{ background: "linear-gradient(135deg, #10b981, #047857)", boxShadow: "0 12px 26px rgba(16,185,129,0.45), inset 0 1px 0 rgba(255,255,255,0.20)" }}>
+                          <div className="absolute -top-6 -right-6 w-20 h-20 rounded-full blur-xl opacity-50" style={{ background: "radial-gradient(circle, #a7f3d0, transparent 70%)" }} />
+                          <div className="relative flex items-center gap-1.5">
+                            <MessageCircle size={14} className="text-emerald-100" />
+                            <span className="text-[10px] font-black text-white uppercase tracking-wider">Live 24/7</span>
+                          </div>
+                          <div className="relative text-base font-extrabold text-white mt-1.5 leading-tight">সাহায্য নিন</div>
+                          <div className="relative text-[11px] text-white/85 mt-0.5">WhatsApp চ্যাট →</div>
+                        </motion.div>
+                      </a>
+                    </div>
+                  </motion.div>
+
+                  {/* Trending Categories */}
+                  <motion.div variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}>
+                    <div className="flex items-center justify-center gap-2 mb-2">
+                      <span className="h-px flex-1" style={{ background: "linear-gradient(90deg, transparent, rgba(168,85,247,0.40))" }} />
+                      <Sparkles size={11} style={{ color: "#f0abfc" }} />
+                      <span className="text-[10px] font-black uppercase tracking-[0.22em]" style={{ color: "#c4b5fd" }}>Trending</span>
+                      <Sparkles size={11} style={{ color: "#f0abfc" }} />
+                      <span className="h-px flex-1" style={{ background: "linear-gradient(90deg, rgba(168,85,247,0.40), transparent)" }} />
+                    </div>
+                    <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1" style={{ scrollbarWidth: "none" }}>
+                      {serviceCategories.map((cat) => (
+                        <Link key={cat.label} to={cat.href} onClick={() => setMobileOpen(false)} className="shrink-0">
+                          <div className="flex items-center gap-2 px-3 py-2 rounded-full whitespace-nowrap" style={{ background: `linear-gradient(135deg, hsl(${cat.accent} / 0.14), rgba(255,255,255,0.04))`, border: `1px solid hsl(${cat.accent} / 0.40)`, boxShadow: `0 4px 12px hsl(${cat.accent} / 0.20)` }}>
+                            <cat.icon size={13} style={{ color: `hsl(${cat.accent})` }} />
+                            <span className="text-xs font-semibold text-white">{cat.label}</span>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  </motion.div>
+
+                  {/* Navigation Section */}
+                  <motion.div variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}>
+                    <div className="flex items-center justify-center gap-2 mb-2">
+                      <span className="h-px flex-1" style={{ background: "linear-gradient(90deg, transparent, rgba(168,85,247,0.40))" }} />
+                      <Sparkles size={11} style={{ color: "#a78bfa" }} />
+                      <span className="text-[10px] font-black uppercase tracking-[0.22em]" style={{ color: "#c4b5fd" }}>Navigation</span>
+                      <Sparkles size={11} style={{ color: "#a78bfa" }} />
+                      <span className="h-px flex-1" style={{ background: "linear-gradient(90deg, rgba(168,85,247,0.40), transparent)" }} />
+                    </div>
+                    <div className="space-y-1.5">
+                      {[
+                        { label: "Home", to: "/", icon: Globe, grad: "linear-gradient(135deg, #f59e0b, #ea580c)" },
+                        { label: "Services", to: "/services", icon: Briefcase, grad: "linear-gradient(135deg, #3b82f6, #1d4ed8)" },
+                        { label: "Portfolio", to: "/portfolio", icon: FolderOpen, grad: "linear-gradient(135deg, #f59e0b, #d97706)" },
+                        { label: "Blog", to: "/blog", icon: FileText, grad: "linear-gradient(135deg, #a855f7, #7e22ce)" },
+                        { label: "Pricing", to: "/pricing", icon: Receipt, grad: "linear-gradient(135deg, #6366f1, #4338ca)" },
+                        { label: "Contact", to: "/contact", icon: Phone, grad: "linear-gradient(135deg, #14b8a6, #0d9488)" },
+                      ].map((item) => {
+                        const active = isActive(item.to);
+                        return (
+                          <Link key={item.label} to={item.to} onClick={() => setMobileOpen(false)}>
+                            <motion.div
+                              whileTap={{ scale: 0.97 }}
+                              className="flex items-center gap-3 px-3 py-2.5 rounded-2xl relative overflow-hidden"
+                              style={{
+                                background: active
+                                  ? "linear-gradient(135deg, rgba(168,85,247,0.22), rgba(236,72,153,0.14))"
+                                  : "rgba(255,255,255,0.04)",
+                                border: `1px solid ${active ? "rgba(168,85,247,0.50)" : "rgba(255,255,255,0.07)"}`,
+                                boxShadow: active ? "0 6px 18px rgba(168,85,247,0.25), inset 0 1px 0 rgba(255,255,255,0.06)" : "inset 0 1px 0 rgba(255,255,255,0.04)",
+                              }}
+                            >
+                              {active && (
+                                <span className="absolute left-0 top-2 bottom-2 w-[3px] rounded-r" style={{ background: "linear-gradient(180deg, #a855f7, #ec4899)" }} />
+                              )}
+                              <div className="w-9 h-9 rounded-xl flex items-center justify-center text-white shrink-0" style={{ background: item.grad, boxShadow: "0 4px 12px rgba(0,0,0,0.30), inset 0 1px 0 rgba(255,255,255,0.20)" }}>
+                                <item.icon size={15} />
+                              </div>
+                              <span className="text-sm font-bold text-white flex-1">{item.label}</span>
+                              {active && (
+                                <span className="text-[9px] font-black px-1.5 py-0.5 rounded-full" style={{ background: "rgba(168,85,247,0.30)", color: "#f0abfc", border: "1px solid rgba(168,85,247,0.50)" }}>NOW</span>
+                              )}
+                              <ChevronRight size={14} style={{ color: active ? "#f0abfc" : "#c4b5fd" }} />
+                            </motion.div>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </motion.div>
+
+                  {user?.email === "info.shahedit@gmail.com" && (
+                    <motion.div variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}>
+                      <Link to="/admin" onClick={() => setMobileOpen(false)}>
+                        <div
+                          className="flex items-center justify-center gap-1.5 py-2.5 rounded-2xl text-sm font-extrabold text-white"
+                          style={{
+                            background: "linear-gradient(135deg, #1e293b, #334155)",
+                            border: "1px solid rgba(168,85,247,0.40)",
+                            boxShadow: "0 6px 16px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.10)",
+                          }}
+                        >
+                          <Shield size={14} className="text-purple-300" /> Admin Panel
+                        </div>
+                      </Link>
+                    </motion.div>
+                  )}
+
+                  {/* Spacer for sticky footer overlap */}
+                  <div className="h-2" />
+                </motion.div>
+              </div>
+
+              {/* ── Sticky Footer ── */}
+              <div
+                className="relative shrink-0 px-4 pt-3 pb-4 grid grid-cols-2 gap-2"
+                style={{
+                  background: "linear-gradient(180deg, rgba(20,14,44,0.0), rgba(14,9,32,0.95) 40%)",
+                  borderTop: "1px solid rgba(168,85,247,0.20)",
+                }}
+              >
+                <Link to="/get-quote" onClick={() => setMobileOpen(false)}>
+                  <motion.div
+                    whileTap={{ scale: 0.96 }}
+                    className="relative flex items-center justify-center gap-1.5 py-3 rounded-full text-sm font-extrabold text-white overflow-hidden"
+                    style={{
+                      background: "linear-gradient(135deg, #6366f1, #a855f7 55%, #ec4899)",
+                      boxShadow: "0 12px 28px rgba(168, 85, 247, 0.55), inset 0 1px 0 rgba(255,255,255,0.30)",
+                    }}
+                  >
+                    <span
+                      className="absolute inset-y-0 -left-full w-1/2 opacity-70 pointer-events-none"
+                      style={{
+                        background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent)",
+                        animation: "header-shimmer 2.8s ease-in-out infinite",
+                      }}
+                    />
+                    <Sparkles size={14} /> Get Quote
+                  </motion.div>
+                </Link>
+                {user ? (
+                  <motion.button
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => { signOut(); setMobileOpen(false); }}
+                    className="flex items-center justify-center gap-1.5 py-3 rounded-full text-sm font-extrabold"
+                    style={{
+                      background: "linear-gradient(135deg, rgba(244,63,94,0.15), rgba(244,63,94,0.05))",
+                      border: "1px solid rgba(244, 63, 94, 0.45)",
+                      color: "#fda4af",
+                      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
+                    }}
+                  >
+                    <LogOut size={14} /> Logout
+                  </motion.button>
+                ) : (
+                  <Link to="/login" onClick={() => setMobileOpen(false)}>
+                    <motion.div
+                      whileTap={{ scale: 0.96 }}
                       className="flex items-center justify-center gap-1.5 py-3 rounded-full text-sm font-extrabold text-white"
                       style={{
-                        background: "linear-gradient(135deg, #6366f1, #a855f7 55%, #ec4899)",
-                        boxShadow: "0 10px 24px rgba(168, 85, 247, 0.50), inset 0 1px 0 rgba(255,255,255,0.25)",
+                        background: "rgba(255,255,255,0.06)",
+                        border: "1px solid rgba(255,255,255,0.18)",
+                        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)",
                       }}
                     >
-                      <Sparkles size={14} /> Quote
-                    </div>
-                  </Link>
-                  {user ? (
-                    <button
-                      onClick={() => { signOut(); setMobileOpen(false); }}
-                      className="flex items-center justify-center gap-1.5 py-3 rounded-full text-sm font-extrabold"
-                      style={{
-                        background: "rgba(244, 63, 94, 0.10)",
-                        border: "1px solid rgba(244, 63, 94, 0.45)",
-                        color: "#fda4af",
-                      }}
-                    >
-                      <LogOut size={14} /> Logout
-                    </button>
-                  ) : (
-                    <Link to="/login" onClick={() => setMobileOpen(false)}>
-                      <div
-                        className="flex items-center justify-center gap-1.5 py-3 rounded-full text-sm font-extrabold text-white"
-                        style={{
-                          background: "rgba(255,255,255,0.06)",
-                          border: "1px solid rgba(255,255,255,0.15)",
-                        }}
-                      >
-                        <LogIn size={14} /> Login
-                      </div>
-                    </Link>
-                  )}
-                </div>
-
-                {user?.email === "info.shahedit@gmail.com" && (
-                  <Link to="/admin" onClick={() => setMobileOpen(false)}>
-                    <div
-                      className="flex items-center justify-center gap-1.5 py-2.5 rounded-full text-sm font-extrabold text-white"
-                      style={{
-                        background: "linear-gradient(135deg, #1e293b, #334155)",
-                        border: "1px solid rgba(168,85,247,0.40)",
-                        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.10)",
-                      }}
-                    >
-                      <Shield size={14} className="text-purple-300" /> Admin Panel
-                    </div>
+                      <LogIn size={14} /> Login
+                    </motion.div>
                   </Link>
                 )}
               </div>
-            </motion.div>
+            </motion.aside>
           </>
         )}
       </AnimatePresence>
+
     </motion.header>
   );
 };
