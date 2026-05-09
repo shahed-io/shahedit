@@ -427,6 +427,53 @@ const SiteHeader = () => {
         </div>
       </div>
 
+      {/* ───── Mobile Search Modal ───── */}
+      <AnimatePresence>
+        {searchOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="md:hidden fixed inset-0 z-[60] bg-black/70 backdrop-blur-md"
+              onClick={() => setSearchOpen(false)}
+            />
+            <motion.div
+              initial={{ opacity: 0, y: -16, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -16, scale: 0.98 }}
+              transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
+              className="md:hidden fixed left-3 right-3 top-4 z-[61] rounded-3xl overflow-hidden"
+              style={{
+                background: "linear-gradient(180deg, rgba(16, 11, 38, 0.98), rgba(22, 14, 52, 0.98))",
+                backdropFilter: "blur(24px) saturate(180%)",
+                WebkitBackdropFilter: "blur(24px) saturate(180%)",
+                border: "1px solid rgba(168, 85, 247, 0.30)",
+                boxShadow: "0 24px 60px rgba(0,0,0,0.60), 0 0 0 1px rgba(168,85,247,0.12), inset 0 1px 0 rgba(255,255,255,0.05)",
+              }}
+            >
+              <div className="h-px w-full" style={{ background: "linear-gradient(90deg, transparent, rgba(99,102,241,0.7), rgba(168,85,247,0.95), rgba(236,72,153,0.7), transparent)" }} />
+              <div className="flex items-center gap-2 p-3">
+                <div className="flex-1 min-w-0">
+                  <SmartSearch variant="mobile" onNavigate={() => setSearchOpen(false)} />
+                </div>
+                <button
+                  onClick={() => setSearchOpen(false)}
+                  className="shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-white"
+                  style={{
+                    background: "rgba(255,255,255,0.06)",
+                    border: "1px solid rgba(168, 85, 247, 0.35)",
+                  }}
+                  aria-label="Close search"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
       {/* ───── Mobile Drawer (Premium Rich Menu) ───── */}
       <AnimatePresence>
         {mobileOpen && (
