@@ -264,27 +264,28 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
             transition={{ duration: 0.14 }}
             className={`absolute mt-2 rounded-2xl overflow-hidden z-50 ${variant === "desktop" ? "w-[min(92vw,720px)] left-1/2 -translate-x-1/2" : "left-0 right-0"}`}
             style={{
-              background: "rgba(255,255,255,0.99)",
-              backdropFilter: "blur(20px)",
-              border: "1px solid rgba(120, 100, 180, 0.18)",
-              boxShadow: "0 20px 50px rgba(80, 50, 140, 0.18), 0 4px 12px rgba(0,0,0,0.04)",
+              background: "linear-gradient(180deg, rgba(20,12,40,0.96), rgba(12,6,28,0.98))",
+              backdropFilter: "blur(24px)",
+              WebkitBackdropFilter: "blur(24px)",
+              border: "1px solid rgba(168, 85, 247, 0.25)",
+              boxShadow: "0 24px 60px rgba(0,0,0,0.55), 0 0 0 1px rgba(168,85,247,0.08), 0 8px 32px rgba(124,58,237,0.25)",
             }}
           >
             {/* Top gradient bar */}
             <div style={{ height: 3, background: "linear-gradient(90deg, #6366f1, #a855f7, #ec4899)" }} />
 
             {/* Hero search bar inside dropdown */}
-            <div className="px-4 pt-4 pb-3" style={{ background: "linear-gradient(180deg, rgba(243,238,255,0.7), rgba(255,255,255,0))" }}>
+            <div className="px-4 pt-4 pb-3" style={{ background: "linear-gradient(180deg, rgba(124,58,237,0.12), rgba(124,58,237,0))" }}>
               <form onSubmit={submit} className="relative">
                 <div
                   className="flex items-center gap-2 px-4 py-3 rounded-2xl"
                   style={{
-                    background: "#fff",
-                    border: "1.5px solid rgba(124,58,237,0.25)",
-                    boxShadow: "0 4px 18px rgba(124,58,237,0.12), inset 0 1px 0 rgba(255,255,255,0.8)",
+                    background: "rgba(255,255,255,0.04)",
+                    border: "1.5px solid rgba(168,85,247,0.35)",
+                    boxShadow: "0 4px 22px rgba(124,58,237,0.25), inset 0 1px 0 rgba(255,255,255,0.06)",
                   }}
                 >
-                  <Search size={18} style={{ color: "#7c3aed" }} className="shrink-0" />
+                  <Search size={18} style={{ color: "#c4b5fd" }} className="shrink-0" />
                   <input
                     type="text"
                     value={query}
@@ -292,19 +293,19 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
                     onKeyDown={onKeyDown}
                     autoFocus
                     placeholder="Shahed IT-তে যেকোনো সার্ভিস খুঁজুন..."
-                    className="flex-1 bg-transparent outline-none text-[15px] font-medium"
-                    style={{ color: "#2a1f4a" }}
+                    className="flex-1 bg-transparent outline-none text-[15px] font-medium placeholder:text-[rgba(226,218,245,0.45)]"
+                    style={{ color: "#fff" }}
                     autoComplete="off"
                   />
                   {query && (
-                    <button type="button" onClick={() => setQuery("")} className="p-1 rounded-full hover:bg-purple-50">
-                      <X size={15} style={{ color: "#7c3aed" }} />
+                    <button type="button" onClick={() => setQuery("")} className="p-1 rounded-full hover:bg-white/10">
+                      <X size={15} style={{ color: "#c4b5fd" }} />
                     </button>
                   )}
                   <button
                     type="submit"
                     className="shrink-0 w-9 h-9 rounded-xl flex items-center justify-center transition-transform hover:scale-105"
-                    style={{ background: "linear-gradient(135deg, #6366f1, #a855f7, #ec4899)" }}
+                    style={{ background: "linear-gradient(135deg, #6366f1, #a855f7, #ec4899)", boxShadow: "0 4px 14px rgba(168,85,247,0.45)" }}
                     aria-label="Search"
                   >
                     <Search size={16} className="text-white" />
