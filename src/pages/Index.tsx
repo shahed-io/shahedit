@@ -8,7 +8,7 @@ import PortfolioSection from "@/components/PortfolioSection";
 import TechStack from "@/components/TechStack";
 import AboutSection from "@/components/AboutSection";
 import FaqSection from "@/components/FaqSection";
-import TrustStatsBar from "@/components/TrustStatsBar";
+
 
 import SiteFooter from "@/components/SiteFooter";
 
