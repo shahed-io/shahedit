@@ -1,14 +1,13 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
-  Search, Menu, X, ChevronRight, ChevronDown, LogIn, LogOut,
+  Menu, X, ChevronRight, ChevronDown, LogIn, LogOut,
   Globe, Wrench, Palette, Facebook, TrendingUp, Building2, Sparkles,
 } from "lucide-react";
 import logoImg from "@/assets/logo-glossy.png";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import SmartSearch from "@/components/SmartSearch";
-
 
 import catWebDev from "@/assets/cat-web-dev.jpg";
 import catMaintenance from "@/assets/cat-maintenance.jpg";
@@ -18,12 +17,12 @@ import catDigitalMarketing from "@/assets/cat-digital-marketing.jpg";
 import catBusiness from "@/assets/cat-business.jpg";
 
 const serviceCategories = [
-  { label: "Web Development", href: "/services#web-development", icon: Globe, img: catWebDev, accent: "270 92% 60%" },
-  { label: "Website Maintenance", href: "/services#maintenance", icon: Wrench, img: catMaintenance, accent: "210 90% 60%" },
-  { label: "Graphics Design", href: "/services#graphics", icon: Palette, img: catGraphics, accent: "320 90% 60%" },
-  { label: "Facebook Services", href: "/services#facebook", icon: Facebook, img: catFacebook, accent: "220 95% 60%" },
-  { label: "Digital Marketing", href: "/services#digital-marketing", icon: TrendingUp, img: catDigitalMarketing, accent: "150 80% 50%" },
-  { label: "Business Solutions", href: "/services#business", icon: Building2, img: catBusiness, accent: "42 95% 55%" },
+  { label: "Web Development", href: "/services#web-development", icon: Globe, img: catWebDev, accent: "270 92% 65%" },
+  { label: "Website Maintenance", href: "/services#maintenance", icon: Wrench, img: catMaintenance, accent: "210 90% 65%" },
+  { label: "Graphics Design", href: "/services#graphics", icon: Palette, img: catGraphics, accent: "320 90% 65%" },
+  { label: "Facebook Services", href: "/services#facebook", icon: Facebook, img: catFacebook, accent: "220 95% 65%" },
+  { label: "Digital Marketing", href: "/services#digital-marketing", icon: TrendingUp, img: catDigitalMarketing, accent: "150 80% 55%" },
+  { label: "Business Solutions", href: "/services#business", icon: Building2, img: catBusiness, accent: "42 95% 60%" },
 ];
 
 const navLinks = [
@@ -38,89 +37,104 @@ const navLinks = [
 const SiteHeader = () => {
   const { user, signOut } = useAuth();
   const location = useLocation();
-  
+
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const servicesTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const isActive = (href: string) => location.pathname === href;
+  const activeKey = navLinks.find(l => isActive(l.href))?.label || (servicesOpen ? "Services" : null);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <motion.header
-      initial={{ y: -100, opacity: 0 }}
+      initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ type: "spring", stiffness: 80, damping: 20 }}
+      transition={{ type: "spring", stiffness: 90, damping: 18 }}
       className="sticky top-0 z-50"
     >
       <div
-        className="relative"
+        className="relative transition-all duration-300"
         style={{
-          background:
-            "linear-gradient(180deg, rgba(253, 251, 255, 0.94) 0%, rgba(248, 245, 253, 0.88) 100%)",
-          backdropFilter: "blur(24px) saturate(180%)",
-          WebkitBackdropFilter: "blur(24px) saturate(180%)",
-          boxShadow:
-            "0 1px 0 rgba(255,255,255,0.9) inset, 0 4px 24px rgba(80, 50, 140, 0.06), 0 1px 0 rgba(120, 100, 180, 0.08)",
+          background: scrolled
+            ? "linear-gradient(180deg, rgba(10, 8, 26, 0.92) 0%, rgba(16, 12, 40, 0.88) 100%)"
+            : "linear-gradient(180deg, rgba(14, 10, 32, 0.78) 0%, rgba(20, 15, 48, 0.68) 100%)",
+          backdropFilter: "blur(28px) saturate(180%)",
+          WebkitBackdropFilter: "blur(28px) saturate(180%)",
+          borderBottom: scrolled ? "1px solid rgba(168, 85, 247, 0.18)" : "1px solid rgba(168, 85, 247, 0.08)",
+          boxShadow: scrolled
+            ? "0 12px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255,255,255,0.04)"
+            : "0 4px 18px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255,255,255,0.04)",
         }}
       >
-        {/* Premium aurora top edge */}
+        {/* Aurora top edge */}
         <div
-          className="absolute top-0 left-0 right-0 h-px pointer-events-none opacity-80"
+          className="absolute top-0 left-0 right-0 h-px pointer-events-none"
           style={{
             background:
-              "linear-gradient(90deg, transparent 0%, rgba(99, 102, 241, 0.5) 20%, rgba(168, 85, 247, 0.7) 50%, rgba(236, 72, 153, 0.5) 80%, transparent 100%)",
+              "linear-gradient(90deg, transparent 0%, rgba(99, 102, 241, 0.6) 18%, rgba(168, 85, 247, 0.95) 50%, rgba(236, 72, 153, 0.6) 82%, transparent 100%)",
           }}
         />
-        {/* Soft floating glow */}
+        {/* Floating glow blobs */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div
-            className="absolute -top-16 left-1/3 w-72 h-32 rounded-full opacity-[0.18] blur-3xl"
+          <motion.div
+            className="absolute -top-20 left-1/4 w-80 h-32 rounded-full opacity-30 blur-3xl"
             style={{ background: "radial-gradient(ellipse, #a855f7, transparent 70%)" }}
+            animate={{ x: [0, 20, 0] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           />
-          <div
-            className="absolute -top-16 right-1/4 w-64 h-32 rounded-full opacity-[0.14] blur-3xl"
+          <motion.div
+            className="absolute -top-20 right-1/4 w-72 h-32 rounded-full opacity-25 blur-3xl"
             style={{ background: "radial-gradient(ellipse, #ec4899, transparent 70%)" }}
+            animate={{ x: [0, -20, 0] }}
+            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
           />
         </div>
 
         <div className="container mx-auto px-4 lg:px-6 py-3 flex items-center gap-3 lg:gap-5 relative">
           {/* ── Logo ── */}
           <Link to="/" className="shrink-0">
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex items-center gap-2.5 group">
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} className="flex items-center gap-2.5 group">
               <div className="relative shrink-0">
-                {/* Animated halo */}
                 <motion.div
-                  className="absolute -inset-1.5 rounded-2xl opacity-50 blur-md"
-                  style={{ background: "conic-gradient(from 0deg, #a855f7, #ec4899, #6366f1, #a855f7)" }}
+                  className="absolute -inset-1.5 rounded-2xl opacity-60 blur-lg"
+                  style={{ background: "conic-gradient(from 0deg, #6366f1, #a855f7, #ec4899, #6366f1)" }}
                   animate={{ rotate: 360 }}
-                  transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                  transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
                 />
                 <div
                   className="relative w-11 h-11 rounded-xl flex items-center justify-center overflow-hidden"
                   style={{
-                    background: "linear-gradient(135deg, #ffffff 0%, #faf7ff 100%)",
-                    border: "1px solid rgba(168, 85, 247, 0.25)",
+                    background: "linear-gradient(135deg, #1a1233 0%, #251847 100%)",
+                    border: "1px solid rgba(168, 85, 247, 0.45)",
                     boxShadow:
-                      "0 6px 18px rgba(168, 85, 247, 0.22), inset 0 1px 0 rgba(255,255,255,1), inset 0 -1px 0 rgba(168, 85, 247, 0.06)",
+                      "0 8px 24px rgba(168, 85, 247, 0.45), inset 0 1px 0 rgba(255,255,255,0.10)",
                   }}
                 >
-                  {/* Glossy sheen */}
                   <span
-                    className="absolute inset-0 opacity-60 pointer-events-none"
-                    style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.7) 0%, transparent 50%)" }}
+                    className="absolute inset-0 opacity-30 pointer-events-none"
+                    style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.5) 0%, transparent 50%)" }}
                   />
                   <img src={logoImg} alt="Shahed IT" className="w-9 h-9 object-contain relative" />
                 </div>
               </div>
               <div className="hidden sm:flex flex-col leading-tight">
-                <span className="flex items-center">
-                  <span className="text-[20px] font-extrabold tracking-tight" style={{ fontFamily: "'Syne', sans-serif" }}>
-                    <span style={{ color: "#1a1233" }}>Shahed </span>
-                    <span style={{ background: "linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                      IT
-                    </span>
+                <span className="text-[20px] font-extrabold tracking-tight" style={{ fontFamily: "'Syne', sans-serif" }}>
+                  <span style={{ color: "#fff" }}>Shahed </span>
+                  <span style={{ background: "linear-gradient(135deg, #818cf8 0%, #c4b5fd 40%, #f0abfc 80%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                    IT
                   </span>
+                </span>
+                <span className="text-[9px] uppercase tracking-[0.2em] font-bold" style={{ color: "#a78bfa" }}>
+                  Digital Agency
                 </span>
               </div>
             </motion.div>
@@ -129,126 +143,122 @@ const SiteHeader = () => {
           {/* ── Smart Search ── */}
           <SmartSearch variant="desktop" />
 
-
           {/* ── Premium Pill Nav ── */}
-          <nav
-            className="hidden lg:flex items-center gap-0.5 p-1 rounded-full shrink-0 relative"
-            style={{
-              background: "linear-gradient(180deg, rgba(255,255,255,0.7), rgba(245, 242, 250, 0.85))",
-              border: "1px solid rgba(120, 100, 180, 0.12)",
-              boxShadow:
-                "inset 0 1px 0 rgba(255,255,255,0.95), 0 2px 8px rgba(80, 50, 140, 0.04)",
-            }}
-          >
-            {navLinks.map((link) =>
-              link.hasDropdown ? (
-                <div
-                  key={link.label}
-                  className="relative"
-                  onMouseEnter={() => {
-                    if (servicesTimeout.current) clearTimeout(servicesTimeout.current);
-                    setServicesOpen(true);
-                  }}
-                  onMouseLeave={() => {
-                    servicesTimeout.current = setTimeout(() => setServicesOpen(false), 160);
-                  }}
-                >
-                  <Link to={link.href}>
-                    <span
-                      className="nav-pill relative px-4 py-1.5 text-sm font-semibold rounded-full flex items-center gap-1 cursor-pointer"
-                      style={
-                        isActive(link.href) || servicesOpen
-                          ? {
-                              background: "linear-gradient(180deg, #ffffff, #faf7ff)",
-                              color: "#7c3aed",
-                              boxShadow:
-                                "0 4px 12px rgba(124, 58, 237, 0.18), 0 0 0 1px rgba(124, 58, 237, 0.12), inset 0 1px 0 rgba(255,255,255,1)",
-                            }
-                          : { color: "#5b4d7e" }
-                      }
-                    >
-                      {link.label}
-                      <ChevronDown size={12} className={`transition-transform ${servicesOpen ? "rotate-180" : ""}`} />
-                    </span>
-                  </Link>
-
-                  <AnimatePresence>
-                    {servicesOpen && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 8, scale: 0.97 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 8, scale: 0.97 }}
-                        transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                        className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[420px] rounded-2xl overflow-hidden z-50"
+          <LayoutGroup id="header-nav">
+            <nav
+              className="hidden lg:flex items-center gap-1 p-1 rounded-full shrink-0 relative"
+              style={{
+                background: "rgba(255, 255, 255, 0.04)",
+                border: "1px solid rgba(255, 255, 255, 0.08)",
+                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
+                backdropFilter: "blur(8px)",
+              }}
+            >
+              {navLinks.map((link) => {
+                const active = isActive(link.href) || (link.hasDropdown && servicesOpen);
+                const showIndicator = activeKey === link.label;
+                const content = (
+                  <span className="relative px-3.5 py-1.5 text-sm font-semibold flex items-center gap-1 z-10">
+                    {showIndicator && (
+                      <motion.span
+                        layoutId="nav-active-pill"
+                        className="absolute inset-0 rounded-full"
                         style={{
-                          background: "rgba(255, 255, 255, 0.98)",
-                          backdropFilter: "blur(20px) saturate(180%)",
-                          WebkitBackdropFilter: "blur(20px) saturate(180%)",
-                          border: "1px solid rgba(120, 100, 180, 0.14)",
-                          boxShadow: "0 20px 60px rgba(80, 50, 140, 0.18), 0 0 0 1px rgba(168, 85, 247, 0.05)",
+                          background: "linear-gradient(135deg, rgba(124, 58, 237, 0.35), rgba(236, 72, 153, 0.30))",
+                          border: "1px solid rgba(168, 85, 247, 0.45)",
+                          boxShadow: "0 4px 16px rgba(168, 85, 247, 0.35), inset 0 1px 0 rgba(255,255,255,0.15)",
                         }}
-                      >
-                        <div className="h-px w-full" style={{ background: "linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.4), rgba(236, 72, 153, 0.4), transparent)" }} />
-                        <div className="p-2.5 grid grid-cols-2 gap-1.5">
-                          {serviceCategories.map((cat) => (
-                            <Link
-                              key={cat.label}
-                              to={cat.href}
-                              onClick={() => setServicesOpen(false)}
-                              className="group flex items-center gap-3 p-2.5 rounded-xl transition-all hover:bg-[rgba(168,85,247,0.06)]"
-                            >
-                              <div
-                                className="w-10 h-10 rounded-lg overflow-hidden shrink-0"
-                                style={{ boxShadow: `inset 0 0 0 1px hsl(${cat.accent} / 0.30)` }}
-                              >
-                                <img src={cat.img} alt={cat.label} className="w-full h-full object-cover" />
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <div className="text-sm font-semibold truncate" style={{ color: "#2a1f4a" }}>{cat.label}</div>
-                                <div className="text-[10px] uppercase tracking-wider font-medium" style={{ color: "#9b8fb5" }}>Premium service</div>
-                              </div>
-                              <ChevronRight size={13} className="opacity-0 -translate-x-1 group-hover:opacity-70 group-hover:translate-x-0 transition-all" style={{ color: `hsl(${cat.accent})` }} />
-                            </Link>
-                          ))}
-                        </div>
-                        <div className="p-2.5 pt-1">
-                          <Link to="/services" onClick={() => setServicesOpen(false)}>
-                            <div
-                              className="text-center py-2.5 text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 text-white"
-                              style={{
-                                background: "linear-gradient(135deg, #a855f7, #ec4899)",
-                                boxShadow: "0 6px 18px rgba(168, 85, 247, 0.35), inset 0 1px 0 rgba(255,255,255,0.25)",
-                              }}
-                            >
-                              সকল সার্ভিস দেখুন <ChevronRight size={13} />
-                            </div>
-                          </Link>
-                        </div>
-                      </motion.div>
+                        transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                      />
                     )}
-                  </AnimatePresence>
-                </div>
-              ) : (
-                <Link key={link.label} to={link.href}>
-                  <span
-                    className="nav-pill relative px-4 py-1.5 text-sm font-semibold rounded-full"
-                    style={
-                      isActive(link.href)
-                        ? {
-                            background: "linear-gradient(180deg, #ffffff, #faf7ff)",
-                            color: "#7c3aed",
-                            boxShadow:
-                              "0 4px 12px rgba(124, 58, 237, 0.18), 0 0 0 1px rgba(124, 58, 237, 0.12), inset 0 1px 0 rgba(255,255,255,1)",
-                          }
-                        : { color: "#5b4d7e" }
-                    }
-                  >
-                    {link.label}
+                    <span className="relative" style={{ color: active ? "#fff" : "rgba(226, 218, 245, 0.78)" }}>
+                      {link.label}
+                    </span>
+                    {link.hasDropdown && (
+                      <ChevronDown size={12} className={`relative transition-transform duration-300 ${servicesOpen ? "rotate-180" : ""}`} style={{ color: active ? "#f0abfc" : "rgba(226, 218, 245, 0.6)" }} />
+                    )}
                   </span>
-                </Link>
-              )
-            )}
-          </nav>
+                );
+
+                return link.hasDropdown ? (
+                  <div
+                    key={link.label}
+                    className="relative"
+                    onMouseEnter={() => {
+                      if (servicesTimeout.current) clearTimeout(servicesTimeout.current);
+                      setServicesOpen(true);
+                    }}
+                    onMouseLeave={() => {
+                      servicesTimeout.current = setTimeout(() => setServicesOpen(false), 160);
+                    }}
+                  >
+                    <Link to={link.href} className="block rounded-full transition-colors hover:bg-white/[0.03]">{content}</Link>
+
+                    <AnimatePresence>
+                      {servicesOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 12, scale: 0.96 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 12, scale: 0.96 }}
+                          transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                          className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[440px] rounded-2xl overflow-hidden z-50"
+                          style={{
+                            background: "linear-gradient(180deg, rgba(20, 14, 44, 0.98), rgba(16, 10, 36, 0.98))",
+                            backdropFilter: "blur(24px) saturate(180%)",
+                            WebkitBackdropFilter: "blur(24px) saturate(180%)",
+                            border: "1px solid rgba(168, 85, 247, 0.20)",
+                            boxShadow: "0 24px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(168, 85, 247, 0.10), inset 0 1px 0 rgba(255,255,255,0.05)",
+                          }}
+                        >
+                          <div className="h-px w-full" style={{ background: "linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.6), rgba(236, 72, 153, 0.6), transparent)" }} />
+                          <div className="p-3 grid grid-cols-2 gap-1.5">
+                            {serviceCategories.map((cat) => (
+                              <Link
+                                key={cat.label}
+                                to={cat.href}
+                                onClick={() => setServicesOpen(false)}
+                                className="group flex items-center gap-3 p-2.5 rounded-xl transition-all hover:bg-white/[0.06]"
+                              >
+                                <div
+                                  className="w-10 h-10 rounded-lg overflow-hidden shrink-0 relative"
+                                  style={{ boxShadow: `0 4px 12px hsl(${cat.accent} / 0.35), inset 0 0 0 1px hsl(${cat.accent} / 0.40)` }}
+                                >
+                                  <img src={cat.img} alt={cat.label} className="w-full h-full object-cover" />
+                                  <span className="absolute inset-0" style={{ background: `linear-gradient(135deg, hsl(${cat.accent} / 0.15), transparent)` }} />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="text-sm font-semibold truncate text-white">{cat.label}</div>
+                                  <div className="text-[10px] uppercase tracking-wider font-medium" style={{ color: `hsl(${cat.accent} / 0.85)` }}>Premium</div>
+                                </div>
+                                <ChevronRight size={13} className="opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" style={{ color: `hsl(${cat.accent})` }} />
+                              </Link>
+                            ))}
+                          </div>
+                          <div className="p-3 pt-1">
+                            <Link to="/services" onClick={() => setServicesOpen(false)}>
+                              <div
+                                className="text-center py-2.5 text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 text-white"
+                                style={{
+                                  background: "linear-gradient(135deg, #6366f1, #a855f7 55%, #ec4899)",
+                                  boxShadow: "0 8px 20px rgba(168, 85, 247, 0.45), inset 0 1px 0 rgba(255,255,255,0.25)",
+                                }}
+                              >
+                                সকল সার্ভিস দেখুন <ChevronRight size={13} />
+                              </div>
+                            </Link>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ) : (
+                  <Link key={link.label} to={link.href} className="block rounded-full transition-colors hover:bg-white/[0.03]">
+                    {content}
+                  </Link>
+                );
+              })}
+            </nav>
+          </LayoutGroup>
 
           {/* ── Right cluster ── */}
           <div className="hidden md:flex items-center gap-2 shrink-0 ml-auto lg:ml-0">
@@ -260,9 +270,9 @@ const SiteHeader = () => {
                     whileTap={{ scale: 0.97 }}
                     className="flex items-center gap-2 pl-1 pr-3.5 py-1 rounded-full transition-all"
                     style={{
-                      background: "linear-gradient(180deg, rgba(255,255,255,0.7), rgba(245, 242, 250, 0.85))",
-                      border: "1px solid rgba(120, 100, 180, 0.12)",
-                      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.95)",
+                      background: "rgba(255, 255, 255, 0.04)",
+                      border: "1px solid rgba(255, 255, 255, 0.10)",
+                      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.06)",
                     }}
                   >
                     <div className="relative">
@@ -280,35 +290,29 @@ const SiteHeader = () => {
                             alt={fullName || user.email || "User"}
                             referrerPolicy="no-referrer"
                             className="w-7 h-7 rounded-full object-cover shrink-0"
-                            style={{
-                              boxShadow:
-                                "0 3px 10px rgba(168, 85, 247, 0.40), 0 0 0 2px #ffffff",
-                            }}
+                            style={{ boxShadow: "0 0 0 2px rgba(168, 85, 247, 0.45)" }}
                           />
                         ) : (
                           <div
                             className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-black text-white shrink-0"
                             style={{
-                              background:
-                                "linear-gradient(135deg, #6366f1, #a855f7 55%, #ec4899)",
-                              boxShadow:
-                                "0 3px 10px rgba(168, 85, 247, 0.40), inset 0 1px 0 rgba(255,255,255,0.35), 0 0 0 2px #ffffff",
+                              background: "linear-gradient(135deg, #6366f1, #a855f7 55%, #ec4899)",
+                              boxShadow: "0 0 0 2px rgba(168, 85, 247, 0.45), inset 0 1px 0 rgba(255,255,255,0.35)",
                             }}
                           >
                             {initial}
                           </div>
                         );
                       })()}
-                      {/* online indicator */}
                       <span
                         className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full"
                         style={{
-                          background: "linear-gradient(135deg, #10b981, #059669)",
-                          boxShadow: "0 0 0 2px #ffffff, 0 0 6px rgba(16, 185, 129, 0.6)",
+                          background: "linear-gradient(135deg, #34d399, #10b981)",
+                          boxShadow: "0 0 0 2px #110a26, 0 0 8px rgba(52, 211, 153, 0.7)",
                         }}
                       />
                     </div>
-                    <span className="text-sm font-bold" style={{ color: "#2a1f4a" }}>Dashboard</span>
+                    <span className="text-sm font-bold text-white">Dashboard</span>
                   </motion.div>
                 </Link>
                 <motion.button
@@ -318,10 +322,9 @@ const SiteHeader = () => {
                   title="Logout"
                   className="w-9 h-9 rounded-full flex items-center justify-center transition-all"
                   style={{
-                    background: "linear-gradient(180deg, #ffffff, #f8f5fd)",
-                    border: "1px solid rgba(120, 100, 180, 0.14)",
-                    boxShadow: "inset 0 1px 0 rgba(255,255,255,1)",
-                    color: "#5b4d7e",
+                    background: "rgba(255, 255, 255, 0.04)",
+                    border: "1px solid rgba(255, 255, 255, 0.10)",
+                    color: "rgba(226, 218, 245, 0.85)",
                   }}
                 >
                   <LogOut size={14} />
@@ -332,12 +335,11 @@ const SiteHeader = () => {
                 <motion.button
                   whileHover={{ y: -1, scale: 1.02 }}
                   whileTap={{ scale: 0.97 }}
-                  className="flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-semibold"
+                  className="flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-semibold text-white"
                   style={{
-                    background: "linear-gradient(180deg, #ffffff, #f8f5fd)",
-                    border: "1px solid rgba(120, 100, 180, 0.16)",
-                    color: "#2a1f4a",
-                    boxShadow: "inset 0 1px 0 rgba(255,255,255,1), 0 2px 6px rgba(80, 50, 140, 0.05)",
+                    background: "rgba(255, 255, 255, 0.05)",
+                    border: "1px solid rgba(255, 255, 255, 0.12)",
+                    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)",
                   }}
                 >
                   <LogIn size={14} /> Login
@@ -354,15 +356,13 @@ const SiteHeader = () => {
                 style={{
                   background: "linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%)",
                   boxShadow:
-                    "0 8px 24px rgba(168, 85, 247, 0.45), 0 2px 6px rgba(236, 72, 153, 0.25), inset 0 1px 0 rgba(255,255,255,0.30), inset 0 -1px 0 rgba(0,0,0,0.10)",
+                    "0 10px 28px rgba(168, 85, 247, 0.55), 0 2px 6px rgba(236, 72, 153, 0.30), inset 0 1px 0 rgba(255,255,255,0.30), inset 0 -1px 0 rgba(0,0,0,0.10)",
                 }}
               >
-                {/* Glossy top sheen */}
                 <span
                   className="absolute inset-0 opacity-60 pointer-events-none"
                   style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.30) 0%, transparent 55%)" }}
                 />
-                {/* Animated shimmer sweep */}
                 <span
                   className="absolute inset-y-0 -left-full w-1/2 opacity-70 pointer-events-none"
                   style={{
@@ -386,11 +386,10 @@ const SiteHeader = () => {
 
           {/* Mobile toggle */}
           <button
-            className="md:hidden ml-auto p-2.5 rounded-xl"
+            className="md:hidden ml-auto p-2.5 rounded-xl text-white"
             style={{
-              background: "rgba(245, 242, 250, 0.85)",
-              border: "1px solid rgba(120, 100, 180, 0.14)",
-              color: "#2a1f4a",
+              background: "rgba(255, 255, 255, 0.06)",
+              border: "1px solid rgba(255, 255, 255, 0.12)",
             }}
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
@@ -410,14 +409,13 @@ const SiteHeader = () => {
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="md:hidden overflow-hidden"
             style={{
-              background: "rgba(252, 250, 255, 0.98)",
+              background: "linear-gradient(180deg, rgba(14, 10, 32, 0.98), rgba(20, 15, 48, 0.98))",
               backdropFilter: "blur(20px) saturate(160%)",
               WebkitBackdropFilter: "blur(20px) saturate(160%)",
-              borderBottom: "1px solid rgba(120, 100, 180, 0.12)",
+              borderBottom: "1px solid rgba(168, 85, 247, 0.18)",
             }}
           >
             <div className="px-4 py-4 space-y-1.5">
-              {/* Mobile search */}
               <div className="mb-3">
                 <SmartSearch variant="mobile" onNavigate={() => setMobileOpen(false)} />
               </div>
@@ -427,14 +425,14 @@ const SiteHeader = () => {
                   <div key={link.label}>
                     <div
                       onClick={() => setMobileServicesOpen(v => !v)}
-                      className="flex items-center justify-between py-3 px-4 text-sm font-semibold rounded-xl cursor-pointer"
+                      className="flex items-center justify-between py-3 px-4 text-sm font-semibold rounded-xl cursor-pointer text-white"
                       style={{
-                        background: mobileServicesOpen ? "rgba(168, 85, 247, 0.08)" : "transparent",
-                        color: "#2a1f4a",
+                        background: mobileServicesOpen ? "rgba(168, 85, 247, 0.12)" : "rgba(255,255,255,0.03)",
+                        border: "1px solid rgba(255,255,255,0.06)",
                       }}
                     >
                       {link.label}
-                      <ChevronDown size={14} className={`transition-transform ${mobileServicesOpen ? "rotate-180" : ""}`} style={{ color: "#7c3aed" }} />
+                      <ChevronDown size={14} className={`transition-transform ${mobileServicesOpen ? "rotate-180" : ""}`} style={{ color: "#c4b5fd" }} />
                     </div>
                     <AnimatePresence>
                       {mobileServicesOpen && (
@@ -450,8 +448,8 @@ const SiteHeader = () => {
                                 <div className="w-9 h-9 rounded-lg overflow-hidden shrink-0">
                                   <img src={cat.img} alt={cat.label} className="w-full h-full object-cover" />
                                 </div>
-                                <span className="text-sm font-medium" style={{ color: "#2a1f4a" }}>{cat.label}</span>
-                                <ChevronRight size={12} className="ml-auto" style={{ color: "#9b8fb5" }} />
+                                <span className="text-sm font-medium text-white">{cat.label}</span>
+                                <ChevronRight size={12} className="ml-auto" style={{ color: "#c4b5fd" }} />
                               </div>
                             </Link>
                           ))}
@@ -462,14 +460,14 @@ const SiteHeader = () => {
                 ) : (
                   <Link key={link.label} to={link.href} onClick={() => setMobileOpen(false)}>
                     <div
-                      className="flex items-center justify-between py-3 px-4 text-sm font-semibold rounded-xl"
+                      className="flex items-center justify-between py-3 px-4 text-sm font-semibold rounded-xl text-white"
                       style={{
-                        background: isActive(link.href) ? "rgba(168, 85, 247, 0.10)" : "transparent",
-                        color: isActive(link.href) ? "#7c3aed" : "#2a1f4a",
+                        background: isActive(link.href) ? "linear-gradient(135deg, rgba(168, 85, 247, 0.20), rgba(236, 72, 153, 0.15))" : "rgba(255,255,255,0.03)",
+                        border: `1px solid ${isActive(link.href) ? "rgba(168, 85, 247, 0.35)" : "rgba(255,255,255,0.06)"}`,
                       }}
                     >
                       {link.label}
-                      <ChevronRight size={14} style={{ color: "#9b8fb5" }} />
+                      <ChevronRight size={14} style={{ color: "#c4b5fd" }} />
                     </div>
                   </Link>
                 )
@@ -480,11 +478,10 @@ const SiteHeader = () => {
                   <>
                     <Link to="/dashboard" onClick={() => setMobileOpen(false)}>
                       <div
-                        className="flex items-center justify-center gap-2 py-2.5 rounded-full text-sm font-semibold"
+                        className="flex items-center justify-center gap-2 py-2.5 rounded-full text-sm font-semibold text-white"
                         style={{
-                          background: "rgba(245, 242, 250, 0.85)",
-                          border: "1px solid rgba(120, 100, 180, 0.14)",
-                          color: "#2a1f4a",
+                          background: "rgba(255,255,255,0.05)",
+                          border: "1px solid rgba(255,255,255,0.12)",
                         }}
                       >
                         Dashboard
@@ -492,11 +489,10 @@ const SiteHeader = () => {
                     </Link>
                     <button
                       onClick={() => { signOut(); setMobileOpen(false); }}
-                      className="flex items-center justify-center gap-2 py-2.5 rounded-full text-sm font-semibold"
+                      className="flex items-center justify-center gap-2 py-2.5 rounded-full text-sm font-semibold text-white"
                       style={{
-                        background: "rgba(245, 242, 250, 0.85)",
-                        border: "1px solid rgba(120, 100, 180, 0.14)",
-                        color: "#5b4d7e",
+                        background: "rgba(255,255,255,0.05)",
+                        border: "1px solid rgba(255,255,255,0.12)",
                       }}
                     >
                       <LogOut size={14} /> Logout
@@ -505,11 +501,10 @@ const SiteHeader = () => {
                 ) : (
                   <Link to="/login" onClick={() => setMobileOpen(false)} className="col-span-2">
                     <div
-                      className="flex items-center justify-center gap-2 py-2.5 rounded-full text-sm font-semibold"
+                      className="flex items-center justify-center gap-2 py-2.5 rounded-full text-sm font-semibold text-white"
                       style={{
-                        background: "rgba(245, 242, 250, 0.85)",
-                        border: "1px solid rgba(120, 100, 180, 0.14)",
-                        color: "#2a1f4a",
+                        background: "rgba(255,255,255,0.05)",
+                        border: "1px solid rgba(255,255,255,0.12)",
                       }}
                     >
                       <LogIn size={14} /> Login
@@ -523,7 +518,7 @@ const SiteHeader = () => {
                   className="flex items-center justify-center gap-1.5 py-3 rounded-full text-sm font-bold text-white"
                   style={{
                     background: "linear-gradient(135deg, #6366f1, #a855f7 55%, #ec4899)",
-                    boxShadow: "0 6px 20px rgba(168, 85, 247, 0.40), inset 0 1px 0 rgba(255,255,255,0.25)",
+                    boxShadow: "0 8px 24px rgba(168, 85, 247, 0.45), inset 0 1px 0 rgba(255,255,255,0.25)",
                   }}
                 >
                   <Sparkles size={14} /> Get a Free Quote
