@@ -210,9 +210,30 @@ const SiteFooter = () => {
 
         {/* 3-column links */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
-          <FooterColumn title="Products" Icon={Package} accent="from-primary to-fuchsia-500" items={productLinks} />
-          <FooterColumn title="Information" Icon={Info} accent="from-blue-500 to-accent" items={infoLinks} />
-          <FooterColumn title="Policies" Icon={FileText} accent="from-accent to-emerald-400" items={policyLinks} />
+          <FooterColumn
+            title="Products"
+            Icon={Package}
+            accent="from-violet-400 via-fuchsia-400 to-pink-400"
+            glow="hsla(280, 90%, 60%, 0.45)"
+            shimmer="via-fuchsia-400"
+            items={productLinks}
+          />
+          <FooterColumn
+            title="Information"
+            Icon={Info}
+            accent="from-fuchsia-400 via-purple-400 to-violet-400"
+            glow="hsla(295, 85%, 62%, 0.45)"
+            shimmer="via-purple-400"
+            items={infoLinks}
+          />
+          <FooterColumn
+            title="Policies"
+            Icon={FileText}
+            accent="from-pink-400 via-fuchsia-400 to-violet-400"
+            glow="hsla(320, 85%, 65%, 0.45)"
+            shimmer="via-pink-400"
+            items={policyLinks}
+          />
         </div>
 
         {/* Bottom bar: certified | payments | trust */}
