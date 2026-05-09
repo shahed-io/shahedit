@@ -62,17 +62,17 @@ const SiteHeader = () => {
       className="sticky top-0 z-50 md:px-0 px-3 md:pt-0 pt-2"
     >
       <div
-        className="relative transition-all duration-300"
+        className="relative transition-all duration-300 md:rounded-none rounded-full md:border-x-0"
         style={{
           background: scrolled
             ? "linear-gradient(180deg, rgba(10, 8, 26, 0.92) 0%, rgba(16, 12, 40, 0.88) 100%)"
-            : "linear-gradient(180deg, rgba(14, 10, 32, 0.78) 0%, rgba(20, 15, 48, 0.68) 100%)",
+            : "linear-gradient(180deg, rgba(14, 10, 32, 0.85) 0%, rgba(20, 15, 48, 0.78) 100%)",
           backdropFilter: "blur(28px) saturate(180%)",
           WebkitBackdropFilter: "blur(28px) saturate(180%)",
-          borderBottom: scrolled ? "1px solid rgba(168, 85, 247, 0.18)" : "1px solid rgba(168, 85, 247, 0.08)",
+          border: "1px solid rgba(168, 85, 247, 0.22)",
           boxShadow: scrolled
-            ? "0 12px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255,255,255,0.04)"
-            : "0 4px 18px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255,255,255,0.04)",
+            ? "0 12px 40px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(168,85,247,0.10), inset 0 1px 0 rgba(255,255,255,0.05)"
+            : "0 8px 28px rgba(99, 39, 178, 0.30), inset 0 1px 0 rgba(255,255,255,0.05)",
         }}
       >
         {/* Aurora top edge */}
