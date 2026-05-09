@@ -143,6 +143,7 @@ const AppWithAnalytics = () => {
         <Route path="/complaint-policy" element={<ComplaintPolicyPage />} />
         <Route path="/payment" element={<PaymentPage />} />
         <Route path="/product/:id" element={<ProductDetailsPage />} />
+        <Route path="/search" element={<SearchResultsPage />} />
         {/* Admin Routes */}
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/*" element={<AdminRoutes />} />
