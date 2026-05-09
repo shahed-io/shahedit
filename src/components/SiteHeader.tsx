@@ -57,14 +57,72 @@ const SiteHeader = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Lock body scroll while mobile drawer or search modal is open
+  // Lock body scroll while mobile drawer or search modal is open (iOS-safe)
   useEffect(() => {
     const lock = mobileOpen || searchOpen;
     if (!lock) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = prev; };
+
+    const scrollY = window.scrollY;
+    const body = document.body;
+    const html = document.documentElement;
+
+    const prev = {
+      bodyPosition: body.style.position,
+      bodyTop: body.style.top,
+      bodyLeft: body.style.left,
+      bodyRight: body.style.right,
+      bodyWidth: body.style.width,
+      bodyOverflow: body.style.overflow,
+      htmlOverflow: html.style.overflow,
+      htmlOverscroll: (html.style as any).overscrollBehavior,
+    };
+
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.left = "0";
+    body.style.right = "0";
+    body.style.width = "100%";
+    body.style.overflow = "hidden";
+    html.style.overflow = "hidden";
+    (html.style as any).overscrollBehavior = "none";
+
+    // Block touch scroll on background; allow inside elements with [data-scroll-lock-allow]
+    const onTouchMove = (e: TouchEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+      const scrollable = target.closest('[data-scroll-lock-allow]') as HTMLElement | null;
+      if (!scrollable) {
+        e.preventDefault();
+        return;
+      }
+      const { scrollTop, scrollHeight, clientHeight } = scrollable;
+      const atTop = scrollTop <= 0;
+      const atBottom = scrollTop + clientHeight >= scrollHeight;
+      // Prevent rubber-band at edges
+      if ((atTop && (e as any).touches?.[0] && scrollable.dataset._lastY !== undefined)) {
+        // no-op; rely on overscroll-contain
+      }
+      if (atTop || atBottom) {
+        // Let overscroll-behavior handle it; only stop if it would scroll the page
+        if (scrollHeight <= clientHeight) e.preventDefault();
+      }
+    };
+    document.addEventListener("touchmove", onTouchMove, { passive: false });
+
+    return () => {
+      document.removeEventListener("touchmove", onTouchMove);
+      body.style.position = prev.bodyPosition;
+      body.style.top = prev.bodyTop;
+      body.style.left = prev.bodyLeft;
+      body.style.right = prev.bodyRight;
+      body.style.width = prev.bodyWidth;
+      body.style.overflow = prev.bodyOverflow;
+      html.style.overflow = prev.htmlOverflow;
+      (html.style as any).overscrollBehavior = prev.htmlOverscroll ?? "";
+      window.scrollTo(0, scrollY);
+    };
   }, [mobileOpen, searchOpen]);
+
 
   return (
     <motion.header
@@ -596,8 +654,9 @@ const SiteHeader = () => {
 
               {/* ── Scrollable body ── */}
               <div
+                data-scroll-lock-allow
                 className="relative flex-1 overflow-y-auto overscroll-contain px-4 py-4 space-y-4"
-                style={{ scrollbarWidth: "thin" }}
+                style={{ scrollbarWidth: "thin", WebkitOverflowScrolling: "touch" }}
               >
                 <motion.div
                   initial="hidden"
