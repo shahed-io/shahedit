@@ -551,15 +551,36 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ delay: index * 0.1, type: "spring", stiffness: 120 }}
-        whileHover={{ y: -6, scale: 1.01 }}
+        whileHover={{ y: -8, scale: 1.015 }}
         whileTap={{ scale: 0.97 }}
         onClick={() => navigate(`/product/${pkg.id}`)}
-        className="group rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 flex flex-col"
-        style={{ background: c.bg, border: `1px solid ${c.border}` }}
+        className="group relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 flex flex-col backdrop-blur-xl"
+        style={{
+          background: `linear-gradient(160deg, ${c.color}10 0%, rgba(10,6,24,0.85) 45%, rgba(6,3,16,0.95) 100%)`,
+          border: `1px solid ${c.color}30`,
+          boxShadow: `0 10px 40px -12px ${c.color}30, inset 0 1px 0 rgba(255,255,255,0.06)`,
+        }}
       >
+        {/* Animated gradient glow border */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          style={{
+            background: `conic-gradient(from 0deg, transparent 0deg, ${c.color}55 90deg, transparent 180deg, ${c.color}55 270deg, transparent 360deg)`,
+            mask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
+            WebkitMask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
+            WebkitMaskComposite: 'xor',
+            maskComposite: 'exclude',
+            padding: '1px',
+          }}
+        />
+
         {/* Top visual area */}
-        <div className="relative h-32 flex items-center justify-center overflow-hidden"
-          style={{ background: `linear-gradient(135deg, ${c.color}15, ${c.color}05)` }}>
+        <div className="relative h-40 flex items-center justify-center overflow-hidden"
+          style={{ background: `radial-gradient(120% 100% at 50% 0%, ${c.color}28 0%, ${c.color}08 45%, transparent 80%)` }}>
+          {/* Shine sweep on hover */}
+          <div className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-[1400ms] ease-out"
+            style={{ background: 'linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.12) 50%, transparent 70%)' }} />
           {pkg.image_url ? (
             <img
               src={pkg.image_url}
