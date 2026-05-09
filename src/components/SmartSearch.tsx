@@ -138,8 +138,9 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
         setOpen(true);
         // wait a tick so the input is mounted/visible before focusing
         setTimeout(() => {
-          inputRef.current?.focus();
-          inputRef.current?.select();
+          const activeInput = getActiveInput();
+          activeInput?.focus();
+          activeInput?.select();
         }, 0);
       }
     };
@@ -148,10 +149,22 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
   }, [variant]);
 
   useEffect(() => {
+    if (variant !== "mobile") return;
     const onClick = (e: MouseEvent) => { if (!wrapRef.current?.contains(e.target as Node)) setOpen(false); };
     document.addEventListener("mousedown", onClick);
     return () => document.removeEventListener("mousedown", onClick);
-  }, []);
+  }, [variant]);
+
+  useEffect(() => {
+    if (variant !== "desktop" || !open) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const t = window.setTimeout(() => focusSearchInput(), 0);
+    return () => {
+      window.clearTimeout(t);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [open, variant]);
 
   useEffect(() => {
     const q = query.trim();
