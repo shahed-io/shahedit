@@ -99,7 +99,7 @@ const SiteHeader = () => {
           />
         </div>
 
-        <div className="container mx-auto px-4 lg:px-6 py-3 flex items-center gap-3 lg:gap-5 relative">
+        <div className="container mx-auto px-3 md:px-4 lg:px-6 py-2 md:py-3 flex items-center gap-2 md:gap-3 lg:gap-5 relative">
           {/* ── Logo ── */}
           <Link to="/" className="shrink-0">
             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} className="flex items-center gap-2.5 group">
