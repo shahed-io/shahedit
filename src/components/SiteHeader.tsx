@@ -7,7 +7,7 @@ import logoImg from "@/assets/logo-glossy.png";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { useTheme } from "@/contexts/ThemeContext";
+
 
 import catWebDev from "@/assets/cat-web-dev.jpg";
 import catMaintenance from "@/assets/cat-maintenance.jpg";
