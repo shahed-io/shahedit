@@ -9,7 +9,8 @@ const RECENT_KEY = "search_recent_v1";
 const MAX_RECENT = 8;
 
 const POPULAR_FALLBACK = [
-  "Windows 11", "Office 365", "Netflix", "Adobe", "Antivirus", "VPN", "Spotify", "Canva Pro",
+  "Web Development", "App Development", "Logo Design", "Graphic Design",
+  "SEO Service", "Digital Marketing", "WordPress Website", "Cloud Hosting",
 ];
 
 interface Props {
