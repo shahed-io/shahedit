@@ -41,9 +41,6 @@ const Index = () => {
           <AboutSection />
         </div>
         <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 800px' }}>
-          <PopularCategories />
-        </div>
-        <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 800px' }}>
           <HowWeHelp />
         </div>
         <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 800px' }}>
