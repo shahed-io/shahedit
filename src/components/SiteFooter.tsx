@@ -146,11 +146,11 @@ const SiteFooter = () => {
                 </span>
                 <span className="text-sm font-medium text-foreground/90">01820-060046</span>
               </a>
-              <a href="mailto:info.shahedit@gmail.com" className="group inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 hover:border-accent/40 hover:bg-accent/10 transition-colors">
+              <a href="mailto:info@shahedit.com" className="group inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 hover:border-accent/40 hover:bg-accent/10 transition-colors">
                 <span className="w-8 h-8 rounded-full flex items-center justify-center bg-gradient-to-br from-accent to-cyan-500 shadow-md">
                   <Mail size={13} className="text-white" />
                 </span>
-                <span className="text-sm font-medium text-foreground/90">info.shahedit@gmail.com</span>
+                <span className="text-sm font-medium text-foreground/90">info@shahedit.com</span>
               </a>
               <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/[0.04] border border-white/10">
                 <span className="w-8 h-8 rounded-full flex items-center justify-center bg-gradient-to-br from-emerald-500 to-teal-500 shadow-md">

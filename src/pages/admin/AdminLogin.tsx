@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { lovable } from "@/integrations/lovable";
 
-const ADMIN_EMAIL = "info.shahedit@gmail.com";
+const ADMIN_EMAIL = "info@shahedit.com";
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
