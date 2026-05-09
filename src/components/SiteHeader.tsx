@@ -102,10 +102,10 @@ const SiteHeader = () => {
           />
         </div>
 
-        <div className="container mx-auto px-3 md:px-4 lg:px-6 py-2 md:py-3 flex items-center gap-2 md:gap-3 lg:gap-5 relative">
+        <div className="container mx-auto px-2.5 sm:px-3 md:px-4 lg:px-6 py-1.5 sm:py-2 md:py-3 flex items-center gap-1.5 sm:gap-2 md:gap-3 lg:gap-5 relative min-w-0">
           {/* ── Logo ── */}
-          <Link to="/" className="shrink-0">
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} className="flex items-center gap-2.5 group">
+          <Link to="/" className="shrink-0 min-w-0">
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} className="flex items-center gap-1.5 sm:gap-2 md:gap-2.5 group min-w-0">
               <div className="relative shrink-0">
                 <motion.div
                   className="absolute -inset-1.5 rounded-2xl opacity-60 blur-lg"
@@ -114,7 +114,7 @@ const SiteHeader = () => {
                   transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
                 />
                 <div
-                  className="relative w-9 h-9 md:w-11 md:h-11 rounded-xl flex items-center justify-center overflow-hidden"
+                  className="relative w-8 h-8 sm:w-9 sm:h-9 md:w-11 md:h-11 rounded-xl flex items-center justify-center overflow-hidden"
                   style={{
                     background: "linear-gradient(135deg, #1a1233 0%, #251847 100%)",
                     border: "1px solid rgba(168, 85, 247, 0.45)",
@@ -126,17 +126,17 @@ const SiteHeader = () => {
                     className="absolute inset-0 opacity-30 pointer-events-none"
                     style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.5) 0%, transparent 50%)" }}
                   />
-                  <img src={logoImg} alt="Shahed IT" className="w-7 h-7 md:w-9 md:h-9 object-contain relative" />
+                  <img src={logoImg} alt="Shahed IT" className="w-6 h-6 sm:w-7 sm:h-7 md:w-9 md:h-9 object-contain relative" />
                 </div>
               </div>
-              <div className="flex flex-col leading-tight">
-                <span className="text-[16px] md:text-[20px] font-extrabold tracking-tight" style={{ fontFamily: "'Syne', sans-serif" }}>
+              <div className="flex flex-col leading-tight min-w-0">
+                <span className="text-[13px] sm:text-[16px] md:text-[20px] font-extrabold tracking-tight whitespace-nowrap" style={{ fontFamily: "'Syne', sans-serif" }}>
                   <span style={{ color: "#fff" }}>Shahed </span>
                   <span style={{ background: "linear-gradient(135deg, #818cf8 0%, #c4b5fd 40%, #f0abfc 80%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                     IT
                   </span>
                 </span>
-                <span className="text-[8px] md:text-[9px] uppercase tracking-[0.2em] font-bold" style={{ color: "#a78bfa" }}>
+                <span className="hidden xs:inline text-[7px] sm:text-[8px] md:text-[9px] uppercase tracking-[0.18em] sm:tracking-[0.2em] font-bold whitespace-nowrap" style={{ color: "#a78bfa" }}>
                   Digital Agency
                 </span>
               </div>
