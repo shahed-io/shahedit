@@ -23,9 +23,9 @@ const TechStack = () => {
       <div className="absolute inset-0 cross-grid opacity-40" />
       <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(168,85,247,0.05) 0%, transparent 50%, rgba(236,72,153,0.05) 100%)' }} />
       <div className="absolute top-10 left-10 w-[500px] h-[400px] rounded-full float-anim"
-        style={{ background: 'radial-gradient(ellipse, hsl(270,92%,65%) 0%, transparent 65%)', filter: 'blur(120px)', opacity: 0.10 }} />
+        style={{ background: 'radial-gradient(ellipse, hsl(270,92%,65%) 0%, transparent 65%)', opacity: 0.10 }} />
       <div className="absolute bottom-10 right-10 w-[400px] h-[350px] rounded-full float-anim"
-        style={{ background: 'radial-gradient(ellipse, hsl(320,90%,48%) 0%, transparent 65%)', filter: 'blur(100px)', opacity: 0.09, animationDelay: '3s' }} />
+        style={{ background: 'radial-gradient(ellipse, hsl(320,90%,48%) 0%, transparent 65%)', opacity: 0.09, animationDelay: '3s' }} />
 
       <div className="container mx-auto px-4 relative">
         <div className="grid lg:grid-cols-2 gap-16 items-center">

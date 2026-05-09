@@ -17,9 +17,9 @@ const PopularCategories = () => {
       <div className="absolute top-0 left-0 right-0 section-divider" />
 
       {/* Background */}
-      <div className="absolute inset-0 dot-grid opacity-25" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full"
-        style={{ background: 'radial-gradient(ellipse, hsl(270,92%,65%) 0%, transparent 70%)', filter: 'blur(120px)', opacity: 0.07 }} />
+      <div className="absolute inset-0 dot-grid opacity-25 pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse, hsl(270,92%,65%) 0%, transparent 70%)', opacity: 0.07 }} />
 
       <div className="container mx-auto px-4 relative">
         <motion.div
