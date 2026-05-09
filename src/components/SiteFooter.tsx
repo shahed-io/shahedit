@@ -266,10 +266,9 @@ const SiteFooter = () => {
           >
             <span className="w-1.5 h-1.5 rounded-full bg-foreground/60" />
             © {new Date().getFullYear()}{" "}
-            <span className="font-semibold bg-gradient-to-r from-primary via-fuchsia-400 to-accent bg-clip-text text-transparent">
-              Shahed IT
-            </span>
-            . All Rights Reserved.
+            <span className="font-bold bg-gradient-to-r from-primary via-fuchsia-400 to-accent bg-clip-text text-transparent">Shahed IT</span>
+            · All Rights Reserved · Designed &amp; Developed by{" "}
+            <span className="font-semibold text-accent">Shahed IT</span>
           </div>
         </div>
       </div>
