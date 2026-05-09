@@ -387,18 +387,40 @@ const SiteHeader = () => {
             }
           `}</style>
 
-          {/* Mobile toggle */}
-          <button
-            className="md:hidden ml-auto p-2.5 rounded-xl text-white"
-            style={{
-              background: "rgba(255, 255, 255, 0.06)",
-              border: "1px solid rgba(255, 255, 255, 0.12)",
-            }}
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle menu"
-          >
-            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
+          {/* Mobile actions */}
+          <div className="md:hidden ml-auto flex items-center gap-2">
+            <motion.button
+              whileTap={{ scale: 0.92 }}
+              className="w-10 h-10 rounded-full flex items-center justify-center"
+              style={{
+                background: "linear-gradient(135deg, rgba(124,58,237,0.18), rgba(236,72,153,0.14))",
+                border: "1px solid rgba(168, 85, 247, 0.40)",
+                color: "#f0abfc",
+                boxShadow: "0 4px 14px rgba(168, 85, 247, 0.30), inset 0 1px 0 rgba(255,255,255,0.08)",
+              }}
+              onClick={() => setMobileOpen(true)}
+              aria-label="Search"
+            >
+              <Search size={17} />
+            </motion.button>
+            <motion.button
+              whileTap={{ scale: 0.92 }}
+              className="w-10 h-10 rounded-full flex items-center justify-center text-white"
+              style={{
+                background: mobileOpen
+                  ? "linear-gradient(135deg, #6366f1, #a855f7 55%, #ec4899)"
+                  : "rgba(255, 255, 255, 0.06)",
+                border: "1px solid rgba(168, 85, 247, 0.35)",
+                boxShadow: mobileOpen
+                  ? "0 6px 18px rgba(168, 85, 247, 0.45), inset 0 1px 0 rgba(255,255,255,0.20)"
+                  : "inset 0 1px 0 rgba(255,255,255,0.06)",
+              }}
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label="Toggle menu"
+            >
+              {mobileOpen ? <X size={18} /> : <Menu size={18} />}
+            </motion.button>
+          </div>
         </div>
       </div>
 
