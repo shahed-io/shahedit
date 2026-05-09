@@ -73,20 +73,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
-        setTimeout(() => fetchRole(session.user.id), 0);
+        setLoading(true);
+        // fetch role BEFORE marking loading=false so admin checks don't race
+        setTimeout(async () => {
+          await fetchRole(session.user.id);
+          setLoading(false);
+        }, 0);
         if (event === "SIGNED_IN") {
           setTimeout(() => syncProfileFromOAuth(session.user), 0);
         }
       } else {
         setRole(null);
+        setLoading(false);
       }
-      setLoading(false);
     });
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
-      if (session?.user) fetchRole(session.user.id);
+      if (session?.user) await fetchRole(session.user.id);
       setLoading(false);
     });
   }, []);
