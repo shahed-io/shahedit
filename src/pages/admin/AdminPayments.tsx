@@ -225,6 +225,14 @@ const AdminPayments = () => {
                   </div>
 
                   <div className="flex gap-2 flex-shrink-0">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => openInvoice(p as any)}
+                      className="text-xs border-purple-500/30 text-purple-300 hover:bg-purple-500/10 gap-1"
+                    >
+                      <Receipt size={12} /> Invoice
+                    </Button>
                     {mode === "auto" && p.status === "pending" && (
                       <Button
                         size="sm"
