@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { CheckCircle, XCircle, Clock, RefreshCw, Settings, Zap, User, Phone, CreditCard, Hash } from "lucide-react";
+import { CheckCircle, XCircle, Clock, RefreshCw, Settings, Zap, User, Phone, CreditCard, Hash, Receipt } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { openInvoice } from "@/lib/invoice";
 
 interface Payment {
   id: string;
