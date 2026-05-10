@@ -1,9 +1,10 @@
 import { useParams, Link, Navigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
   Globe, Wrench, Palette, Facebook, TrendingUp, Building2,
   CheckCircle2, ArrowRight, MessageCircle, Sparkles, Star, Package as PackageIcon,
+  Search, X,
 } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
@@ -337,6 +338,35 @@ const ServiceCategoryPage = () => {
   const cat = slug ? categories[slug] : null;
   const [dbPackages, setDbPackages] = useState<DbPackage[]>([]);
   const [loadingPkgs, setLoadingPkgs] = useState(true);
+  const [query, setQuery] = useState("");
+  const [filter, setFilter] = useState<"all" | "featured" | string>("all"); // 'all' | 'featured' | badge
+  const [sortBy, setSortBy] = useState<"default" | "price_asc" | "price_desc" | "name_asc">("default");
+
+  const availableBadges = useMemo(() => {
+    const set = new Set<string>();
+    dbPackages.forEach(p => { if (p.badge) set.add(p.badge); });
+    return Array.from(set);
+  }, [dbPackages]);
+
+  const visiblePackages = useMemo(() => {
+    let list = [...dbPackages];
+    const q = query.trim().toLowerCase();
+    if (q) {
+      list = list.filter(p =>
+        p.title.toLowerCase().includes(q) ||
+        (p.short_description ?? "").toLowerCase().includes(q) ||
+        (p.description ?? "").toLowerCase().includes(q) ||
+        (p.features ?? []).some(f => f.toLowerCase().includes(q))
+      );
+    }
+    if (filter === "featured") list = list.filter(p => p.is_featured);
+    else if (filter !== "all") list = list.filter(p => p.badge === filter);
+
+    if (sortBy === "price_asc") list.sort((a, b) => (a.price ?? Infinity) - (b.price ?? Infinity));
+    else if (sortBy === "price_desc") list.sort((a, b) => (b.price ?? -Infinity) - (a.price ?? -Infinity));
+    else if (sortBy === "name_asc") list.sort((a, b) => a.title.localeCompare(b.title));
+    return list;
+  }, [dbPackages, query, filter, sortBy]);
 
   useEffect(() => {
     if (!slug) return;
@@ -470,7 +500,66 @@ const ServiceCategoryPage = () => {
           <h2 className="text-3xl md:text-4xl font-black text-foreground mb-3 text-center">
             <span className="gradient-text">প্যাকেজ</span> ও প্রোডাক্ট
           </h2>
-          <p className="text-foreground/50 text-center mb-10 text-sm">এই ক্যাটাগরির সকল প্রোডাক্ট ও প্যাকেজ</p>
+          <p className="text-foreground/50 text-center mb-8 text-sm">এই ক্যাটাগরির সকল প্রোডাক্ট ও প্যাকেজ</p>
+
+          {/* Search · Filter · Sort toolbar */}
+          {!loadingPkgs && dbPackages.length > 0 && (
+            <div className="max-w-6xl mx-auto mb-8 flex flex-col lg:flex-row gap-3 lg:items-center lg:justify-between">
+              <div className="relative flex-1 max-w-md">
+                <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/40" />
+                <input
+                  type="text"
+                  value={query}
+                  onChange={e => setQuery(e.target.value)}
+                  placeholder="প্রোডাক্ট খুঁজুন..."
+                  className="w-full pl-9 pr-9 py-2.5 rounded-xl bg-white/5 border border-white/10 text-foreground text-sm placeholder:text-foreground/40 focus:outline-none focus:border-white/30"
+                />
+                {query && (
+                  <button onClick={() => setQuery("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/40 hover:text-foreground">
+                    <X size={14} />
+                  </button>
+                )}
+              </div>
+
+              <div className="flex flex-wrap gap-2 items-center">
+                {/* Filter chips */}
+                <div className="flex flex-wrap gap-1.5">
+                  {[{ key: "all", label: "সব" }, { key: "featured", label: "⭐ Featured" }, ...availableBadges.map(b => ({ key: b, label: b.toUpperCase() }))].map(opt => (
+                    <button
+                      key={opt.key}
+                      onClick={() => setFilter(opt.key)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                        filter === opt.key
+                          ? "text-white shadow-md"
+                          : "bg-white/5 text-foreground/60 border border-white/10 hover:text-foreground"
+                      }`}
+                      style={filter === opt.key ? { background: `hsl(${cat.accent})` } : undefined}
+                    >
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Sort */}
+                <select
+                  value={sortBy}
+                  onChange={e => setSortBy(e.target.value as typeof sortBy)}
+                  className="px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-foreground text-xs font-semibold focus:outline-none focus:border-white/30"
+                >
+                  <option value="default">সর্বশেষ</option>
+                  <option value="price_asc">কম দাম</option>
+                  <option value="price_desc">বেশি দাম</option>
+                  <option value="name_asc">নাম (A→Z)</option>
+                </select>
+              </div>
+            </div>
+          )}
+
+          {!loadingPkgs && dbPackages.length > 0 && (
+            <p className="text-center text-foreground/45 text-xs mb-5">
+              {visiblePackages.length} টি প্রোডাক্ট দেখানো হচ্ছে {dbPackages.length !== visiblePackages.length ? `(মোট ${dbPackages.length})` : ""}
+            </p>
+          )}
 
           {loadingPkgs ? (
             <div className="grid md:grid-cols-3 gap-5 max-w-6xl mx-auto">
@@ -488,9 +577,21 @@ const ServiceCategoryPage = () => {
                 ফ্রি কোটেশন নিন <ArrowRight size={14} />
               </Link>
             </div>
+          ) : visiblePackages.length === 0 ? (
+            <div className="max-w-md mx-auto text-center rounded-2xl p-8 border" style={{ background: cat.bg, borderColor: cat.border }}>
+              <Search size={28} className="mx-auto mb-3" style={{ color: `hsl(${cat.accent})` }} />
+              <p className="text-foreground/70 font-semibold mb-1">কোনো প্রোডাক্ট পাওয়া যায়নি</p>
+              <p className="text-foreground/45 text-sm mb-4">সার্চ বা ফিল্টার পরিবর্তন করে আবার চেষ্টা করুন</p>
+              <button
+                onClick={() => { setQuery(""); setFilter("all"); setSortBy("default"); }}
+                className="text-xs font-bold px-4 py-2 rounded-lg border border-white/15 text-foreground/80 hover:bg-white/5"
+              >
+                ফিল্টার রিসেট করুন
+              </button>
+            </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 max-w-6xl mx-auto">
-              {dbPackages.map((p, i) => (
+              {visiblePackages.map((p, i) => (
                 <motion.div
                   key={p.id}
                   initial={{ opacity: 0, y: 30 }}
