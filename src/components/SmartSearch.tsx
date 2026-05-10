@@ -21,6 +21,7 @@ interface Props {
 
 interface TrendingProduct {
   id: string;
+  slug?: string | null;
   title: string;
   short_description: string | null;
   description: string | null;
