@@ -66,6 +66,7 @@ const RefundPolicyPage = lazy(() => import("./pages/RefundPolicyPage"));
 const DeliveryPolicyPage = lazy(() => import("./pages/DeliveryPolicyPage"));
 const ComplaintPolicyPage = lazy(() => import("./pages/ComplaintPolicyPage"));
 const PaymentPage = lazy(() => import("./pages/PaymentPage"));
+const RefundRequestPage = lazy(() => import("./pages/RefundRequestPage"));
 const ProductDetailsPage = lazy(() => import("./pages/ProductDetailsPage"));
 const SearchResultsPage = lazy(() => import("./pages/SearchResultsPage"));
 
