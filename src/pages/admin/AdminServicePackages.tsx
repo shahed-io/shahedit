@@ -136,11 +136,13 @@ export default function AdminServicePackages() {
     setEditingPackage(null);
     setAddingFor(null);
     setFeatureInput("");
+    setSelectedServiceId("");
   };
 
   const handleEdit = (pkg: ServicePackage) => {
     setEditingPackage(pkg);
     setAddingFor(pkg.service_id);
+    setSelectedServiceId(pkg.service_id);
     setForm({
       title: pkg.title,
       slug: pkg.slug ?? "",
@@ -158,11 +160,13 @@ export default function AdminServicePackages() {
     setExpandedService(pkg.service_id);
   };
 
-  const handleSubmit = (serviceId: string) => {
+  const handleSubmit = (defaultServiceId: string) => {
     if (!form.title.trim()) return toast.error("শিরোনাম দিন");
+    const targetServiceId = selectedServiceId || defaultServiceId;
+    if (!targetServiceId) return toast.error("ক্যাটাগরি সিলেক্ট করুন");
     upsertMutation.mutate({
-      pkg: editingPackage ? { ...form, id: editingPackage.id } : form,
-      serviceId,
+      pkg: editingPackage ? { ...form, id: editingPackage.id, service_id: targetServiceId } : form,
+      serviceId: targetServiceId,
     });
   };
 
