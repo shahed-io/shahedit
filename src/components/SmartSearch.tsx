@@ -317,7 +317,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
       )}
 
       <AnimatePresence>
-        {open && (
+        {open && (variant !== "desktop" || query.trim().length > 0) && (
           <motion.div
             initial={{ opacity: 0, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
