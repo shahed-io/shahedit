@@ -3,12 +3,12 @@ import { Link } from "react-router-dom";
 import { Code2, Smartphone, Palette, BarChart3, Cloud, ShieldCheck } from "lucide-react";
 
 const categories = [
-  { name: "Web Design & Development", sub: "বিজনেস · ই-কমার্স · WordPress", icon: Code2, href: "/services/web-development", color: "hsl(270,92%,65%)", bg: "rgba(168,85,247,0.12)", border: "rgba(168,85,247,0.25)" },
-  { name: "Website Maintenance", sub: "Speed · Security · Backup", icon: Smartphone, href: "/services/website-maintenance", color: "hsl(217,89%,61%)", bg: "rgba(59,130,246,0.12)", border: "rgba(59,130,246,0.25)" },
-  { name: "Graphics Design", sub: "Logo · Branding · Video", icon: Palette, href: "/services/graphics-design", color: "hsl(315,80%,65%)", bg: "rgba(236,72,153,0.12)", border: "rgba(236,72,153,0.25)" },
-  { name: "Digital Marketing", sub: "Facebook · Google · SEO", icon: BarChart3, href: "/services/digital-marketing", color: "hsl(320,90%,48%)", bg: "rgba(236,72,153,0.12)", border: "rgba(236,72,153,0.25)" },
-  { name: "Facebook Services", sub: "Page · Ads · Boost", icon: Cloud, href: "/services/facebook-services", color: "hsl(45,93%,58%)", bg: "rgba(234,179,8,0.12)", border: "rgba(234,179,8,0.25)" },
-  { name: "Business Solutions", sub: "ERP · CRM · Automation", icon: ShieldCheck, href: "/services/business-solutions", color: "hsl(160,80%,55%)", bg: "rgba(34,197,94,0.12)", border: "rgba(34,197,94,0.25)" },
+  { name: "Web Development", sub: "Business · E-commerce · WordPress", tag: "Most Popular", icon: Code2, href: "/services/web-development", color: "hsl(270,92%,65%)", bg: "rgba(168,85,247,0.10)", border: "rgba(168,85,247,0.30)" },
+  { name: "Website Maintenance", sub: "Speed · Security · Backup", tag: "Reliable", icon: Smartphone, href: "/services/website-maintenance", color: "hsl(217,89%,61%)", bg: "rgba(59,130,246,0.10)", border: "rgba(59,130,246,0.30)" },
+  { name: "Graphics Design", sub: "Logo · Branding · Video", tag: "Creative", icon: Palette, href: "/services/graphics-design", color: "hsl(315,80%,65%)", bg: "rgba(236,72,153,0.10)", border: "rgba(236,72,153,0.30)" },
+  { name: "Digital Marketing", sub: "Facebook · Google · SEO", tag: "Trending", icon: BarChart3, href: "/services/digital-marketing", color: "hsl(320,90%,55%)", bg: "rgba(236,72,153,0.10)", border: "rgba(236,72,153,0.30)" },
+  { name: "Facebook Services", sub: "Page · Ads · Boost", tag: "Growth", icon: Cloud, href: "/services/facebook-services", color: "hsl(45,93%,58%)", bg: "rgba(234,179,8,0.10)", border: "rgba(234,179,8,0.30)" },
+  { name: "Business Solutions", sub: "ERP · CRM · Automation", tag: "Enterprise", icon: ShieldCheck, href: "/services/business-solutions", color: "hsl(160,80%,55%)", bg: "rgba(34,197,94,0.10)", border: "rgba(34,197,94,0.30)" },
 ];
 
 const PopularCategories = () => {
