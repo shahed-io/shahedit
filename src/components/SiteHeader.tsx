@@ -254,17 +254,32 @@ const SiteHeader = () => {
                 </div>
               </div>
               <div className="flex flex-col leading-tight min-w-0">
-                <span className="text-[13px] sm:text-[16px] md:text-[20px] font-extrabold tracking-tight whitespace-nowrap" style={{ fontFamily: "'Syne', sans-serif" }}>
-                  <span style={{ color: "#fff" }}>Shahed </span>
-                  <span style={{ background: "linear-gradient(135deg, #818cf8 0%, #c4b5fd 40%, #f0abfc 80%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                <span
+                  className="text-[13px] sm:text-[16px] md:text-[20px] font-extrabold tracking-tight whitespace-nowrap"
+                  style={{
+                    fontFamily: "'Syne', sans-serif",
+                    background: "linear-gradient(135deg, #ffffff 0%, #e9d5ff 35%, #c4b5fd 60%, #f0abfc 100%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    filter: "drop-shadow(0 0 10px rgba(192,132,252,0.35))",
+                  }}
+                >
+                  Shahed{" "}
+                  <span style={{ background: "linear-gradient(135deg, #a78bfa 0%, #f0abfc 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                     IT
                   </span>
                 </span>
-                <span className="hidden xs:flex items-center gap-1.5 text-[7px] sm:text-[8px] md:text-[9px] uppercase tracking-[0.22em] sm:tracking-[0.26em] font-bold whitespace-nowrap">
-                  <span className="w-1 h-1 rounded-full" style={{ background: "linear-gradient(135deg, #818cf8, #f0abfc)", boxShadow: "0 0 6px rgba(192,132,252,0.7)" }} />
-                  <span style={{ background: "linear-gradient(90deg, #c4b5fd 0%, #f0abfc 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                    Smart IT Solutions
-                  </span>
+                <span
+                  className="hidden xs:block text-[13px] sm:text-[16px] md:text-[20px] font-extrabold tracking-tight whitespace-nowrap"
+                  style={{
+                    fontFamily: "'Syne', sans-serif",
+                    background: "linear-gradient(90deg, #c4b5fd 0%, #f0abfc 100%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    filter: "drop-shadow(0 0 8px rgba(240,171,252,0.30))",
+                  }}
+                >
+                  Smart IT Solutions
                 </span>
               </div>
             </motion.div>
