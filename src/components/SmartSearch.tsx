@@ -239,7 +239,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
     <div
       ref={wrapRef}
       className={variant === "desktop"
-        ? open
+        ? open && query.trim().length > 0
           ? "hidden md:flex fixed top-20 left-0 right-0 z-[90] mx-auto w-[min(92vw,720px)] max-w-[720px]"
           : "hidden md:flex relative flex-1 max-w-md mx-auto"
         : "relative w-full"
@@ -298,7 +298,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
       {/* Desktop full-page blur backdrop */}
       {variant === "desktop" && (
         <AnimatePresence>
-          {open && (
+          {open && query.trim().length > 0 && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -317,7 +317,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
       )}
 
       <AnimatePresence>
-        {open && (
+        {open && (variant !== "desktop" || query.trim().length > 0) && (
           <motion.div
             initial={{ opacity: 0, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
