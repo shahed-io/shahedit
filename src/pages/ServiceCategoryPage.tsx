@@ -338,6 +338,35 @@ const ServiceCategoryPage = () => {
   const cat = slug ? categories[slug] : null;
   const [dbPackages, setDbPackages] = useState<DbPackage[]>([]);
   const [loadingPkgs, setLoadingPkgs] = useState(true);
+  const [query, setQuery] = useState("");
+  const [filter, setFilter] = useState<"all" | "featured" | string>("all"); // 'all' | 'featured' | badge
+  const [sortBy, setSortBy] = useState<"default" | "price_asc" | "price_desc" | "name_asc">("default");
+
+  const availableBadges = useMemo(() => {
+    const set = new Set<string>();
+    dbPackages.forEach(p => { if (p.badge) set.add(p.badge); });
+    return Array.from(set);
+  }, [dbPackages]);
+
+  const visiblePackages = useMemo(() => {
+    let list = [...dbPackages];
+    const q = query.trim().toLowerCase();
+    if (q) {
+      list = list.filter(p =>
+        p.title.toLowerCase().includes(q) ||
+        (p.short_description ?? "").toLowerCase().includes(q) ||
+        (p.description ?? "").toLowerCase().includes(q) ||
+        (p.features ?? []).some(f => f.toLowerCase().includes(q))
+      );
+    }
+    if (filter === "featured") list = list.filter(p => p.is_featured);
+    else if (filter !== "all") list = list.filter(p => p.badge === filter);
+
+    if (sortBy === "price_asc") list.sort((a, b) => (a.price ?? Infinity) - (b.price ?? Infinity));
+    else if (sortBy === "price_desc") list.sort((a, b) => (b.price ?? -Infinity) - (a.price ?? -Infinity));
+    else if (sortBy === "name_asc") list.sort((a, b) => a.title.localeCompare(b.title));
+    return list;
+  }, [dbPackages, query, filter, sortBy]);
 
   useEffect(() => {
     if (!slug) return;
