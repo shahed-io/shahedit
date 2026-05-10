@@ -5,9 +5,9 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 const productLinks = [
-  { label: "Web Development", to: "/services" },
-  { label: "Graphics Design", to: "/services" },
-  { label: "Digital Marketing", to: "/services" },
+  { label: "Web Development", to: "/services/web-development" },
+  { label: "Graphics Design", to: "/services/graphics-design" },
+  { label: "Digital Marketing", to: "/services/digital-marketing" },
   { label: "All Products", to: "/services" },
   { label: "Pricing", to: "/pricing" },
   { label: "Get Quote", to: "/get-quote" },
@@ -19,7 +19,7 @@ const infoLinks = [
   { label: "My Account", to: "/dashboard" },
   { label: "Contact Us", to: "/contact" },
   { label: "Blog", to: "/blog" },
-  { label: "Portfolio", to: "/portfolio" },
+  { label: "Category", to: "/services" },
 ];
 
 const policyLinks = [
@@ -28,7 +28,7 @@ const policyLinks = [
   { label: "Refund & Return Policy", to: "/refund-policy" },
   { label: "Order & Cancellation", to: "/complaint-policy" },
   { label: "Delivery Info", to: "/delivery-policy" },
-  { label: "Refund Request", to: "/refund-policy" },
+  { label: "Refund Request", to: "/refund-request" },
 ];
 
 const socials = [
