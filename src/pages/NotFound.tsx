@@ -18,9 +18,8 @@ const NotFound = () => {
         .maybeSingle();
 
       if (data?.to_path) {
-        // Bump hits (best-effort)
-        supabase.rpc("noop").catch(() => {});
-        await supabase.from("redirects").update({ hits: (await supabase.from("redirects").select("hits").eq("from_path", location.pathname).maybeSingle()).data?.hits + 1 || 1 }).eq("from_path", location.pathname);
+        const cur = await supabase.from("redirects").select("hits").eq("from_path", location.pathname).maybeSingle();
+        await supabase.from("redirects").update({ hits: (cur.data?.hits ?? 0) + 1 }).eq("from_path", location.pathname);
         navigate(data.to_path, { replace: true });
         return;
       }
