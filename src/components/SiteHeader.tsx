@@ -260,8 +260,11 @@ const SiteHeader = () => {
                     IT
                   </span>
                 </span>
-                <span className="hidden xs:inline text-[7px] sm:text-[8px] md:text-[9px] uppercase tracking-[0.18em] sm:tracking-[0.2em] font-bold whitespace-nowrap" style={{ color: "#a78bfa" }}>
-                  Digital Agency
+                <span className="hidden xs:flex items-center gap-1.5 text-[7px] sm:text-[8px] md:text-[9px] uppercase tracking-[0.22em] sm:tracking-[0.26em] font-bold whitespace-nowrap">
+                  <span className="w-1 h-1 rounded-full" style={{ background: "linear-gradient(135deg, #818cf8, #f0abfc)", boxShadow: "0 0 6px rgba(192,132,252,0.7)" }} />
+                  <span style={{ background: "linear-gradient(90deg, #c4b5fd 0%, #f0abfc 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                    Smart IT Solutions
+                  </span>
                 </span>
               </div>
             </motion.div>
