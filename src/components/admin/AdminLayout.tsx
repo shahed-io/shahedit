@@ -18,7 +18,9 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import logoImg from "@/assets/logo-glossy.png";
 
-type NavItem = { label: string; icon: any; href: string; badge?: string };
+import { canAccess, type AdminSection } from "@/lib/admin-permissions";
+
+type NavItem = { label: string; icon: any; href: string; badge?: string; section: AdminSection };
 type NavGroup = { title: string; icon: any; items: NavItem[] };
 
 const navGroups: NavGroup[] = [
