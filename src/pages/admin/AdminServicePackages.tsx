@@ -22,6 +22,7 @@ interface ServicePackage {
   id: string;
   service_id: string;
   title: string;
+  slug: string | null;
   description: string | null;
   price: number | null;
   original_price: number | null;
@@ -36,6 +37,7 @@ interface ServicePackage {
 
 const emptyForm = (): Omit<ServicePackage, "id" | "service_id"> => ({
   title: "",
+  slug: "",
   description: "",
   price: null,
   original_price: null,
