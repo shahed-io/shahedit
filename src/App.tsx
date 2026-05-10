@@ -156,6 +156,7 @@ const AdminRoutes = () => (
         <Route path="redirects" element={<RoleRoute section="redirects"><AdminRedirects /></RoleRoute>} />
         <Route path="sitemap" element={<RoleRoute section="sitemap"><AdminSitemap /></RoleRoute>} />
         <Route path="schema" element={<RoleRoute section="schema"><AdminSchemaBuilder /></RoleRoute>} />
+        <Route path="seo-tools" element={<RoleRoute section="seo-tools"><AdminSEOTools /></RoleRoute>} />
       </Routes>
     </AdminLayout>
   </ProtectedRoute>
