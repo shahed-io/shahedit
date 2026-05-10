@@ -142,6 +142,7 @@ export default function AdminServicePackages() {
     setAddingFor(pkg.service_id);
     setForm({
       title: pkg.title,
+      slug: pkg.slug ?? "",
       description: pkg.description ?? "",
       price: pkg.price,
       original_price: pkg.original_price,
