@@ -238,7 +238,7 @@ const SiteHeader = () => {
                   transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
                 />
                 <div
-                  className="relative w-8 h-8 sm:w-9 sm:h-9 md:w-11 md:h-11 rounded-xl flex items-center justify-center overflow-hidden"
+                  className="relative w-8 h-8 sm:w-9 sm:h-9 md:w-11 md:h-11 rounded-xl flex items-center justify-center"
                   style={{
                     background: "linear-gradient(135deg, #1a1233 0%, #251847 100%)",
                     border: "1px solid rgba(168, 85, 247, 0.45)",
@@ -247,10 +247,10 @@ const SiteHeader = () => {
                   }}
                 >
                   <span
-                    className="absolute inset-0 opacity-30 pointer-events-none"
+                    className="absolute inset-0 opacity-30 pointer-events-none rounded-xl overflow-hidden"
                     style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.5) 0%, transparent 50%)" }}
                   />
-                  <img src={logoImg} alt="Shahed IT" className="w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 object-contain relative drop-shadow-[0_2px_8px_rgba(168,85,247,0.55)]" />
+                  <img src={logoImg} alt="Shahed IT" className="w-11 h-11 sm:w-12 sm:h-12 md:w-14 md:h-14 object-contain relative drop-shadow-[0_2px_8px_rgba(168,85,247,0.55)]" />
                 </div>
               </div>
               <div className="flex flex-col leading-[1.0] min-w-0 gap-0.5">
