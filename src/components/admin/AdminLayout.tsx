@@ -75,6 +75,7 @@ const navGroups: NavGroup[] = [
     icon: Globe,
     items: [
       { label: "SEO Manager", icon: Search, href: "/admin/seo", section: "seo" },
+      { label: "SEO Tools & Reports", icon: BarChart3, href: "/admin/seo-tools", badge: "NEW", section: "seo-tools" },
       { label: "Sitemap & Robots", icon: Globe, href: "/admin/sitemap", badge: "NEW", section: "sitemap" },
       { label: "Schema Builder", icon: Zap, href: "/admin/schema", badge: "NEW", section: "schema" },
       { label: "Redirects (301)", icon: ArrowLeftRight, href: "/admin/redirects", badge: "NEW", section: "redirects" },
