@@ -10,6 +10,7 @@ import { useProductRating } from "@/hooks/useProductRatings";
 
 export interface ServicePackageRow {
   id: string;
+  slug?: string | null;
   title: string;
   description: string | null;
   short_description?: string | null;
