@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { canAccess, type AdminSection } from "@/lib/admin-permissions";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { useAnalyticsInjection } from "@/hooks/useAnalyticsInjection";
 import { SEO } from "@/components/SEO";
@@ -94,39 +95,60 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
+const RoleRoute = ({ section, children }: { section: AdminSection; children: React.ReactNode }) => {
+  const { role } = useAuth();
+  if (!canAccess(role, section)) {
+    return (
+      <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-6">
+        <div className="w-16 h-16 rounded-2xl bg-red-500/10 border border-red-500/30 flex items-center justify-center mb-4">
+          <span className="text-3xl">🔒</span>
+        </div>
+        <h1 className="text-white text-xl font-bold mb-2">Access Denied</h1>
+        <p className="text-slate-400 text-sm max-w-md">
+          এই সেকশনটি দেখার অনুমতি আপনার role-এ নেই। আপনার ভূমিকা: <span className="text-purple-400 font-semibold">{role ?? "—"}</span>
+        </p>
+        <a href="/admin" className="mt-5 px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-sm font-semibold">
+          Dashboard-এ ফিরে যান
+        </a>
+      </div>
+    );
+  }
+  return <>{children}</>;
+};
+
 const AdminRoutes = () => (
   <ProtectedRoute>
     <AdminLayout>
       <Routes>
-        <Route path="" element={<AdminDashboard />} />
-        <Route path="leads" element={<AdminLeads />} />
-        <Route path="payments" element={<AdminPayments />} />
-        <Route path="orders" element={<AdminOrders />} />
-        <Route path="services" element={<AdminServices />} />
-        <Route path="service-packages" element={<AdminServicePackages />} />
-        <Route path="portfolio" element={<AdminPortfolio />} />
-        <Route path="blog" element={<AdminBlog />} />
-        <Route path="testimonials" element={<AdminTestimonials />} />
-        <Route path="team" element={<AdminTeam />} />
-        <Route path="clients" element={<AdminClients />} />
-        <Route path="pricing" element={<AdminPricing />} />
-        <Route path="faq" element={<AdminFAQ />} />
-        <Route path="careers" element={<AdminCareers />} />
-        <Route path="ai-support" element={<AdminAISupport />} />
-        <Route path="settings" element={<AdminSettings />} />
-        <Route path="seo" element={<AdminSEO />} />
-        <Route path="users" element={<AdminUsers />} />
-        <Route path="footer" element={<AdminFooterEditor />} />
-        <Route path="client-docs" element={<AdminClientDocuments />} />
-        <Route path="popular-searches" element={<AdminPopularSearches />} />
-        <Route path="analytics" element={<AdminAnalytics />} />
-        <Route path="activity" element={<AdminActivityLog />} />
-        <Route path="coupons" element={<AdminCoupons />} />
-        <Route path="campaigns" element={<AdminEmailCampaigns />} />
-        <Route path="ai-writer" element={<AdminAIWriter />} />
-        <Route path="redirects" element={<AdminRedirects />} />
-        <Route path="sitemap" element={<AdminSitemap />} />
-        <Route path="schema" element={<AdminSchemaBuilder />} />
+        <Route path="" element={<RoleRoute section="dashboard"><AdminDashboard /></RoleRoute>} />
+        <Route path="leads" element={<RoleRoute section="leads"><AdminLeads /></RoleRoute>} />
+        <Route path="payments" element={<RoleRoute section="payments"><AdminPayments /></RoleRoute>} />
+        <Route path="orders" element={<RoleRoute section="orders"><AdminOrders /></RoleRoute>} />
+        <Route path="services" element={<RoleRoute section="services"><AdminServices /></RoleRoute>} />
+        <Route path="service-packages" element={<RoleRoute section="service-packages"><AdminServicePackages /></RoleRoute>} />
+        <Route path="portfolio" element={<RoleRoute section="portfolio"><AdminPortfolio /></RoleRoute>} />
+        <Route path="blog" element={<RoleRoute section="blog"><AdminBlog /></RoleRoute>} />
+        <Route path="testimonials" element={<RoleRoute section="testimonials"><AdminTestimonials /></RoleRoute>} />
+        <Route path="team" element={<RoleRoute section="team"><AdminTeam /></RoleRoute>} />
+        <Route path="clients" element={<RoleRoute section="clients"><AdminClients /></RoleRoute>} />
+        <Route path="pricing" element={<RoleRoute section="pricing"><AdminPricing /></RoleRoute>} />
+        <Route path="faq" element={<RoleRoute section="faq"><AdminFAQ /></RoleRoute>} />
+        <Route path="careers" element={<RoleRoute section="careers"><AdminCareers /></RoleRoute>} />
+        <Route path="ai-support" element={<RoleRoute section="ai-support"><AdminAISupport /></RoleRoute>} />
+        <Route path="settings" element={<RoleRoute section="settings"><AdminSettings /></RoleRoute>} />
+        <Route path="seo" element={<RoleRoute section="seo"><AdminSEO /></RoleRoute>} />
+        <Route path="users" element={<RoleRoute section="users"><AdminUsers /></RoleRoute>} />
+        <Route path="footer" element={<RoleRoute section="footer"><AdminFooterEditor /></RoleRoute>} />
+        <Route path="client-docs" element={<RoleRoute section="client-docs"><AdminClientDocuments /></RoleRoute>} />
+        <Route path="popular-searches" element={<RoleRoute section="popular-searches"><AdminPopularSearches /></RoleRoute>} />
+        <Route path="analytics" element={<RoleRoute section="analytics"><AdminAnalytics /></RoleRoute>} />
+        <Route path="activity" element={<RoleRoute section="activity"><AdminActivityLog /></RoleRoute>} />
+        <Route path="coupons" element={<RoleRoute section="coupons"><AdminCoupons /></RoleRoute>} />
+        <Route path="campaigns" element={<RoleRoute section="campaigns"><AdminEmailCampaigns /></RoleRoute>} />
+        <Route path="ai-writer" element={<RoleRoute section="ai-writer"><AdminAIWriter /></RoleRoute>} />
+        <Route path="redirects" element={<RoleRoute section="redirects"><AdminRedirects /></RoleRoute>} />
+        <Route path="sitemap" element={<RoleRoute section="sitemap"><AdminSitemap /></RoleRoute>} />
+        <Route path="schema" element={<RoleRoute section="schema"><AdminSchemaBuilder /></RoleRoute>} />
       </Routes>
     </AdminLayout>
   </ProtectedRoute>

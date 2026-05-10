@@ -18,7 +18,9 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import logoImg from "@/assets/logo-glossy.png";
 
-type NavItem = { label: string; icon: any; href: string; badge?: string };
+import { canAccess, type AdminSection } from "@/lib/admin-permissions";
+
+type NavItem = { label: string; icon: any; href: string; badge?: string; section: AdminSection };
 type NavGroup = { title: string; icon: any; items: NavItem[] };
 
 const navGroups: NavGroup[] = [
@@ -26,64 +28,64 @@ const navGroups: NavGroup[] = [
     title: "Overview",
     icon: LayoutDashboard,
     items: [
-      { label: "Dashboard", icon: LayoutDashboard, href: "/admin" },
-      { label: "Analytics", icon: BarChart3, href: "/admin/analytics", badge: "NEW" },
-      { label: "Activity Log", icon: History, href: "/admin/activity" },
+      { label: "Dashboard", icon: LayoutDashboard, href: "/admin", section: "dashboard" },
+      { label: "Analytics", icon: BarChart3, href: "/admin/analytics", badge: "NEW", section: "analytics" },
+      { label: "Activity Log", icon: History, href: "/admin/activity", section: "activity" },
     ],
   },
   {
     title: "Sales & CRM",
     icon: Inbox,
     items: [
-      { label: "Leads", icon: Inbox, href: "/admin/leads" },
-      { label: "Payments", icon: CreditCard, href: "/admin/payments" },
-      { label: "Orders & Delivery", icon: Package, href: "/admin/orders" },
-      { label: "Coupons", icon: Tag, href: "/admin/coupons", badge: "NEW" },
+      { label: "Leads", icon: Inbox, href: "/admin/leads", section: "leads" },
+      { label: "Payments", icon: CreditCard, href: "/admin/payments", section: "payments" },
+      { label: "Orders & Delivery", icon: Package, href: "/admin/orders", section: "orders" },
+      { label: "Coupons", icon: Tag, href: "/admin/coupons", badge: "NEW", section: "coupons" },
     ],
   },
   {
     title: "Catalog",
     icon: Briefcase,
     items: [
-      { label: "Services", icon: Briefcase, href: "/admin/services" },
-      { label: "Service Packages", icon: Package, href: "/admin/service-packages" },
-      { label: "Pricing", icon: DollarSign, href: "/admin/pricing" },
-      { label: "Portfolio", icon: FolderOpen, href: "/admin/portfolio" },
+      { label: "Services", icon: Briefcase, href: "/admin/services", section: "services" },
+      { label: "Service Packages", icon: Package, href: "/admin/service-packages", section: "service-packages" },
+      { label: "Pricing", icon: DollarSign, href: "/admin/pricing", section: "pricing" },
+      { label: "Portfolio", icon: FolderOpen, href: "/admin/portfolio", section: "portfolio" },
     ],
   },
   {
     title: "Content & Marketing",
     icon: FileText,
     items: [
-      { label: "Blog Posts", icon: FileText, href: "/admin/blog" },
-      { label: "AI Writer", icon: Sparkles, href: "/admin/ai-writer", badge: "AI" },
-      { label: "Email Campaigns", icon: Mail, href: "/admin/campaigns", badge: "NEW" },
-      { label: "Testimonials", icon: Star, href: "/admin/testimonials" },
-      { label: "Clients", icon: Building2, href: "/admin/clients" },
-      { label: "Team", icon: UserCheck, href: "/admin/team" },
-      { label: "Careers", icon: Users, href: "/admin/careers" },
-      { label: "FAQ", icon: HelpCircle, href: "/admin/faq" },
+      { label: "Blog Posts", icon: FileText, href: "/admin/blog", section: "blog" },
+      { label: "AI Writer", icon: Sparkles, href: "/admin/ai-writer", badge: "AI", section: "ai-writer" },
+      { label: "Email Campaigns", icon: Mail, href: "/admin/campaigns", badge: "NEW", section: "campaigns" },
+      { label: "Testimonials", icon: Star, href: "/admin/testimonials", section: "testimonials" },
+      { label: "Clients", icon: Building2, href: "/admin/clients", section: "clients" },
+      { label: "Team", icon: UserCheck, href: "/admin/team", section: "team" },
+      { label: "Careers", icon: Users, href: "/admin/careers", section: "careers" },
+      { label: "FAQ", icon: HelpCircle, href: "/admin/faq", section: "faq" },
     ],
   },
   {
     title: "SEO & Ranking",
     icon: Globe,
     items: [
-      { label: "SEO Manager", icon: Search, href: "/admin/seo" },
-      { label: "Sitemap & Robots", icon: Globe, href: "/admin/sitemap", badge: "NEW" },
-      { label: "Schema Builder", icon: Zap, href: "/admin/schema", badge: "NEW" },
-      { label: "Redirects (301)", icon: ArrowLeftRight, href: "/admin/redirects", badge: "NEW" },
-      { label: "Popular Searches", icon: TrendingUp, href: "/admin/popular-searches" },
+      { label: "SEO Manager", icon: Search, href: "/admin/seo", section: "seo" },
+      { label: "Sitemap & Robots", icon: Globe, href: "/admin/sitemap", badge: "NEW", section: "sitemap" },
+      { label: "Schema Builder", icon: Zap, href: "/admin/schema", badge: "NEW", section: "schema" },
+      { label: "Redirects (301)", icon: ArrowLeftRight, href: "/admin/redirects", badge: "NEW", section: "redirects" },
+      { label: "Popular Searches", icon: TrendingUp, href: "/admin/popular-searches", section: "popular-searches" },
     ],
   },
   {
     title: "System",
     icon: Settings,
     items: [
-      { label: "AI Support", icon: MessageSquare, href: "/admin/ai-support" },
-      { label: "Admin Users", icon: Shield, href: "/admin/users" },
-      { label: "Footer Editor", icon: LayoutTemplate, href: "/admin/footer" },
-      { label: "Site Settings", icon: Settings, href: "/admin/settings" },
+      { label: "AI Support", icon: MessageSquare, href: "/admin/ai-support", section: "ai-support" },
+      { label: "Admin Users", icon: Shield, href: "/admin/users", section: "users" },
+      { label: "Footer Editor", icon: LayoutTemplate, href: "/admin/footer", section: "footer" },
+      { label: "Site Settings", icon: Settings, href: "/admin/settings", section: "settings" },
     ],
   },
 ];
@@ -99,10 +101,15 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Filter nav items by current role permissions
+  const visibleGroups = navGroups
+    .map((g) => ({ ...g, items: g.items.filter((it) => canAccess(role, it.section)) }))
+    .filter((g) => g.items.length > 0);
+
   // Auto-open the group containing the active route
   useEffect(() => {
     const next: Record<string, boolean> = {};
-    navGroups.forEach((g) => {
+    visibleGroups.forEach((g) => {
       next[g.title] = g.items.some(
         (it) =>
           location.pathname === it.href ||
@@ -146,7 +153,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     location.pathname === href || (href !== "/admin" && location.pathname.startsWith(href));
 
   const currentTitle =
-    navGroups.flatMap((g) => g.items).find((i) => isItemActive(i.href))?.label ?? "Admin Panel";
+    visibleGroups.flatMap((g) => g.items).find((i) => isItemActive(i.href))?.label ?? "Admin Panel";
 
   return (
     <div
@@ -201,7 +208,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
 
         {/* Nav Groups */}
         <nav className="flex-1 overflow-y-auto py-3 px-2 space-y-1 scrollbar-thin scrollbar-thumb-amber-400/20">
-          {navGroups.map((group) => {
+          {visibleGroups.map((group) => {
             const isOpen = collapsed ? false : (openGroups[group.title] ?? false);
             return (
               <div key={group.title} className="mb-1">

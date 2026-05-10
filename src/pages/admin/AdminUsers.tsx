@@ -6,18 +6,20 @@ import { motion, AnimatePresence } from "framer-motion";
 import { UserPlus, Trash2, Shield, ShieldCheck, Mail, Key, Eye, EyeOff, AlertTriangle, Users } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 
-const ROLES = ["super_admin", "admin", "editor"] as const;
+const ROLES = ["super_admin", "admin", "manager", "editor"] as const;
 type Role = typeof ROLES[number];
 
 const roleColors: Record<Role, string> = {
   super_admin: "bg-red-500/15 text-red-400 border-red-500/30",
   admin: "bg-purple-500/15 text-purple-400 border-purple-500/30",
+  manager: "bg-amber-500/15 text-amber-400 border-amber-500/30",
   editor: "bg-teal-500/15 text-teal-400 border-teal-500/30",
 };
 
 const roleLabels: Record<Role, string> = {
   super_admin: "Super Admin",
   admin: "Admin",
+  manager: "Manager",
   editor: "Editor",
 };
 
