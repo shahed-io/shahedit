@@ -148,8 +148,6 @@ const AdminLeads = () => {
                 <option value="contact_form">Contact form</option>
                 <option value="quote_form">Quote form</option>
                 <option value="whatsapp">WhatsApp</option>
-                <option value="phone">Phone</option>
-                <option value="referral">Referral</option>
                 <option value="other">Other</option>
               </select>
               <Input type="date" value={from} onChange={e => setFrom(e.target.value)} className="h-8 w-36 text-xs" />
