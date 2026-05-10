@@ -149,6 +149,7 @@ const AppWithAnalytics = () => {
         <Route path="/delivery-policy" element={<DeliveryPolicyPage />} />
         <Route path="/complaint-policy" element={<ComplaintPolicyPage />} />
         <Route path="/payment" element={<PaymentPage />} />
+        <Route path="/refund-request" element={<RefundRequestPage />} />
         <Route path="/product/:id" element={<ProductDetailsPage />} />
         <Route path="/search" element={<SearchResultsPage />} />
         {/* Admin Routes */}
