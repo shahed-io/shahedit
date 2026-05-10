@@ -19,7 +19,7 @@ const infoLinks = [
   { label: "My Account", to: "/dashboard" },
   { label: "Contact Us", to: "/contact" },
   { label: "Blog", to: "/blog" },
-  { label: "Portfolio", to: "/portfolio" },
+  { label: "Category", to: "/services" },
 ];
 
 const policyLinks = [
