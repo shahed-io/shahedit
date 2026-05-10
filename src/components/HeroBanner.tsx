@@ -192,10 +192,10 @@ const HeroBanner = () => {
               </div>
             </motion.div>
 
-            {/* Two info cards — premium popular design */}
+            {/* Two info cards — neo spotlight design */}
             {[
-              { tag: "Featured", emoji: "🚀", icon: Code2, title: "Web Development", desc: "Custom websites that convert visitors into customers", color: "hsl(270,92%,65%)", color2: "hsl(217,89%,61%)", stats: "150+ Projects", rating: "4.9", href: "/services/web-development" },
-              { tag: "Popular", emoji: "⚡", icon: Sparkles, title: "Graphics Design", desc: "Creative logos, branding & visuals that make you stand out", color: "hsl(315,80%,65%)", color2: "hsl(320,90%,48%)", stats: "200+ Designs", rating: "5.0", href: "/services/graphics-design", popular: true },
+              { tag: "Best Seller", icon: Code2, title: "Web Development", desc: "From ৳৫,০০০", color: "hsl(270,92%,65%)", color2: "hsl(217,89%,61%)", live: 12, progress: 92, badge: "#1", href: "/services/web-development" },
+              { tag: "Trending", icon: Sparkles, title: "Graphics Design", desc: "From ৳১,৫০০", color: "hsl(315,80%,65%)", color2: "hsl(45,93%,58%)", live: 8, progress: 87, badge: "★", href: "/services/graphics-design" },
             ].map((card, i) => (
               <motion.a
                 key={card.title}
@@ -203,77 +203,90 @@ const HeroBanner = () => {
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.45 + i * 0.15, type: "spring" }}
-                whileHover={{ scale: 1.03, y: -4 }}
+                whileHover={{ y: -6 }}
                 whileTap={{ scale: 0.97 }}
-                className="relative rounded-2xl p-5 cursor-pointer group overflow-hidden block"
+                className="relative rounded-2xl cursor-pointer group block overflow-hidden"
                 style={{
-                  background: `linear-gradient(135deg, ${card.color}18, ${card.color2}08)`,
-                  border: `1px solid ${card.color}35`,
-                  backdropFilter: 'blur(14px)',
-                  boxShadow: `0 8px 32px -8px ${card.color}30, inset 0 1px 0 ${card.color}25`,
+                  background: 'rgba(15,15,25,0.7)',
+                  border: `1.5px solid ${card.color}40`,
+                  backdropFilter: 'blur(16px)',
+                  boxShadow: `8px 8px 0 0 ${card.color}25, 0 16px 40px -12px ${card.color}50`,
                 }}
               >
-                {/* Animated gradient sheen */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
-                  style={{ background: `radial-gradient(circle at 30% 0%, ${card.color}30, transparent 60%)` }} />
+                {/* Animated conic gradient ring on hover */}
+                <motion.div
+                  className="absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                  style={{
+                    background: `conic-gradient(from 0deg, ${card.color}, ${card.color2}, ${card.color})`,
+                    padding: '1.5px',
+                    WebkitMask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
+                    WebkitMaskComposite: 'xor',
+                    maskComposite: 'exclude',
+                  }}
+                  animate={{ rotate: [0, 360] }}
+                  transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
+                />
 
-                {/* Glow corner */}
-                <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full opacity-40 blur-3xl pointer-events-none"
-                  style={{ background: card.color }} />
+                {/* Top stripe with live indicator */}
+                <div className="flex items-center justify-between px-4 py-2 border-b" style={{ borderColor: `${card.color}25`, background: `${card.color}10` }}>
+                  <div className="flex items-center gap-1.5">
+                    <motion.span
+                      animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                      className="w-1.5 h-1.5 rounded-full bg-emerald-400"
+                      style={{ boxShadow: '0 0 8px #34d399' }}
+                    />
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-emerald-400">Live · {card.live} viewing</span>
+                  </div>
+                  <span className="text-[10px] font-black px-1.5 py-0.5 rounded"
+                    style={{ background: `linear-gradient(90deg, ${card.color}, ${card.color2})`, color: '#fff' }}>
+                    {card.badge} {card.tag}
+                  </span>
+                </div>
 
-                {/* Trending pulse for "Popular" */}
-                {card.popular && (
+                <div className="relative p-4 flex items-center gap-3">
+                  {/* Big icon panel */}
                   <motion.div
-                    animate={{ scale: [1, 1.15, 1], opacity: [0.6, 1, 0.6] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="absolute top-3 right-3 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider"
-                    style={{ background: `linear-gradient(90deg, ${card.color}, ${card.color2})`, color: '#fff', boxShadow: `0 0 16px ${card.color}80` }}
-                  >
-                    🔥 Hot
-                  </motion.div>
-                )}
-
-                <div className="relative flex items-start gap-3">
-                  {/* Icon badge */}
-                  <motion.div
-                    whileHover={{ rotate: [0, -10, 10, 0], scale: 1.1 }}
-                    transition={{ duration: 0.5 }}
-                    className="shrink-0 w-12 h-12 rounded-xl flex items-center justify-center"
+                    whileHover={{ rotate: -6, scale: 1.08 }}
+                    className="shrink-0 w-14 h-14 rounded-xl flex items-center justify-center relative"
                     style={{
-                      background: `linear-gradient(135deg, ${card.color}30, ${card.color2}15)`,
-                      border: `1px solid ${card.color}40`,
-                      boxShadow: `0 0 20px ${card.color}30`,
+                      background: `linear-gradient(135deg, ${card.color}, ${card.color2})`,
+                      boxShadow: `0 8px 24px -4px ${card.color}80, inset 0 1px 0 rgba(255,255,255,0.3)`,
                     }}
                   >
-                    <card.icon size={22} style={{ color: card.color, filter: `drop-shadow(0 0 6px ${card.color}80)` }} />
+                    <card.icon size={26} className="text-white drop-shadow-lg" strokeWidth={2.5} />
+                    {/* Sheen */}
+                    <div className="absolute inset-0 rounded-xl opacity-50"
+                      style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.3), transparent 50%)' }} />
                   </motion.div>
 
                   <div className="flex-1 min-w-0">
-                    <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-[0.15em] px-2 py-0.5 rounded-full mb-1.5"
-                      style={{ background: `${card.color}20`, color: card.color, border: `1px solid ${card.color}40` }}>
-                      <span>{card.emoji}</span> {card.tag}
-                    </span>
-                    <h3 className="text-base font-black text-foreground mb-1 group-hover:gradient-text transition-all">{card.title}</h3>
-                    <p className="text-xs text-foreground/55 leading-relaxed">{card.desc}</p>
+                    <h3 className="text-[15px] font-black text-foreground leading-tight">{card.title}</h3>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-xs font-bold" style={{ color: card.color }}>{card.desc}</span>
+                      <span className="text-[10px] text-foreground/40 line-through">৳১০,০০০</span>
+                    </div>
+                    {/* Mini progress bar */}
+                    <div className="mt-2 h-1 rounded-full overflow-hidden" style={{ background: `${card.color}15` }}>
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${card.progress}%` }}
+                        transition={{ delay: 0.8 + i * 0.2, duration: 1.2, ease: 'easeOut' }}
+                        className="h-full rounded-full"
+                        style={{ background: `linear-gradient(90deg, ${card.color}, ${card.color2})`, boxShadow: `0 0 8px ${card.color}` }}
+                      />
+                    </div>
+                    <div className="flex items-center justify-between mt-1.5">
+                      <span className="text-[9px] text-foreground/45 font-semibold">{card.progress}% Booked this month</span>
+                      <motion.span
+                        whileHover={{ x: 3 }}
+                        className="text-[10px] font-black flex items-center gap-0.5"
+                        style={{ color: card.color }}
+                      >
+                        Order <ArrowRight size={10} />
+                      </motion.span>
+                    </div>
                   </div>
-                </div>
-
-                {/* Footer row: stats + arrow */}
-                <div className="relative mt-4 flex items-center justify-between pt-3" style={{ borderTop: `1px dashed ${card.color}25` }}>
-                  <div className="flex items-center gap-3 text-[10px] font-bold">
-                    <span className="flex items-center gap-1" style={{ color: card.color }}>
-                      <span className="text-amber-400">★</span> {card.rating}
-                    </span>
-                    <span className="text-foreground/40">·</span>
-                    <span className="text-foreground/55">{card.stats}</span>
-                  </div>
-                  <motion.div
-                    whileHover={{ x: 4 }}
-                    className="flex items-center gap-1 text-[10px] font-black uppercase tracking-wider"
-                    style={{ color: card.color }}
-                  >
-                    Explore <ArrowRight size={12} />
-                  </motion.div>
                 </div>
               </motion.a>
             ))}
