@@ -58,6 +58,7 @@ export default function AdminServicePackages() {
   const [form, setForm] = useState(emptyForm());
   const [featureInput, setFeatureInput] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [selectedServiceId, setSelectedServiceId] = useState<string>("");
 
   // Service management state
   const [showServiceForm, setShowServiceForm] = useState(false);
