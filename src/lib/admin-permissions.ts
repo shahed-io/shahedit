@@ -30,6 +30,7 @@ export type AdminSection =
   | "coupons"
   | "campaigns"
   | "seo"
+  | "seo-tools"
   | "sitemap"
   | "schema"
   | "redirects"
