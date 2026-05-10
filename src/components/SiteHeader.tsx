@@ -30,7 +30,7 @@ const serviceCategories = [
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "Services", href: "/services", hasDropdown: true },
-  { label: "Portfolio", href: "/portfolio" },
+  { label: "Category", href: "/services" },
   { label: "Blog", href: "/blog" },
   { label: "Pricing", href: "/pricing" },
   { label: "Contact", href: "/contact" },
@@ -917,7 +917,7 @@ const SiteHeader = () => {
                       {[
                         { label: "Home", to: "/", icon: Globe, grad: "linear-gradient(135deg, #f59e0b, #ea580c)" },
                         { label: "Services", to: "/services", icon: Briefcase, grad: "linear-gradient(135deg, #3b82f6, #1d4ed8)" },
-                        { label: "Portfolio", to: "/portfolio", icon: FolderOpen, grad: "linear-gradient(135deg, #f59e0b, #d97706)" },
+                        { label: "Category", to: "/services", icon: FolderOpen, grad: "linear-gradient(135deg, #f59e0b, #d97706)" },
                         { label: "Blog", to: "/blog", icon: FileText, grad: "linear-gradient(135deg, #a855f7, #7e22ce)" },
                         { label: "Pricing", to: "/pricing", icon: Receipt, grad: "linear-gradient(135deg, #6366f1, #4338ca)" },
                         { label: "Contact", to: "/contact", icon: Phone, grad: "linear-gradient(135deg, #14b8a6, #0d9488)" },
