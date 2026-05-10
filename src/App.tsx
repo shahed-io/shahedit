@@ -131,6 +131,7 @@ const AppWithAnalytics = () => {
         {/* Public Routes */}
         <Route path="/" element={<Index />} />
         <Route path="/services" element={<ServicesPage />} />
+        <Route path="/services/:slug" element={<ServiceCategoryPage />} />
         <Route path="/portfolio" element={<PortfolioPage />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/about" element={<AboutPage />} />
