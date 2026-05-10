@@ -93,7 +93,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
     (async () => {
       const { data } = await supabase
         .from("service_packages")
-        .select("id,title,short_description,description,image_url,price,original_price,currency,is_featured,sort_order,services(title)")
+        .select("id,slug,title,short_description,description,image_url,price,original_price,currency,is_featured,sort_order,services(title)")
         .eq("is_published", true)
         .order("is_featured", { ascending: false })
         .order("sort_order", { ascending: true })
@@ -101,6 +101,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
       if (cancelled || !data) return;
       setTrending(data.map((d: any) => ({
         id: d.id,
+        slug: d.slug,
         title: d.title,
         short_description: d.short_description,
         description: d.description,
