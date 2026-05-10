@@ -253,35 +253,37 @@ const SiteHeader = () => {
                   <img src={logoImg} alt="Shahed IT" className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 object-contain relative drop-shadow-[0_2px_8px_rgba(168,85,247,0.55)]" />
                 </div>
               </div>
-              <div className="flex flex-col leading-[1.0] min-w-0 gap-0.5">
+              <div className="flex items-center gap-2 sm:gap-3 min-w-0">
                 <span
-                  className="text-[14px] sm:text-[17px] md:text-[21px] font-extrabold tracking-tight whitespace-nowrap"
+                  className="text-[15px] sm:text-[18px] md:text-[22px] font-bold tracking-tight whitespace-nowrap"
                   style={{
-                    fontFamily: "'Syne', sans-serif",
-                    background: "linear-gradient(135deg, #ffffff 0%, #e9d5ff 35%, #c4b5fd 60%, #f0abfc 100%)",
+                    fontFamily: "'Playfair Display', 'Syne', serif",
+                    background: "linear-gradient(135deg, #ffffff 0%, #e9d5ff 40%, #c4b5fd 70%, #f0abfc 100%)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                     filter: "drop-shadow(0 0 12px rgba(192,132,252,0.45))",
+                    letterSpacing: "0.005em",
                   }}
                 >
                   Shahed{" "}
-                  <span style={{ background: "linear-gradient(135deg, #a78bfa 0%, #f0abfc 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                  <span style={{ background: "linear-gradient(135deg, #a78bfa 0%, #f0abfc 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", fontStyle: "italic" }}>
                     IT
                   </span>
                 </span>
                 <span
-                  className="hidden xs:flex items-center gap-1 font-semibold whitespace-nowrap"
+                  className="hidden md:inline-block h-5 w-px"
+                  style={{ background: "linear-gradient(180deg, transparent, rgba(192,132,252,0.6), transparent)" }}
+                />
+                <span
+                  className="hidden md:flex items-center gap-1.5 font-semibold whitespace-nowrap"
                   style={{
-                    fontFamily: "'Syne', sans-serif",
-                    fontSize: "clamp(8px, 1.15vw, 11px)",
-                    letterSpacing: "0.12em",
+                    fontFamily: "'Cormorant Garamond', 'Playfair Display', serif",
+                    fontSize: "clamp(11px, 1.25vw, 14px)",
+                    letterSpacing: "0.18em",
                     textTransform: "uppercase",
+                    fontStyle: "italic",
                   }}
                 >
-                  <span
-                    className="inline-block w-1 h-1 rounded-full"
-                    style={{ background: "linear-gradient(135deg, #a78bfa, #f0abfc)", boxShadow: "0 0 6px rgba(192,132,252,0.7)" }}
-                  />
                   <span
                     style={{
                       background: "linear-gradient(90deg, #c4b5fd 0%, #f0abfc 100%)",
