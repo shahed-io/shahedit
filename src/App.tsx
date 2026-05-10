@@ -95,9 +95,8 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
-const RoleRoute = ({ section, children }: { section: import("@/lib/admin-permissions").AdminSection; children: React.ReactNode }) => {
+const RoleRoute = ({ section, children }: { section: AdminSection; children: React.ReactNode }) => {
   const { role } = useAuth();
-  const { canAccess } = require("@/lib/admin-permissions") as typeof import("@/lib/admin-permissions");
   if (!canAccess(role, section)) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-6">
