@@ -13,6 +13,11 @@ import {
   Wallet,
   LogIn,
   ChevronDown,
+  Paperclip,
+  X as XIcon,
+  FileText,
+  Image as ImageIcon,
+  Upload,
 } from "lucide-react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
@@ -84,12 +89,20 @@ const steps = [
   },
 ];
 
+type Attachment = { name: string; path: string; size: number; type: string };
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const MAX_FILES = 5;
+const ALLOWED_TYPES = ["image/png", "image/jpeg", "image/jpg", "image/webp", "application/pdf"];
+
 export default function RefundRequestPage() {
   const { user } = useAuth();
   const [submitted, setSubmitted] = useState(false);
   const [requestNumber, setRequestNumber] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [policyOpen, setPolicyOpen] = useState(true);
+  const [attachments, setAttachments] = useState<Attachment[]>([]);
   const [form, setForm] = useState({
     name: "",
     email: user?.email ?? "",
@@ -97,6 +110,46 @@ export default function RefundRequestPage() {
     orderId: "",
     reason: "",
   });
+
+  const handleFiles = async (files: FileList | null) => {
+    if (!files || !user) return;
+    if (attachments.length + files.length > MAX_FILES) {
+      toast.error(`সর্বোচ্চ ${MAX_FILES} টি ফাইল আপলোড করা যাবে`);
+      return;
+    }
+    setUploading(true);
+    const uploaded: Attachment[] = [];
+    for (const file of Array.from(files)) {
+      if (!ALLOWED_TYPES.includes(file.type)) {
+        toast.error(`${file.name}: শুধু ছবি বা PDF আপলোড করুন`);
+        continue;
+      }
+      if (file.size > MAX_FILE_SIZE) {
+        toast.error(`${file.name}: ১০MB এর বেশি`);
+        continue;
+      }
+      const path = `${user.id}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
+      const { error } = await supabase.storage.from("refund-attachments").upload(path, file, {
+        contentType: file.type,
+        upsert: false,
+      });
+      if (error) {
+        toast.error(`${file.name}: ${error.message}`);
+        continue;
+      }
+      uploaded.push({ name: file.name, path, size: file.size, type: file.type });
+    }
+    if (uploaded.length) {
+      setAttachments((prev) => [...prev, ...uploaded]);
+      toast.success(`${uploaded.length} টি ফাইল আপলোড হয়েছে`);
+    }
+    setUploading(false);
+  };
+
+  const removeAttachment = async (att: Attachment) => {
+    await supabase.storage.from("refund-attachments").remove([att.path]);
+    setAttachments((prev) => prev.filter((a) => a.path !== att.path));
+  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -115,6 +168,7 @@ export default function RefundRequestPage() {
         phone: form.phone,
         order_id: form.orderId || null,
         reason: form.reason,
+        attachments: attachments as any,
       })
       .select("request_number")
       .single();
@@ -429,7 +483,76 @@ export default function RefundRequestPage() {
                     placeholder="বিস্তারিত লিখুন..."
                   />
                 </div>
-                <Button type="submit" disabled={loading} className="w-full" size="lg">
+
+                {/* Attachments */}
+                <div>
+                  <Label className="flex items-center gap-2">
+                    <Paperclip className="w-4 h-4" /> স্ক্রিনশট / PDF সংযুক্ত করুন
+                  </Label>
+                  <p className="text-xs text-muted-foreground mt-1 mb-2">
+                    সর্বোচ্চ {MAX_FILES} টি ফাইল, প্রতিটি ১০MB পর্যন্ত (PNG, JPG, WEBP, PDF)
+                  </p>
+                  <label
+                    htmlFor="refund-files"
+                    className={cn(
+                      "flex flex-col items-center justify-center gap-2 border-2 border-dashed border-border rounded-2xl p-6 cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-colors",
+                      uploading && "opacity-60 pointer-events-none"
+                    )}
+                  >
+                    <Upload className="w-6 h-6 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground">
+                      {uploading ? "আপলোড হচ্ছে..." : "ফাইল নির্বাচন করতে ক্লিক করুন"}
+                    </span>
+                    <input
+                      id="refund-files"
+                      type="file"
+                      multiple
+                      accept="image/png,image/jpeg,image/jpg,image/webp,application/pdf"
+                      className="hidden"
+                      onChange={(e) => {
+                        handleFiles(e.target.files);
+                        e.target.value = "";
+                      }}
+                      disabled={uploading || attachments.length >= MAX_FILES}
+                    />
+                  </label>
+
+                  {attachments.length > 0 && (
+                    <ul className="mt-3 space-y-2">
+                      {attachments.map((att) => {
+                        const isImg = att.type.startsWith("image/");
+                        return (
+                          <li
+                            key={att.path}
+                            className="flex items-center gap-3 rounded-xl border border-border bg-background/50 p-3"
+                          >
+                            {isImg ? (
+                              <ImageIcon className="w-5 h-5 text-primary shrink-0" />
+                            ) : (
+                              <FileText className="w-5 h-5 text-primary shrink-0" />
+                            )}
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium truncate">{att.name}</p>
+                              <p className="text-xs text-muted-foreground">
+                                {(att.size / 1024).toFixed(1)} KB
+                              </p>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => removeAttachment(att)}
+                              className="text-muted-foreground hover:text-destructive p-1 rounded"
+                              aria-label="Remove"
+                            >
+                              <XIcon className="w-4 h-4" />
+                            </button>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  )}
+                </div>
+
+                <Button type="submit" disabled={loading || uploading} className="w-full" size="lg">
                   {loading ? "পাঠানো হচ্ছে..." : "Submit Request"}
                 </Button>
                 <p className="text-xs text-muted-foreground text-center">
