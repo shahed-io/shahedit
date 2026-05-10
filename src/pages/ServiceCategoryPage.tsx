@@ -342,6 +342,7 @@ const ServiceCategoryPage = () => {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<"all" | "featured" | string>("all"); // 'all' | 'featured' | badge
   const [sortBy, setSortBy] = useState<"default" | "price_asc" | "price_desc" | "name_asc">("default");
+  const [quickQuoteFor, setQuickQuoteFor] = useState<DbPackage | null>(null);
 
   const availableBadges = useMemo(() => {
     const set = new Set<string>();
