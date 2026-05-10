@@ -577,6 +577,18 @@ const ServiceCategoryPage = () => {
                 ফ্রি কোটেশন নিন <ArrowRight size={14} />
               </Link>
             </div>
+          ) : visiblePackages.length === 0 ? (
+            <div className="max-w-md mx-auto text-center rounded-2xl p-8 border" style={{ background: cat.bg, borderColor: cat.border }}>
+              <Search size={28} className="mx-auto mb-3" style={{ color: `hsl(${cat.accent})` }} />
+              <p className="text-foreground/70 font-semibold mb-1">কোনো প্রোডাক্ট পাওয়া যায়নি</p>
+              <p className="text-foreground/45 text-sm mb-4">সার্চ বা ফিল্টার পরিবর্তন করে আবার চেষ্টা করুন</p>
+              <button
+                onClick={() => { setQuery(""); setFilter("all"); setSortBy("default"); }}
+                className="text-xs font-bold px-4 py-2 rounded-lg border border-white/15 text-foreground/80 hover:bg-white/5"
+              >
+                ফিল্টার রিসেট করুন
+              </button>
+            </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 max-w-6xl mx-auto">
               {visiblePackages.map((p, i) => (
