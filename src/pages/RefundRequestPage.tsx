@@ -418,12 +418,12 @@ export default function RefundRequestPage() {
                   </div>
                 </div>
               )}
-              <div className="flex gap-3 justify-center">
+              <div className="flex flex-wrap gap-3 justify-center">
                 <Button asChild variant="outline">
                   <Link to="/">Home</Link>
                 </Button>
                 <Button asChild>
-                  <Link to="/refund-policy">Refund Policy</Link>
+                  <Link to="/my-refunds">আমার রিকোয়েস্টসমূহ</Link>
                 </Button>
               </div>
             </div>

@@ -82,6 +82,7 @@ const DeliveryPolicyPage = lazy(() => import("./pages/DeliveryPolicyPage"));
 const ComplaintPolicyPage = lazy(() => import("./pages/ComplaintPolicyPage"));
 const PaymentPage = lazy(() => import("./pages/PaymentPage"));
 const RefundRequestPage = lazy(() => import("./pages/RefundRequestPage"));
+const MyRefundsPage = lazy(() => import("./pages/MyRefundsPage"));
 const ProductDetailsPage = lazy(() => import("./pages/ProductDetailsPage"));
 const SearchResultsPage = lazy(() => import("./pages/SearchResultsPage"));
 
@@ -212,6 +213,7 @@ const AppWithAnalytics = () => {
         <Route path="/complaint-policy" element={<ComplaintPolicyPage />} />
         <Route path="/payment" element={<PaymentPage />} />
         <Route path="/refund-request" element={<RefundRequestPage />} />
+        <Route path="/my-refunds" element={<MyRefundsPage />} />
         <Route path="/product/:id" element={<ProductDetailsPage />} />
         <Route path="/search" element={<SearchResultsPage />} />
         {/* Admin Routes */}
