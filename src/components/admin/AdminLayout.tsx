@@ -160,22 +160,22 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       className="flex h-screen overflow-hidden font-inter text-foreground"
       style={{
         background:
-          "radial-gradient(at 20% 0%, hsl(43 70% 12% / 0.35) 0px, transparent 50%), radial-gradient(at 80% 100%, hsl(43 50% 8% / 0.3) 0px, transparent 50%), #08080b",
+          "radial-gradient(ellipse 75% 65% at -5% -5%, hsl(var(--primary) / 0.22) 0%, transparent 60%), radial-gradient(ellipse 60% 55% at 105% 0%, hsl(var(--accent) / 0.18) 0%, transparent 55%), radial-gradient(ellipse 70% 60% at 50% 110%, hsl(var(--primary) / 0.14) 0%, transparent 60%), hsl(var(--background))",
       }}
     >
       {/* Sidebar */}
       <motion.aside
         animate={{ width: collapsed ? 76 : 270 }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className="flex-shrink-0 flex flex-col overflow-hidden border-r border-amber-400/10"
+        className="flex-shrink-0 flex flex-col overflow-hidden border-r border-primary/15"
         style={{
           background:
-            "linear-gradient(180deg, rgba(20,16,8,0.85) 0%, rgba(8,8,11,0.95) 100%)",
+            "linear-gradient(180deg, hsl(var(--card) / 0.85) 0%, hsl(var(--background) / 0.95) 100%)",
           backdropFilter: "blur(24px)",
         }}
       >
         {/* Logo */}
-        <div className="px-4 py-4 flex items-center justify-between border-b border-amber-400/10 h-16">
+        <div className="px-4 py-4 flex items-center justify-between border-b border-primary/15 h-16">
           <AnimatePresence mode="wait">
             {!collapsed && (
               <motion.div
@@ -184,14 +184,14 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                 exit={{ opacity: 0, x: -10 }}
                 className="flex items-center gap-2.5"
               >
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-300 to-amber-600 p-0.5 shadow-[0_4px_16px_-4px_rgba(245,158,11,0.6)]">
-                  <div className="w-full h-full rounded-[10px] bg-black flex items-center justify-center">
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-accent p-0.5 shadow-[0_4px_18px_-4px_hsl(var(--primary)/0.7)]">
+                  <div className="w-full h-full rounded-[10px] bg-background flex items-center justify-center">
                     <img src={logoImg} alt="Shahed IT" className="w-6 h-6 object-contain" />
                   </div>
                 </div>
                 <div>
-                  <p className="text-white font-bold text-sm font-syne leading-none">Shahed IT</p>
-                  <p className="text-amber-300/70 text-[10px] mt-0.5 flex items-center gap-1">
+                  <p className="text-foreground font-bold text-sm font-syne leading-none">Shahed IT</p>
+                  <p className="text-primary/80 text-[10px] mt-0.5 flex items-center gap-1">
                     <Crown size={9} /> Admin Suite
                   </p>
                 </div>
@@ -200,14 +200,14 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           </AnimatePresence>
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="text-amber-300/70 hover:text-amber-300 p-1.5 rounded-lg hover:bg-amber-400/10 transition-colors ml-auto"
+            className="text-primary/80 hover:text-primary p-1.5 rounded-lg hover:bg-primary/10 transition-colors ml-auto"
           >
             {collapsed ? <Menu size={16} /> : <ChevronLeft size={16} />}
           </button>
         </div>
 
         {/* Nav Groups */}
-        <nav className="flex-1 overflow-y-auto py-3 px-2 space-y-1 scrollbar-thin scrollbar-thumb-amber-400/20">
+        <nav className="flex-1 overflow-y-auto py-3 px-2 space-y-1 scrollbar-thin scrollbar-thumb-primary/20">
           {visibleGroups.map((group) => {
             const isOpen = collapsed ? false : (openGroups[group.title] ?? false);
             return (
@@ -215,7 +215,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                 {!collapsed && (
                   <button
                     onClick={() => setOpenGroups({ ...openGroups, [group.title]: !isOpen })}
-                    className="w-full flex items-center justify-between px-3 py-1.5 text-[10px] uppercase tracking-wider font-semibold text-amber-300/50 hover:text-amber-300/80 transition-colors"
+                    className="w-full flex items-center justify-between px-3 py-1.5 text-[10px] uppercase tracking-wider font-semibold text-muted-foreground hover:text-primary transition-colors"
                   >
                     <span>{group.title}</span>
                     <ChevronDown size={12} className={`transition-transform ${isOpen ? "" : "-rotate-90"}`} />
@@ -237,17 +237,17 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                               whileHover={{ x: 2 }}
                               className={`relative flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                                 active
-                                  ? "bg-gradient-to-r from-amber-500/20 via-amber-400/10 to-transparent text-amber-100 border border-amber-400/30 shadow-[0_4px_16px_-8px_rgba(245,158,11,0.5)]"
-                                  : "text-slate-400 hover:text-amber-100 hover:bg-amber-400/5"
+                                  ? "bg-gradient-to-r from-primary/25 via-accent/15 to-transparent text-foreground border border-primary/30 shadow-[0_4px_18px_-8px_hsl(var(--primary)/0.6)]"
+                                  : "text-muted-foreground hover:text-foreground hover:bg-primary/8"
                               }`}
                             >
                               {active && (
                                 <motion.span
                                   layoutId="activeNav"
-                                  className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 bg-gradient-to-b from-amber-300 to-amber-600 rounded-r-full"
+                                  className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 bg-gradient-to-b from-primary to-accent rounded-r-full"
                                 />
                               )}
-                              <item.icon size={16} className={active ? "text-amber-300" : ""} />
+                              <item.icon size={16} className={active ? "text-primary" : ""} />
                               <AnimatePresence mode="wait">
                                 {!collapsed && (
                                   <motion.span
@@ -261,7 +261,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                                 )}
                               </AnimatePresence>
                               {!collapsed && item.badge && (
-                                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-amber-400/20 text-amber-300 border border-amber-400/30">
+                                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-accent/20 text-accent border border-accent/30">
                                   {item.badge}
                                 </span>
                               )}
@@ -278,25 +278,25 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
         </nav>
 
         {/* User */}
-        <div className="p-3 border-t border-amber-400/10">
+        <div className="p-3 border-t border-primary/15">
           <div className={`flex items-center gap-3 ${collapsed ? "justify-center" : ""}`}>
-            <Avatar className="w-9 h-9 flex-shrink-0 ring-2 ring-amber-400/30">
-              <AvatarFallback className="bg-gradient-to-br from-amber-400 to-amber-700 text-black text-xs font-bold">
+            <Avatar className="w-9 h-9 flex-shrink-0 ring-2 ring-primary/40">
+              <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-primary-foreground text-xs font-bold">
                 {user?.email?.[0]?.toUpperCase() ?? "A"}
               </AvatarFallback>
             </Avatar>
             <AnimatePresence mode="wait">
               {!collapsed && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex-1 min-w-0">
-                  <p className="text-amber-100 text-xs font-medium truncate">{user?.email}</p>
-                  <p className="text-amber-300/60 text-[10px] capitalize flex items-center gap-1">
+                  <p className="text-foreground text-xs font-medium truncate">{user?.email}</p>
+                  <p className="text-primary/80 text-[10px] capitalize flex items-center gap-1">
                     <Crown size={9} /> {role ?? "admin"}
                   </p>
                 </motion.div>
               )}
             </AnimatePresence>
             {!collapsed && (
-              <Button variant="ghost" size="icon" onClick={handleSignOut} className="text-slate-400 hover:text-rose-400 h-7 w-7 flex-shrink-0">
+              <Button variant="ghost" size="icon" onClick={handleSignOut} className="text-muted-foreground hover:text-rose-400 h-7 w-7 flex-shrink-0">
                 <LogOut size={14} />
               </Button>
             )}
@@ -308,28 +308,28 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top bar */}
         <header
-          className="h-16 border-b border-amber-400/10 flex items-center justify-between px-6 flex-shrink-0"
-          style={{ background: "rgba(8,8,11,0.6)", backdropFilter: "blur(16px)" }}
+          className="h-16 border-b border-primary/15 flex items-center justify-between px-6 flex-shrink-0"
+          style={{ background: "hsl(var(--background) / 0.6)", backdropFilter: "blur(16px)" }}
         >
           <div>
-            <h2 className="text-amber-100 font-semibold text-sm font-syne">{currentTitle}</h2>
-            <p className="text-amber-300/50 text-xs">Shahed IT — Admin Suite</p>
+            <h2 className="text-foreground font-semibold text-sm font-syne">{currentTitle}</h2>
+            <p className="text-muted-foreground text-xs">Shahed IT — Admin Suite</p>
           </div>
           <div className="flex items-center gap-2">
             <Link
               to="/"
               target="_blank"
-              className="hidden md:inline-flex items-center gap-1.5 text-amber-200 hover:text-amber-100 text-xs bg-amber-400/10 hover:bg-amber-400/20 border border-amber-400/20 px-3 py-1.5 rounded-lg transition-colors"
+              className="hidden md:inline-flex items-center gap-1.5 text-foreground/90 hover:text-foreground text-xs bg-primary/10 hover:bg-primary/20 border border-primary/25 px-3 py-1.5 rounded-lg transition-colors"
             >
               View Site <ExternalLink size={12} />
             </Link>
 
             <Popover>
               <PopoverTrigger asChild>
-                <button className="relative text-amber-300/80 hover:text-amber-200 p-2 rounded-lg hover:bg-amber-400/10 transition-colors">
+                <button className="relative text-primary/90 hover:text-primary p-2 rounded-lg hover:bg-primary/10 transition-colors">
                   <Bell size={18} />
                   {unreadCount > 0 && (
-                    <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center">
+                    <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-accent text-accent-foreground text-[9px] font-bold flex items-center justify-center">
                       {unreadCount}
                     </span>
                   )}
@@ -337,11 +337,11 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
               </PopoverTrigger>
               <PopoverContent
                 align="end"
-                className="w-80 p-0 bg-zinc-950/95 backdrop-blur-xl border-amber-400/20"
+                className="w-80 p-0 bg-card/95 backdrop-blur-xl border-primary/25"
               >
-                <div className="p-3 border-b border-amber-400/10 flex items-center justify-between">
-                  <h3 className="text-sm font-semibold text-amber-100 font-syne">Notifications</h3>
-                  <Badge variant="outline" className="text-[10px] border-amber-400/30 text-amber-300">
+                <div className="p-3 border-b border-primary/15 flex items-center justify-between">
+                  <h3 className="text-sm font-semibold text-foreground font-syne">Notifications</h3>
+                  <Badge variant="outline" className="text-[10px] border-primary/30 text-primary">
                     {unreadCount} new
                   </Badge>
                 </div>
@@ -351,9 +351,9 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                   ) : (
                     notifications.map((n, i) => (
                       <Link key={i} to={n.link}>
-                        <div className="px-3 py-2.5 hover:bg-amber-400/5 border-b border-amber-400/5 cursor-pointer">
-                          <p className="text-xs text-amber-100">{n.title}</p>
-                          <p className="text-[10px] text-amber-300/50 mt-0.5">
+                        <div className="px-3 py-2.5 hover:bg-primary/5 border-b border-primary/10 cursor-pointer">
+                          <p className="text-xs text-foreground">{n.title}</p>
+                          <p className="text-[10px] text-muted-foreground mt-0.5">
                             {new Date(n.time).toLocaleString()}
                           </p>
                         </div>
