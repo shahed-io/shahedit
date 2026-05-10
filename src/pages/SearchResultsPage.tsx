@@ -164,7 +164,7 @@ const SearchResultsPage = () => {
             const m = s.meta;
             const pct = m?.original_price && m?.price && m.original_price > m.price
               ? Math.round(((m.original_price - m.price) / m.original_price) * 100) : null;
-            const fmt = (n?: number | null) => n == null ? "" : "৳" + Math.round(Number(n)).toLocaleString("en-US");
+            const fmt = (n?: number | null) => n == null ? "" : "৳" + Math.round(Number(n)).toLocaleString("en-IN");
             return (
               <Link
                 key={`${s.type}-${i}`}
