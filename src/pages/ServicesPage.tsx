@@ -6,7 +6,22 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import type { Service } from "@/lib/supabase-types";
-import { CheckCircle2, ArrowRight, MessageCircle, Star, Package } from "lucide-react";
+import { CheckCircle2, ArrowRight, MessageCircle } from "lucide-react";
+
+const titleToSlug: Record<string, string> = {
+  "Web Design & Development": "web-development",
+  "App Development": "app-development",
+  "Graphic Design": "graphics-design",
+  "Digital Marketing": "digital-marketing",
+  "Cloud & Hosting Service": "cloud-hosting-service",
+  "IT Support & Security": "it-support-security",
+  "Website Maintenance": "website-maintenance",
+  "Facebook Services": "facebook-services",
+  "Business Solutions": "business-solutions",
+};
+
+const slugify = (s: string) =>
+  s.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
 interface ServicePackage {
   id: string;
@@ -94,6 +109,7 @@ const ServicesPage = () => {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {services.map((service, i) => {
                 const clr = emojiColors[service.icon ?? ""] ?? defaultColors;
+                const slug = titleToSlug[service.title] ?? slugify(service.title);
                 return (
                   <motion.div
                     key={service.id}
@@ -101,124 +117,69 @@ const ServicesPage = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.09, type: "spring", stiffness: 120 }}
                     whileHover={{ y: -8, scale: 1.02 }}
-                    className="relative rounded-2xl p-7 group cursor-pointer overflow-hidden transition-all duration-500 flex flex-col"
+                    className="relative rounded-2xl overflow-hidden transition-all duration-500 flex"
                     style={{ background: clr.bg, border: `1px solid ${clr.border}` }}
                   >
-                    {/* Top glow line */}
-                    <div className="absolute top-0 left-0 right-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                      style={{ background: `linear-gradient(90deg, transparent, ${clr.border.replace('0.25','0.7')}, transparent)` }} />
+                    <Link to={`/services/${slug}`} className="flex flex-col p-7 group w-full">
+                      {/* Top glow line */}
+                      <div className="absolute top-0 left-0 right-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                        style={{ background: `linear-gradient(90deg, transparent, ${clr.border.replace('0.25','0.7')}, transparent)` }} />
 
-                    {/* Hover background glow */}
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl pointer-events-none"
-                      style={{ background: `radial-gradient(circle at 50% 0%, ${clr.glow}, transparent 70%)` }} />
+                      {/* Hover background glow */}
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                        style={{ background: `radial-gradient(circle at 50% 0%, ${clr.glow}, transparent 70%)` }} />
 
-                    {/* Icon */}
-                    <div className="relative text-5xl mb-5 w-16 h-16 rounded-2xl flex items-center justify-center"
-                      style={{ background: clr.badge }}>
-                      {service.icon || "💻"}
-                    </div>
-
-                    {/* Title */}
-                    <h3 className="text-xl font-black text-foreground mb-2 group-hover:text-white transition-colors leading-tight">
-                      {service.title}
-                    </h3>
-
-                    {/* Description */}
-                    <p className="text-foreground/50 text-sm leading-relaxed mb-5 group-hover:text-foreground/70 transition-colors">
-                      {service.short_description}
-                    </p>
-
-                    {/* Features list */}
-                    {service.features && service.features.length > 0 && (
-                      <ul className="space-y-2 mb-6 flex-1">
-                        {service.features.map((f, j) => (
-                          <li key={j} className="flex items-start gap-2.5 text-sm text-foreground/60 group-hover:text-foreground/75 transition-colors">
-                            <CheckCircle2
-                              size={15}
-                              className="shrink-0 mt-0.5"
-                              style={{ color: clr.border.replace('rgba(','hsl(').replace(',0.25)',')')  }}
-                            />
-                            {f}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-
-                    {/* Packages */}
-                    {packagesFor(service.id).length > 0 && (
-                      <div className="mt-4 mb-2 space-y-2">
-                        <p className="text-xs font-semibold uppercase tracking-wider text-foreground/35 flex items-center gap-1.5">
-                          <Package size={11} /> প্যাকেজসমূহ
-                        </p>
-                        <div className="grid grid-cols-1 gap-2">
-                          {packagesFor(service.id).map(pkg => (
-                            <div
-                              key={pkg.id}
-                              className={`relative rounded-xl px-4 py-3 border transition-all ${
-                                pkg.is_featured
-                                  ? "border-amber-500/50 bg-amber-500/8"
-                                  : "border-white/8 bg-white/4"
-                              }`}
-                            >
-                              {pkg.is_featured && (
-                                <span className="absolute -top-2.5 right-3 inline-flex items-center gap-1 bg-gradient-to-r from-amber-400 to-orange-500 text-black text-[9px] font-black px-2 py-0.5 rounded-full shadow-lg">
-                                  <Star size={8} fill="currentColor" /> Most Popular
-                                </span>
-                              )}
-                              <div className="flex items-center justify-between gap-2">
-                                <div className="flex items-center gap-2 min-w-0">
-                                  {pkg.image_url && (
-                                    <img src={pkg.image_url} alt={pkg.title} className="w-8 h-8 rounded-lg object-cover shrink-0" />
-                                  )}
-                                  <div className="min-w-0">
-                                    <p className={`text-sm font-semibold truncate ${pkg.is_featured ? "text-amber-300" : "text-foreground/85"}`}>
-                                      {pkg.title}
-                                    </p>
-                                    {pkg.description && (
-                                      <p className="text-foreground/45 text-xs truncate">{pkg.description.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').trim()}</p>
-                                    )}
-                                  </div>
-                                </div>
-                                {pkg.price !== null && (
-                                  <span className={`text-sm font-black shrink-0 ${pkg.is_featured ? "text-amber-400" : "text-foreground/70"}`}>
-                                    {pkg.currency} {pkg.price.toLocaleString()}
-                                  </span>
-                                )}
-                              </div>
-                              {pkg.features && pkg.features.length > 0 && (
-                                <ul className="mt-2 flex flex-wrap gap-x-3 gap-y-0.5">
-                                  {pkg.features.slice(0, 4).map((f, fi) => (
-                                    <li key={fi} className="text-foreground/45 text-[11px] flex items-center gap-1">
-                                      <span className="w-1 h-1 rounded-full bg-current inline-block shrink-0" />
-                                      {f}
-                                    </li>
-                                  ))}
-                                </ul>
-                              )}
-                            </div>
-                          ))}
-                        </div>
+                      {/* Icon */}
+                      <div className="relative text-5xl mb-5 w-16 h-16 rounded-2xl flex items-center justify-center"
+                        style={{ background: clr.badge }}>
+                        {service.icon || "💻"}
                       </div>
-                    )}
 
-                    {/* CTA */}
-                    <div className="flex items-center gap-3 mt-auto pt-4 border-t" style={{ borderColor: clr.border }}>
-                      <Link
-                        to="/get-quote"
-                        className="flex items-center gap-1.5 text-sm font-semibold transition-all hover:gap-2.5"
-                        style={{ color: clr.border.replace(',0.25)',',0.85)') }}
-                      >
-                        কোটেশন নিন <ArrowRight size={14} />
-                      </Link>
-                      <a
-                        href="https://wa.me/8801820060046"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="ml-auto flex items-center gap-1 text-xs text-foreground/40 hover:text-green-400 transition-colors"
-                      >
-                        <MessageCircle size={13} /> WhatsApp
-                      </a>
-                    </div>
+                      {/* Title */}
+                      <h3 className="text-xl font-black text-foreground mb-2 group-hover:text-white transition-colors leading-tight">
+                        {service.title}
+                      </h3>
+
+                      {/* Description */}
+                      <p className="text-foreground/50 text-sm leading-relaxed mb-5 group-hover:text-foreground/70 transition-colors">
+                        {service.short_description}
+                      </p>
+
+                      {/* Features list */}
+                      {service.features && service.features.length > 0 && (
+                        <ul className="space-y-2 mb-6 flex-1">
+                          {service.features.slice(0, 5).map((f, j) => (
+                            <li key={j} className="flex items-start gap-2.5 text-sm text-foreground/60 group-hover:text-foreground/75 transition-colors">
+                              <CheckCircle2
+                                size={15}
+                                className="shrink-0 mt-0.5"
+                                style={{ color: clr.border.replace('rgba(','hsl(').replace(',0.25)',')')  }}
+                              />
+                              {f}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+
+                      {/* CTA */}
+                      <div className="flex items-center gap-3 mt-auto pt-4 border-t" style={{ borderColor: clr.border }}>
+                        <span
+                          className="flex items-center gap-1.5 text-sm font-semibold transition-all group-hover:gap-2.5"
+                          style={{ color: clr.border.replace(',0.25)',',0.85)') }}
+                        >
+                          প্যাকেজ দেখুন <ArrowRight size={14} />
+                        </span>
+                        <a
+                          href="https://wa.me/8801820060046"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="ml-auto flex items-center gap-1 text-xs text-foreground/40 hover:text-green-400 transition-colors"
+                        >
+                          <MessageCircle size={13} /> WhatsApp
+                        </a>
+                      </div>
+                    </Link>
                   </motion.div>
                 );
               })}
