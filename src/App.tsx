@@ -50,6 +50,7 @@ const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 
 // Public pages
 const ServicesPage = lazy(() => import("./pages/ServicesPage"));
+const ServiceCategoryPage = lazy(() => import("./pages/ServiceCategoryPage"));
 const PortfolioPage = lazy(() => import("./pages/PortfolioPage"));
 const BlogPage = lazy(() => import("./pages/BlogPage"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
@@ -130,6 +131,7 @@ const AppWithAnalytics = () => {
         {/* Public Routes */}
         <Route path="/" element={<Index />} />
         <Route path="/services" element={<ServicesPage />} />
+        <Route path="/services/:slug" element={<ServiceCategoryPage />} />
         <Route path="/portfolio" element={<PortfolioPage />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/about" element={<AboutPage />} />

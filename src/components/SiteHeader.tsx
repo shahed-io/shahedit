@@ -19,12 +19,12 @@ import catDigitalMarketing from "@/assets/cat-digital-marketing.jpg";
 import catBusiness from "@/assets/cat-business.jpg";
 
 const serviceCategories = [
-  { label: "Web Development", href: "/services#web-development", icon: Globe, img: catWebDev, accent: "270 92% 65%" },
-  { label: "Website Maintenance", href: "/services#maintenance", icon: Wrench, img: catMaintenance, accent: "210 90% 65%" },
-  { label: "Graphics Design", href: "/services#graphics", icon: Palette, img: catGraphics, accent: "320 90% 65%" },
-  { label: "Facebook Services", href: "/services#facebook", icon: Facebook, img: catFacebook, accent: "220 95% 65%" },
-  { label: "Digital Marketing", href: "/services#digital-marketing", icon: TrendingUp, img: catDigitalMarketing, accent: "150 80% 55%" },
-  { label: "Business Solutions", href: "/services#business", icon: Building2, img: catBusiness, accent: "42 95% 60%" },
+  { label: "Web Development", href: "/services/web-development", icon: Globe, img: catWebDev, accent: "270 92% 65%" },
+  { label: "Website Maintenance", href: "/services/website-maintenance", icon: Wrench, img: catMaintenance, accent: "210 90% 65%" },
+  { label: "Graphics Design", href: "/services/graphics-design", icon: Palette, img: catGraphics, accent: "320 90% 65%" },
+  { label: "Facebook Services", href: "/services/facebook-services", icon: Facebook, img: catFacebook, accent: "220 95% 65%" },
+  { label: "Digital Marketing", href: "/services/digital-marketing", icon: TrendingUp, img: catDigitalMarketing, accent: "150 80% 55%" },
+  { label: "Business Solutions", href: "/services/business-solutions", icon: Building2, img: catBusiness, accent: "42 95% 60%" },
 ];
 
 const navLinks = [
