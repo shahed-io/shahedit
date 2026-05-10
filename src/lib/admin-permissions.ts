@@ -15,6 +15,8 @@ export type AdminSection =
   | "service-packages"
   | "portfolio"
   | "blog"
+  | "blog-categories"
+  | "media"
   | "testimonials"
   | "team"
   | "clients"
