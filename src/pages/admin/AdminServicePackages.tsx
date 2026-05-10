@@ -505,6 +505,22 @@ export default function AdminServicePackages() {
                             </div>
                           </div>
 
+                          <div className="space-y-1">
+                            <label className="text-slate-400 text-xs flex items-center gap-2">
+                              URL Slug
+                              <span className="text-slate-500 font-normal">(খালি রাখলে শিরোনাম থেকে স্বয়ংক্রিয় তৈরি হবে)</span>
+                            </label>
+                            <div className="flex items-center gap-2">
+                              <span className="text-slate-500 text-xs font-mono">/product/</span>
+                              <Input
+                                value={form.slug ?? ""}
+                                onChange={e => setForm(f => ({ ...f, slug: e.target.value }))}
+                                placeholder="basic-package"
+                                className="bg-slate-900 border-slate-700 text-white font-mono text-sm flex-1"
+                              />
+                            </div>
+                          </div>
+
                           <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-1">
                               <label className="text-slate-400 text-xs">মুদ্রা</label>
