@@ -476,6 +476,22 @@ export default function AdminServicePackages() {
                             {editingPackage ? "প্যাকেজ এডিট করুন" : "নতুন প্যাকেজ যোগ করুন"}
                           </h3>
 
+                          <div className="space-y-1">
+                            <label className="text-slate-400 text-xs">ক্যাটাগরি (সার্ভিস) *</label>
+                            <select
+                              value={selectedServiceId || service.id}
+                              onChange={e => setSelectedServiceId(e.target.value)}
+                              className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-sm focus:outline-none focus:border-purple-500"
+                            >
+                              {services.map(s => (
+                                <option key={s.id} value={s.id}>
+                                  {s.icon ?? "📦"} {s.title}
+                                </option>
+                              ))}
+                            </select>
+                            <p className="text-slate-500 text-[11px]">এই প্যাকেজটি যে ক্যাটাগরির অধীনে দেখানো হবে</p>
+                          </div>
+
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="space-y-1">
                               <label className="text-slate-400 text-xs">শিরোনাম *</label>
