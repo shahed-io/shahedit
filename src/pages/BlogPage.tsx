@@ -39,25 +39,30 @@ const BlogPage = () => {
                 <motion.article key={post.id} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}
                   whileHover={{ y: -6 }} className="glossy-card rounded-2xl overflow-hidden border border-border hover:border-primary/30 hover:shadow-xl transition-all duration-300 group"
                 >
-                  <div className="h-48 bg-gradient-to-br from-primary/10 to-accent/10 overflow-hidden">
-                    {post.featured_image
-                      ? <img src={post.featured_image} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                      : <div className="w-full h-full flex items-center justify-center text-5xl">📝</div>
-                    }
-                  </div>
-                  <div className="p-5">
-                    <div className="flex items-center gap-3 text-xs text-muted-foreground mb-3">
-                      {post.published_at && <span className="flex items-center gap-1"><Calendar size={12} />{new Date(post.published_at).toLocaleDateString()}</span>}
-                      {post.read_time_minutes && <span className="flex items-center gap-1"><Clock size={12} />{post.read_time_minutes} min read</span>}
+                  <Link to={`/blog/${post.slug}`} className="block">
+                    <div className="h-48 bg-gradient-to-br from-primary/10 to-accent/10 overflow-hidden">
+                      {post.featured_image
+                        ? <img src={post.featured_image} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        : <div className="w-full h-full flex items-center justify-center text-5xl">📝</div>
+                      }
                     </div>
-                    <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-2">{post.title}</h3>
-                    <p className="text-muted-foreground text-sm line-clamp-3">{post.excerpt}</p>
-                    {post.tags && post.tags.length > 0 && (
-                      <div className="flex gap-1.5 flex-wrap mt-3">
-                        {post.tags.slice(0, 3).map(t => <span key={t} className="text-xs bg-secondary text-muted-foreground px-2 py-0.5 rounded">#{t}</span>)}
+                    <div className="p-5">
+                      <div className="flex items-center gap-3 text-xs text-muted-foreground mb-3">
+                        {post.published_at && <span className="flex items-center gap-1"><Calendar size={12} />{new Date(post.published_at).toLocaleDateString()}</span>}
+                        {post.read_time_minutes && <span className="flex items-center gap-1"><Clock size={12} />{post.read_time_minutes} min</span>}
                       </div>
-                    )}
-                  </div>
+                      <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-2">{post.title}</h3>
+                      <p className="text-muted-foreground text-sm line-clamp-3">{post.excerpt}</p>
+                      {post.tags && post.tags.length > 0 && (
+                        <div className="flex gap-1.5 flex-wrap mt-3">
+                          {post.tags.slice(0, 3).map(t => <span key={t} className="text-xs bg-secondary text-muted-foreground px-2 py-0.5 rounded">#{t}</span>)}
+                        </div>
+                      )}
+                      <span className="inline-flex items-center gap-1 text-primary text-xs font-bold mt-4 group-hover:gap-2 transition-all">
+                        পড়ুন <ArrowRight size={12} />
+                      </span>
+                    </div>
+                  </Link>
                 </motion.article>
               ))}
             </div>
