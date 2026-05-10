@@ -26,35 +26,41 @@ export default function ProductDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"details" | "custom">("details");
   const [showPayment, setShowPayment] = useState(false);
-  const { stat: ratingStat, refresh: refreshRating } = useProductRating(id);
+  const { stat: ratingStat, refresh: refreshRating } = useProductRating(pkg?.id);
 
   useEffect(() => {
     if (!id) return;
     setLoading(true);
-    supabase
+    // Detect UUID vs slug — lookup by the appropriate column
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+    const query = supabase
       .from("service_packages")
       .select("*, services(title)")
-      .eq("id", id)
-      .single()
-      .then(({ data }) => {
-        const row = data as ServicePackageRow | null;
-        setPkg(row);
-        setLoading(false);
-        if (row) {
-          supabase
-            .from("service_packages")
-            .select("*, services(title)")
-            .eq("is_published", true)
-            .eq("service_id", row.service_id)
-            .neq("id", row.id)
-            .order("sort_order")
-            .limit(4)
-            .then(({ data: rel }) => setRelated((rel as ServicePackageRow[]) ?? []));
-        }
-        // Scroll to top on load
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      });
-  }, [id]);
+      .eq(isUuid ? "id" : "slug", id)
+      .maybeSingle();
+
+    query.then(({ data }) => {
+      const row = data as ServicePackageRow | null;
+      setPkg(row);
+      setLoading(false);
+      // If user came via UUID and a slug exists, redirect to the pretty URL
+      if (row && isUuid && row.slug) {
+        navigate(`/product/${row.slug}`, { replace: true });
+      }
+      if (row) {
+        supabase
+          .from("service_packages")
+          .select("*, services(title)")
+          .eq("is_published", true)
+          .eq("service_id", row.service_id)
+          .neq("id", row.id)
+          .order("sort_order")
+          .limit(4)
+          .then(({ data: rel }) => setRelated((rel as ServicePackageRow[]) ?? []));
+      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }, [id, navigate]);
 
   const c = cardColors[0];
 
