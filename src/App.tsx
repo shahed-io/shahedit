@@ -123,6 +123,7 @@ const AdminRoutes = () => (
       <Routes>
         <Route path="" element={<RoleRoute section="dashboard"><AdminDashboard /></RoleRoute>} />
         <Route path="leads" element={<RoleRoute section="leads"><AdminLeads /></RoleRoute>} />
+        <Route path="refunds" element={<RoleRoute section="refunds"><AdminRefunds /></RoleRoute>} />
         <Route path="payments" element={<RoleRoute section="payments"><AdminPayments /></RoleRoute>} />
         <Route path="orders" element={<RoleRoute section="orders"><AdminOrders /></RoleRoute>} />
         <Route path="services" element={<RoleRoute section="services"><AdminServices /></RoleRoute>} />
