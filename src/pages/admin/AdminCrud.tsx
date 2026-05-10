@@ -72,6 +72,8 @@ const createWooCrudPage = (cfg: CrudConfig) => {
     const [viewMode, setViewMode] = useState<"table" | "grid">("table");
     const [arrayInputs, setArrayInputs] = useState<Record<string, string>>({});
     const [activeTab, setActiveTab] = useState<"general" | "seo">("general");
+    const [dynamicOptions, setDynamicOptions] = useState<Record<string, SelectOption[]>>({});
+    const [uploading, setUploading] = useState<Record<string, boolean>>({});
 
     const fetch = async () => {
       setLoading(true);
@@ -81,6 +83,45 @@ const createWooCrudPage = (cfg: CrudConfig) => {
       const { data } = await q;
       setItems(data ?? []);
       setLoading(false);
+    };
+
+    // Load dynamic select options for fields with optionsTable
+    useEffect(() => {
+      const loaders = fields.filter(f => f.type === "select" && f.optionsTable);
+      if (!loaders.length) return;
+      (async () => {
+        const map: Record<string, SelectOption[]> = {};
+        for (const f of loaders) {
+          const cfg = f.optionsTable!;
+          const { data } = await supabase
+            .from(cfg.table as any)
+            .select(`${cfg.valueKey || "id"}, ${cfg.labelKey}`)
+            .order(cfg.labelKey);
+          map[f.key] = (data ?? []).map((r: any) => ({
+            value: r[cfg.valueKey || "id"],
+            label: r[cfg.labelKey],
+          }));
+        }
+        setDynamicOptions(map);
+      })();
+    }, []);
+
+    const uploadImage = async (fieldKey: string, file: File, bucket = "cms-media") => {
+      setUploading(p => ({ ...p, [fieldKey]: true }));
+      const ext = file.name.split(".").pop() || "jpg";
+      const path = `${table}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+      const { error: upErr } = await supabase.storage.from(bucket).upload(path, file, {
+        cacheControl: "3600", upsert: false,
+      });
+      if (upErr) {
+        setUploading(p => ({ ...p, [fieldKey]: false }));
+        toast.error(upErr.message);
+        return;
+      }
+      const { data: pub } = supabase.storage.from(bucket).getPublicUrl(path);
+      setForm(p => ({ ...p, [fieldKey]: pub.publicUrl }));
+      setUploading(p => ({ ...p, [fieldKey]: false }));
+      toast.success("Image uploaded");
     };
 
     useEffect(() => { fetch(); }, []);
