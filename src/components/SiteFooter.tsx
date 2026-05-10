@@ -28,7 +28,7 @@ const policyLinks = [
   { label: "Refund & Return Policy", to: "/refund-policy" },
   { label: "Order & Cancellation", to: "/complaint-policy" },
   { label: "Delivery Info", to: "/delivery-policy" },
-  { label: "Refund Request", to: "/refund-policy" },
+  { label: "Refund Request", to: "/refund-request" },
 ];
 
 const socials = [
