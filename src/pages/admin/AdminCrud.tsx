@@ -3,7 +3,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Plus, Pencil, Trash2, Eye, EyeOff, Star, StarOff,
-  X, Search, CheckSquare, Square, Save, LayoutGrid, List, FileText, Tag, GripVertical
+  X, Search, CheckSquare, Square, Save, LayoutGrid, List, FileText, Tag, GripVertical,
+  Upload, Image as ImageIcon, Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
