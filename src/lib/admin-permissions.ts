@@ -53,6 +53,8 @@ const PERMISSIONS: Record<AdminSection, AppRole[]> = {
   "service-packages": ["super_admin", "admin", "editor"],
   portfolio:          ["super_admin", "admin", "editor"],
   blog:               ["super_admin", "admin", "editor"],
+  "blog-categories":  ["super_admin", "admin", "editor"],
+  media:              ["super_admin", "admin", "editor", "manager"],
   testimonials:       ["super_admin", "admin", "editor"],
   team:               ["super_admin", "admin", "editor"],
   clients:            ["super_admin", "admin", "editor"],
