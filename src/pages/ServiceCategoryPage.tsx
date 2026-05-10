@@ -335,6 +335,32 @@ const categories: Record<string, Category> = {
 const ServiceCategoryPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const cat = slug ? categories[slug] : null;
+  const [dbPackages, setDbPackages] = useState<DbPackage[]>([]);
+  const [loadingPkgs, setLoadingPkgs] = useState(true);
+
+  useEffect(() => {
+    if (!slug) return;
+    setLoadingPkgs(true);
+    (async () => {
+      const { data: svc } = await supabase
+        .from("services")
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .select("id" as any)
+        .eq("slug" as never, slug as never)
+        .maybeSingle();
+      const svcId = (svc as { id?: string } | null)?.id;
+      if (!svcId) { setDbPackages([]); setLoadingPkgs(false); return; }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { data: pkgs } = await (supabase as any)
+        .from("service_packages")
+        .select("*")
+        .eq("service_id", svcId)
+        .eq("is_published", true)
+        .order("sort_order");
+      setDbPackages((pkgs ?? []) as DbPackage[]);
+      setLoadingPkgs(false);
+    })();
+  }, [slug]);
 
   if (!cat) return <Navigate to="/services" replace />;
 
