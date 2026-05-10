@@ -17,10 +17,12 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
 import LoginPage from "./pages/LoginPage";
+// Admin shell is eager — avoids a full-screen black flash before any admin page renders.
+import AdminLayout from "./components/admin/AdminLayout";
 
 // --- Lazy-loaded routes ---------------------------------------------------
 // Admin
-const AdminLayout = lazy(() => import("./components/admin/AdminLayout"));
+
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const AdminLeads = lazy(() => import("./pages/admin/AdminLeads"));
 const AdminRefunds = lazy(() => import("./pages/admin/AdminRefunds"));
