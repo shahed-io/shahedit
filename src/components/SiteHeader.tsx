@@ -253,7 +253,7 @@ const SiteHeader = () => {
                   <img src={logoImg} alt="Shahed IT" className="w-6 h-6 sm:w-7 sm:h-7 md:w-9 md:h-9 object-contain relative" />
                 </div>
               </div>
-              <div className="flex flex-col leading-tight min-w-0">
+              <div className="flex flex-col leading-[1.05] min-w-0">
                 <span
                   className="text-[13px] sm:text-[16px] md:text-[20px] font-extrabold tracking-tight whitespace-nowrap"
                   style={{
@@ -270,13 +270,14 @@ const SiteHeader = () => {
                   </span>
                 </span>
                 <span
-                  className="hidden xs:block text-[13px] sm:text-[16px] md:text-[20px] font-extrabold tracking-tight whitespace-nowrap"
+                  className="hidden xs:block font-semibold whitespace-nowrap text-center"
                   style={{
                     fontFamily: "'Syne', sans-serif",
+                    fontSize: "clamp(7px, 1.1vw, 10.5px)",
+                    letterSpacing: "0.04em",
                     background: "linear-gradient(90deg, #c4b5fd 0%, #f0abfc 100%)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
-                    filter: "drop-shadow(0 0 8px rgba(240,171,252,0.30))",
                   }}
                 >
                   Smart IT Solutions
