@@ -101,6 +101,11 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Filter nav items by current role permissions
+  const visibleGroups = navGroups
+    .map((g) => ({ ...g, items: g.items.filter((it) => canAccess(role, it.section)) }))
+    .filter((g) => g.items.length > 0);
+
   // Auto-open the group containing the active route
   useEffect(() => {
     const next: Record<string, boolean> = {};
