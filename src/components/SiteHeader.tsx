@@ -253,15 +253,15 @@ const SiteHeader = () => {
                   <img src={logoImg} alt="Shahed IT" className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 object-contain relative drop-shadow-[0_2px_8px_rgba(168,85,247,0.55)]" />
                 </div>
               </div>
-              <div className="flex flex-col leading-[1.05] min-w-0">
+              <div className="flex flex-col leading-[1.0] min-w-0 gap-0.5">
                 <span
-                  className="text-[13px] sm:text-[16px] md:text-[20px] font-extrabold tracking-tight whitespace-nowrap"
+                  className="text-[14px] sm:text-[17px] md:text-[21px] font-extrabold tracking-tight whitespace-nowrap"
                   style={{
                     fontFamily: "'Syne', sans-serif",
                     background: "linear-gradient(135deg, #ffffff 0%, #e9d5ff 35%, #c4b5fd 60%, #f0abfc 100%)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
-                    filter: "drop-shadow(0 0 10px rgba(192,132,252,0.35))",
+                    filter: "drop-shadow(0 0 12px rgba(192,132,252,0.45))",
                   }}
                 >
                   Shahed{" "}
@@ -270,17 +270,27 @@ const SiteHeader = () => {
                   </span>
                 </span>
                 <span
-                  className="hidden xs:block font-semibold whitespace-nowrap text-center"
+                  className="hidden xs:flex items-center gap-1 font-semibold whitespace-nowrap"
                   style={{
                     fontFamily: "'Syne', sans-serif",
-                    fontSize: "clamp(7px, 1.1vw, 10.5px)",
-                    letterSpacing: "0.04em",
-                    background: "linear-gradient(90deg, #c4b5fd 0%, #f0abfc 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
+                    fontSize: "clamp(8px, 1.15vw, 11px)",
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase",
                   }}
                 >
-                  Smart IT Solutions
+                  <span
+                    className="inline-block w-1 h-1 rounded-full"
+                    style={{ background: "linear-gradient(135deg, #a78bfa, #f0abfc)", boxShadow: "0 0 6px rgba(192,132,252,0.7)" }}
+                  />
+                  <span
+                    style={{
+                      background: "linear-gradient(90deg, #c4b5fd 0%, #f0abfc 100%)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                    }}
+                  >
+                    Smart IT Solutions
+                  </span>
                 </span>
               </div>
             </motion.div>
