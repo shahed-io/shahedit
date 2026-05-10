@@ -53,6 +53,7 @@ const ServicesPage = lazy(() => import("./pages/ServicesPage"));
 const ServiceCategoryPage = lazy(() => import("./pages/ServiceCategoryPage"));
 const PortfolioPage = lazy(() => import("./pages/PortfolioPage"));
 const BlogPage = lazy(() => import("./pages/BlogPage"));
+const BlogPostPage = lazy(() => import("./pages/BlogPostPage"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
 const FAQPage = lazy(() => import("./pages/FAQPage"));
@@ -134,6 +135,7 @@ const AppWithAnalytics = () => {
         <Route path="/services/:slug" element={<ServiceCategoryPage />} />
         <Route path="/portfolio" element={<PortfolioPage />} />
         <Route path="/blog" element={<BlogPage />} />
+        <Route path="/blog/:slug" element={<BlogPostPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/faq" element={<FAQPage />} />
