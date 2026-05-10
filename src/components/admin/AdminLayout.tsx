@@ -38,6 +38,7 @@ const navGroups: NavGroup[] = [
     icon: Inbox,
     items: [
       { label: "Leads", icon: Inbox, href: "/admin/leads", section: "leads" },
+      { label: "Refund Requests", icon: RefreshCcw, href: "/admin/refunds", badge: "NEW", section: "refunds" },
       { label: "Payments", icon: CreditCard, href: "/admin/payments", section: "payments" },
       { label: "Orders & Delivery", icon: Package, href: "/admin/orders", section: "orders" },
       { label: "Coupons", icon: Tag, href: "/admin/coupons", badge: "NEW", section: "coupons" },
