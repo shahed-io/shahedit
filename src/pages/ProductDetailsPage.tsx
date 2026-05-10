@@ -26,35 +26,41 @@ export default function ProductDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"details" | "custom">("details");
   const [showPayment, setShowPayment] = useState(false);
-  const { stat: ratingStat, refresh: refreshRating } = useProductRating(id);
+  const { stat: ratingStat, refresh: refreshRating } = useProductRating(pkg?.id);
 
   useEffect(() => {
     if (!id) return;
     setLoading(true);
-    supabase
+    // Detect UUID vs slug — lookup by the appropriate column
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+    const query = supabase
       .from("service_packages")
       .select("*, services(title)")
-      .eq("id", id)
-      .single()
-      .then(({ data }) => {
-        const row = data as ServicePackageRow | null;
-        setPkg(row);
-        setLoading(false);
-        if (row) {
-          supabase
-            .from("service_packages")
-            .select("*, services(title)")
-            .eq("is_published", true)
-            .eq("service_id", row.service_id)
-            .neq("id", row.id)
-            .order("sort_order")
-            .limit(4)
-            .then(({ data: rel }) => setRelated((rel as ServicePackageRow[]) ?? []));
-        }
-        // Scroll to top on load
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      });
-  }, [id]);
+      .eq(isUuid ? "id" : "slug", id)
+      .maybeSingle();
+
+    query.then(({ data }) => {
+      const row = data as ServicePackageRow | null;
+      setPkg(row);
+      setLoading(false);
+      // If user came via UUID and a slug exists, redirect to the pretty URL
+      if (row && isUuid && row.slug) {
+        navigate(`/product/${row.slug}`, { replace: true });
+      }
+      if (row) {
+        supabase
+          .from("service_packages")
+          .select("*, services(title)")
+          .eq("is_published", true)
+          .eq("service_id", row.service_id)
+          .neq("id", row.id)
+          .order("sort_order")
+          .limit(4)
+          .then(({ data: rel }) => setRelated((rel as ServicePackageRow[]) ?? []));
+      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }, [id, navigate]);
 
   const c = cardColors[0];
 
@@ -103,14 +109,14 @@ export default function ProductDetailsPage() {
     sku: pkg.id,
     brand: { "@type": "Brand", name: "Shahed IT" },
     category: pkg.services?.title || "IT Services",
-    url: `https://shahedit.com/product/${pkg.id}`,
+    url: `https://shahedit.com/product/${pkg.slug || pkg.id}`,
     ...(pkg.price && {
       offers: {
         "@type": "Offer",
         price: pkg.price,
         priceCurrency: "BDT",
         availability: "https://schema.org/InStock",
-        url: `https://shahedit.com/product/${pkg.id}`,
+        url: `https://shahedit.com/product/${pkg.slug || pkg.id}`,
         seller: { "@type": "Organization", name: "Shahed IT" },
       },
     }),
@@ -130,7 +136,7 @@ export default function ProductDetailsPage() {
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: "https://shahedit.com" },
       { "@type": "ListItem", position: 2, name: pkg.services?.title || "Services", item: "https://shahedit.com/services" },
-      { "@type": "ListItem", position: 3, name: pkg.title, item: `https://shahedit.com/product/${pkg.id}` },
+      { "@type": "ListItem", position: 3, name: pkg.title, item: `https://shahedit.com/product/${pkg.slug || pkg.id}` },
     ],
   };
 
@@ -141,7 +147,7 @@ export default function ProductDetailsPage() {
         description={seoDesc}
         image={pkg.image_url || undefined}
         type="product"
-        canonical={`https://shahedit.com/product/${pkg.id}`}
+        canonical={`https://shahedit.com/product/${pkg.slug || pkg.id}`}
         keywords={`${pkg.title}, ${pkg.services?.title ?? ""}, Shahed IT, shahedit, IT service Bangladesh, ${pkg.title} price BD, web development Bangladesh`}
         schema={[productSchema, breadcrumbSchema]}
       />
@@ -393,7 +399,7 @@ export default function ProductDetailsPage() {
                 return (
                   <Link
                     key={r.id}
-                    to={`/product/${r.id}`}
+                    to={`/product/${r.slug || r.id}`}
                     className="group rounded-2xl overflow-hidden transition-all hover:-translate-y-1"
                     style={{ background: rc.bg, border: `1px solid ${rc.border}` }}
                   >

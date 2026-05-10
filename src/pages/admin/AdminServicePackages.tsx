@@ -22,6 +22,7 @@ interface ServicePackage {
   id: string;
   service_id: string;
   title: string;
+  slug: string | null;
   description: string | null;
   price: number | null;
   original_price: number | null;
@@ -36,6 +37,7 @@ interface ServicePackage {
 
 const emptyForm = (): Omit<ServicePackage, "id" | "service_id"> => ({
   title: "",
+  slug: "",
   description: "",
   price: null,
   original_price: null,
@@ -140,6 +142,7 @@ export default function AdminServicePackages() {
     setAddingFor(pkg.service_id);
     setForm({
       title: pkg.title,
+      slug: pkg.slug ?? "",
       description: pkg.description ?? "",
       price: pkg.price,
       original_price: pkg.original_price,
@@ -499,6 +502,22 @@ export default function AdminServicePackages() {
                                   className="bg-slate-900 border-slate-700 text-white"
                                 />
                               </div>
+                            </div>
+                          </div>
+
+                          <div className="space-y-1">
+                            <label className="text-slate-400 text-xs flex items-center gap-2">
+                              URL Slug
+                              <span className="text-slate-500 font-normal">(খালি রাখলে শিরোনাম থেকে স্বয়ংক্রিয় তৈরি হবে)</span>
+                            </label>
+                            <div className="flex items-center gap-2">
+                              <span className="text-slate-500 text-xs font-mono">/product/</span>
+                              <Input
+                                value={form.slug ?? ""}
+                                onChange={e => setForm(f => ({ ...f, slug: e.target.value }))}
+                                placeholder="basic-package"
+                                className="bg-slate-900 border-slate-700 text-white font-mono text-sm flex-1"
+                              />
                             </div>
                           </div>
 

@@ -10,6 +10,7 @@ import { useProductRating } from "@/hooks/useProductRatings";
 
 export interface ServicePackageRow {
   id: string;
+  slug?: string | null;
   title: string;
   description: string | null;
   short_description?: string | null;
@@ -553,7 +554,7 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
         transition={{ delay: index * 0.1, type: "spring", stiffness: 120 }}
         whileHover={{ y: -8, scale: 1.015 }}
         whileTap={{ scale: 0.97 }}
-        onClick={() => navigate(`/product/${pkg.id}`)}
+        onClick={() => navigate(`/product/${pkg.slug || pkg.id}`)}
         className="group relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 flex flex-col backdrop-blur-xl"
         style={{
           background: `linear-gradient(160deg, ${c.color}10 0%, rgba(10,6,24,0.85) 45%, rgba(6,3,16,0.95) 100%)`,
