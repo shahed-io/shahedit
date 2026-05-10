@@ -1139,6 +1139,7 @@ export type Database = {
           price: number | null
           service_id: string
           short_description: string | null
+          slug: string | null
           sort_order: number | null
           title: string
           updated_at: string
@@ -1158,6 +1159,7 @@ export type Database = {
           price?: number | null
           service_id: string
           short_description?: string | null
+          slug?: string | null
           sort_order?: number | null
           title: string
           updated_at?: string
@@ -1177,6 +1179,7 @@ export type Database = {
           price?: number | null
           service_id?: string
           short_description?: string | null
+          slug?: string | null
           sort_order?: number | null
           title?: string
           updated_at?: string
@@ -1550,6 +1553,7 @@ export type Database = {
         Args: { _package_id: string; _service_id: string }
         Returns: number
       }
+      slugify: { Args: { input: string }; Returns: string }
     }
     Enums: {
       app_role: "super_admin" | "admin" | "editor"
