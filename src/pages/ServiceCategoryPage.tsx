@@ -1,0 +1,437 @@
+import { useParams, Link, Navigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import {
+  Globe, Wrench, Palette, Facebook, TrendingUp, Building2,
+  CheckCircle2, ArrowRight, MessageCircle, Sparkles, Star,
+} from "lucide-react";
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
+import WhatsAppButton from "@/components/WhatsAppButton";
+import { SEO } from "@/components/SEO";
+
+import catWebDev from "@/assets/cat-web-dev.jpg";
+import catMaintenance from "@/assets/cat-maintenance.jpg";
+import catGraphics from "@/assets/cat-graphics.jpg";
+import catFacebook from "@/assets/cat-facebook.jpg";
+import catDigitalMarketing from "@/assets/cat-digital-marketing.jpg";
+import catBusiness from "@/assets/cat-business.jpg";
+
+type Category = {
+  slug: string;
+  label: string;
+  bnTitle: string;
+  tagline: string;
+  intro: string;
+  icon: typeof Globe;
+  img: string;
+  accent: string; // hsl
+  bg: string;
+  border: string;
+  features: string[];
+  packages: { title: string; price: string; desc: string; popular?: boolean }[];
+  process: string[];
+};
+
+const categories: Record<string, Category> = {
+  "web-development": {
+    slug: "web-development",
+    label: "Web Development",
+    bnTitle: "ওয়েব ডেভেলপমেন্ট",
+    tagline: "Modern · Fast · Scalable",
+    intro:
+      "WordPress থেকে শুরু করে Custom MERN/Django—আপনার ব্যবসার জন্য পারফরমেন্ট, সিকিউর এবং SEO-ফ্রেন্ডলি ওয়েবসাইট তৈরি করি যা আপনার গ্রাহকদের মুগ্ধ করবে।",
+    icon: Globe,
+    img: catWebDev,
+    accent: "270 92% 65%",
+    bg: "rgba(168,85,247,0.10)",
+    border: "rgba(168,85,247,0.30)",
+    features: [
+      "WordPress, React, Next.js, MERN ও Django সাপোর্ট",
+      "Mobile Responsive ও Lightning-Fast পারফরমেন্স",
+      "SEO অপটিমাইজড কোডিং স্ট্রাকচার",
+      "Admin Panel ও Database ইন্টিগ্রেশন",
+      "Free SSL ও 1 বছর ফ্রি সাপোর্ট",
+    ],
+    packages: [
+      { title: "WordPress Starter", price: "৳ 5,000", desc: "Landing page · 5 sections" },
+      { title: "Business Pro", price: "৳ 15,000", desc: "Multi-page · CMS", popular: true },
+      { title: "Custom MERN App", price: "৳ 1,50,000", desc: "Full-stack solution" },
+    ],
+    process: [
+      "Requirement Analysis ও Wireframe",
+      "UI/UX Design Approval",
+      "Development ও QA Testing",
+      "Live Deployment ও Training",
+    ],
+  },
+  "website-maintenance": {
+    slug: "website-maintenance",
+    label: "Website Maintenance",
+    bnTitle: "ওয়েবসাইট মেইনটেনেন্স",
+    tagline: "24/7 · Secure · Reliable",
+    intro:
+      "আপনার ওয়েবসাইটকে রাখুন আপডেটেড, নিরাপদ এবং দ্রুত। নিয়মিত backup, security patch, bug fix এবং speed অপটিমাইজেশন—সবকিছু এক প্ল্যানে।",
+    icon: Wrench,
+    img: catMaintenance,
+    accent: "210 90% 65%",
+    bg: "rgba(59,130,246,0.10)",
+    border: "rgba(59,130,246,0.30)",
+    features: [
+      "Daily/Weekly Backup ও Restore",
+      "Security Patch ও Malware Removal",
+      "Plugin/Theme Update ম্যানেজমেন্ট",
+      "Speed অপটিমাইজেশন ও Caching",
+      "Uptime Monitoring 24/7",
+    ],
+    packages: [
+      { title: "Basic Care", price: "৳ 1,500/mo", desc: "Backup + Updates" },
+      { title: "Pro Care", price: "৳ 3,500/mo", desc: "All-in-one + Security", popular: true },
+      { title: "Enterprise", price: "৳ 8,000/mo", desc: "Priority + Custom Dev" },
+    ],
+    process: [
+      "Site Audit ও Report",
+      "Backup Setup ও Monitoring চালু",
+      "Monthly Maintenance Cycle",
+      "Performance Report পাঠানো",
+    ],
+  },
+  "graphics-design": {
+    slug: "graphics-design",
+    label: "Graphics Design",
+    bnTitle: "গ্রাফিক্স ডিজাইন",
+    tagline: "Creative · Brand-First · Premium",
+    intro:
+      "Logo, Business Card, Brochure থেকে শুরু করে সম্পূর্ণ Brand Identity—আপনার ব্যবসাকে প্রিমিয়াম লুক দিতে আমাদের ডিজাইনাররা প্রস্তুত।",
+    icon: Palette,
+    img: catGraphics,
+    accent: "320 90% 65%",
+    bg: "rgba(236,72,153,0.10)",
+    border: "rgba(236,72,153,0.30)",
+    features: [
+      "Premium Logo ও Brand Identity",
+      "Business Card, Letterhead, Brochure",
+      "Social Media Post Design Pack",
+      "Banner, Poster, Flyer Design",
+      "Source File সহ Unlimited Revision",
+    ],
+    packages: [
+      { title: "Logo Only", price: "৳ 2,000", desc: "3 Concept · Source File" },
+      { title: "Brand Pack", price: "৳ 8,000", desc: "Logo + Card + Letterhead", popular: true },
+      { title: "Social Bundle", price: "৳ 12,000", desc: "30 Posts + Banners" },
+    ],
+    process: [
+      "Brand Brief ও Inspiration",
+      "Concept Sketch ও Preview",
+      "Revision ও Final Approval",
+      "Source File Delivery",
+    ],
+  },
+  "facebook-services": {
+    slug: "facebook-services",
+    label: "Facebook Services",
+    bnTitle: "ফেসবুক সার্ভিস",
+    tagline: "Boost · Engage · Grow",
+    intro:
+      "Facebook Page Setup, Verified Badge, Boost Campaign, Targeted Ads—আপনার ব্যবসাকে Facebook-এ স্কেল করার সম্পূর্ণ সমাধান।",
+    icon: Facebook,
+    img: catFacebook,
+    accent: "220 95% 65%",
+    bg: "rgba(59,130,246,0.10)",
+    border: "rgba(59,130,246,0.30)",
+    features: [
+      "Page Setup ও সম্পূর্ণ Optimization",
+      "Targeted Boost ও Ads Campaign",
+      "Pixel ও Conversion API Setup",
+      "Daily/Weekly Engagement Strategy",
+      "Detailed Analytics Report",
+    ],
+    packages: [
+      { title: "Page Setup", price: "৳ 1,500", desc: "Branding + Cover + About" },
+      { title: "Boost Manager", price: "৳ 5,000/mo", desc: "Ad Setup + Optimization", popular: true },
+      { title: "Full Marketing", price: "৳ 12,000/mo", desc: "Content + Ads + Reports" },
+    ],
+    process: [
+      "Page Audit ও Strategy",
+      "Campaign Setup ও Pixel Install",
+      "Live Optimization ও A/B Test",
+      "Monthly Performance Report",
+    ],
+  },
+  "digital-marketing": {
+    slug: "digital-marketing",
+    label: "Digital Marketing",
+    bnTitle: "ডিজিটাল মার্কেটিং",
+    tagline: "SEO · SMM · ROI Focused",
+    intro:
+      "SEO, Google Ads, Social Media Marketing, Email Campaign—Data-driven ডিজিটাল মার্কেটিং কৌশল দিয়ে আপনার ব্যবসার ROI বাড়ান।",
+    icon: TrendingUp,
+    img: catDigitalMarketing,
+    accent: "150 80% 55%",
+    bg: "rgba(34,197,94,0.10)",
+    border: "rgba(34,197,94,0.30)",
+    features: [
+      "SEO ও Keyword Research",
+      "Google Ads ও Search Campaign",
+      "Social Media Marketing (FB, IG, TikTok)",
+      "Email Marketing ও Automation",
+      "Monthly Analytics ও Growth Report",
+    ],
+    packages: [
+      { title: "SEO Starter", price: "৳ 6,000/mo", desc: "On-page + Off-page" },
+      { title: "Growth Pack", price: "৳ 15,000/mo", desc: "SEO + SMM + Ads", popular: true },
+      { title: "Enterprise", price: "৳ 35,000/mo", desc: "Full Funnel Marketing" },
+    ],
+    process: [
+      "Market Research ও Strategy",
+      "Campaign Launch ও Optimization",
+      "Content Calendar Execution",
+      "ROI Tracking ও Scaling",
+    ],
+  },
+  "business-solutions": {
+    slug: "business-solutions",
+    label: "Business Solutions",
+    bnTitle: "বিজনেস সলিউশন",
+    tagline: "Custom · Enterprise · ERP",
+    intro:
+      "POS, Inventory Management, CRM, ERP—আপনার ব্যবসার বিশেষ চাহিদা অনুযায়ী Custom Software ও Cloud Solution তৈরি করি।",
+    icon: Building2,
+    img: catBusiness,
+    accent: "42 95% 60%",
+    bg: "rgba(234,179,8,0.10)",
+    border: "rgba(234,179,8,0.30)",
+    features: [
+      "Custom POS ও Inventory System",
+      "CRM ও Lead Management",
+      "ERP ও HR Management Software",
+      "Cloud Hosting ও Domain সেটআপ",
+      "API Integration ও Automation",
+    ],
+    packages: [
+      { title: "POS Lite", price: "৳ 25,000", desc: "Single shop · Inventory" },
+      { title: "CRM Pro", price: "৳ 60,000", desc: "Lead + Pipeline + Email", popular: true },
+      { title: "Enterprise ERP", price: "৳ 1,50,000+", desc: "Custom Modules" },
+    ],
+    process: [
+      "Business Workflow Analysis",
+      "Custom Module Design",
+      "Development ও User Training",
+      "Ongoing Support ও Updates",
+    ],
+  },
+};
+
+const ServiceCategoryPage = () => {
+  const { slug } = useParams<{ slug: string }>();
+  const cat = slug ? categories[slug] : null;
+
+  if (!cat) return <Navigate to="/services" replace />;
+
+  const Icon = cat.icon;
+
+  return (
+    <div className="min-h-screen bg-background">
+      <SEO
+        title={`${cat.label} — Shahed IT`}
+        description={cat.intro.slice(0, 160)}
+      />
+      <SiteHeader />
+
+      {/* Hero */}
+      <section className="pt-28 pb-16 relative overflow-hidden">
+        <div className="absolute inset-0 dot-grid opacity-20" />
+        <div
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[420px] rounded-full pointer-events-none"
+          style={{
+            background: `radial-gradient(ellipse, hsl(${cat.accent}) 0%, transparent 65%)`,
+            filter: "blur(140px)",
+            opacity: 0.18,
+          }}
+        />
+        <div className="container mx-auto px-4 relative">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }}>
+              <Link to="/services" className="text-xs text-foreground/50 hover:text-foreground/80 inline-flex items-center gap-1 mb-4">
+                ← All Services
+              </Link>
+              <span
+                className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] px-4 py-2 rounded-full mb-5"
+                style={{ background: cat.bg, border: `1px solid ${cat.border}`, color: `hsl(${cat.accent})` }}
+              >
+                <Sparkles size={12} /> {cat.tagline}
+              </span>
+              <h1 className="text-4xl md:text-6xl font-black text-foreground mb-3 leading-tight">
+                {cat.bnTitle}
+              </h1>
+              <p className="text-foreground/70 text-lg mb-2 font-semibold">{cat.label}</p>
+              <p className="text-foreground/55 text-base leading-relaxed mb-8 max-w-xl">{cat.intro}</p>
+              <div className="flex flex-wrap gap-3">
+                <Link
+                  to="/get-quote"
+                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-bold text-white text-sm transition-all hover:scale-105 hover:shadow-xl"
+                  style={{ background: `linear-gradient(135deg, hsl(${cat.accent}), hsl(320,90%,48%))` }}
+                >
+                  ফ্রি কোটেশন নিন <ArrowRight size={16} />
+                </Link>
+                <a
+                  href="https://wa.me/8801820060046"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-bold text-sm border transition-all hover:scale-105"
+                  style={{ borderColor: "rgba(34,197,94,0.35)", color: "hsl(142,71%,55%)", background: "rgba(34,197,94,0.06)" }}
+                >
+                  <MessageCircle size={16} /> WhatsApp করুন
+                </a>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.92 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.15 }}
+              className="relative rounded-3xl overflow-hidden border"
+              style={{ borderColor: cat.border, background: cat.bg }}
+            >
+              <img src={cat.img} alt={cat.label} className="w-full h-80 object-cover" />
+              <div className="absolute top-4 left-4 w-14 h-14 rounded-2xl flex items-center justify-center backdrop-blur-md"
+                style={{ background: `hsla(${cat.accent}, 0.25)`, border: `1px solid hsla(${cat.accent}, 0.5)` }}>
+                <Icon size={24} style={{ color: `hsl(${cat.accent})` }} />
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features */}
+      <section className="py-16 relative">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl md:text-4xl font-black text-foreground mb-10 text-center">
+            কী কী <span className="gradient-text">পাবেন</span>
+          </h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
+            {cat.features.map((f, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.06 }}
+                className="rounded-2xl p-5 border flex items-start gap-3"
+                style={{ background: cat.bg, borderColor: cat.border }}
+              >
+                <CheckCircle2 size={20} style={{ color: `hsl(${cat.accent})` }} className="shrink-0 mt-0.5" />
+                <span className="text-foreground/80 text-sm leading-relaxed">{f}</span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Packages */}
+      <section className="py-16 relative">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl md:text-4xl font-black text-foreground mb-3 text-center">
+            <span className="gradient-text">প্যাকেজ</span> ও দাম
+          </h2>
+          <p className="text-foreground/50 text-center mb-10 text-sm">আপনার বাজেট অনুযায়ী বেছে নিন</p>
+          <div className="grid md:grid-cols-3 gap-5 max-w-5xl mx-auto">
+            {cat.packages.map((p, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+                whileHover={{ y: -6 }}
+                className={`relative rounded-2xl p-6 border transition-all ${p.popular ? "shadow-2xl" : ""}`}
+                style={{
+                  background: p.popular ? `hsla(${cat.accent}, 0.12)` : cat.bg,
+                  borderColor: p.popular ? `hsl(${cat.accent})` : cat.border,
+                }}
+              >
+                {p.popular && (
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1 bg-gradient-to-r from-amber-400 to-orange-500 text-black text-[10px] font-black px-3 py-1 rounded-full shadow-lg">
+                    <Star size={9} fill="currentColor" /> Most Popular
+                  </span>
+                )}
+                <p className="text-xs font-bold uppercase tracking-widest text-foreground/40 mb-2">{p.title}</p>
+                <p className="text-3xl font-black mb-2" style={{ color: `hsl(${cat.accent})` }}>{p.price}</p>
+                <p className="text-foreground/55 text-sm mb-5">{p.desc}</p>
+                <Link
+                  to="/get-quote"
+                  className="block text-center w-full py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:scale-[1.02]"
+                  style={{ background: `linear-gradient(135deg, hsl(${cat.accent}), hsl(320,90%,48%))` }}
+                >
+                  অর্ডার করুন
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Process */}
+      <section className="py-16 relative">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl md:text-4xl font-black text-foreground mb-10 text-center">
+            আমাদের <span className="gradient-text">প্রসেস</span>
+          </h2>
+          <div className="grid md:grid-cols-4 gap-4 max-w-5xl mx-auto">
+            {cat.process.map((step, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+                className="rounded-2xl p-5 border text-center"
+                style={{ background: cat.bg, borderColor: cat.border }}
+              >
+                <div className="w-10 h-10 mx-auto rounded-full flex items-center justify-center font-black text-sm mb-3"
+                  style={{ background: `hsla(${cat.accent}, 0.25)`, color: `hsl(${cat.accent})` }}>
+                  {i + 1}
+                </div>
+                <p className="text-foreground/75 text-sm leading-relaxed">{step}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-20 relative">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl md:text-4xl font-black text-foreground mb-4">
+            শুরু করতে প্রস্তুত? <span className="gradient-text">আজই যোগাযোগ করুন</span>
+          </h2>
+          <p className="text-foreground/55 mb-8 max-w-xl mx-auto">
+            ফ্রি কনসালটেশন ও কাস্টম কোটেশনের জন্য আমাদের টিমের সাথে কথা বলুন।
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              to="/get-quote"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-bold text-white text-sm transition-all hover:scale-105 hover:shadow-xl"
+              style={{ background: `linear-gradient(135deg, hsl(${cat.accent}), hsl(320,90%,48%))` }}
+            >
+              ফ্রি কোটেশন নিন <ArrowRight size={16} />
+            </Link>
+            <a
+              href="https://wa.me/8801820060046"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-bold text-sm border transition-all hover:scale-105"
+              style={{ borderColor: "rgba(34,197,94,0.35)", color: "hsl(142,71%,55%)", background: "rgba(34,197,94,0.06)" }}
+            >
+              <MessageCircle size={16} /> WhatsApp করুন
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <SiteFooter />
+      <WhatsAppButton />
+    </div>
+  );
+};
+
+export default ServiceCategoryPage;
