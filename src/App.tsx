@@ -36,6 +36,8 @@ const AdminClientDocuments = lazy(() => import("./pages/admin/AdminClientDocumen
 const AdminSEO = lazy(() => import("./pages/admin/AdminSEO"));
 const AdminPortfolio = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminPortfolio })));
 const AdminBlog = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminBlog })));
+const AdminBlogCategories = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminBlogCategories })));
+const AdminMedia = lazy(() => import("./pages/admin/AdminMedia"));
 const AdminTestimonials = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminTestimonials })));
 const AdminTeam = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminTeam })));
 const AdminClients = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminClients })));
@@ -130,6 +132,8 @@ const AdminRoutes = () => (
         <Route path="service-packages" element={<RoleRoute section="service-packages"><AdminServicePackages /></RoleRoute>} />
         <Route path="portfolio" element={<RoleRoute section="portfolio"><AdminPortfolio /></RoleRoute>} />
         <Route path="blog" element={<RoleRoute section="blog"><AdminBlog /></RoleRoute>} />
+        <Route path="blog-categories" element={<RoleRoute section="blog-categories"><AdminBlogCategories /></RoleRoute>} />
+        <Route path="media" element={<RoleRoute section="media"><AdminMedia /></RoleRoute>} />
         <Route path="testimonials" element={<RoleRoute section="testimonials"><AdminTestimonials /></RoleRoute>} />
         <Route path="team" element={<RoleRoute section="team"><AdminTeam /></RoleRoute>} />
         <Route path="clients" element={<RoleRoute section="clients"><AdminClients /></RoleRoute>} />

@@ -3,7 +3,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Plus, Pencil, Trash2, Eye, EyeOff, Star, StarOff,
-  X, Search, CheckSquare, Square, Save, LayoutGrid, List, FileText, Tag, GripVertical
+  X, Search, CheckSquare, Square, Save, LayoutGrid, List, FileText, Tag, GripVertical,
+  Upload, Image as ImageIcon, Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,12 +13,20 @@ import { toast } from "sonner";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
+type SelectOption = { value: string; label: string };
+
 type FieldDef = {
   key: string;
   label: string;
-  type?: "text" | "textarea" | "checkbox" | "number" | "date" | "url" | "email" | "array";
+  type?: "text" | "textarea" | "checkbox" | "number" | "date" | "url" | "email" | "array" | "image" | "select";
   placeholder?: string;
   span?: "full";
+  /** For type="select": static options */
+  options?: SelectOption[];
+  /** For type="select": load options from a table dynamically */
+  optionsTable?: { table: string; valueKey?: string; labelKey: string };
+  /** For type="image": storage bucket, defaults to "cms-media" */
+  bucket?: string;
 };
 
 type CrudConfig = {
@@ -63,6 +72,8 @@ const createWooCrudPage = (cfg: CrudConfig) => {
     const [viewMode, setViewMode] = useState<"table" | "grid">("table");
     const [arrayInputs, setArrayInputs] = useState<Record<string, string>>({});
     const [activeTab, setActiveTab] = useState<"general" | "seo">("general");
+    const [dynamicOptions, setDynamicOptions] = useState<Record<string, SelectOption[]>>({});
+    const [uploading, setUploading] = useState<Record<string, boolean>>({});
 
     const fetch = async () => {
       setLoading(true);
@@ -72,6 +83,45 @@ const createWooCrudPage = (cfg: CrudConfig) => {
       const { data } = await q;
       setItems(data ?? []);
       setLoading(false);
+    };
+
+    // Load dynamic select options for fields with optionsTable
+    useEffect(() => {
+      const loaders = fields.filter(f => f.type === "select" && f.optionsTable);
+      if (!loaders.length) return;
+      (async () => {
+        const map: Record<string, SelectOption[]> = {};
+        for (const f of loaders) {
+          const cfg = f.optionsTable!;
+          const { data } = await supabase
+            .from(cfg.table as any)
+            .select(`${cfg.valueKey || "id"}, ${cfg.labelKey}`)
+            .order(cfg.labelKey);
+          map[f.key] = (data ?? []).map((r: any) => ({
+            value: r[cfg.valueKey || "id"],
+            label: r[cfg.labelKey],
+          }));
+        }
+        setDynamicOptions(map);
+      })();
+    }, []);
+
+    const uploadImage = async (fieldKey: string, file: File, bucket = "cms-media") => {
+      setUploading(p => ({ ...p, [fieldKey]: true }));
+      const ext = file.name.split(".").pop() || "jpg";
+      const path = `${table}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+      const { error: upErr } = await supabase.storage.from(bucket).upload(path, file, {
+        cacheControl: "3600", upsert: false,
+      });
+      if (upErr) {
+        setUploading(p => ({ ...p, [fieldKey]: false }));
+        toast.error(upErr.message);
+        return;
+      }
+      const { data: pub } = supabase.storage.from(bucket).getPublicUrl(path);
+      setForm(p => ({ ...p, [fieldKey]: pub.publicUrl }));
+      setUploading(p => ({ ...p, [fieldKey]: false }));
+      toast.success("Image uploaded");
     };
 
     useEffect(() => { fetch(); }, []);
@@ -569,6 +619,66 @@ const createWooCrudPage = (cfg: CrudConfig) => {
                             ))}
                           </div>
                         </div>
+                      ) : f.type === "image" ? (
+                        <div>
+                          <Label className="text-slate-400 text-xs mb-1.5 block">{f.label}</Label>
+                          <div className="flex items-start gap-3">
+                            <div className="w-24 h-24 rounded-lg border border-dashed border-slate-700 bg-slate-800/40 flex items-center justify-center overflow-hidden shrink-0">
+                              {form[f.key] ? (
+                                <img src={form[f.key]} alt="" className="w-full h-full object-cover"
+                                  onError={e => { (e.target as HTMLImageElement).style.display = "none"; }} />
+                              ) : (
+                                <ImageIcon size={22} className="text-slate-600" />
+                              )}
+                            </div>
+                            <div className="flex-1 space-y-2">
+                              <label className="inline-flex items-center gap-2 px-3 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg text-xs text-slate-200 cursor-pointer transition w-fit">
+                                {uploading[f.key] ? <Loader2 size={13} className="animate-spin" /> : <Upload size={13} />}
+                                {uploading[f.key] ? "Uploading..." : "Upload image"}
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  className="hidden"
+                                  disabled={!!uploading[f.key]}
+                                  onChange={e => {
+                                    const file = e.target.files?.[0];
+                                    if (file) uploadImage(f.key, file, f.bucket);
+                                    e.target.value = "";
+                                  }}
+                                />
+                              </label>
+                              <Input
+                                value={form[f.key] ?? ""}
+                                onChange={e => setForm(p => ({ ...p, [f.key]: e.target.value }))}
+                                placeholder="or paste image URL"
+                                className="bg-slate-800 border-slate-700 text-white h-9 text-xs"
+                              />
+                              {form[f.key] && (
+                                <button
+                                  type="button"
+                                  onClick={() => setForm(p => ({ ...p, [f.key]: "" }))}
+                                  className="text-xs text-rose-400 hover:text-rose-300"
+                                >
+                                  Remove image
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ) : f.type === "select" ? (
+                        <div>
+                          <Label className="text-slate-400 text-xs mb-1.5 block">{f.label}</Label>
+                          <select
+                            value={form[f.key] ?? ""}
+                            onChange={e => setForm(p => ({ ...p, [f.key]: e.target.value || null }))}
+                            className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 h-10 text-white text-sm focus:outline-none focus:border-purple-500"
+                          >
+                            <option value="">— None —</option>
+                            {(f.options ?? dynamicOptions[f.key] ?? []).map(o => (
+                              <option key={o.value} value={o.value}>{o.label}</option>
+                            ))}
+                          </select>
+                        </div>
                       ) : (
                         <div>
                           <Label className="text-slate-400 text-xs mb-1.5 block">{f.label}</Label>
@@ -691,7 +801,11 @@ export const AdminBlog = createWooCrudPage({
   fields: [
     { key: "title", label: "Title", placeholder: "Post title" },
     { key: "slug", label: "Slug" },
-    { key: "featured_image", label: "Featured Image URL", placeholder: "https://..." },
+    { key: "featured_image", label: "Featured Image", type: "image" },
+    {
+      key: "category_id", label: "Category", type: "select",
+      optionsTable: { table: "blog_categories", labelKey: "name" },
+    },
     { key: "excerpt", label: "Excerpt", type: "textarea" },
     { key: "content", label: "Content", type: "textarea" },
     { key: "tags", label: "Tags", type: "array", placeholder: "Add tag and press Enter" },
@@ -699,6 +813,15 @@ export const AdminBlog = createWooCrudPage({
     { key: "is_featured", label: "Featured", type: "checkbox" },
     { key: "meta_title", label: "Meta Title" },
     { key: "meta_description", label: "Meta Description", type: "textarea" },
+  ],
+});
+
+export const AdminBlogCategories = createWooCrudPage({
+  table: "blog_categories", displayName: "Blog Category",
+  fields: [
+    { key: "name", label: "Name", placeholder: "Category name" },
+    { key: "slug", label: "Slug" },
+    { key: "description", label: "Description", type: "textarea" },
   ],
 });
 

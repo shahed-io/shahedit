@@ -8,7 +8,7 @@ import {
   Inbox, ChevronLeft, Menu, LogOut, Bell, Shield, Package, CreditCard,
   LayoutTemplate, Search, TrendingUp, Sparkles, Globe, Tag, Mail,
   History, BarChart3, ArrowLeftRight, ChevronDown, Crown, ExternalLink,
-  Zap, RefreshCcw,
+  Zap, RefreshCcw, Image as ImageIcon, FolderTree,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -59,6 +59,8 @@ const navGroups: NavGroup[] = [
     icon: FileText,
     items: [
       { label: "Blog Posts", icon: FileText, href: "/admin/blog", section: "blog" },
+      { label: "Blog Categories", icon: FolderTree, href: "/admin/blog-categories", badge: "NEW", section: "blog-categories" },
+      { label: "Media Library", icon: ImageIcon, href: "/admin/media", badge: "NEW", section: "media" },
       { label: "AI Writer", icon: Sparkles, href: "/admin/ai-writer", badge: "AI", section: "ai-writer" },
       { label: "Email Campaigns", icon: Mail, href: "/admin/campaigns", badge: "NEW", section: "campaigns" },
       { label: "Testimonials", icon: Star, href: "/admin/testimonials", section: "testimonials" },
