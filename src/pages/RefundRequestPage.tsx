@@ -13,6 +13,11 @@ import {
   Wallet,
   LogIn,
   ChevronDown,
+  Paperclip,
+  X as XIcon,
+  FileText,
+  Image as ImageIcon,
+  Upload,
 } from "lucide-react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
