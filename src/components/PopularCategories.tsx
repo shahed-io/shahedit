@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { Code2, Smartphone, Palette, BarChart3, Cloud, ShieldCheck } from "lucide-react";
 
 const categories = [
