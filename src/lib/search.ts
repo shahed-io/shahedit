@@ -72,7 +72,7 @@ export async function runSearch(query: string, opts?: { limitPerType?: number })
   const [svc, pkg, blog, proj, faq] = await Promise.all([
     supabase.from("services").select("title,slug,short_description,description")
       .eq("is_published", true).or(orFilter(q, ["title", "short_description", "description", "slug"])).limit(limit),
-    supabase.from("service_packages").select("id,title,short_description,description,image_url,price,original_price,badge,services(title)")
+    supabase.from("service_packages").select("id,slug,title,short_description,description,image_url,price,original_price,badge,services(title)")
       .eq("is_published", true).or(orFilter(q, ["title", "short_description", "description"])).limit(limit),
     supabase.from("blog_posts").select("title,slug,excerpt,content")
       .eq("is_published", true).or(orFilter(q, ["title", "excerpt", "content"])).limit(limit),
