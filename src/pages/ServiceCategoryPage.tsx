@@ -4,8 +4,9 @@ import { motion } from "framer-motion";
 import {
   Globe, Wrench, Palette, Facebook, TrendingUp, Building2,
   CheckCircle2, ArrowRight, MessageCircle, Sparkles, Star, Package as PackageIcon,
-  Search, X,
+  Search, X, Zap,
 } from "lucide-react";
+import QuickQuoteModal from "@/components/QuickQuoteModal";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { SEO } from "@/components/SEO";
