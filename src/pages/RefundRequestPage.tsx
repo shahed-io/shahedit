@@ -89,12 +89,20 @@ const steps = [
   },
 ];
 
+type Attachment = { name: string; path: string; size: number; type: string };
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const MAX_FILES = 5;
+const ALLOWED_TYPES = ["image/png", "image/jpeg", "image/jpg", "image/webp", "application/pdf"];
+
 export default function RefundRequestPage() {
   const { user } = useAuth();
   const [submitted, setSubmitted] = useState(false);
   const [requestNumber, setRequestNumber] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [policyOpen, setPolicyOpen] = useState(true);
+  const [attachments, setAttachments] = useState<Attachment[]>([]);
   const [form, setForm] = useState({
     name: "",
     email: user?.email ?? "",
@@ -102,6 +110,46 @@ export default function RefundRequestPage() {
     orderId: "",
     reason: "",
   });
+
+  const handleFiles = async (files: FileList | null) => {
+    if (!files || !user) return;
+    if (attachments.length + files.length > MAX_FILES) {
+      toast.error(`সর্বোচ্চ ${MAX_FILES} টি ফাইল আপলোড করা যাবে`);
+      return;
+    }
+    setUploading(true);
+    const uploaded: Attachment[] = [];
+    for (const file of Array.from(files)) {
+      if (!ALLOWED_TYPES.includes(file.type)) {
+        toast.error(`${file.name}: শুধু ছবি বা PDF আপলোড করুন`);
+        continue;
+      }
+      if (file.size > MAX_FILE_SIZE) {
+        toast.error(`${file.name}: ১০MB এর বেশি`);
+        continue;
+      }
+      const path = `${user.id}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
+      const { error } = await supabase.storage.from("refund-attachments").upload(path, file, {
+        contentType: file.type,
+        upsert: false,
+      });
+      if (error) {
+        toast.error(`${file.name}: ${error.message}`);
+        continue;
+      }
+      uploaded.push({ name: file.name, path, size: file.size, type: file.type });
+    }
+    if (uploaded.length) {
+      setAttachments((prev) => [...prev, ...uploaded]);
+      toast.success(`${uploaded.length} টি ফাইল আপলোড হয়েছে`);
+    }
+    setUploading(false);
+  };
+
+  const removeAttachment = async (att: Attachment) => {
+    await supabase.storage.from("refund-attachments").remove([att.path]);
+    setAttachments((prev) => prev.filter((a) => a.path !== att.path));
+  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -120,6 +168,7 @@ export default function RefundRequestPage() {
         phone: form.phone,
         order_id: form.orderId || null,
         reason: form.reason,
+        attachments: attachments as any,
       })
       .select("request_number")
       .single();
