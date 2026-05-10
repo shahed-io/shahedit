@@ -229,7 +229,7 @@ const AdminOrders = () => {
                     </div>
                   </div>
                   <div className="flex flex-col lg:items-end gap-2 shrink-0">
-                    <p className="text-xl font-black text-emerald-400">৳{o.amount.toLocaleString()}</p>
+                    <p className="text-xl font-black text-emerald-400">৳{o.amount.toLocaleString("en-IN")}</p>
                     <span className="text-xs font-semibold px-3 py-1 rounded-lg" style={{ background: cfg.bg, color: cfg.color }}>
                       {cfg.label}
                     </span>
@@ -271,7 +271,7 @@ const AdminOrders = () => {
               <div className="rounded-xl p-3 bg-white/5 text-sm space-y-1">
                 <p><span className="text-slate-400">Customer:</span> {editing.customer_name} — {editing.customer_email}</p>
                 <p><span className="text-slate-400">Product:</span> {editing.product_title}</p>
-                <p><span className="text-slate-400">Amount:</span> ৳{editing.amount.toLocaleString()}</p>
+                <p><span className="text-slate-400">Amount:</span> ৳{editing.amount.toLocaleString("en-IN")}</p>
               </div>
 
               <div>

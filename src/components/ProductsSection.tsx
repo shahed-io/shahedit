@@ -355,7 +355,7 @@ const DetailsModal = ({ pkg, onClose, onPay, c }: {
     ? Math.round((1 - pkg.price / pkg.original_price) * 100) : null;
 
   const waMessage = encodeURIComponent(
-    `হ্যালো! আমি "${pkg.title}" প্যাকেজটি সম্পর্কে জানতে চাই।${pkg.price ? ` মূল্য: ৳${pkg.price.toLocaleString()}` : ""}`
+    `হ্যালো! আমি "${pkg.title}" প্যাকেজটি সম্পর্কে জানতে চাই।${pkg.price ? ` মূল্য: ৳${pkg.price.toLocaleString("en-IN")}` : ""}`
   );
 
   return (
@@ -542,7 +542,7 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
   const { stat: ratingStat } = useProductRating(pkg.id);
 
   const waMessage = encodeURIComponent(
-    `হ্যালো! আমি "${pkg.title}" প্যাকেজটি অর্ডার করতে চাই।${pkg.price ? ` মূল্য: ৳${pkg.price.toLocaleString()}` : ""} অনুগ্রহ করে আরও তথ্য দিন।`
+    `হ্যালো! আমি "${pkg.title}" প্যাকেজটি অর্ডার করতে চাই।${pkg.price ? ` মূল্য: ৳${pkg.price.toLocaleString("en-IN")}` : ""} অনুগ্রহ করে আরও তথ্য দিন।`
   );
 
   return (

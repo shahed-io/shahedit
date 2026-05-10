@@ -93,12 +93,12 @@ export default function ProductDetailsPage() {
     : null;
 
   const waMessage = encodeURIComponent(
-    `হ্যালো! আমি "${pkg.title}" প্যাকেজটি সম্পর্কে জানতে চাই।${pkg.price ? ` মূল্য: ৳${pkg.price.toLocaleString()}` : ""}`
+    `হ্যালো! আমি "${pkg.title}" প্যাকেজটি সম্পর্কে জানতে চাই।${pkg.price ? ` মূল্য: ৳${pkg.price.toLocaleString("en-IN")}` : ""}`
   );
 
   // Build dynamic SEO for this product
   const cleanDesc = (pkg.short_description || (pkg.description || "").replace(/<[^>]+>/g, "")).slice(0, 160).trim();
-  const seoTitle = `${pkg.title} — মূল্য ৳${pkg.price?.toLocaleString() ?? "যোগাযোগ"} | Shahed IT Bangladesh`;
+  const seoTitle = `${pkg.title} — মূল্য ৳${pkg.price?.toLocaleString("en-IN") ?? "যোগাযোগ"} | Shahed IT Bangladesh`;
   const seoDesc = cleanDesc || `${pkg.title} সার্ভিস সাশ্রয়ী মূল্যে নিন Shahed IT থেকে। বাংলাদেশের সেরা আইটি সলিউশন পার্টনার।`;
   const productSchema: any = {
     "@context": "https://schema.org",
