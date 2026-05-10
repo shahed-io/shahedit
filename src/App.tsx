@@ -23,6 +23,7 @@ import LoginPage from "./pages/LoginPage";
 const AdminLayout = lazy(() => import("./components/admin/AdminLayout"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const AdminLeads = lazy(() => import("./pages/admin/AdminLeads"));
+const AdminRefunds = lazy(() => import("./pages/admin/AdminRefunds"));
 const AdminServices = lazy(() => import("./pages/admin/AdminServices"));
 const AdminSettings = lazy(() => import("./pages/admin/AdminSettings"));
 const AdminAISupport = lazy(() => import("./pages/admin/AdminAISupport"));
@@ -122,6 +123,7 @@ const AdminRoutes = () => (
       <Routes>
         <Route path="" element={<RoleRoute section="dashboard"><AdminDashboard /></RoleRoute>} />
         <Route path="leads" element={<RoleRoute section="leads"><AdminLeads /></RoleRoute>} />
+        <Route path="refunds" element={<RoleRoute section="refunds"><AdminRefunds /></RoleRoute>} />
         <Route path="payments" element={<RoleRoute section="payments"><AdminPayments /></RoleRoute>} />
         <Route path="orders" element={<RoleRoute section="orders"><AdminOrders /></RoleRoute>} />
         <Route path="services" element={<RoleRoute section="services"><AdminServices /></RoleRoute>} />

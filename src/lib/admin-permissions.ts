@@ -7,6 +7,7 @@ export type AdminSection =
   | "dashboard"
   | "analytics"
   | "leads"
+  | "refunds"
   | "payments"
   | "orders"
   | "client-docs"
@@ -42,6 +43,7 @@ const PERMISSIONS: Record<AdminSection, AppRole[]> = {
   dashboard:          ["super_admin", "admin", "manager", "editor"],
   analytics:          ["super_admin", "admin", "manager"],
   leads:              ["super_admin", "admin", "manager"],
+  refunds:            ["super_admin", "admin", "manager"],
   payments:           ["super_admin", "admin", "manager"],
   orders:             ["super_admin", "admin", "manager"],
   "client-docs":      ["super_admin", "admin", "manager"],

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
-import { Search, Download, RefreshCw, MessageSquare, Inbox, ExternalLink } from "lucide-react";
+import { Search, Download, RefreshCw, RefreshCcw, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
@@ -9,6 +9,14 @@ import type { Lead, LeadStatus } from "@/lib/supabase-types";
 import { AdminPage, AdminPageHeader, GlassCard, KpiCard } from "@/components/admin/ui";
 
 const statusOptions: LeadStatus[] = ["new", "in_progress", "contacted", "converted", "closed"];
+
+const statusLabel: Record<LeadStatus, string> = {
+  new: "Pending",
+  in_progress: "Processing",
+  contacted: "Contacted",
+  converted: "Refunded",
+  closed: "Rejected",
+};
 
 const statusColor: Record<LeadStatus, string> = {
   new: "text-amber-300 bg-amber-400/10 border-amber-400/30",
@@ -18,93 +26,92 @@ const statusColor: Record<LeadStatus, string> = {
   closed: "text-rose-300 bg-rose-400/10 border-rose-400/30",
 };
 
-const AdminLeads = () => {
-  const [leads, setLeads] = useState<Lead[]>([]);
+const AdminRefunds = () => {
+  const [rows, setRows] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<string>("all");
-  const [source, setSource] = useState<string>("all");
   const [from, setFrom] = useState<string>("");
   const [to, setTo] = useState<string>("");
-  const [includeRefunds, setIncludeRefunds] = useState(false);
-  const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+  const [selected, setSelected] = useState<Lead | null>(null);
   const [notes, setNotes] = useState("");
   const [saving, setSaving] = useState(false);
 
-  const fetchLeads = async () => {
+  const fetchData = async () => {
     setLoading(true);
-    let q = supabase.from("leads").select("*").order("created_at", { ascending: false });
+    let q = supabase
+      .from("leads")
+      .select("*")
+      .eq("service_interested", "Refund Request")
+      .order("created_at", { ascending: false });
     if (filter !== "all") q = q.eq("status", filter as LeadStatus);
-    if (source !== "all") q = q.eq("source", source as Lead["source"]);
     if (from) q = q.gte("created_at", new Date(from).toISOString());
     if (to) q = q.lte("created_at", new Date(to + "T23:59:59").toISOString());
-    if (!includeRefunds) q = q.or("service_interested.is.null,service_interested.neq.Refund Request");
     const { data, error } = await q;
     if (error) toast.error("Failed to load");
-    setLeads(data ?? []);
+    setRows(data ?? []);
     setLoading(false);
   };
 
-  useEffect(() => { fetchLeads(); /* eslint-disable-next-line */ }, [filter, source, from, to, includeRefunds]);
+  useEffect(() => { fetchData(); /* eslint-disable-next-line */ }, [filter, from, to]);
 
   const updateStatus = async (id: string, status: LeadStatus) => {
     const { error } = await supabase.from("leads").update({ status }).eq("id", id);
     if (error) { toast.error("Failed to update"); return; }
     toast.success("Status updated");
-    setLeads(prev => prev.map(l => l.id === id ? { ...l, status } : l));
-    if (selectedLead?.id === id) setSelectedLead(prev => prev ? { ...prev, status } : null);
+    setRows(prev => prev.map(l => l.id === id ? { ...l, status } : l));
+    if (selected?.id === id) setSelected(prev => prev ? { ...prev, status } : null);
   };
 
   const saveNotes = async () => {
-    if (!selectedLead) return;
+    if (!selected) return;
     setSaving(true);
-    await supabase.from("leads").update({ notes }).eq("id", selectedLead.id);
+    const { error } = await supabase.from("leads").update({ notes }).eq("id", selected.id);
     setSaving(false);
+    if (error) { toast.error("Failed"); return; }
     toast.success("Notes saved");
-    setLeads(prev => prev.map(l => l.id === selectedLead.id ? { ...l, notes } : l));
+    setRows(prev => prev.map(l => l.id === selected.id ? { ...l, notes } : l));
   };
 
-  const filtered = useMemo(() => leads.filter(l =>
+  const filtered = useMemo(() => rows.filter(l =>
     l.name.toLowerCase().includes(search.toLowerCase()) ||
     l.email.toLowerCase().includes(search.toLowerCase()) ||
-    (l.company ?? "").toLowerCase().includes(search.toLowerCase()) ||
-    (l.phone ?? "").toLowerCase().includes(search.toLowerCase())
-  ), [leads, search]);
+    (l.project_description ?? "").toLowerCase().includes(search.toLowerCase())
+  ), [rows, search]);
 
   const exportCSV = () => {
-    const headers = ["Name", "Email", "Phone", "Company", "Service", "Budget", "Timeline", "Source", "Status", "Notes", "Date"];
-    const escape = (v: string) => `"${(v ?? "").toString().replace(/"/g, '""')}"`;
+    const headers = ["Name", "Email", "Phone", "Reason/Description", "Status", "Date"];
+    const escape = (v: string) => `"${(v ?? "").replace(/"/g, '""')}"`;
     const csvRows = filtered.map(l => [
-      l.name, l.email, l.phone ?? "", l.company ?? "", l.service_interested ?? "",
-      l.budget_range ?? "", l.timeline ?? "", l.source ?? "", l.status, l.notes ?? "",
-      new Date(l.created_at).toLocaleString(),
+      l.name, l.email, l.phone ?? "", l.project_description ?? "",
+      statusLabel[l.status], new Date(l.created_at).toLocaleString(),
     ].map(escape).join(","));
     const csv = [headers.join(","), ...csvRows].join("\n");
     const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
-    a.href = url; a.download = `leads-${new Date().toISOString().slice(0,10)}.csv`; a.click();
+    a.href = url; a.download = `refund-requests-${new Date().toISOString().slice(0,10)}.csv`; a.click();
     URL.revokeObjectURL(url);
     toast.success("CSV exported");
   };
 
   const counts = useMemo(() => ({
-    total: leads.length,
-    new: leads.filter(l => l.status === "new").length,
-    progress: leads.filter(l => l.status === "in_progress").length,
-    converted: leads.filter(l => l.status === "converted").length,
-    closed: leads.filter(l => l.status === "closed").length,
-  }), [leads]);
+    total: rows.length,
+    pending: rows.filter(r => r.status === "new").length,
+    processing: rows.filter(r => r.status === "in_progress").length,
+    refunded: rows.filter(r => r.status === "converted").length,
+    rejected: rows.filter(r => r.status === "closed").length,
+  }), [rows]);
 
   return (
     <AdminPage>
       <AdminPageHeader
-        title="Leads"
-        subtitle={`${leads.length} leads • Sales pipeline overview`}
-        icon={Inbox}
+        title="Refund Requests"
+        subtitle="রিফান্ড অনুরোধসমূহ পর্যালোচনা ও প্রসেস করুন"
+        icon={RefreshCcw}
         actions={
           <>
-            <Button onClick={fetchLeads} variant="ghost" size="icon" className="border border-primary/15">
+            <Button onClick={fetchData} variant="ghost" size="icon" className="border border-primary/15">
               <RefreshCw size={15} />
             </Button>
             <Button onClick={exportCSV} className="gap-2">
@@ -116,10 +123,10 @@ const AdminLeads = () => {
 
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-5">
         <KpiCard label="Total" value={counts.total} accent="violet" />
-        <KpiCard label="New" value={counts.new} accent="amber" />
-        <KpiCard label="In Progress" value={counts.progress} accent="sky" />
-        <KpiCard label="Converted" value={counts.converted} accent="emerald" />
-        <KpiCard label="Closed" value={counts.closed} accent="rose" />
+        <KpiCard label="Pending" value={counts.pending} accent="amber" />
+        <KpiCard label="Processing" value={counts.processing} accent="sky" />
+        <KpiCard label="Refunded" value={counts.refunded} accent="emerald" />
+        <KpiCard label="Rejected" value={counts.rejected} accent="rose" />
       </div>
 
       <div className="flex gap-6">
@@ -130,40 +137,30 @@ const AdminLeads = () => {
                 <button
                   key={s}
                   onClick={() => setFilter(s)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-all ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                     filter === s
                       ? "bg-gradient-to-r from-primary to-accent text-primary-foreground"
                       : "bg-card/40 text-muted-foreground hover:text-foreground border border-primary/10"
                   }`}
                 >
-                  {s.replace("_", " ")}
+                  {s === "all" ? "All" : statusLabel[s as LeadStatus]}
                 </button>
               ))}
-              <select
-                value={source}
-                onChange={e => setSource(e.target.value)}
-                className="h-8 text-xs rounded-lg bg-card/40 border border-primary/10 text-foreground px-2"
-              >
-                <option value="all">All sources</option>
-                <option value="contact_form">Contact form</option>
-                <option value="quote_form">Quote form</option>
-                <option value="whatsapp">WhatsApp</option>
-                <option value="other">Other</option>
-              </select>
-              <Input type="date" value={from} onChange={e => setFrom(e.target.value)} className="h-8 w-36 text-xs" />
-              <span className="text-muted-foreground text-xs">→</span>
-              <Input type="date" value={to} onChange={e => setTo(e.target.value)} className="h-8 w-36 text-xs" />
-              <label className="flex items-center gap-1.5 text-xs text-muted-foreground cursor-pointer">
-                <input type="checkbox" checked={includeRefunds} onChange={e => setIncludeRefunds(e.target.checked)} />
-                Include refunds
-              </label>
+              <div className="flex items-center gap-2 ml-2">
+                <Input type="date" value={from} onChange={e => setFrom(e.target.value)} className="h-8 w-36 text-xs" />
+                <span className="text-muted-foreground text-xs">→</span>
+                <Input type="date" value={to} onChange={e => setTo(e.target.value)} className="h-8 w-36 text-xs" />
+                {(from || to) && (
+                  <button onClick={() => { setFrom(""); setTo(""); }} className="text-xs text-muted-foreground hover:text-foreground">Clear</button>
+                )}
+              </div>
               <div className="relative ml-auto">
                 <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                 <Input
                   value={search}
                   onChange={e => setSearch(e.target.value)}
-                  placeholder="Search leads..."
-                  className="pl-9 h-8 text-sm w-56"
+                  placeholder="Search name, email, reason..."
+                  className="pl-9 h-8 text-sm w-60"
                 />
               </div>
             </div>
@@ -176,52 +173,54 @@ const AdminLeads = () => {
               </div>
             ) : filtered.length === 0 ? (
               <div className="text-center py-16">
-                <MessageSquare size={40} className="text-muted-foreground/50 mx-auto mb-3" />
-                <p className="text-muted-foreground">No leads found</p>
+                <RefreshCcw size={40} className="text-muted-foreground/50 mx-auto mb-3" />
+                <p className="text-muted-foreground">No refund requests found</p>
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-primary/10">
-                      {["Name", "Contact", "Service", "Source", "Status", "Date"].map(h => (
+                      {["Customer", "Contact", "Reason", "Status", "Date"].map(h => (
                         <th key={h} className="text-left text-muted-foreground text-xs font-medium px-4 py-3">{h}</th>
                       ))}
                     </tr>
                   </thead>
                   <tbody>
-                    {filtered.map((lead, i) => (
+                    {filtered.map((l, i) => (
                       <motion.tr
-                        key={lead.id}
+                        key={l.id}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: Math.min(i * 0.02, 0.3) }}
-                        onClick={() => { setSelectedLead(lead); setNotes(lead.notes ?? ""); }}
+                        onClick={() => { setSelected(l); setNotes(l.notes ?? ""); }}
                         className={`border-b border-primary/5 hover:bg-primary/5 cursor-pointer transition-colors ${
-                          selectedLead?.id === lead.id ? "bg-primary/10" : ""
+                          selected?.id === l.id ? "bg-primary/10" : ""
                         }`}
                       >
                         <td className="px-4 py-3">
-                          <p className="text-foreground text-sm font-medium">{lead.name}</p>
-                          <p className="text-muted-foreground text-xs">{lead.company}</p>
+                          <p className="text-foreground text-sm font-medium">{l.name}</p>
                         </td>
                         <td className="px-4 py-3">
-                          <p className="text-foreground/80 text-xs">{lead.email}</p>
-                          <p className="text-muted-foreground text-xs">{lead.phone}</p>
+                          <p className="text-foreground/80 text-xs">{l.email}</p>
+                          <p className="text-muted-foreground text-xs">{l.phone}</p>
                         </td>
-                        <td className="px-4 py-3 text-muted-foreground text-xs">{lead.service_interested || "—"}</td>
-                        <td className="px-4 py-3 text-muted-foreground text-xs capitalize">{(lead.source ?? "").replace("_", " ") || "—"}</td>
+                        <td className="px-4 py-3 text-muted-foreground text-xs max-w-xs truncate">
+                          {l.project_description?.split("\n")[0] || "—"}
+                        </td>
                         <td className="px-4 py-3">
                           <select
-                            value={lead.status}
-                            onChange={e => { e.stopPropagation(); updateStatus(lead.id, e.target.value as LeadStatus); }}
+                            value={l.status}
+                            onChange={e => { e.stopPropagation(); updateStatus(l.id, e.target.value as LeadStatus); }}
                             onClick={e => e.stopPropagation()}
-                            className={`text-xs px-2.5 py-1 rounded-full border font-medium capitalize bg-transparent cursor-pointer ${statusColor[lead.status]}`}
+                            className={`text-xs px-2.5 py-1 rounded-full border font-medium bg-transparent cursor-pointer ${statusColor[l.status]}`}
                           >
-                            {statusOptions.map(s => <option key={s} value={s} className="bg-background text-foreground capitalize">{s.replace("_", " ")}</option>)}
+                            {statusOptions.map(s => (
+                              <option key={s} value={s} className="bg-background text-foreground">{statusLabel[s]}</option>
+                            ))}
                           </select>
                         </td>
-                        <td className="px-4 py-3 text-muted-foreground text-xs">{new Date(lead.created_at).toLocaleDateString()}</td>
+                        <td className="px-4 py-3 text-muted-foreground text-xs">{new Date(l.created_at).toLocaleDateString()}</td>
                       </motion.tr>
                     ))}
                   </tbody>
@@ -231,7 +230,7 @@ const AdminLeads = () => {
           </GlassCard>
         </div>
 
-        {selectedLead && (
+        {selected && (
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -239,31 +238,30 @@ const AdminLeads = () => {
           >
             <GlassCard className="p-5 sticky top-4">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-foreground font-semibold">Lead Details</h3>
-                <button onClick={() => setSelectedLead(null)} className="text-muted-foreground hover:text-foreground text-lg leading-none">×</button>
+                <h3 className="text-foreground font-semibold">Refund Details</h3>
+                <button onClick={() => setSelected(null)} className="text-muted-foreground hover:text-foreground text-lg leading-none">×</button>
               </div>
               <div className="space-y-3 text-sm mb-5">
                 {[
-                  ["Name", selectedLead.name],
-                  ["Email", selectedLead.email],
-                  ["Phone", selectedLead.phone],
-                  ["Company", selectedLead.company],
-                  ["Service", selectedLead.service_interested],
-                  ["Budget", selectedLead.budget_range],
-                  ["Timeline", selectedLead.timeline],
-                  ["Source", selectedLead.source],
+                  ["Name", selected.name],
+                  ["Email", selected.email],
+                  ["Phone", selected.phone],
                 ].filter(([, v]) => v).map(([k, v]) => (
                   <div key={k as string}>
                     <p className="text-muted-foreground text-xs">{k}</p>
                     <p className="text-foreground">{v}</p>
                   </div>
                 ))}
-                {selectedLead.project_description && (
+                {selected.project_description && (
                   <div>
-                    <p className="text-muted-foreground text-xs">Description</p>
-                    <p className="text-foreground text-xs leading-relaxed whitespace-pre-wrap">{selectedLead.project_description}</p>
+                    <p className="text-muted-foreground text-xs">Reason / Order Info</p>
+                    <p className="text-foreground text-xs leading-relaxed whitespace-pre-wrap">{selected.project_description}</p>
                   </div>
                 )}
+                <div>
+                  <p className="text-muted-foreground text-xs">Submitted</p>
+                  <p className="text-foreground text-xs">{new Date(selected.created_at).toLocaleString()}</p>
+                </div>
               </div>
               <div className="mb-3">
                 <p className="text-muted-foreground text-xs mb-1.5">Internal Notes</p>
@@ -271,16 +269,16 @@ const AdminLeads = () => {
                   value={notes}
                   onChange={e => setNotes(e.target.value)}
                   className="w-full bg-card/40 border border-primary/15 rounded-lg p-2.5 text-foreground text-xs resize-none h-24 focus:outline-none focus:border-primary"
-                  placeholder="Add notes..."
+                  placeholder="Decision, refund txn id, ..."
                 />
               </div>
               <div className="flex gap-2">
                 <Button onClick={saveNotes} disabled={saving} className="flex-1 h-9 text-sm">
                   {saving ? "Saving..." : "Save Notes"}
                 </Button>
-                {selectedLead.email && (
+                {selected.email && (
                   <Button asChild variant="outline" size="icon" className="h-9 w-9">
-                    <a href={`mailto:${selectedLead.email}`}><ExternalLink size={14} /></a>
+                    <a href={`mailto:${selected.email}`}><ExternalLink size={14} /></a>
                   </Button>
                 )}
               </div>
@@ -292,4 +290,4 @@ const AdminLeads = () => {
   );
 };
 
-export default AdminLeads;
+export default AdminRefunds;

@@ -8,7 +8,7 @@ import {
   Inbox, ChevronLeft, Menu, LogOut, Bell, Shield, Package, CreditCard,
   LayoutTemplate, Search, TrendingUp, Sparkles, Globe, Tag, Mail,
   History, BarChart3, ArrowLeftRight, ChevronDown, Crown, ExternalLink,
-  Zap,
+  Zap, RefreshCcw,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -38,6 +38,7 @@ const navGroups: NavGroup[] = [
     icon: Inbox,
     items: [
       { label: "Leads", icon: Inbox, href: "/admin/leads", section: "leads" },
+      { label: "Refund Requests", icon: RefreshCcw, href: "/admin/refunds", badge: "NEW", section: "refunds" },
       { label: "Payments", icon: CreditCard, href: "/admin/payments", section: "payments" },
       { label: "Orders & Delivery", icon: Package, href: "/admin/orders", section: "orders" },
       { label: "Coupons", icon: Tag, href: "/admin/coupons", badge: "NEW", section: "coupons" },
