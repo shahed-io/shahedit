@@ -270,14 +270,17 @@ const SiteHeader = () => {
                   </span>
                 </span>
                 <span
-                  className="hidden xs:block font-semibold whitespace-nowrap text-center"
+                  className="hidden xs:block whitespace-nowrap text-center"
                   style={{
-                    fontFamily: "'Syne', sans-serif",
-                    fontSize: "clamp(7px, 1.1vw, 10.5px)",
-                    letterSpacing: "0.04em",
-                    background: "linear-gradient(90deg, #c4b5fd 0%, #f0abfc 100%)",
+                    fontFamily: "'Cinzel', serif",
+                    fontWeight: 600,
+                    fontSize: "clamp(7px, 1.05vw, 10px)",
+                    letterSpacing: "0.18em",
+                    textTransform: "uppercase",
+                    background: "linear-gradient(90deg, #e9d5ff 0%, #f0abfc 50%, #c4b5fd 100%)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
+                    filter: "drop-shadow(0 0 6px rgba(240,171,252,0.25))",
                   }}
                 >
                   Smart IT Solutions
