@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { Code2, Smartphone, Palette, BarChart3, Cloud, ShieldCheck } from "lucide-react";
 
 const categories = [
@@ -45,38 +46,42 @@ const PopularCategories = () => {
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {categories.map((cat, i) => (
-            <motion.a
+            <motion.div
               key={cat.name}
-              href={cat.href}
               initial={{ opacity: 0, y: 30, scale: 0.95 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.08, type: "spring", stiffness: 130 }}
               whileHover={{ y: -10, scale: 1.04 }}
               whileTap={{ scale: 0.92, y: 0, transition: { duration: 0.12 } }}
-              className="group flex flex-col items-center p-6 rounded-2xl cursor-pointer relative overflow-hidden transition-all duration-500"
-              style={{ background: cat.bg, border: `1px solid ${cat.border}` }}
             >
-              {/* Hover glow */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"
-                style={{ background: `radial-gradient(circle at 50% 0%, ${cat.color}20, transparent 70%)` }} />
-
-              <motion.div
-                whileHover={{ rotate: [0, -8, 8, 0], scale: 1.15 }}
-                transition={{ duration: 0.5 }}
-                className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4 relative shimmer"
-                style={{ background: `linear-gradient(135deg, ${cat.color}25, ${cat.color}10)`, border: `1px solid ${cat.color}30`, boxShadow: `0 0 20px ${cat.color}20` }}
+              <Link
+                to={cat.href}
+                aria-label={`${cat.name} ক্যাটাগরি দেখুন`}
+                className="group flex flex-col items-center p-6 rounded-2xl cursor-pointer relative overflow-hidden transition-all duration-500 h-full"
+                style={{ background: cat.bg, border: `1px solid ${cat.border}` }}
               >
-                <cat.icon size={26} style={{ color: cat.color, filter: `drop-shadow(0 0 8px ${cat.color}60)` }} />
-              </motion.div>
+                {/* Hover glow */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl pointer-events-none"
+                  style={{ background: `radial-gradient(circle at 50% 0%, ${cat.color}20, transparent 70%)` }} />
 
-              <h3 className="text-sm font-bold text-foreground/85 text-center leading-tight group-hover:text-foreground transition-colors duration-300">
-                {cat.name}
-              </h3>
-              <p className="text-xs mt-1.5 font-medium text-center transition-colors duration-300" style={{ color: cat.color }}>
-                {cat.sub}
-              </p>
-            </motion.a>
+                <motion.div
+                  whileHover={{ rotate: [0, -8, 8, 0], scale: 1.15 }}
+                  transition={{ duration: 0.5 }}
+                  className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4 relative shimmer"
+                  style={{ background: `linear-gradient(135deg, ${cat.color}25, ${cat.color}10)`, border: `1px solid ${cat.color}30`, boxShadow: `0 0 20px ${cat.color}20` }}
+                >
+                  <cat.icon size={26} style={{ color: cat.color, filter: `drop-shadow(0 0 8px ${cat.color}60)` }} />
+                </motion.div>
+
+                <h3 className="text-sm font-bold text-foreground/85 text-center leading-tight group-hover:text-foreground transition-colors duration-300">
+                  {cat.name}
+                </h3>
+                <p className="text-xs mt-1.5 font-medium text-center transition-colors duration-300" style={{ color: cat.color }}>
+                  {cat.sub}
+                </p>
+              </Link>
+            </motion.div>
           ))}
         </div>
       </div>
