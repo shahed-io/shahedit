@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { Truck, Clock } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import WhatsAppButton from "@/components/WhatsAppButton";
 
 const items = [
   "পেমেন্ট নিশ্চিত হওয়ার পর সার্ভিস ডেলিভারি শুরু হয়।",
@@ -68,7 +67,6 @@ const DeliveryPolicyPage = () => (
       </div>
     </section>
     <SiteFooter />
-    <WhatsAppButton />
   </div>
 );
 

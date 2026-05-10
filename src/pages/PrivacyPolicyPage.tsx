@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { Lock, Clock } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import WhatsAppButton from "@/components/WhatsAppButton";
 
 const items = [
   "আমরা কারো কোনো ব্যক্তিগত তথ্য আমাদের সার্ভারে সংরক্ষণ করি না।",
@@ -69,7 +68,6 @@ const PrivacyPolicyPage = () => (
       </div>
     </section>
     <SiteFooter />
-    <WhatsAppButton />
   </div>
 );
 

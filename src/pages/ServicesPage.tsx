@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import type { Service } from "@/lib/supabase-types";
 import { CheckCircle2, ArrowRight, MessageCircle } from "lucide-react";
 
@@ -217,7 +216,6 @@ const ServicesPage = () => {
       </section>
 
       <SiteFooter />
-      <WhatsAppButton />
     </div>
   );
 };

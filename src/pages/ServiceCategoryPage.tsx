@@ -6,7 +6,6 @@ import {
 } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import { SEO } from "@/components/SEO";
 
 import catWebDev from "@/assets/cat-web-dev.jpg";
@@ -522,7 +521,6 @@ const ServiceCategoryPage = () => {
       </section>
 
       <SiteFooter />
-      <WhatsAppButton />
     </div>
   );
 };

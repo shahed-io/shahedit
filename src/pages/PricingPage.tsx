@@ -5,7 +5,6 @@ import { Check, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import type { PricingPlan } from "@/lib/supabase-types";
 
 const PricingPage = () => {
@@ -87,7 +86,6 @@ const PricingPage = () => {
         </div>
       </section>
       <SiteFooter />
-      <WhatsAppButton />
     </div>
   );
 };

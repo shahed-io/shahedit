@@ -8,7 +8,6 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import WhatsAppButton from "@/components/WhatsAppButton";
 
 const ContactPage = () => {
   const [form, setForm] = useState({ name: "", email: "", phone: "", company: "", project_description: "" });
@@ -98,7 +97,6 @@ const ContactPage = () => {
         </div>
       </section>
       <SiteFooter />
-      <WhatsAppButton />
     </div>
   );
 };

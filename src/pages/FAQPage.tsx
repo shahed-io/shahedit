@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import type { FAQ } from "@/lib/supabase-types";
 
 const fallbackFaqs: FAQ[] = [
@@ -70,7 +69,6 @@ const FAQPage = () => {
         </div>
       </section>
       <SiteFooter />
-      <WhatsAppButton />
     </div>
   );
 };

@@ -8,7 +8,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import WhatsAppButton from "@/components/WhatsAppButton";
 
 const paymentMethods = [
   { id: "bkash_send", label: "বিকাশ (Send Money)", number: "01820060046", color: "#E2136E", logo: "Bkash" },
@@ -194,7 +193,6 @@ const PaymentPage = () => {
         </div>
       </section>
       <SiteFooter />
-      <WhatsAppButton />
     </div>
   );
 };
