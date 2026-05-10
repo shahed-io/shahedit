@@ -89,10 +89,22 @@ const SearchResultsPage = lazy(() => import("./pages/SearchResultsPage"));
 const queryClient = new QueryClient();
 
 const PageFallback = () => (
-  <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-    <div className="w-8 h-8 border-2 border-purple-500 border-t-transparent rounded-full animate-spin" />
+  <div className="min-h-screen flex items-center justify-center bg-background">
+    <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
   </div>
 );
+
+// Lighter, themed loader rendered INSIDE the admin layout so the sidebar/topbar
+// stay visible while the page chunk loads — no full-screen black flash.
+const AdminPageFallback = () => (
+  <div className="min-h-[60vh] flex items-center justify-center">
+    <div className="flex flex-col items-center gap-3">
+      <div className="w-7 h-7 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+      <p className="text-xs text-muted-foreground">Loading…</p>
+    </div>
+  </div>
+);
+
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading, isAdmin } = useAuth();
