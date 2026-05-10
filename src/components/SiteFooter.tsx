@@ -5,9 +5,9 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 const productLinks = [
-  { label: "Web Development", to: "/services" },
-  { label: "Graphics Design", to: "/services" },
-  { label: "Digital Marketing", to: "/services" },
+  { label: "Web Development", to: "/services/web-development" },
+  { label: "Graphics Design", to: "/services/graphics-design" },
+  { label: "Digital Marketing", to: "/services/digital-marketing" },
   { label: "All Products", to: "/services" },
   { label: "Pricing", to: "/pricing" },
   { label: "Get Quote", to: "/get-quote" },
