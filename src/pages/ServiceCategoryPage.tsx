@@ -738,6 +738,20 @@ const ServiceCategoryPage = () => {
       </section>
 
       <SiteFooter />
+
+      {quickQuoteFor && (
+        <QuickQuoteModal
+          product={{
+            id: quickQuoteFor.id,
+            title: quickQuoteFor.title,
+            price: quickQuoteFor.price,
+            image_url: quickQuoteFor.image_url,
+            service_title: cat.label,
+          }}
+          accent={cat.accent}
+          onClose={() => setQuickQuoteFor(null)}
+        />
+      )}
     </div>
   );
 };
