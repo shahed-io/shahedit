@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { MapPin, Clock, Briefcase, Calendar } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import type { Career } from "@/lib/supabase-types";
 
 const CareersPage = () => {
@@ -66,7 +65,6 @@ const CareersPage = () => {
         </div>
       </section>
       <SiteFooter />
-      <WhatsAppButton />
     </div>
   );
 };

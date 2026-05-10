@@ -8,7 +8,6 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import WhatsAppButton from "@/components/WhatsAppButton";
 const budgets = ["Under ৳50,000", "৳50,000 - ৳1,00,000", "৳1,00,000 - ৳5,00,000", "৳5,00,000+", "Let's Discuss"];
 const timelines = ["ASAP", "1-2 Months", "3-6 Months", "6+ Months", "Not Sure"];
 
@@ -210,7 +209,6 @@ const GetQuotePage = () => {
         </div>
       </section>
       <SiteFooter />
-      <WhatsAppButton />
     </div>
   );
 };

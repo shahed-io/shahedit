@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { RefreshCw, Clock } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import WhatsAppButton from "@/components/WhatsAppButton";
 
 const items = [
   "ডিজিটাল সার্ভিস ডেলিভারির পর সাধারণত রিফান্ড প্রযোজ্য নয়।",
@@ -68,7 +67,6 @@ const RefundPolicyPage = () => (
       </div>
     </section>
     <SiteFooter />
-    <WhatsAppButton />
   </div>
 );
 

@@ -3,7 +3,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import type { Project } from "@/lib/supabase-types";
 
 const PortfolioPage = () => {
@@ -79,7 +78,6 @@ const PortfolioPage = () => {
         </div>
       </section>
       <SiteFooter />
-      <WhatsAppButton />
     </div>
   );
 };

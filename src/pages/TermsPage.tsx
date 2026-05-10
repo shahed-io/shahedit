@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { Shield, Clock } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import WhatsAppButton from "@/components/WhatsAppButton";
 
 const sections = [
   {
@@ -113,7 +112,6 @@ const TermsPage = () => (
       </div>
     </section>
     <SiteFooter />
-    <WhatsAppButton />
   </div>
 );
 
