@@ -377,7 +377,7 @@ const SiteHeader = () => {
                                 </div>
                                 <div className="flex-1 min-w-0">
                                   <div className="text-sm font-semibold truncate text-white">{cat.label}</div>
-                                  <div className="text-[10px] uppercase tracking-wider font-medium" style={{ color: `hsl(${cat.accent} / 0.85)` }}>Premium</div>
+                                  <div className="text-[10px] uppercase tracking-wider font-medium" style={{ color: `hsl(${cat.accent} / 0.85)` }}>Category</div>
                                 </div>
                                 <ChevronRight size={13} className="opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" style={{ color: `hsl(${cat.accent})` }} />
                               </Link>
