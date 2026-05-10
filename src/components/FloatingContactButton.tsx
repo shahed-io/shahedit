@@ -89,22 +89,36 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
 
       {/* Floating "Need help?" tooltip - hides when open */}
       <AnimatePresence>
-        {!open && (
+        {!open && !tooltipDismissed && (
           <motion.div
             initial={{ opacity: 0, x: 10, scale: 0.9 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
             exit={{ opacity: 0, x: 10, scale: 0.9 }}
             transition={{ delay: 1.6, type: "spring", stiffness: 280 }}
-            className="absolute right-[5.25rem] bottom-3 pointer-events-none select-none"
+            className="absolute right-[5.25rem] bottom-3 select-none"
           >
             <div
-              className="relative px-3.5 py-2 rounded-xl shadow-2xl whitespace-nowrap"
+              className="relative pl-3.5 pr-7 py-2 rounded-xl shadow-2xl whitespace-nowrap"
               style={{
                 background: "linear-gradient(135deg, hsl(265,45%,8%), hsl(265,45%,12%))",
                 border: "1px solid rgba(168,85,247,0.35)",
                 boxShadow: "0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(168,85,247,0.25)",
               }}
             >
+              {/* Close button */}
+              <button
+                onClick={dismissTooltip}
+                aria-label="Dismiss"
+                className="absolute -top-2 -right-2 w-5 h-5 rounded-full flex items-center justify-center hover:scale-110 transition-transform"
+                style={{
+                  background: "hsl(265,45%,12%)",
+                  border: "1px solid rgba(168,85,247,0.5)",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.5)",
+                }}
+              >
+                <X size={11} className="text-white" strokeWidth={2.5} />
+              </button>
+
               <div className="flex items-center gap-2">
                 <span className="relative flex w-2 h-2">
                   <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
@@ -115,7 +129,7 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
               <p className="text-slate-400 text-[10px] mt-1 leading-none">২৪/৭ লাইভ সাপোর্ট</p>
               {/* Arrow */}
               <span
-                className="absolute top-1/2 -right-1.5 -translate-y-1/2 w-3 h-3 rotate-45"
+                className="absolute top-1/2 -right-1.5 -translate-y-1/2 w-3 h-3 rotate-45 pointer-events-none"
                 style={{
                   background: "linear-gradient(135deg, hsl(265,45%,8%), hsl(265,45%,12%))",
                   borderRight: "1px solid rgba(168,85,247,0.35)",
