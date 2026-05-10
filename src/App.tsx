@@ -41,6 +41,14 @@ const AdminPricing = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ d
 const AdminFAQ = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminFAQ })));
 const AdminCareers = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminCareers })));
 const AdminPopularSearches = lazy(() => import("./pages/admin/AdminPopularSearches"));
+const AdminAnalytics = lazy(() => import("./pages/admin/AdminAnalytics"));
+const AdminRedirects = lazy(() => import("./pages/admin/AdminRedirects"));
+const AdminCoupons = lazy(() => import("./pages/admin/AdminCoupons"));
+const AdminEmailCampaigns = lazy(() => import("./pages/admin/AdminEmailCampaigns"));
+const AdminAIWriter = lazy(() => import("./pages/admin/AdminAIWriter"));
+const AdminActivityLog = lazy(() => import("./pages/admin/AdminActivityLog"));
+const AdminSitemap = lazy(() => import("./pages/admin/AdminSitemap"));
+const AdminSchemaBuilder = lazy(() => import("./pages/admin/AdminSchemaBuilder"));
 
 // Auth / user pages
 const DashboardPage = lazy(() => import("./pages/DashboardPage"));
@@ -111,6 +119,14 @@ const AdminRoutes = () => (
         <Route path="footer" element={<AdminFooterEditor />} />
         <Route path="client-docs" element={<AdminClientDocuments />} />
         <Route path="popular-searches" element={<AdminPopularSearches />} />
+        <Route path="analytics" element={<AdminAnalytics />} />
+        <Route path="activity" element={<AdminActivityLog />} />
+        <Route path="coupons" element={<AdminCoupons />} />
+        <Route path="campaigns" element={<AdminEmailCampaigns />} />
+        <Route path="ai-writer" element={<AdminAIWriter />} />
+        <Route path="redirects" element={<AdminRedirects />} />
+        <Route path="sitemap" element={<AdminSitemap />} />
+        <Route path="schema" element={<AdminSchemaBuilder />} />
       </Routes>
     </AdminLayout>
   </ProtectedRoute>

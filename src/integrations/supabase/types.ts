@@ -47,6 +47,39 @@ export type Database = {
         }
         Relationships: []
       }
+      analytics_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          meta: Json | null
+          path: string | null
+          referrer: string | null
+          session_id: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          meta?: Json | null
+          path?: string | null
+          referrer?: string | null
+          session_id?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          meta?: Json | null
+          path?: string | null
+          referrer?: string | null
+          session_id?: string | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       audit_logs: {
         Row: {
           action: string
@@ -171,6 +204,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      broken_links: {
+        Row: {
+          created_at: string
+          hits: number
+          id: string
+          last_seen_at: string
+          path: string
+          referrer: string | null
+          resolved: boolean
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string
+          hits?: number
+          id?: string
+          last_seen_at?: string
+          path: string
+          referrer?: string | null
+          resolved?: boolean
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string
+          hits?: number
+          id?: string
+          last_seen_at?: string
+          path?: string
+          referrer?: string | null
+          resolved?: boolean
+          user_agent?: string | null
+        }
+        Relationships: []
       }
       careers: {
         Row: {
@@ -447,6 +513,111 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      coupons: {
+        Row: {
+          applies_id: string | null
+          applies_to: string | null
+          code: string
+          created_at: string
+          description: string | null
+          discount_type: string
+          discount_value: number
+          id: string
+          is_active: boolean
+          max_uses: number | null
+          min_order_amount: number | null
+          updated_at: string
+          used_count: number
+          valid_from: string | null
+          valid_until: string | null
+        }
+        Insert: {
+          applies_id?: string | null
+          applies_to?: string | null
+          code: string
+          created_at?: string
+          description?: string | null
+          discount_type?: string
+          discount_value?: number
+          id?: string
+          is_active?: boolean
+          max_uses?: number | null
+          min_order_amount?: number | null
+          updated_at?: string
+          used_count?: number
+          valid_from?: string | null
+          valid_until?: string | null
+        }
+        Update: {
+          applies_id?: string | null
+          applies_to?: string | null
+          code?: string
+          created_at?: string
+          description?: string | null
+          discount_type?: string
+          discount_value?: number
+          id?: string
+          is_active?: boolean
+          max_uses?: number | null
+          min_order_amount?: number | null
+          updated_at?: string
+          used_count?: number
+          valid_from?: string | null
+          valid_until?: string | null
+        }
+        Relationships: []
+      }
+      email_campaigns: {
+        Row: {
+          audience: string
+          body_html: string
+          created_at: string
+          created_by: string | null
+          custom_emails: string[] | null
+          delivered_count: number | null
+          id: string
+          name: string
+          recipients_count: number | null
+          scheduled_at: string | null
+          sent_at: string | null
+          status: string
+          subject: string
+          updated_at: string
+        }
+        Insert: {
+          audience?: string
+          body_html: string
+          created_at?: string
+          created_by?: string | null
+          custom_emails?: string[] | null
+          delivered_count?: number | null
+          id?: string
+          name: string
+          recipients_count?: number | null
+          scheduled_at?: string | null
+          sent_at?: string | null
+          status?: string
+          subject: string
+          updated_at?: string
+        }
+        Update: {
+          audience?: string
+          body_html?: string
+          created_at?: string
+          created_by?: string | null
+          custom_emails?: string[] | null
+          delivered_count?: number | null
+          id?: string
+          name?: string
+          recipients_count?: number | null
+          scheduled_at?: string | null
+          sent_at?: string | null
+          status?: string
+          subject?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       faqs: {
         Row: {
@@ -1005,6 +1176,42 @@ export type Database = {
           sort_order?: number | null
           tech_stack?: string[] | null
           title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      redirects: {
+        Row: {
+          created_at: string
+          from_path: string
+          hits: number
+          id: string
+          is_active: boolean
+          notes: string | null
+          status_code: number
+          to_path: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          from_path: string
+          hits?: number
+          id?: string
+          is_active?: boolean
+          notes?: string | null
+          status_code?: number
+          to_path: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          from_path?: string
+          hits?: number
+          id?: string
+          is_active?: boolean
+          notes?: string | null
+          status_code?: number
+          to_path?: string
           updated_at?: string
         }
         Relationships: []
