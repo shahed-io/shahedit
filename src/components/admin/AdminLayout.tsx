@@ -109,7 +109,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   // Auto-open the group containing the active route
   useEffect(() => {
     const next: Record<string, boolean> = {};
-    navGroups.forEach((g) => {
+    visibleGroups.forEach((g) => {
       next[g.title] = g.items.some(
         (it) =>
           location.pathname === it.href ||
@@ -153,7 +153,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     location.pathname === href || (href !== "/admin" && location.pathname.startsWith(href));
 
   const currentTitle =
-    navGroups.flatMap((g) => g.items).find((i) => isItemActive(i.href))?.label ?? "Admin Panel";
+    visibleGroups.flatMap((g) => g.items).find((i) => isItemActive(i.href))?.label ?? "Admin Panel";
 
   return (
     <div
@@ -208,7 +208,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
 
         {/* Nav Groups */}
         <nav className="flex-1 overflow-y-auto py-3 px-2 space-y-1 scrollbar-thin scrollbar-thumb-amber-400/20">
-          {navGroups.map((group) => {
+          {visibleGroups.map((group) => {
             const isOpen = collapsed ? false : (openGroups[group.title] ?? false);
             return (
               <div key={group.title} className="mb-1">
