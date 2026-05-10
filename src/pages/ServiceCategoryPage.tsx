@@ -579,7 +579,7 @@ const ServiceCategoryPage = () => {
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 max-w-6xl mx-auto">
-              {dbPackages.map((p, i) => (
+              {visiblePackages.map((p, i) => (
                 <motion.div
                   key={p.id}
                   initial={{ opacity: 0, y: 30 }}
