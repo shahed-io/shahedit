@@ -1,12 +1,31 @@
 import { useParams, Link, Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
   Globe, Wrench, Palette, Facebook, TrendingUp, Building2,
-  CheckCircle2, ArrowRight, MessageCircle, Sparkles, Star,
+  CheckCircle2, ArrowRight, MessageCircle, Sparkles, Star, Package as PackageIcon,
 } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { SEO } from "@/components/SEO";
+import { supabase } from "@/integrations/supabase/client";
+import { formatBdt } from "@/lib/utils";
+
+interface DbPackage {
+  id: string;
+  title: string;
+  description: string | null;
+  short_description: string | null;
+  price: number | null;
+  original_price: number | null;
+  currency: string;
+  features: string[] | null;
+  image_url: string | null;
+  is_featured: boolean;
+  badge: string | null;
+  delivery_days: number | null;
+  slug: string | null;
+}
 
 import catWebDev from "@/assets/cat-web-dev.jpg";
 import catMaintenance from "@/assets/cat-maintenance.jpg";
@@ -316,6 +335,32 @@ const categories: Record<string, Category> = {
 const ServiceCategoryPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const cat = slug ? categories[slug] : null;
+  const [dbPackages, setDbPackages] = useState<DbPackage[]>([]);
+  const [loadingPkgs, setLoadingPkgs] = useState(true);
+
+  useEffect(() => {
+    if (!slug) return;
+    setLoadingPkgs(true);
+    (async () => {
+      const { data: svc } = await supabase
+        .from("services")
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .select("id" as any)
+        .eq("slug" as never, slug as never)
+        .maybeSingle();
+      const svcId = (svc as { id?: string } | null)?.id;
+      if (!svcId) { setDbPackages([]); setLoadingPkgs(false); return; }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { data: pkgs } = await (supabase as any)
+        .from("service_packages")
+        .select("*")
+        .eq("service_id", svcId)
+        .eq("is_published", true)
+        .order("sort_order");
+      setDbPackages((pkgs ?? []) as DbPackage[]);
+      setLoadingPkgs(false);
+    })();
+  }, [slug]);
 
   if (!cat) return <Navigate to="/services" replace />;
 
@@ -419,46 +464,107 @@ const ServiceCategoryPage = () => {
         </div>
       </section>
 
-      {/* Packages */}
+      {/* Packages / Products from DB */}
       <section className="py-16 relative">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-black text-foreground mb-3 text-center">
-            <span className="gradient-text">প্যাকেজ</span> ও দাম
+            <span className="gradient-text">প্যাকেজ</span> ও প্রোডাক্ট
           </h2>
-          <p className="text-foreground/50 text-center mb-10 text-sm">আপনার বাজেট অনুযায়ী বেছে নিন</p>
-          <div className="grid md:grid-cols-3 gap-5 max-w-5xl mx-auto">
-            {cat.packages.map((p, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
-                whileHover={{ y: -6 }}
-                className={`relative rounded-2xl p-6 border transition-all ${p.popular ? "shadow-2xl" : ""}`}
-                style={{
-                  background: p.popular ? `hsla(${cat.accent}, 0.12)` : cat.bg,
-                  borderColor: p.popular ? `hsl(${cat.accent})` : cat.border,
-                }}
-              >
-                {p.popular && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1 bg-gradient-to-r from-amber-400 to-orange-500 text-black text-[10px] font-black px-3 py-1 rounded-full shadow-lg">
-                    <Star size={9} fill="currentColor" /> Most Popular
-                  </span>
-                )}
-                <p className="text-xs font-bold uppercase tracking-widest text-foreground/40 mb-2">{p.title}</p>
-                <p className="text-3xl font-black mb-2" style={{ color: `hsl(${cat.accent})` }}>{p.price}</p>
-                <p className="text-foreground/55 text-sm mb-5">{p.desc}</p>
-                <Link
-                  to="/get-quote"
-                  className="block text-center w-full py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:scale-[1.02]"
-                  style={{ background: `linear-gradient(135deg, hsl(${cat.accent}), hsl(320,90%,48%))` }}
+          <p className="text-foreground/50 text-center mb-10 text-sm">এই ক্যাটাগরির সকল প্রোডাক্ট ও প্যাকেজ</p>
+
+          {loadingPkgs ? (
+            <div className="grid md:grid-cols-3 gap-5 max-w-6xl mx-auto">
+              {[...Array(3)].map((_, i) => (
+                <div key={i} className="h-72 rounded-2xl animate-pulse" style={{ background: "rgba(255,255,255,0.04)" }} />
+              ))}
+            </div>
+          ) : dbPackages.length === 0 ? (
+            <div className="max-w-md mx-auto text-center rounded-2xl p-10 border" style={{ background: cat.bg, borderColor: cat.border }}>
+              <PackageIcon size={36} className="mx-auto mb-4" style={{ color: `hsl(${cat.accent})` }} />
+              <p className="text-foreground/70 font-semibold mb-2">এই ক্যাটাগরিতে এখনো কোনো প্রোডাক্ট যোগ করা হয়নি</p>
+              <p className="text-foreground/45 text-sm mb-5">কাস্টম অর্ডারের জন্য যোগাযোগ করুন</p>
+              <Link to="/get-quote" className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-white text-sm"
+                style={{ background: `linear-gradient(135deg, hsl(${cat.accent}), hsl(320,90%,48%))` }}>
+                ফ্রি কোটেশন নিন <ArrowRight size={14} />
+              </Link>
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 max-w-6xl mx-auto">
+              {dbPackages.map((p, i) => (
+                <motion.div
+                  key={p.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.06 }}
+                  whileHover={{ y: -6 }}
+                  className={`relative rounded-2xl border overflow-hidden transition-all flex flex-col ${p.is_featured ? "shadow-2xl" : ""}`}
+                  style={{
+                    background: p.is_featured ? `hsla(${cat.accent}, 0.12)` : cat.bg,
+                    borderColor: p.is_featured ? `hsl(${cat.accent})` : cat.border,
+                  }}
                 >
-                  অর্ডার করুন
-                </Link>
-              </motion.div>
-            ))}
-          </div>
+                  {p.is_featured && (
+                    <span className="absolute top-3 right-3 z-10 inline-flex items-center gap-1 bg-gradient-to-r from-amber-400 to-orange-500 text-black text-[10px] font-black px-3 py-1 rounded-full shadow-lg">
+                      <Star size={9} fill="currentColor" /> Featured
+                    </span>
+                  )}
+                  {p.badge && !p.is_featured && (
+                    <span className="absolute top-3 right-3 z-10 inline-flex items-center text-[10px] font-bold px-2.5 py-1 rounded-full text-white"
+                      style={{ background: `hsl(${cat.accent})` }}>
+                      {p.badge}
+                    </span>
+                  )}
+
+                  {p.image_url ? (
+                    <div className="w-full h-44 overflow-hidden">
+                      <img src={p.image_url} alt={p.title} className="w-full h-full object-cover" loading="lazy" />
+                    </div>
+                  ) : (
+                    <div className="w-full h-44 flex items-center justify-center"
+                      style={{ background: `linear-gradient(135deg, hsla(${cat.accent}, 0.25), hsla(${cat.accent}, 0.05))` }}>
+                      <Icon size={48} style={{ color: `hsl(${cat.accent})` }} />
+                    </div>
+                  )}
+
+                  <div className="p-6 flex-1 flex flex-col">
+                    <h3 className="text-lg font-black text-foreground mb-1 leading-tight">{p.title}</h3>
+                    {p.short_description && (
+                      <p className="text-foreground/55 text-xs mb-3 line-clamp-2">{p.short_description}</p>
+                    )}
+
+                    <div className="flex items-baseline gap-2 mb-3">
+                      <p className="text-2xl font-black" style={{ color: `hsl(${cat.accent})` }}>
+                        {p.price != null ? `৳${formatBdt(p.price)}` : "—"}
+                      </p>
+                      {p.original_price != null && p.price != null && p.original_price > p.price && (
+                        <p className="text-xs text-foreground/40 line-through">৳{formatBdt(p.original_price)}</p>
+                      )}
+                    </div>
+
+                    {p.features && p.features.length > 0 && (
+                      <ul className="space-y-1.5 mb-5 flex-1">
+                        {p.features.slice(0, 4).map((f, j) => (
+                          <li key={j} className="flex items-start gap-2 text-xs text-foreground/65">
+                            <CheckCircle2 size={13} className="shrink-0 mt-0.5" style={{ color: `hsl(${cat.accent})` }} />
+                            {f}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+
+                    <Link
+                      to={`/product/${p.slug ?? p.id}`}
+                      className="block text-center w-full py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:scale-[1.02] mt-auto"
+                      style={{ background: `linear-gradient(135deg, hsl(${cat.accent}), hsl(320,90%,48%))` }}
+                    >
+                      বিস্তারিত দেখুন
+                    </Link>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
