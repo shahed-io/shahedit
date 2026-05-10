@@ -60,10 +60,10 @@ const PricingPage = () => {
                   <p className="text-muted-foreground text-sm mb-5">{plan.description}</p>
                   <div className="mb-6">
                     <span className="text-4xl font-bold gradient-text">
-                      ৳{yearly ? ((plan.price_yearly ?? 0) / 12).toLocaleString() : (plan.price_monthly ?? 0).toLocaleString()}
+                      ৳{yearly ? ((plan.price_yearly ?? 0) / 12).toLocaleString("en-IN") : (plan.price_monthly ?? 0).toLocaleString("en-IN")}
                     </span>
                     <span className="text-muted-foreground text-sm">/month</span>
-                    {yearly && <p className="text-accent text-xs mt-1">Billed yearly: ৳{(plan.price_yearly ?? 0).toLocaleString()}</p>}
+                    {yearly && <p className="text-accent text-xs mt-1">Billed yearly: ৳{(plan.price_yearly ?? 0).toLocaleString("en-IN")}</p>}
                   </div>
                   {plan.features && plan.features.length > 0 && (
                     <ul className="space-y-3 mb-7">

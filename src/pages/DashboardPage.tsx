@@ -270,7 +270,7 @@ export default function DashboardPage() {
   const stats = [
     { label: "Active Orders",   value: activeOrders,                    sub: `${orders.length} মোট অর্ডার`, icon: Package,      tone: "primary" },
     { label: "মোট কোটেশন",      value: leads.length,                    sub: `${statusCounts["converted"] || 0} সম্পন্ন`, icon: ClipboardList, tone: "info" },
-    { label: "Verified Payment", value: payments.filter(p => p.status === "verified").length, sub: `৳${totalSpent.toLocaleString()} মোট`, icon: Wallet,        tone: "success" },
+    { label: "Verified Payment", value: payments.filter(p => p.status === "verified").length, sub: `৳${totalSpent.toLocaleString("en-IN")} মোট`, icon: Wallet,        tone: "success" },
     { label: "Documents",        value: documents.length,                sub: "Admin-shared files", icon: FolderOpen, tone: "accent" },
   ];
 
@@ -607,7 +607,7 @@ export default function DashboardPage() {
                       <Panel className="p-6 h-full">
                         <SectionHead
                           title="সাম্প্রতিক Payment"
-                          subtitle={`মোট spent: ৳${totalSpent.toLocaleString()}`}
+                          subtitle={`মোট spent: ৳${totalSpent.toLocaleString("en-IN")}`}
                           action={payments.length > 0 && (
                             <button onClick={() => setActiveTab("payments")}
                               className="text-xs font-semibold text-primary flex items-center gap-1">
@@ -636,7 +636,7 @@ export default function DashboardPage() {
                                     </div>
                                   </div>
                                   <div className="text-right shrink-0">
-                                    <p className="text-sm font-black text-emerald-400">৳{p.amount.toLocaleString()}</p>
+                                    <p className="text-sm font-black text-emerald-400">৳{p.amount.toLocaleString("en-IN")}</p>
                                     <span className={cn("text-[10px] font-semibold px-2 py-0.5 rounded-md border inline-block mt-0.5", toneClass(cfg.tone))}>
                                       {cfg.label}
                                     </span>
@@ -733,7 +733,7 @@ export default function DashboardPage() {
                               </div>
                             </div>
                             <div className="flex flex-col sm:items-end gap-2 shrink-0">
-                              <p className="text-xl font-black text-emerald-400">৳{o.amount.toLocaleString()}</p>
+                              <p className="text-xl font-black text-emerald-400">৳{o.amount.toLocaleString("en-IN")}</p>
                               <span className={cn("text-[11px] font-semibold px-3 py-1 rounded-lg border w-fit", toneClass(cfg.tone))}>
                                 {cfg.label}
                               </span>
@@ -864,7 +864,7 @@ export default function DashboardPage() {
                   {payments.length > 0 && (
                     <div className="grid grid-cols-3 gap-3">
                       {[
-                        { label: "মোট পেমেন্ট",  value: `৳${payments.reduce((a, p) => a + p.amount, 0).toLocaleString()}`, tone: "primary", icon: Wallet },
+                        { label: "মোট পেমেন্ট",  value: `৳${payments.reduce((a, p) => a + p.amount, 0).toLocaleString("en-IN")}`, tone: "primary", icon: Wallet },
                         { label: "Verified",      value: payments.filter(p => p.status === "verified").length, tone: "success", icon: CheckCircle2 },
                         { label: "Pending",       value: payments.filter(p => p.status === "pending").length,  tone: "warning", icon: Clock },
                       ].map(s => (
@@ -903,7 +903,7 @@ export default function DashboardPage() {
                               </div>
                             </div>
                             <div className="flex flex-col sm:items-end gap-2 shrink-0">
-                              <p className="text-xl font-black text-emerald-400">৳{p.amount.toLocaleString()}</p>
+                              <p className="text-xl font-black text-emerald-400">৳{p.amount.toLocaleString("en-IN")}</p>
                               <span className={cn("text-[11px] font-semibold px-3 py-1 rounded-lg border w-fit", toneClass(cfg.tone))}>
                                 {cfg.label}
                               </span>

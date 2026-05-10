@@ -34,7 +34,7 @@ const paymentMethods = [
   { id: "bkash_merchant", label: "বিকাশ মার্চেন্ট", sublabel: "Merchant", number: "01820060046", color: "#E2136E", short: "bM" },
 ];
 
-export const formatPrice = (price: number) => `৳ ${price.toLocaleString("en-BD")}`;
+export const formatPrice = (price: number) => `৳ ${price.toLocaleString("en-IN")}`;
 
 export const cardColors = [
   { color: "hsl(270,92%,65%)", bg: "rgba(168,85,247,0.10)", border: "rgba(168,85,247,0.22)" },
@@ -355,7 +355,7 @@ const DetailsModal = ({ pkg, onClose, onPay, c }: {
     ? Math.round((1 - pkg.price / pkg.original_price) * 100) : null;
 
   const waMessage = encodeURIComponent(
-    `হ্যালো! আমি "${pkg.title}" প্যাকেজটি সম্পর্কে জানতে চাই।${pkg.price ? ` মূল্য: ৳${pkg.price.toLocaleString()}` : ""}`
+    `হ্যালো! আমি "${pkg.title}" প্যাকেজটি সম্পর্কে জানতে চাই।${pkg.price ? ` মূল্য: ৳${pkg.price.toLocaleString("en-IN")}` : ""}`
   );
 
   return (
@@ -542,7 +542,7 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
   const { stat: ratingStat } = useProductRating(pkg.id);
 
   const waMessage = encodeURIComponent(
-    `হ্যালো! আমি "${pkg.title}" প্যাকেজটি অর্ডার করতে চাই।${pkg.price ? ` মূল্য: ৳${pkg.price.toLocaleString()}` : ""} অনুগ্রহ করে আরও তথ্য দিন।`
+    `হ্যালো! আমি "${pkg.title}" প্যাকেজটি অর্ডার করতে চাই।${pkg.price ? ` মূল্য: ৳${pkg.price.toLocaleString("en-IN")}` : ""} অনুগ্রহ করে আরও তথ্য দিন।`
   );
 
   return (

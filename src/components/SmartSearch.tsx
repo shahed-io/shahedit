@@ -59,7 +59,7 @@ const Highlighted = ({ text, query }: { text?: string; query: string }) => {
 
 const fmtPrice = (n: number | null | undefined) => {
   if (n == null) return "";
-  return "৳" + Math.round(Number(n)).toLocaleString("en-US");
+  return "৳" + Math.round(Number(n)).toLocaleString("en-IN");
 };
 
 const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {

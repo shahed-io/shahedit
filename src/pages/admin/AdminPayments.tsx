@@ -117,7 +117,7 @@ const AdminPayments = () => {
           { label: "অপেক্ষামান", value: stats.pending, color: "text-yellow-400" },
           { label: "নিশ্চিত", value: stats.confirmed, color: "text-green-400" },
           { label: "বাতিল", value: stats.rejected, color: "text-red-400" },
-          { label: "আয় (৳)", value: stats.totalAmount.toLocaleString(), color: "text-purple-400" },
+          { label: "আয় (৳)", value: stats.totalAmount.toLocaleString("en-IN"), color: "text-purple-400" },
         ].map(s => (
           <div key={s.label} className="bg-slate-900 border border-slate-800 rounded-xl p-4 text-center">
             <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
@@ -213,7 +213,7 @@ const AdminPayments = () => {
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
                       <span className="text-slate-400 flex items-center gap-1"><Phone size={11} /> {p.phone}</span>
                       <span className="text-slate-400 flex items-center gap-1"><CreditCard size={11} /> {p.payment_method}</span>
-                      <span className="text-green-400 font-bold">৳ {Number(p.amount).toLocaleString()}</span>
+                      <span className="text-green-400 font-bold">৳ {Number(p.amount).toLocaleString("en-IN")}</span>
                       <span className="text-slate-400 flex items-center gap-1"><Hash size={11} /> {p.transaction_id}</span>
                     </div>
                     {(p.service || p.note) && (

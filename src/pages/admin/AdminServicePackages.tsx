@@ -414,7 +414,7 @@ export default function AdminServicePackages() {
                                   <p className="text-white font-medium text-sm truncate">{pkg.title}</p>
                                   {pkg.price !== null && (
                                     <p className="text-purple-400 text-xs font-semibold mt-0.5">
-                                      {pkg.currency} {pkg.price?.toLocaleString()}
+                                      {pkg.currency} {pkg.price?.toLocaleString("en-IN")}
                                     </p>
                                   )}
                                   {pkg.description && (

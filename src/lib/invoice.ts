@@ -23,7 +23,7 @@ const COMPANY = {
 };
 
 const fmtBDT = (n: number) =>
-  "৳ " + Number(n || 0).toLocaleString("en-BD", { minimumFractionDigits: 0 });
+  "৳ " + Number(n || 0).toLocaleString("en-IN", { minimumFractionDigits: 0 });
 
 const fmtDate = (d: string) =>
   new Date(d).toLocaleDateString("en-BD", { year: "numeric", month: "long", day: "numeric" });
