@@ -483,7 +483,76 @@ export default function RefundRequestPage() {
                     placeholder="বিস্তারিত লিখুন..."
                   />
                 </div>
-                <Button type="submit" disabled={loading} className="w-full" size="lg">
+
+                {/* Attachments */}
+                <div>
+                  <Label className="flex items-center gap-2">
+                    <Paperclip className="w-4 h-4" /> স্ক্রিনশট / PDF সংযুক্ত করুন
+                  </Label>
+                  <p className="text-xs text-muted-foreground mt-1 mb-2">
+                    সর্বোচ্চ {MAX_FILES} টি ফাইল, প্রতিটি ১০MB পর্যন্ত (PNG, JPG, WEBP, PDF)
+                  </p>
+                  <label
+                    htmlFor="refund-files"
+                    className={cn(
+                      "flex flex-col items-center justify-center gap-2 border-2 border-dashed border-border rounded-2xl p-6 cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-colors",
+                      uploading && "opacity-60 pointer-events-none"
+                    )}
+                  >
+                    <Upload className="w-6 h-6 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground">
+                      {uploading ? "আপলোড হচ্ছে..." : "ফাইল নির্বাচন করতে ক্লিক করুন"}
+                    </span>
+                    <input
+                      id="refund-files"
+                      type="file"
+                      multiple
+                      accept="image/png,image/jpeg,image/jpg,image/webp,application/pdf"
+                      className="hidden"
+                      onChange={(e) => {
+                        handleFiles(e.target.files);
+                        e.target.value = "";
+                      }}
+                      disabled={uploading || attachments.length >= MAX_FILES}
+                    />
+                  </label>
+
+                  {attachments.length > 0 && (
+                    <ul className="mt-3 space-y-2">
+                      {attachments.map((att) => {
+                        const isImg = att.type.startsWith("image/");
+                        return (
+                          <li
+                            key={att.path}
+                            className="flex items-center gap-3 rounded-xl border border-border bg-background/50 p-3"
+                          >
+                            {isImg ? (
+                              <ImageIcon className="w-5 h-5 text-primary shrink-0" />
+                            ) : (
+                              <FileText className="w-5 h-5 text-primary shrink-0" />
+                            )}
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium truncate">{att.name}</p>
+                              <p className="text-xs text-muted-foreground">
+                                {(att.size / 1024).toFixed(1)} KB
+                              </p>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => removeAttachment(att)}
+                              className="text-muted-foreground hover:text-destructive p-1 rounded"
+                              aria-label="Remove"
+                            >
+                              <XIcon className="w-4 h-4" />
+                            </button>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  )}
+                </div>
+
+                <Button type="submit" disabled={loading || uploading} className="w-full" size="lg">
                   {loading ? "পাঠানো হচ্ছে..." : "Submit Request"}
                 </Button>
                 <p className="text-xs text-muted-foreground text-center">
