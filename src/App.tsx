@@ -50,6 +50,7 @@ const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 
 // Public pages
 const ServicesPage = lazy(() => import("./pages/ServicesPage"));
+const ServiceCategoryPage = lazy(() => import("./pages/ServiceCategoryPage"));
 const PortfolioPage = lazy(() => import("./pages/PortfolioPage"));
 const BlogPage = lazy(() => import("./pages/BlogPage"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
