@@ -35,6 +35,20 @@ Deno.serve(async () => {
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
   );
 
+  // honor sitemap_enabled toggle
+  const { data: setting } = await supabase
+    .from("site_settings")
+    .select("value")
+    .eq("key", "sitemap_enabled")
+    .maybeSingle();
+  const enabled = !setting || setting.value === "true" || setting.value === "1";
+  if (!enabled) {
+    return new Response("Sitemap disabled", {
+      status: 404,
+      headers: { "Content-Type": "text/plain", "Access-Control-Allow-Origin": "*" },
+    });
+  }
+
   const [blogs, services, packages, projects] = await Promise.all([
     supabase.from("blog_posts").select("slug,updated_at").eq("is_published", true),
     supabase.from("services").select("slug,updated_at").eq("is_published", true),
