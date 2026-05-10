@@ -38,8 +38,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       .eq("user_id", userId)
       .order("created_at", { ascending: false })
       .limit(1)
-      .single();
-    setRole(data?.role as AppRole ?? null);
+      .maybeSingle();
+    setRole((data?.role as AppRole) ?? null);
+    return (data?.role as AppRole) ?? null;
   };
 
   const syncProfileFromOAuth = async (u: User) => {
