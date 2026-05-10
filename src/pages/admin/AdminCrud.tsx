@@ -13,12 +13,20 @@ import { toast } from "sonner";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
+type SelectOption = { value: string; label: string };
+
 type FieldDef = {
   key: string;
   label: string;
-  type?: "text" | "textarea" | "checkbox" | "number" | "date" | "url" | "email" | "array";
+  type?: "text" | "textarea" | "checkbox" | "number" | "date" | "url" | "email" | "array" | "image" | "select";
   placeholder?: string;
   span?: "full";
+  /** For type="select": static options */
+  options?: SelectOption[];
+  /** For type="select": load options from a table dynamically */
+  optionsTable?: { table: string; valueKey?: string; labelKey: string };
+  /** For type="image": storage bucket, defaults to "cms-media" */
+  bucket?: string;
 };
 
 type CrudConfig = {
