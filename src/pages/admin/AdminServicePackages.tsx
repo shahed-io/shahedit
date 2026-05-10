@@ -686,7 +686,7 @@ export default function AdminServicePackages() {
                         </div>
                       ) : (
                         <button
-                          onClick={() => { setAddingFor(service.id); setEditingPackage(null); setForm(emptyForm()); }}
+                          onClick={() => { setAddingFor(service.id); setEditingPackage(null); setForm(emptyForm()); setSelectedServiceId(service.id); }}
                           className="flex items-center gap-2 text-sm text-purple-400 hover:text-purple-300 border border-dashed border-purple-500/30 hover:border-purple-500/60 rounded-xl px-4 py-3 w-full justify-center transition-all"
                         >
                           <Plus size={16} />
