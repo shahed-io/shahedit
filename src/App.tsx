@@ -53,6 +53,7 @@ const ServicesPage = lazy(() => import("./pages/ServicesPage"));
 const ServiceCategoryPage = lazy(() => import("./pages/ServiceCategoryPage"));
 const PortfolioPage = lazy(() => import("./pages/PortfolioPage"));
 const BlogPage = lazy(() => import("./pages/BlogPage"));
+const BlogPostPage = lazy(() => import("./pages/BlogPostPage"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
 const FAQPage = lazy(() => import("./pages/FAQPage"));
