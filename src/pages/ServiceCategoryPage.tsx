@@ -4,8 +4,9 @@ import { motion } from "framer-motion";
 import {
   Globe, Wrench, Palette, Facebook, TrendingUp, Building2,
   CheckCircle2, ArrowRight, MessageCircle, Sparkles, Star, Package as PackageIcon,
-  Search, X,
+  Search, X, Zap,
 } from "lucide-react";
+import QuickQuoteModal from "@/components/QuickQuoteModal";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { SEO } from "@/components/SEO";
@@ -341,6 +342,7 @@ const ServiceCategoryPage = () => {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<"all" | "featured" | string>("all"); // 'all' | 'featured' | badge
   const [sortBy, setSortBy] = useState<"default" | "price_asc" | "price_desc" | "name_asc">("default");
+  const [quickQuoteFor, setQuickQuoteFor] = useState<DbPackage | null>(null);
 
   const availableBadges = useMemo(() => {
     const set = new Set<string>();
@@ -654,13 +656,21 @@ const ServiceCategoryPage = () => {
                       </ul>
                     )}
 
-                    <Link
-                      to={`/product/${p.slug ?? p.id}`}
-                      className="block text-center w-full py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:scale-[1.02] mt-auto"
-                      style={{ background: `linear-gradient(135deg, hsl(${cat.accent}), hsl(320,90%,48%))` }}
-                    >
-                      বিস্তারিত দেখুন
-                    </Link>
+                    <div className="mt-auto flex gap-2">
+                      <Link
+                        to={`/product/${p.slug ?? p.id}`}
+                        className="flex-1 text-center py-2.5 rounded-xl text-xs font-bold text-foreground/80 border border-white/15 hover:bg-white/5 transition-all"
+                      >
+                        বিস্তারিত
+                      </Link>
+                      <button
+                        onClick={() => setQuickQuoteFor(p)}
+                        className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold text-white transition-all hover:scale-[1.02]"
+                        style={{ background: `linear-gradient(135deg, hsl(${cat.accent}), hsl(320,90%,48%))` }}
+                      >
+                        <Zap size={13} /> কুইক কোট
+                      </button>
+                    </div>
                   </div>
                 </motion.div>
               ))}
@@ -728,6 +738,20 @@ const ServiceCategoryPage = () => {
       </section>
 
       <SiteFooter />
+
+      {quickQuoteFor && (
+        <QuickQuoteModal
+          product={{
+            id: quickQuoteFor.id,
+            title: quickQuoteFor.title,
+            price: quickQuoteFor.price,
+            image_url: quickQuoteFor.image_url,
+            service_title: cat.label,
+          }}
+          accent={cat.accent}
+          onClose={() => setQuickQuoteFor(null)}
+        />
+      )}
     </div>
   );
 };
