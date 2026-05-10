@@ -8,7 +8,7 @@ import {
   Inbox, ChevronLeft, Menu, LogOut, Bell, Shield, Package, CreditCard,
   LayoutTemplate, Search, TrendingUp, Sparkles, Globe, Tag, Mail,
   History, BarChart3, ArrowLeftRight, ChevronDown, Crown, ExternalLink,
-  Zap, RefreshCcw,
+  Zap, RefreshCcw, Image as ImageIcon, FolderTree,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
