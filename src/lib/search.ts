@@ -99,7 +99,7 @@ export async function runSearch(query: string, opts?: { limitPerType?: number })
       { value: p.description, weight: 1 },
     ]);
     hits.push({
-      type: "package", title: p.title, subtitle: p.short_description, href: `/product/${p.id}`, score, matchedField: field,
+      type: "package", title: p.title, subtitle: p.short_description, href: `/product/${p.slug || p.id}`, score, matchedField: field,
       meta: {
         image_url: p.image_url,
         price: p.price,
