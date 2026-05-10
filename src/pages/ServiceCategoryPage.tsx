@@ -1,9 +1,10 @@
 import { useParams, Link, Navigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
   Globe, Wrench, Palette, Facebook, TrendingUp, Building2,
   CheckCircle2, ArrowRight, MessageCircle, Sparkles, Star, Package as PackageIcon,
+  Search, X,
 } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
