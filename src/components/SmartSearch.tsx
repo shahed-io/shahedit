@@ -238,11 +238,12 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
   const searchUi = (
     <div
       ref={wrapRef}
-      className={variant === "desktop"
-        ? open
-          ? "hidden md:flex fixed top-20 left-0 right-0 z-[90] mx-auto w-[min(92vw,720px)] max-w-[720px]"
-          : "hidden md:flex relative flex-1 max-w-md mx-auto"
-        : "relative w-full"
+      className={
+        variant === "desktop"
+          ? open
+            ? "hidden md:flex flex-col fixed top-24 left-0 right-0 z-[90] mx-auto w-[min(92vw,720px)] max-w-[720px]"
+            : "hidden md:flex relative flex-1 max-w-md mx-auto"
+          : "relative w-full"
       }
     >
       <form onSubmit={submit} className="relative z-10 w-full">
@@ -323,7 +324,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.14 }}
-            className={`absolute mt-2 rounded-2xl overflow-hidden z-10 ${variant === "desktop" ? "left-0 right-0 w-full" : "left-0 right-0"}`}
+            className={`mt-3 rounded-2xl overflow-hidden z-10 ${variant === "desktop" ? "w-full" : "absolute left-0 right-0"}`}
             style={{
               background: "linear-gradient(180deg, rgba(20,12,40,0.96), rgba(12,6,28,0.98))",
               backdropFilter: "blur(24px)",
