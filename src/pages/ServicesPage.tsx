@@ -6,7 +6,22 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import type { Service } from "@/lib/supabase-types";
-import { CheckCircle2, ArrowRight, MessageCircle, Star, Package } from "lucide-react";
+import { CheckCircle2, ArrowRight, MessageCircle } from "lucide-react";
+
+const titleToSlug: Record<string, string> = {
+  "Web Design & Development": "web-development",
+  "App Development": "app-development",
+  "Graphic Design": "graphics-design",
+  "Digital Marketing": "digital-marketing",
+  "Cloud & Hosting Service": "cloud-hosting-service",
+  "IT Support & Security": "it-support-security",
+  "Website Maintenance": "website-maintenance",
+  "Facebook Services": "facebook-services",
+  "Business Solutions": "business-solutions",
+};
+
+const slugify = (s: string) =>
+  s.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
 interface ServicePackage {
   id: string;
