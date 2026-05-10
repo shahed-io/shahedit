@@ -332,8 +332,18 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
               boxShadow: "0 24px 60px rgba(0,0,0,0.55), 0 0 0 1px rgba(168,85,247,0.08), 0 8px 32px rgba(124,58,237,0.25)",
             }}
           >
-            {/* Top gradient bar */}
-            <div style={{ height: 3, background: "linear-gradient(90deg, #6366f1, #a855f7, #ec4899)" }} />
+            {/* Top hint bar (mirrors footer style) */}
+            <div className="flex items-center justify-between px-5 py-2 border-b text-[10px]"
+              style={{ borderColor: "rgba(168,85,247,0.18)", background: "linear-gradient(180deg, rgba(124,58,237,0.12), rgba(124,58,237,0.06))", color: "rgba(226,218,245,0.6)" }}>
+              <div className="flex items-center gap-3">
+                <span className="flex items-center gap-1"><kbd className="px-1.5 py-0.5 rounded border" style={{ borderColor: "rgba(168,85,247,0.35)", color: "#c4b5fd", background: "rgba(168,85,247,0.10)" }}>↑↓</kbd> নেভিগেট</span>
+                <span className="flex items-center gap-1"><kbd className="px-1.5 py-0.5 rounded border" style={{ borderColor: "rgba(168,85,247,0.35)", color: "#c4b5fd", background: "rgba(168,85,247,0.10)" }}>↵</kbd> সিলেক্ট</span>
+                <span className="flex items-center gap-1"><kbd className="px-1.5 py-0.5 rounded border" style={{ borderColor: "rgba(168,85,247,0.35)", color: "#c4b5fd", background: "rgba(168,85,247,0.10)" }}>Esc</kbd> বন্ধ</span>
+              </div>
+              <span className="flex items-center gap-1 font-medium" style={{ color: "#f0abfc" }}>
+                <Sparkles size={11} /> Shahed IT Search
+              </span>
+            </div>
 
             {/* Hero search bar inside dropdown — DISPLAY ONLY (mirror of top input) */}
             <div className="px-4 pt-4 pb-3" style={{ background: "linear-gradient(180deg, rgba(124,58,237,0.12), rgba(124,58,237,0))" }}>
