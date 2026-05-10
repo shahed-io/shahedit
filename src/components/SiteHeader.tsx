@@ -253,38 +253,44 @@ const SiteHeader = () => {
                   <img src={logoImg} alt="Shahed IT" className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 object-contain relative drop-shadow-[0_2px_8px_rgba(168,85,247,0.55)]" />
                 </div>
               </div>
-              <div className="flex w-[82px] sm:w-[94px] md:w-[108px] flex-col items-stretch leading-none min-w-0 gap-1">
+              <div className="flex flex-col leading-[1.0] min-w-0 gap-0.5">
                 <span
-                  className="relative block w-full whitespace-nowrap text-[17px] sm:text-[19px] md:text-[22px] font-bold"
+                  className="text-[14px] sm:text-[17px] md:text-[21px] font-extrabold tracking-tight whitespace-nowrap"
                   style={{
-                    fontFamily: "'Cinzel', 'Playfair Display', serif",
-                    background: "linear-gradient(135deg, #fff7ed 0%, #fde68a 30%, #f0abfc 62%, #a78bfa 100%)",
+                    fontFamily: "'Syne', sans-serif",
+                    background: "linear-gradient(135deg, #ffffff 0%, #e9d5ff 35%, #c4b5fd 60%, #f0abfc 100%)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
-                    filter: "drop-shadow(0 0 14px rgba(240,171,252,0.42))",
-                    letterSpacing: "0.015em",
-                    fontWeight: 800,
+                    filter: "drop-shadow(0 0 12px rgba(192,132,252,0.45))",
                   }}
                 >
                   Shahed{" "}
-                  <span style={{ background: "linear-gradient(135deg, #fde68a 0%, #f0abfc 55%, #818cf8 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", fontWeight: 800 }}>
+                  <span style={{ background: "linear-gradient(135deg, #a78bfa 0%, #f0abfc 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                     IT
                   </span>
                 </span>
                 <span
-                  className="hidden xs:block w-full whitespace-nowrap text-center font-semibold"
+                  className="hidden xs:flex items-center gap-1 font-semibold whitespace-nowrap"
                   style={{
-                    fontFamily: "'Syne', 'Inter', sans-serif",
-                    fontSize: "clamp(6.1px, 0.58vw, 7.4px)",
-                    letterSpacing: "0.055em",
+                    fontFamily: "'Syne', sans-serif",
+                    fontSize: "clamp(8px, 1.15vw, 11px)",
+                    letterSpacing: "0.12em",
                     textTransform: "uppercase",
-                    background: "linear-gradient(90deg, rgba(253,230,138,0.95) 0%, rgba(240,171,252,0.98) 48%, rgba(167,139,250,0.95) 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    filter: "drop-shadow(0 0 8px rgba(168,85,247,0.35))",
                   }}
                 >
-                  Smart IT Solutions
+                  <span
+                    className="inline-block w-1 h-1 rounded-full"
+                    style={{ background: "linear-gradient(135deg, #a78bfa, #f0abfc)", boxShadow: "0 0 6px rgba(192,132,252,0.7)" }}
+                  />
+                  <span
+                    style={{
+                      background: "linear-gradient(90deg, #c4b5fd 0%, #f0abfc 100%)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                    }}
+                  >
+                    Smart IT Solutions
+                  </span>
                 </span>
               </div>
             </motion.div>
