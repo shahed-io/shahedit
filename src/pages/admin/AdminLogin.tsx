@@ -10,35 +10,30 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { lovable } from "@/integrations/lovable";
 
-const ADMIN_EMAIL = "info.shahedit@gmail.com";
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { signIn, signOut, user, isAdmin, loading: authLoading } = useAuth();
+  const { signIn, signOut, user, isAdmin, role, loading: authLoading } = useAuth();
   const navigate = useNavigate();
 
-  // If already logged in as admin, skip login. If logged in but not admin, kick them out.
+  // If already logged in, route based on role. Non-admin users get signed out.
   useEffect(() => {
     if (authLoading) return;
     if (!user) return;
-    if (isAdmin && user.email?.toLowerCase() === ADMIN_EMAIL) {
+    if (isAdmin) {
       navigate("/admin", { replace: true });
     } else {
       toast.error("This account is not authorized to access the admin panel.");
       signOut();
     }
-  }, [user, isAdmin, authLoading, navigate, signOut]);
+  }, [user, isAdmin, role, authLoading, navigate, signOut]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) { toast.error("Please fill in all fields"); return; }
-    if (email.trim().toLowerCase() !== ADMIN_EMAIL) {
-      toast.error("Only the authorized admin email can sign in here.");
-      return;
-    }
     setLoading(true);
     const { error } = await signIn(email, password);
     setLoading(false);
@@ -46,7 +41,7 @@ const AdminLogin = () => {
       toast.error("Invalid credentials");
     } else {
       toast.success("Welcome back!");
-      navigate("/admin");
+      // Navigation handled by the useEffect above once role loads
     }
   };
 
