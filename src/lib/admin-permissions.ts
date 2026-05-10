@@ -7,6 +7,7 @@ export type AdminSection =
   | "dashboard"
   | "analytics"
   | "leads"
+  | "refunds"
   | "payments"
   | "orders"
   | "client-docs"
