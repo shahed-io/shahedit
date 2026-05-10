@@ -87,6 +87,7 @@ const steps = [
 export default function RefundRequestPage() {
   const { user } = useAuth();
   const [submitted, setSubmitted] = useState(false);
+  const [requestNumber, setRequestNumber] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [policyOpen, setPolicyOpen] = useState(true);
   const [form, setForm] = useState({
@@ -105,21 +106,32 @@ export default function RefundRequestPage() {
       return;
     }
     setLoading(true);
-    const { error } = await supabase.from("leads").insert({
-      name: form.name,
-      email: form.email,
-      phone: form.phone,
-      service_interested: "Refund Request",
-      project_description: `Order/Invoice ID: ${form.orderId || "N/A"}\n\nReason:\n${form.reason}`,
-      source: "contact_form",
-    });
+    const { data, error } = await supabase
+      .from("refund_requests")
+      .insert({
+        user_id: user?.id ?? null,
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+        order_id: form.orderId || null,
+        reason: form.reason,
+      })
+      .select("request_number")
+      .single();
     setLoading(false);
-    if (error) {
-      toast.error("জমা দিতে সমস্যা হয়েছে");
+    if (error || !data) {
+      toast.error("Failed to submit request");
       return;
     }
+    setRequestNumber(data.request_number);
     setSubmitted(true);
-    toast.success("রিফান্ড অনুরোধ পাঠানো হয়েছে");
+    toast.success("Refund request submitted");
+  };
+
+  const copyRequestId = async () => {
+    if (!requestNumber) return;
+    await navigator.clipboard.writeText(requestNumber);
+    toast.success("Request ID copied");
   };
 
   return (
