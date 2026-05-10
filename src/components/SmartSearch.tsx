@@ -298,7 +298,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
       {/* Desktop full-page blur backdrop */}
       {variant === "desktop" && (
         <AnimatePresence>
-          {open && (
+          {open && query.trim().length > 0 && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
