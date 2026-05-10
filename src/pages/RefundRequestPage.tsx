@@ -345,10 +345,25 @@ export default function RefundRequestPage() {
           ) : submitted ? (
             <div className="text-center py-10">
               <CheckCircle2 className="w-14 h-14 text-green-500 mx-auto mb-4" />
-              <h2 className="text-xl font-semibold mb-2">অনুরোধ পাঠানো হয়েছে ✅</h2>
-              <p className="text-muted-foreground mb-6">
-                আমাদের টিম ২৪ ঘণ্টার মধ্যে যোগাযোগ করবে।
+              <h2 className="text-xl font-semibold mb-2">Request Submitted ✅</h2>
+              <p className="text-muted-foreground mb-5">
+                Our team will contact you within 24 hours. Save your Request ID for tracking.
               </p>
+              {requestNumber && (
+                <div className="max-w-md mx-auto mb-6 rounded-2xl border border-primary/30 bg-primary/5 p-5">
+                  <p className="text-xs uppercase tracking-wider text-muted-foreground mb-2">
+                    Your Request ID
+                  </p>
+                  <div className="flex items-center justify-center gap-3">
+                    <code className="text-lg md:text-xl font-bold text-primary tracking-wide">
+                      {requestNumber}
+                    </code>
+                    <Button size="sm" variant="outline" onClick={copyRequestId}>
+                      Copy
+                    </Button>
+                  </div>
+                </div>
+              )}
               <div className="flex gap-3 justify-center">
                 <Button asChild variant="outline">
                   <Link to="/">Home</Link>
