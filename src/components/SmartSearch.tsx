@@ -238,11 +238,12 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
   const searchUi = (
     <div
       ref={wrapRef}
-      className={variant === "desktop"
-        ? open
-          ? "hidden md:flex fixed top-20 left-0 right-0 z-[90] mx-auto w-[min(92vw,720px)] max-w-[720px]"
-          : "hidden md:flex relative flex-1 max-w-md mx-auto"
-        : "relative w-full"
+      className={
+        variant === "desktop"
+          ? open
+            ? "hidden md:flex flex-col fixed top-24 left-0 right-0 z-[90] mx-auto w-[min(92vw,720px)] max-w-[720px]"
+            : "hidden md:flex relative flex-1 max-w-md mx-auto"
+          : "relative w-full"
       }
     >
       <form onSubmit={submit} className="relative z-10 w-full">
