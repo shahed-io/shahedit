@@ -441,7 +441,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
                             <li key={t.id}>
                               <button
                                 type="button"
-                                onClick={() => goTo(`/product/${t.id}`)}
+                                onClick={() => goTo(`/product/${t.slug || t.id}`)}
                                 className="w-full flex items-center gap-3 px-5 py-2.5 text-left hover:bg-[rgba(168,85,247,0.10)] transition-colors"
                               >
                                 {/* Thumbnail */}
