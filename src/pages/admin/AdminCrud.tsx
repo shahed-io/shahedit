@@ -801,7 +801,11 @@ export const AdminBlog = createWooCrudPage({
   fields: [
     { key: "title", label: "Title", placeholder: "Post title" },
     { key: "slug", label: "Slug" },
-    { key: "featured_image", label: "Featured Image URL", placeholder: "https://..." },
+    { key: "featured_image", label: "Featured Image", type: "image" },
+    {
+      key: "category_id", label: "Category", type: "select",
+      optionsTable: { table: "blog_categories", labelKey: "name" },
+    },
     { key: "excerpt", label: "Excerpt", type: "textarea" },
     { key: "content", label: "Content", type: "textarea" },
     { key: "tags", label: "Tags", type: "array", placeholder: "Add tag and press Enter" },
@@ -809,6 +813,15 @@ export const AdminBlog = createWooCrudPage({
     { key: "is_featured", label: "Featured", type: "checkbox" },
     { key: "meta_title", label: "Meta Title" },
     { key: "meta_description", label: "Meta Description", type: "textarea" },
+  ],
+});
+
+export const AdminBlogCategories = createWooCrudPage({
+  table: "blog_categories", displayName: "Blog Category",
+  fields: [
+    { key: "name", label: "Name", placeholder: "Category name" },
+    { key: "slug", label: "Slug" },
+    { key: "description", label: "Description", type: "textarea" },
   ],
 });
 
