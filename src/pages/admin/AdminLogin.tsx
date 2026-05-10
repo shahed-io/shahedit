@@ -16,20 +16,21 @@ const AdminLogin = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { signIn, signOut, user, isAdmin, role, loading: authLoading } = useAuth();
+  const { signIn, user, isAdmin, role, loading: authLoading } = useAuth();
   const navigate = useNavigate();
 
-  // If already logged in, route based on role. Non-admin users get signed out.
+  // If already logged in as an admin, skip login entirely.
+  // If logged in but NOT an admin, send them to home (do NOT sign them out — that breaks their website session).
   useEffect(() => {
     if (authLoading) return;
     if (!user) return;
     if (isAdmin) {
       navigate("/admin", { replace: true });
     } else {
-      toast.error("This account is not authorized to access the admin panel.");
-      signOut();
+      toast.error("এই অ্যাকাউন্টে admin panel access নেই।");
+      navigate("/", { replace: true });
     }
-  }, [user, isAdmin, role, authLoading, navigate, signOut]);
+  }, [user, isAdmin, role, authLoading, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,6 +45,17 @@ const AdminLogin = () => {
       // Navigation handled by the useEffect above once role loads
     }
   };
+
+  // While we're checking session OR an existing logged-in user is being redirected,
+  // show a spinner instead of the login form (prevents the "double login" feel).
+  if (authLoading || user) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+        <div className="w-10 h-10 border-2 border-purple-400 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
