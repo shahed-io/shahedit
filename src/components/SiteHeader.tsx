@@ -250,7 +250,7 @@ const SiteHeader = () => {
                     className="absolute inset-0 opacity-30 pointer-events-none"
                     style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.5) 0%, transparent 50%)" }}
                   />
-                  <img src={logoImg} alt="Shahed IT" className="w-6 h-6 sm:w-7 sm:h-7 md:w-9 md:h-9 object-contain relative" />
+                  <img src={logoImg} alt="Shahed IT" className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 object-contain relative drop-shadow-[0_2px_8px_rgba(168,85,247,0.55)]" />
                 </div>
               </div>
               <div className="flex flex-col leading-[1.05] min-w-0">
