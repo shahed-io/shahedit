@@ -1216,6 +1216,51 @@ export type Database = {
         }
         Relationships: []
       }
+      refund_requests: {
+        Row: {
+          admin_notes: string | null
+          created_at: string
+          email: string
+          id: string
+          name: string
+          order_id: string | null
+          phone: string
+          reason: string
+          request_number: string
+          status: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          name: string
+          order_id?: string | null
+          phone: string
+          reason: string
+          request_number?: string
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          name?: string
+          order_id?: string | null
+          phone?: string
+          reason?: string
+          request_number?: string
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       seo_meta: {
         Row: {
           canonical_url: string | null
