@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import SEO from "@/components/SEO";
+import { SEO } from "@/components/SEO";
 
 const schema = z.object({
   name: z.string().trim().min(2, "নাম লিখুন"),
