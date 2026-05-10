@@ -137,6 +137,7 @@ const RoleRoute = ({ section, children }: { section: AdminSection; children: Rea
 const AdminRoutes = () => (
   <ProtectedRoute>
     <AdminLayout>
+      <Suspense fallback={<AdminPageFallback />}>
       <Routes>
         <Route path="" element={<RoleRoute section="dashboard"><AdminDashboard /></RoleRoute>} />
         <Route path="leads" element={<RoleRoute section="leads"><AdminLeads /></RoleRoute>} />
