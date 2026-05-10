@@ -554,18 +554,6 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
               )}
             </div>
 
-            {/* Footer */}
-            <div className="flex items-center justify-between px-5 py-2 border-t text-[10px]"
-              style={{ borderColor: "rgba(168,85,247,0.18)", background: "linear-gradient(180deg, rgba(124,58,237,0.06), rgba(124,58,237,0.12))", color: "rgba(226,218,245,0.6)" }}>
-              <div className="flex items-center gap-3">
-                <span className="flex items-center gap-1"><kbd className="px-1.5 py-0.5 rounded border" style={{ borderColor: "rgba(168,85,247,0.35)", color: "#c4b5fd", background: "rgba(168,85,247,0.10)" }}>↑↓</kbd> নেভিগেট</span>
-                <span className="flex items-center gap-1"><kbd className="px-1.5 py-0.5 rounded border" style={{ borderColor: "rgba(168,85,247,0.35)", color: "#c4b5fd", background: "rgba(168,85,247,0.10)" }}>↵</kbd> সিলেক্ট</span>
-                <span className="flex items-center gap-1"><kbd className="px-1.5 py-0.5 rounded border" style={{ borderColor: "rgba(168,85,247,0.35)", color: "#c4b5fd", background: "rgba(168,85,247,0.10)" }}>Esc</kbd> বন্ধ</span>
-              </div>
-              <span className="flex items-center gap-1 font-medium" style={{ color: "#f0abfc" }}>
-                <Sparkles size={11} /> Shahed IT Search
-              </span>
-            </div>
           </motion.div>
         )}
       </AnimatePresence>
