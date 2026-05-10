@@ -270,18 +270,14 @@ const SiteHeader = () => {
                   </span>
                 </span>
                 <span
-                  className="hidden xs:flex items-center gap-1 font-semibold whitespace-nowrap"
+                  className="hidden xs:flex items-center font-semibold whitespace-nowrap"
                   style={{
                     fontFamily: "'Syne', sans-serif",
-                    fontSize: "clamp(8px, 1.15vw, 11px)",
-                    letterSpacing: "0.12em",
+                    fontSize: "clamp(7px, 0.9vw, 9px)",
+                    letterSpacing: "0.14em",
                     textTransform: "uppercase",
                   }}
                 >
-                  <span
-                    className="inline-block w-1 h-1 rounded-full"
-                    style={{ background: "linear-gradient(135deg, #a78bfa, #f0abfc)", boxShadow: "0 0 6px rgba(192,132,252,0.7)" }}
-                  />
                   <span
                     style={{
                       background: "linear-gradient(90deg, #c4b5fd 0%, #f0abfc 100%)",
