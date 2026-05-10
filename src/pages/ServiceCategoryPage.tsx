@@ -500,7 +500,66 @@ const ServiceCategoryPage = () => {
           <h2 className="text-3xl md:text-4xl font-black text-foreground mb-3 text-center">
             <span className="gradient-text">প্যাকেজ</span> ও প্রোডাক্ট
           </h2>
-          <p className="text-foreground/50 text-center mb-10 text-sm">এই ক্যাটাগরির সকল প্রোডাক্ট ও প্যাকেজ</p>
+          <p className="text-foreground/50 text-center mb-8 text-sm">এই ক্যাটাগরির সকল প্রোডাক্ট ও প্যাকেজ</p>
+
+          {/* Search · Filter · Sort toolbar */}
+          {!loadingPkgs && dbPackages.length > 0 && (
+            <div className="max-w-6xl mx-auto mb-8 flex flex-col lg:flex-row gap-3 lg:items-center lg:justify-between">
+              <div className="relative flex-1 max-w-md">
+                <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/40" />
+                <input
+                  type="text"
+                  value={query}
+                  onChange={e => setQuery(e.target.value)}
+                  placeholder="প্রোডাক্ট খুঁজুন..."
+                  className="w-full pl-9 pr-9 py-2.5 rounded-xl bg-white/5 border border-white/10 text-foreground text-sm placeholder:text-foreground/40 focus:outline-none focus:border-white/30"
+                />
+                {query && (
+                  <button onClick={() => setQuery("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/40 hover:text-foreground">
+                    <X size={14} />
+                  </button>
+                )}
+              </div>
+
+              <div className="flex flex-wrap gap-2 items-center">
+                {/* Filter chips */}
+                <div className="flex flex-wrap gap-1.5">
+                  {[{ key: "all", label: "সব" }, { key: "featured", label: "⭐ Featured" }, ...availableBadges.map(b => ({ key: b, label: b.toUpperCase() }))].map(opt => (
+                    <button
+                      key={opt.key}
+                      onClick={() => setFilter(opt.key)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                        filter === opt.key
+                          ? "text-white shadow-md"
+                          : "bg-white/5 text-foreground/60 border border-white/10 hover:text-foreground"
+                      }`}
+                      style={filter === opt.key ? { background: `hsl(${cat.accent})` } : undefined}
+                    >
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Sort */}
+                <select
+                  value={sortBy}
+                  onChange={e => setSortBy(e.target.value as typeof sortBy)}
+                  className="px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-foreground text-xs font-semibold focus:outline-none focus:border-white/30"
+                >
+                  <option value="default">সর্বশেষ</option>
+                  <option value="price_asc">কম দাম</option>
+                  <option value="price_desc">বেশি দাম</option>
+                  <option value="name_asc">নাম (A→Z)</option>
+                </select>
+              </div>
+            </div>
+          )}
+
+          {!loadingPkgs && dbPackages.length > 0 && (
+            <p className="text-center text-foreground/45 text-xs mb-5">
+              {visiblePackages.length} টি প্রোডাক্ট দেখানো হচ্ছে {dbPackages.length !== visiblePackages.length ? `(মোট ${dbPackages.length})` : ""}
+            </p>
+          )}
 
           {loadingPkgs ? (
             <div className="grid md:grid-cols-3 gap-5 max-w-6xl mx-auto">
