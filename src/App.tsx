@@ -173,6 +173,7 @@ const AdminRoutes = () => (
         <Route path="schema" element={<RoleRoute section="schema"><AdminSchemaBuilder /></RoleRoute>} />
         <Route path="seo-tools" element={<RoleRoute section="seo-tools"><AdminSEOTools /></RoleRoute>} />
       </Routes>
+      </Suspense>
     </AdminLayout>
   </ProtectedRoute>
 );
