@@ -1,12 +1,31 @@
 import { useParams, Link, Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
   Globe, Wrench, Palette, Facebook, TrendingUp, Building2,
-  CheckCircle2, ArrowRight, MessageCircle, Sparkles, Star,
+  CheckCircle2, ArrowRight, MessageCircle, Sparkles, Star, Package as PackageIcon,
 } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { SEO } from "@/components/SEO";
+import { supabase } from "@/integrations/supabase/client";
+import { formatBdt } from "@/lib/utils";
+
+interface DbPackage {
+  id: string;
+  title: string;
+  description: string | null;
+  short_description: string | null;
+  price: number | null;
+  original_price: number | null;
+  currency: string;
+  features: string[] | null;
+  image_url: string | null;
+  is_featured: boolean;
+  badge: string | null;
+  delivery_days: number | null;
+  slug: string | null;
+}
 
 import catWebDev from "@/assets/cat-web-dev.jpg";
 import catMaintenance from "@/assets/cat-maintenance.jpg";
