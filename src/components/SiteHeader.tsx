@@ -253,45 +253,38 @@ const SiteHeader = () => {
                   <img src={logoImg} alt="Shahed IT" className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 object-contain relative drop-shadow-[0_2px_8px_rgba(168,85,247,0.55)]" />
                 </div>
               </div>
-              <div className="flex flex-col items-start leading-[1.05] min-w-0 gap-0.5">
+              <div className="flex flex-col items-start leading-[1.05] min-w-0 gap-[3px]">
                 <span
-                  className="text-[14px] sm:text-[16px] md:text-[18px] font-bold tracking-tight whitespace-nowrap"
+                  className="text-[15px] sm:text-[17px] md:text-[19px] font-bold tracking-tight whitespace-nowrap"
                   style={{
-                    fontFamily: "'Playfair Display', serif",
+                    fontFamily: "'Cormorant Garamond', 'Playfair Display', serif",
                     background: "linear-gradient(135deg, #ffffff 0%, #e9d5ff 40%, #c4b5fd 70%, #f0abfc 100%)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
-                    filter: "drop-shadow(0 0 12px rgba(192,132,252,0.45))",
+                    filter: "drop-shadow(0 0 12px rgba(192,132,252,0.5))",
+                    letterSpacing: "0.01em",
+                    fontWeight: 700,
                   }}
                 >
                   Shahed{" "}
-                  <span style={{ background: "linear-gradient(135deg, #a78bfa 0%, #f0abfc 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", fontStyle: "italic" }}>
+                  <span style={{ background: "linear-gradient(135deg, #a78bfa 0%, #f0abfc 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", fontStyle: "italic", fontWeight: 700 }}>
                     IT
                   </span>
                 </span>
                 <span
-                  className="hidden xs:flex items-center gap-1 font-semibold whitespace-nowrap w-full"
+                  className="hidden xs:block font-semibold whitespace-nowrap"
                   style={{
-                    fontFamily: "'Cormorant Garamond', 'Playfair Display', serif",
-                    fontSize: "clamp(9px, 1vw, 11px)",
-                    letterSpacing: "0.22em",
+                    fontFamily: "'Cormorant Garamond', serif",
+                    fontSize: "clamp(7px, 0.7vw, 8.5px)",
+                    letterSpacing: "0.18em",
                     textTransform: "uppercase",
                     fontStyle: "italic",
+                    background: "linear-gradient(90deg, #c4b5fd 0%, #f0abfc 100%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
                   }}
                 >
-                  <span
-                    className="inline-block w-1 h-1 rounded-full"
-                    style={{ background: "linear-gradient(135deg, #a78bfa, #f0abfc)", boxShadow: "0 0 6px rgba(192,132,252,0.7)" }}
-                  />
-                  <span
-                    style={{
-                      background: "linear-gradient(90deg, #c4b5fd 0%, #f0abfc 100%)",
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                    }}
-                  >
-                    Smart IT Solutions
-                  </span>
+                  Smart IT Solutions
                 </span>
               </div>
             </motion.div>
