@@ -12,7 +12,7 @@ export default function GlobalSupport() {
 
   return (
     <>
-      {!aiOpen && <FloatingContactButton onOpenAI={() => setAiOpen(true)} />}
+      <FloatingContactButton onOpenAI={() => setAiOpen(true)} />
       <AISupportChat externalOpen={aiOpen} onExternalOpenChange={setAiOpen} />
     </>
   );
