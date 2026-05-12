@@ -8,6 +8,15 @@ interface FloatingContactProps {
 
 export default function FloatingContactButton({ onOpenAI }: FloatingContactProps) {
   const [open, setOpen] = useState(false);
+  const [tooltipDismissed, setTooltipDismissed] = useState(
+    () => typeof window !== "undefined" && sessionStorage.getItem("help_tooltip_dismissed") === "1"
+  );
+
+  const dismissTooltip = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    sessionStorage.setItem("help_tooltip_dismissed", "1");
+    setTooltipDismissed(true);
+  };
 
   const options = [
     {
@@ -15,8 +24,8 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
       label: "AI Support",
       sublabel: "তাৎক্ষণিক উত্তর পান",
       icon: Bot,
-      gradient: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)))",
-      glow: "hsl(var(--primary) / 0.35)",
+      gradient: "linear-gradient(135deg, hsl(270,92%,58%), hsl(270,75%,42%))",
+      glow: "rgba(168,85,247,0.4)",
       onClick: () => { setOpen(false); onOpenAI(); },
     },
     {
@@ -24,8 +33,8 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
       label: "WhatsApp",
       sublabel: "সরাসরি কথা বলুন",
       icon: MessageCircle,
-      gradient: "linear-gradient(135deg, hsl(var(--success-green) / 0.78), hsl(var(--success-green)))",
-      glow: "hsl(var(--success-green) / 0.28)",
+      gradient: "linear-gradient(135deg, #128C7E, #25D366)",
+      glow: "rgba(37,211,102,0.4)",
       onClick: () => { window.open("https://wa.me/8801820060046?text=Hello%2C%20I%20need%20your%20service.", "_blank"); setOpen(false); },
     },
   ];
@@ -35,56 +44,31 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
       {/* Options */}
       <AnimatePresence>
         {open && (
-          <motion.div
-            initial={{ opacity: 0, y: 18, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 12, scale: 0.96 }}
-            transition={{ type: "spring", stiffness: 320, damping: 28 }}
-            className="w-[calc(100vw-2rem)] max-w-[23rem] overflow-hidden rounded-2xl border border-border bg-card shadow-2xl"
-            style={{ boxShadow: "0 20px 60px hsl(var(--background) / 0.65), 0 0 34px hsl(var(--primary) / 0.22)" }}
-          >
-            <div className="flex items-center justify-between gap-3 bg-primary px-4 py-3 text-primary-foreground">
-              <div className="flex min-w-0 items-center gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-foreground/15">
-                  <Headphones size={18} />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-sm font-bold leading-tight">Support</p>
-                  <p className="mt-0.5 truncate text-xs text-primary-foreground/75">কীভাবে সাহায্য করতে পারি?</p>
-                </div>
-              </div>
-              <button
-                onClick={() => setOpen(false)}
-                aria-label="Close support menu"
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary-foreground/15 transition hover:bg-primary-foreground/25"
-              >
-                <X size={18} />
-              </button>
-            </div>
-
-            <div className="space-y-2 p-3">
+          <>
             {options.map((opt, i) => (
               <motion.button
                 key={opt.id}
-                initial={{ opacity: 0, y: 10, scale: 0.98 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 8, scale: 0.98 }}
+                initial={{ opacity: 0, x: 20, scale: 0.85 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                exit={{ opacity: 0, x: 20, scale: 0.85 }}
                 transition={{ delay: i * 0.07, type: "spring", stiffness: 340, damping: 26 }}
                 onClick={opt.onClick}
-                className="flex w-full items-center gap-3 rounded-xl border border-border bg-secondary/70 p-2.5 text-left transition hover:bg-secondary"
+                className="flex items-center gap-3 pr-4 pl-2 py-2 rounded-2xl shadow-2xl"
                 style={{
-                  boxShadow: `0 10px 28px ${opt.glow}`,
+                  background: "hsl(265,45%,6%)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  boxShadow: `0 8px 32px ${opt.glow}`,
                 }}
               >
                 {/* Icon */}
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-primary-foreground"
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
                   style={{ background: opt.gradient }}>
-                  <opt.icon size={18} />
+                  <opt.icon size={18} className="text-white" fill="white" />
                 </div>
                 {/* Text */}
-                <div className="min-w-0">
-                  <p className="text-sm font-semibold leading-tight text-foreground">{opt.label}</p>
-                  <p className="mt-0.5 text-xs text-muted-foreground">{opt.sublabel}</p>
+                <div className="text-left">
+                  <p className="text-white text-sm font-semibold leading-tight">{opt.label}</p>
+                  <p className="text-slate-400 text-xs mt-0.5">{opt.sublabel}</p>
                 </div>
               </motion.button>
             ))}
@@ -95,18 +79,17 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ delay: 0.15 }}
-              className="px-1 text-right text-xs text-muted-foreground"
+              className="text-xs text-slate-500 pr-1"
             >
               কোনটি পছন্দ করবেন?
             </motion.p>
-            </div>
-          </motion.div>
+          </>
         )}
       </AnimatePresence>
 
       {/* Floating "Need help?" tooltip - hides when open */}
       <AnimatePresence>
-        {!open && (
+        {!open && !tooltipDismissed && (
           <motion.div
             initial={{ opacity: 0, x: 10, scale: 0.9 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
@@ -122,6 +105,20 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
                 boxShadow: "0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(168,85,247,0.25)",
               }}
             >
+              {/* Close button */}
+              <button
+                onClick={dismissTooltip}
+                aria-label="Dismiss"
+                className="absolute -top-2 -right-2 w-5 h-5 rounded-full flex items-center justify-center hover:scale-110 transition-transform"
+                style={{
+                  background: "hsl(265,45%,12%)",
+                  border: "1px solid rgba(168,85,247,0.5)",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.5)",
+                }}
+              >
+                <X size={11} className="text-white" strokeWidth={2.5} />
+              </button>
+
               <div className="flex items-center gap-2">
                 <span className="relative flex w-2 h-2">
                   <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
@@ -145,58 +142,103 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
       </AnimatePresence>
 
       {/* Main Toggle Button - Round Support Orb */}
-      {!open && (
-        <motion.button
-          onClick={() => setOpen(true)}
-          whileHover={{ scale: 1.06 }}
-          whileTap={{ scale: 0.94 }}
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 1.2, type: "spring", stiffness: 200 }}
-          aria-label="Open support menu"
-          className="relative flex h-16 w-16 items-center justify-center rounded-full border border-primary-foreground/30"
-          style={{
-            background: "radial-gradient(circle at 30% 25%, hsl(var(--primary) / 0.92) 0%, hsl(var(--primary)) 45%, hsl(var(--accent)) 100%)",
-            boxShadow: "0 14px 42px hsl(var(--primary) / 0.45), inset 0 2px 8px hsl(var(--primary-foreground) / 0.32), inset 0 -4px 10px hsl(var(--background) / 0.25)",
-          }}
-        >
+      <motion.button
+        onClick={() => setOpen(v => !v)}
+        whileHover={{ scale: 1.08 }}
+        whileTap={{ scale: 0.92 }}
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ delay: 1.2, type: "spring", stiffness: 200 }}
+        aria-label="Support"
+        className="relative w-16 h-16 rounded-full flex items-center justify-center"
+        style={{
+          background: open
+            ? "linear-gradient(135deg, hsl(265,45%,12%), hsl(222,40%,16%))"
+            : "radial-gradient(circle at 30% 25%, hsl(258,95%,72%) 0%, hsl(270,92%,58%) 35%, hsl(220,90%,45%) 75%, hsl(320,90%,38%) 100%)",
+          border: open ? "1px solid rgba(255,255,255,0.12)" : "1.5px solid rgba(255,255,255,0.35)",
+          boxShadow: open
+            ? "0 8px 24px rgba(0,0,0,0.4)"
+            : "0 12px 40px rgba(168,85,247,0.6), 0 0 0 1px rgba(255,255,255,0.08), inset 0 2px 8px rgba(255,255,255,0.35), inset 0 -4px 10px rgba(0,0,0,0.25)",
+        }}
+      >
+        {/* Rotating conic glow ring (closed only) */}
+        {!open && (
+          <motion.span
+            aria-hidden
+            animate={{ rotate: 360 }}
+            transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+            className="absolute -inset-1.5 rounded-full pointer-events-none"
+            style={{
+              background:
+                "conic-gradient(from 0deg, hsl(270,92%,58%) 0%, hsl(320,90%,42%) 25%, transparent 45%, hsl(270,92%,58%) 75%, hsl(320,90%,42%) 100%)",
+              filter: "blur(8px)",
+              opacity: 0.7,
+              zIndex: -1,
+            }}
+          />
+        )}
+
+        {/* Soft pulse halo */}
+        {!open && (
+          <span
+            className="absolute inset-0 rounded-full animate-ping pointer-events-none"
+            style={{ background: "rgba(168,85,247,0.25)" }}
+          />
+        )}
 
         {/* Glossy top highlight */}
-        <span
-          aria-hidden
-          className="absolute inset-[3px] rounded-full pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(ellipse at 30% 15%, hsl(var(--primary-foreground) / 0.55), transparent 55%)",
-          }}
-        />
+        {!open && (
+          <span
+            aria-hidden
+            className="absolute inset-[3px] rounded-full pointer-events-none"
+            style={{
+              background:
+                "radial-gradient(ellipse at 30% 15%, rgba(255,255,255,0.55), transparent 55%)",
+            }}
+          />
+        )}
 
         {/* Icon */}
-        <motion.span
-          initial={{ rotate: 90, opacity: 0, scale: 0.6 }}
-          animate={{ rotate: 0, opacity: 1, scale: 1 }}
-          exit={{ rotate: -90, opacity: 0, scale: 0.6 }}
-          transition={{ duration: 0.2 }}
-          className="relative z-10 drop-shadow-[0_2px_4px_hsl(var(--background)/0.4)]"
-        >
-          <Headphones size={26} className="text-primary-foreground" strokeWidth={2.4} />
-        </motion.span>
+        <AnimatePresence mode="wait">
+          {open ? (
+            <motion.span key="x"
+              initial={{ rotate: -90, opacity: 0, scale: 0.6 }}
+              animate={{ rotate: 0, opacity: 1, scale: 1 }}
+              exit={{ rotate: 90, opacity: 0, scale: 0.6 }}
+              transition={{ duration: 0.2 }}
+              className="relative z-10"
+            >
+              <X size={24} className="text-white" strokeWidth={2.5} />
+            </motion.span>
+          ) : (
+            <motion.span key="hp"
+              initial={{ rotate: 90, opacity: 0, scale: 0.6 }}
+              animate={{ rotate: 0, opacity: 1, scale: 1 }}
+              exit={{ rotate: -90, opacity: 0, scale: 0.6 }}
+              transition={{ duration: 0.2 }}
+              className="relative z-10 drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]"
+            >
+              <Headphones size={26} className="text-white" strokeWidth={2.4} />
+            </motion.span>
+          )}
+        </AnimatePresence>
 
         {/* Online status dot */}
-        <span
-          className="absolute bottom-0.5 right-0.5 w-4 h-4 rounded-full flex items-center justify-center z-10"
-          style={{
-            background: "hsl(var(--card))",
-            boxShadow: "0 2px 6px hsl(var(--background) / 0.4)",
-          }}
-        >
-          <span className="relative flex w-2.5 h-2.5">
-            <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400" />
+        {!open && (
+          <span
+            className="absolute bottom-0.5 right-0.5 w-4 h-4 rounded-full flex items-center justify-center z-10"
+            style={{
+              background: "hsl(265,45%,8%)",
+              boxShadow: "0 2px 6px rgba(0,0,0,0.4)",
+            }}
+          >
+            <span className="relative flex w-2.5 h-2.5">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400" />
+            </span>
           </span>
-        </span>
-        </motion.button>
-      )}
+        )}
+      </motion.button>
     </div>
   );
 }
