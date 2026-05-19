@@ -57,6 +57,7 @@ const PaymentSection = () => {
       </motion.div>
     </div>
   </section>
-);
+  );
+};
 
 export default PaymentSection;
