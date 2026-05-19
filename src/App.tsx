@@ -31,6 +31,7 @@ const AdminSettings = lazy(() => import("./pages/admin/AdminSettings"));
 const AdminAISupport = lazy(() => import("./pages/admin/AdminAISupport"));
 const AdminServicePackages = lazy(() => import("./pages/admin/AdminServicePackages"));
 const AdminPayments = lazy(() => import("./pages/admin/AdminPayments"));
+const AdminBkashPGW = lazy(() => import("./pages/admin/AdminBkashPGW"));
 const AdminOrders = lazy(() => import("./pages/admin/AdminOrders"));
 const AdminUsers = lazy(() => import("./pages/admin/AdminUsers"));
 const AdminFooterEditor = lazy(() => import("./pages/admin/AdminFooterEditor"));
@@ -82,6 +83,7 @@ const RefundPolicyPage = lazy(() => import("./pages/RefundPolicyPage"));
 const DeliveryPolicyPage = lazy(() => import("./pages/DeliveryPolicyPage"));
 const ComplaintPolicyPage = lazy(() => import("./pages/ComplaintPolicyPage"));
 const PaymentPage = lazy(() => import("./pages/PaymentPage"));
+const BkashCallbackPage = lazy(() => import("./pages/BkashCallbackPage"));
 const RefundRequestPage = lazy(() => import("./pages/RefundRequestPage"));
 const MyRefundsPage = lazy(() => import("./pages/MyRefundsPage"));
 const ProductDetailsPage = lazy(() => import("./pages/ProductDetailsPage"));
@@ -145,6 +147,7 @@ const AdminRoutes = () => (
         <Route path="leads" element={<RoleRoute section="leads"><AdminLeads /></RoleRoute>} />
         <Route path="refunds" element={<RoleRoute section="refunds"><AdminRefunds /></RoleRoute>} />
         <Route path="payments" element={<RoleRoute section="payments"><AdminPayments /></RoleRoute>} />
+        <Route path="bkash-pgw" element={<RoleRoute section="payments"><AdminBkashPGW /></RoleRoute>} />
         <Route path="orders" element={<RoleRoute section="orders"><AdminOrders /></RoleRoute>} />
         <Route path="services" element={<RoleRoute section="services"><AdminServices /></RoleRoute>} />
         <Route path="service-packages" element={<RoleRoute section="service-packages"><AdminServicePackages /></RoleRoute>} />
@@ -214,6 +217,7 @@ const AppWithAnalytics = () => {
         <Route path="/delivery-policy" element={<DeliveryPolicyPage />} />
         <Route path="/complaint-policy" element={<ComplaintPolicyPage />} />
         <Route path="/payment" element={<PaymentPage />} />
+        <Route path="/payment/bkash/callback" element={<BkashCallbackPage />} />
         <Route path="/refund-request" element={<RefundRequestPage />} />
         <Route path="/my-refunds" element={<MyRefundsPage />} />
         <Route path="/product/:id" element={<ProductDetailsPage />} />

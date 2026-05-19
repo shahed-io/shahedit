@@ -8,3 +8,9 @@ verify_jwt = false
 
 [functions.ai-support]
 verify_jwt = false
+
+[functions.bkash-create-payment]
+verify_jwt = false
+
+[functions.bkash-execute-payment]
+verify_jwt = false

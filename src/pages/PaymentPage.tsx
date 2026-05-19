@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle, Copy, Smartphone, Send } from "lucide-react";
+import { CheckCircle, Copy, Smartphone, Send, Zap } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -21,11 +21,42 @@ const PaymentPage = () => {
   const [selected, setSelected] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [bkashLoading, setBkashLoading] = useState(false);
   const [form, setForm] = useState({
     name: "", phone: "", email: "", service: "", amount: "", transaction_id: "", note: ""
   });
 
   const selectedMethod = paymentMethods.find(m => m.id === selected);
+
+  const payWithBkashPGW = async () => {
+    if (!form.amount || isNaN(Number(form.amount)) || Number(form.amount) <= 0) {
+      toast.error("সঠিক পরিমাণ দিন"); return;
+    }
+    if (!form.name || !form.phone) { toast.error("নাম ও মোবাইল নম্বর দিন"); return; }
+    setBkashLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("bkash-create-payment", {
+        body: {
+          amount: Number(form.amount),
+          customer_name: form.name,
+          customer_msisdn: form.phone,
+          email: form.email || null,
+          service: form.service || null,
+          note: form.note || null,
+          callback_url: `${window.location.origin}/payment/bkash/callback`,
+        },
+      });
+      if (error || !data?.success) {
+        toast.error(data?.error || "bKash পেমেন্ট শুরু করা যায়নি");
+        return;
+      }
+      window.location.href = data.bkashURL;
+    } catch (e) {
+      toast.error("সমস্যা হয়েছে");
+    } finally {
+      setBkashLoading(false);
+    }
+  };
 
   const copyNumber = (num: string) => {
     navigator.clipboard.writeText(num);
@@ -90,6 +121,37 @@ const PaymentPage = () => {
             </h1>
             <p className="text-muted-foreground max-w-xl mx-auto">নিচের যেকোনো মেথডে পেমেন্ট করুন এবং Transaction ID জমা দিন।</p>
           </motion.div>
+
+          {/* bKash PGW — Auto Pay */}
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mb-10">
+            <div className="rounded-2xl border-2 border-pink-500/40 bg-gradient-to-br from-pink-500/10 to-pink-600/5 p-6">
+              <div className="flex items-start gap-4 flex-wrap">
+                <div className="w-14 h-14 rounded-2xl bg-[#E2136E] text-white flex items-center justify-center font-bold text-lg shrink-0">bK</div>
+                <div className="flex-1 min-w-[200px]">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="text-lg font-bold text-foreground">বিকাশ দিয়ে সরাসরি পেমেন্ট</h3>
+                    <span className="text-[10px] font-bold bg-pink-500 text-white px-2 py-0.5 rounded-full uppercase">PGW • Auto</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">নাম, ফোন ও পরিমাণ দিয়ে সরাসরি বিকাশ অ্যাপে পেমেন্ট করুন — Transaction ID লিখতে হবে না।</p>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full">
+                  <Input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="নাম *" />
+                  <Input value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} placeholder="মোবাইল *" />
+                  <Input type="number" value={form.amount} onChange={e => setForm(f => ({ ...f, amount: e.target.value }))} placeholder="পরিমাণ (৳) *" />
+                </div>
+                <Button onClick={payWithBkashPGW} disabled={bkashLoading} className="w-full h-12 bg-[#E2136E] hover:bg-[#c01060] text-white font-bold gap-2">
+                  <Zap size={16} />
+                  {bkashLoading ? "শুরু হচ্ছে..." : "বিকাশে পেমেন্ট করুন (Auto)"}
+                </Button>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 my-6">
+              <div className="flex-1 h-px bg-border" />
+              <span className="text-xs text-muted-foreground uppercase tracking-widest">অথবা ম্যানুয়াল</span>
+              <div className="flex-1 h-px bg-border" />
+            </div>
+          </motion.div>
+
 
           {/* Step 1: Select method */}
           <div className="mb-10">

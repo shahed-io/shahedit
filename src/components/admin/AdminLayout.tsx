@@ -40,6 +40,7 @@ const navGroups: NavGroup[] = [
       { label: "Leads", icon: Inbox, href: "/admin/leads", section: "leads" },
       { label: "Refund Requests", icon: RefreshCcw, href: "/admin/refunds", badge: "NEW", section: "refunds" },
       { label: "Payments", icon: CreditCard, href: "/admin/payments", section: "payments" },
+      { label: "bKash PGW", icon: Zap, href: "/admin/bkash-pgw", badge: "NEW", section: "payments" },
       { label: "Orders & Delivery", icon: Package, href: "/admin/orders", section: "orders" },
       { label: "Coupons", icon: Tag, href: "/admin/coupons", badge: "NEW", section: "coupons" },
     ],
