@@ -169,6 +169,9 @@ const AdminPayments = () => {
         )}
       </div>
 
+      {/* Wallet Top-up settings */}
+      <WalletSettingsManager />
+
       {/* Manual Payment Numbers Manager */}
       <PaymentMethodsManager />
 
