@@ -82,6 +82,18 @@ serve(async (req) => {
     });
     const createData = await createRes.json();
 
+    // Safe logging: redact sensitive fields, log structure + paymentCreateTime
+    try {
+      const safe = { ...createData };
+      for (const k of ["bkashURL", "callbackURL", "successCallbackURL", "failureCallbackURL", "cancelledCallbackURL"]) {
+        if (safe[k]) safe[k] = "[redacted]";
+      }
+      console.log("[bkash-create-payment] createData:", JSON.stringify(safe));
+      console.log("[bkash-create-payment] raw paymentCreateTime:", createData?.paymentCreateTime, "type:", typeof createData?.paymentCreateTime);
+    } catch (logErr) {
+      console.log("[bkash-create-payment] log failed:", (logErr as Error).message);
+    }
+
     if (!createData.paymentID) {
       return new Response(JSON.stringify({ success: false, error: createData.statusMessage || "Create payment failed", details: createData }), {
         status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" },
