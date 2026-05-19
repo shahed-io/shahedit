@@ -110,18 +110,16 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     .map((g) => ({ ...g, items: g.items.filter((it) => canAccess(role, it.section)) }))
     .filter((g) => g.items.length > 0);
 
-  // Auto-open the group containing the active route
+  // Open all groups by default (keep user's manual toggles)
   useEffect(() => {
-    const next: Record<string, boolean> = {};
-    visibleGroups.forEach((g) => {
-      next[g.title] = g.items.some(
-        (it) =>
-          location.pathname === it.href ||
-          (it.href !== "/admin" && location.pathname.startsWith(it.href))
-      );
+    setOpenGroups((prev) => {
+      const next: Record<string, boolean> = { ...prev };
+      visibleGroups.forEach((g) => {
+        if (next[g.title] === undefined) next[g.title] = true;
+      });
+      return next;
     });
-    setOpenGroups((prev) => ({ ...prev, ...next }));
-  }, [location.pathname]);
+  }, [visibleGroups.length]);
 
   // Notifications: poll latest leads + payments + orders
   useEffect(() => {
