@@ -228,7 +228,10 @@ const SiteHeader = () => {
 
         <div className="container mx-auto px-2.5 sm:px-3 md:px-4 lg:px-6 py-1.5 sm:py-2 md:py-3 flex items-center gap-1.5 sm:gap-2 md:gap-3 lg:gap-5 relative min-w-0">
           {/* ── Logo ── */}
-          <Link to="/" className="shrink-0 min-w-0">
+          <Link
+            to="/"
+            className="shrink-0 min-w-0 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:static md:translate-x-0 md:translate-y-0 pointer-events-auto"
+          >
             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} className="flex items-center gap-1.5 sm:gap-2 md:gap-2.5 group min-w-0">
               <div className="relative shrink-0">
                 <motion.div
