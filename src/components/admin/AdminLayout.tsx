@@ -52,6 +52,7 @@ const navGroups: NavGroup[] = [
       { label: "Service Packages", icon: Package, href: "/admin/service-packages", section: "service-packages" },
       { label: "Pricing", icon: DollarSign, href: "/admin/pricing", section: "pricing" },
       { label: "Portfolio", icon: FolderOpen, href: "/admin/portfolio", section: "portfolio" },
+      { label: "Products", icon: Package, href: "/admin/products", badge: "NEW", section: "products" },
     ],
   },
   {
