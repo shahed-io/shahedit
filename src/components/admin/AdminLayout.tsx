@@ -103,25 +103,30 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
   const [notifications, setNotifications] = useState<any[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
-  const { user, role, signOut } = useAuth();
+  const { user, role, loading, signOut } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+  const initializedGroups = useRef(false);
 
-  // Filter nav items by current role permissions
-  const visibleGroups = navGroups
-    .map((g) => ({ ...g, items: g.items.filter((it) => canAccess(role, it.section)) }))
-    .filter((g) => g.items.length > 0);
+  // Filter nav items by current role permissions — memoized to keep stable
+  // reference and avoid effect loops while role is loading.
+  const visibleGroups = useMemo(
+    () =>
+      navGroups
+        .map((g) => ({ ...g, items: g.items.filter((it) => canAccess(role, it.section)) }))
+        .filter((g) => g.items.length > 0),
+    [role]
+  );
 
-  // Open all groups by default (keep user's manual toggles)
+  // Open all groups by default — only once, after auth has finished loading,
+  // to prevent the nav from "jumping" as role-gated items appear.
   useEffect(() => {
-    setOpenGroups((prev) => {
-      const next: Record<string, boolean> = { ...prev };
-      visibleGroups.forEach((g) => {
-        if (next[g.title] === undefined) next[g.title] = true;
-      });
-      return next;
-    });
-  }, [visibleGroups.length]);
+    if (loading || initializedGroups.current) return;
+    const next: Record<string, boolean> = {};
+    visibleGroups.forEach((g) => { next[g.title] = true; });
+    setOpenGroups(next);
+    initializedGroups.current = true;
+  }, [loading, visibleGroups]);
 
   // Notifications: poll latest leads + payments + orders
   useEffect(() => {
