@@ -1,6 +1,7 @@
 import { Star, ArrowRight, Zap, CreditCard, MessageCircle, X, Copy, Smartphone, Send, CheckCircle, ChevronRight, ChevronLeft, Info, PenLine, Search, User as UserIcon, Mail, Phone, Tag, ShieldCheck, Sparkles } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { usePaymentMethods } from "@/hooks/usePaymentMethods";
+import { useWalletSettings } from "@/hooks/useWalletSettings";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
