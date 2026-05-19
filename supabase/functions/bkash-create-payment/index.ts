@@ -97,7 +97,14 @@ serve(async (req) => {
       merchant_invoice_number: merchantInvoice,
       status: "initiated",
       mode,
-      payment_create_time: createData.paymentCreateTime ? new Date(createData.paymentCreateTime).toISOString() : new Date().toISOString(),
+      payment_create_time: (() => {
+        const raw = createData.paymentCreateTime;
+        if (raw) {
+          const d = new Date(raw);
+          if (!isNaN(d.getTime())) return d.toISOString();
+        }
+        return new Date().toISOString();
+      })(),
       user_email: email,
       customer_name,
       service,
