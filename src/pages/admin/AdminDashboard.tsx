@@ -371,7 +371,7 @@ const AdminDashboard = () => {
           ) : (
             <div className="space-y-2">
               {pendingPayments.map(p => (
-                <div key={p.id} className="flex items-center justify-between p-3 rounded-xl bg-white/[0.02] border border-primary/10 hover:border-primary/30 transition">
+                <Link key={p.id} to="/admin/payments" className="flex items-center justify-between p-3 rounded-xl bg-white/[0.02] border border-primary/10 hover:border-primary/30 hover:bg-white/[0.04] transition cursor-pointer">
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-medium text-foreground truncate">{p.name}</p>
                     <p className="text-xs text-muted-foreground capitalize">{p.payment_method}</p>
@@ -380,9 +380,10 @@ const AdminDashboard = () => {
                     <span className="text-sm font-bold text-amber-400">{fmtBDT(Number(p.amount))}</span>
                     <StatusBadge status={p.status} />
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
+
           )}
         </GlassCard>
       </div>
