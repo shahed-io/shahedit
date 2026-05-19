@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { format } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { RefreshCw, Zap, CheckCircle2, AlertTriangle, Copy, Hash, Phone, User, Calendar, Receipt, Search, X } from "lucide-react";
+import { RefreshCw, Zap, CheckCircle2, AlertTriangle, Copy, Hash, Phone, User, Calendar, Receipt, Search, X, CalendarRange } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Calendar as DatePicker } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 
 interface BkashTxn {
   id: string;
@@ -42,6 +46,8 @@ const AdminBkashPGW = () => {
   const [filter, setFilter] = useState<"all" | "initiated" | "completed" | "failed">("all");
   const [expanded, setExpanded] = useState<string | null>(null);
   const [search, setSearch] = useState("");
+  const [dateFrom, setDateFrom] = useState<Date | undefined>();
+  const [dateTo, setDateTo] = useState<Date | undefined>();
 
   const callbackUrl = `${window.location.origin}/payment/bkash/callback`;
 
@@ -68,8 +74,13 @@ const AdminBkashPGW = () => {
   };
 
   const q = search.trim().toLowerCase();
+  const fromMs = dateFrom ? new Date(dateFrom.setHours(0, 0, 0, 0)).getTime() : null;
+  const toMs = dateTo ? new Date(new Date(dateTo).setHours(23, 59, 59, 999)).getTime() : null;
   const filtered = txns.filter(t => {
     if (filter !== "all" && t.status !== filter) return false;
+    const ts = new Date(t.created_at).getTime();
+    if (fromMs && ts < fromMs) return false;
+    if (toMs && ts > toMs) return false;
     if (!q) return true;
     return (
       t.payment_id?.toLowerCase().includes(q) ||
@@ -186,6 +197,50 @@ const AdminBkashPGW = () => {
         {search && (
           <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white">
             <X size={14} />
+          </button>
+        )}
+      </div>
+
+      {/* Date Range */}
+      <div className="flex gap-2 flex-wrap items-center">
+        <CalendarRange size={14} className="text-slate-400" />
+        <span className="text-slate-400 text-xs">তারিখ রেঞ্জ:</span>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant="outline" size="sm" className={cn("h-8 gap-2 border-slate-700 bg-slate-900 text-xs font-normal", !dateFrom && "text-slate-500")}>
+              <Calendar size={12} />
+              {dateFrom ? format(dateFrom, "dd MMM yyyy") : "From"}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0 bg-slate-900 border-slate-800" align="start">
+            <DatePicker mode="single" selected={dateFrom} onSelect={setDateFrom} initialFocus className={cn("p-3 pointer-events-auto")} />
+          </PopoverContent>
+        </Popover>
+        <span className="text-slate-500 text-xs">→</span>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant="outline" size="sm" className={cn("h-8 gap-2 border-slate-700 bg-slate-900 text-xs font-normal", !dateTo && "text-slate-500")}>
+              <Calendar size={12} />
+              {dateTo ? format(dateTo, "dd MMM yyyy") : "To"}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0 bg-slate-900 border-slate-800" align="start">
+            <DatePicker mode="single" selected={dateTo} onSelect={setDateTo} disabled={(d) => (dateFrom ? d < dateFrom : false)} initialFocus className={cn("p-3 pointer-events-auto")} />
+          </PopoverContent>
+        </Popover>
+        {[
+          { label: "আজ", days: 0 },
+          { label: "৭ দিন", days: 7 },
+          { label: "৩০ দিন", days: 30 },
+        ].map(p => (
+          <button key={p.label} onClick={() => { const to = new Date(); const from = new Date(); from.setDate(from.getDate() - p.days); setDateFrom(from); setDateTo(to); }}
+            className="px-2 py-1 rounded-md text-[11px] bg-slate-800 text-slate-300 hover:bg-slate-700">
+            {p.label}
+          </button>
+        ))}
+        {(dateFrom || dateTo) && (
+          <button onClick={() => { setDateFrom(undefined); setDateTo(undefined); }} className="text-slate-400 hover:text-white text-[11px] flex items-center gap-1">
+            <X size={11} /> ক্লিয়ার
           </button>
         )}
       </div>
