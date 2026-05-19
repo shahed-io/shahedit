@@ -36,6 +36,7 @@ const AdminBkashPGW = lazy(() => import("./pages/admin/AdminBkashPGW"));
 const AdminOrders = lazy(() => import("./pages/admin/AdminOrders"));
 const AdminUsers = lazy(() => import("./pages/admin/AdminUsers"));
 const AdminFooterEditor = lazy(() => import("./pages/admin/AdminFooterEditor"));
+const AdminBanners = lazy(() => import("./pages/admin/AdminBanners"));
 const AdminClientDocuments = lazy(() => import("./pages/admin/AdminClientDocuments"));
 const AdminSEO = lazy(() => import("./pages/admin/AdminSEO"));
 const AdminPortfolio = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminPortfolio })));
