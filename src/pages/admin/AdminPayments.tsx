@@ -168,6 +168,9 @@ const AdminPayments = () => {
         )}
       </div>
 
+      {/* Manual Payment Numbers Manager */}
+      <PaymentMethodsManager />
+
       {/* Filter */}
       <div className="flex gap-2">
         {["all", "pending", "confirmed", "rejected"].map(f => (
