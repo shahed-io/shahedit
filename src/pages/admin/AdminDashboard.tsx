@@ -428,7 +428,7 @@ const AdminDashboard = () => {
           ) : (
             <div className="space-y-2">
               {recentLeads.map(l => (
-                <div key={l.id} className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-primary/10 hover:border-primary/30 transition">
+                <Link key={l.id} to="/admin/leads" className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-primary/10 hover:border-primary/30 hover:bg-white/[0.04] transition cursor-pointer">
                   <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
                     {l.name?.[0]?.toUpperCase()}
                   </div>
@@ -437,9 +437,10 @@ const AdminDashboard = () => {
                     <p className="text-xs text-muted-foreground truncate">{l.service_interested || l.email}</p>
                   </div>
                   <StatusBadge status={l.status} />
-                </div>
+                </Link>
               ))}
             </div>
+
           )}
         </GlassCard>
       </div>
