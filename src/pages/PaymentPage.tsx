@@ -122,6 +122,37 @@ const PaymentPage = () => {
             <p className="text-muted-foreground max-w-xl mx-auto">নিচের যেকোনো মেথডে পেমেন্ট করুন এবং Transaction ID জমা দিন।</p>
           </motion.div>
 
+          {/* bKash PGW — Auto Pay */}
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mb-10">
+            <div className="rounded-2xl border-2 border-pink-500/40 bg-gradient-to-br from-pink-500/10 to-pink-600/5 p-6">
+              <div className="flex items-start gap-4 flex-wrap">
+                <div className="w-14 h-14 rounded-2xl bg-[#E2136E] text-white flex items-center justify-center font-bold text-lg shrink-0">bK</div>
+                <div className="flex-1 min-w-[200px]">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="text-lg font-bold text-foreground">বিকাশ দিয়ে সরাসরি পেমেন্ট</h3>
+                    <span className="text-[10px] font-bold bg-pink-500 text-white px-2 py-0.5 rounded-full uppercase">PGW • Auto</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">নাম, ফোন ও পরিমাণ দিয়ে সরাসরি বিকাশ অ্যাপে পেমেন্ট করুন — Transaction ID লিখতে হবে না।</p>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full">
+                  <Input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="নাম *" />
+                  <Input value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} placeholder="মোবাইল *" />
+                  <Input type="number" value={form.amount} onChange={e => setForm(f => ({ ...f, amount: e.target.value }))} placeholder="পরিমাণ (৳) *" />
+                </div>
+                <Button onClick={payWithBkashPGW} disabled={bkashLoading} className="w-full h-12 bg-[#E2136E] hover:bg-[#c01060] text-white font-bold gap-2">
+                  <Zap size={16} />
+                  {bkashLoading ? "শুরু হচ্ছে..." : "বিকাশে পেমেন্ট করুন (Auto)"}
+                </Button>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 my-6">
+              <div className="flex-1 h-px bg-border" />
+              <span className="text-xs text-muted-foreground uppercase tracking-widest">অথবা ম্যানুয়াল</span>
+              <div className="flex-1 h-px bg-border" />
+            </div>
+          </motion.div>
+
+
           {/* Step 1: Select method */}
           <div className="mb-10">
             <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
