@@ -58,6 +58,13 @@ const AdminSitemap = lazy(() => import("./pages/admin/AdminSitemap"));
 const AdminSchemaBuilder = lazy(() => import("./pages/admin/AdminSchemaBuilder"));
 const AdminSEOTools = lazy(() => import("./pages/admin/AdminSEOTools"));
 const AdminProducts = lazy(() => import("./pages/admin/AdminProducts"));
+const AdminProjects = lazy(() => import("./pages/admin/AdminProjects"));
+const AdminInvoices = lazy(() => import("./pages/admin/AdminInvoices"));
+const AdminExpenses = lazy(() => import("./pages/admin/AdminExpenses"));
+const AdminQuotations = lazy(() => import("./pages/admin/AdminQuotations"));
+const AdminNewsletter = lazy(() => import("./pages/admin/AdminNewsletter"));
+const AdminKnowledgeBase = lazy(() => import("./pages/admin/AdminKnowledgeBase"));
+const AdminCustomOrder = lazy(() => import("./pages/admin/AdminCustomOrder"));
 
 // Auth / user pages
 const DashboardPage = lazy(() => import("./pages/DashboardPage"));
@@ -178,6 +185,13 @@ const AdminRoutes = () => (
         <Route path="schema" element={<RoleRoute section="schema"><AdminSchemaBuilder /></RoleRoute>} />
         <Route path="seo-tools" element={<RoleRoute section="seo-tools"><AdminSEOTools /></RoleRoute>} />
         <Route path="products" element={<RoleRoute section="products"><AdminProducts /></RoleRoute>} />
+        <Route path="projects" element={<RoleRoute section="projects"><AdminProjects /></RoleRoute>} />
+        <Route path="invoices" element={<RoleRoute section="invoices"><AdminInvoices /></RoleRoute>} />
+        <Route path="expenses" element={<RoleRoute section="expenses"><AdminExpenses /></RoleRoute>} />
+        <Route path="quotations" element={<RoleRoute section="quotations"><AdminQuotations /></RoleRoute>} />
+        <Route path="newsletter" element={<RoleRoute section="newsletter"><AdminNewsletter /></RoleRoute>} />
+        <Route path="knowledge-base" element={<RoleRoute section="knowledge-base"><AdminKnowledgeBase /></RoleRoute>} />
+        <Route path="custom-order" element={<RoleRoute section="custom-order"><AdminCustomOrder /></RoleRoute>} />
       </Routes>
       </Suspense>
     </AdminLayout>

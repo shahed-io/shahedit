@@ -10,6 +10,7 @@ export type AdminSection =
   | "refunds"
   | "payments"
   | "orders"
+  | "custom-order"
   | "products"
   | "client-docs"
   | "services"
@@ -37,7 +38,13 @@ export type AdminSection =
   | "redirects"
   | "settings"
   | "users"
-  | "activity";
+  | "activity"
+  | "projects"
+  | "invoices"
+  | "expenses"
+  | "quotations"
+  | "newsletter"
+  | "knowledge-base";
 
 /**
  * Permission matrix: which roles can access each admin section.
@@ -78,6 +85,13 @@ const PERMISSIONS: Record<AdminSection, AppRole[]> = {
   settings:           ["super_admin", "admin"],
   users:              ["super_admin"],
   activity:           ["super_admin", "admin"],
+  "custom-order":     ["super_admin", "admin", "manager"],
+  projects:           ["super_admin", "admin", "manager"],
+  invoices:           ["super_admin", "admin", "manager"],
+  expenses:           ["super_admin", "admin"],
+  quotations:         ["super_admin", "admin", "manager"],
+  newsletter:         ["super_admin", "admin", "manager"],
+  "knowledge-base":   ["super_admin", "admin", "editor"],
 };
 
 export function canAccess(role: AppRole | null, section: AdminSection): boolean {
