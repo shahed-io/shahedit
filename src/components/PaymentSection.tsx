@@ -3,7 +3,9 @@ import { Smartphone, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { usePaymentMethods } from "@/hooks/usePaymentMethods";
 
-const PaymentSection = () => (
+const PaymentSection = () => {
+  const { methods } = usePaymentMethods();
+  return (
   <section className="py-20 relative">
     <div className="container mx-auto px-4 max-w-5xl">
       <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
