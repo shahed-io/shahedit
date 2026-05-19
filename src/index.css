@@ -226,6 +226,22 @@
     min-height: 100vh;
   }
 
+  /* Mobile: background-attachment: fixed is unreliable on iOS/Android Safari
+     and the radial-gradient sizes get too sparse at narrow widths. Scale the
+     dot pattern down and let the background scroll naturally. */
+  @media (max-width: 768px) {
+    body {
+      background-image:
+        radial-gradient(ellipse 80% 35% at 0% 0%, hsla(285, 95%, 65%, calc(0.32 * var(--glow-mult))) 0%, transparent 70%),
+        radial-gradient(ellipse 70% 40% at 100% 18%, hsla(320, 90%, 55%, calc(0.24 * var(--glow-mult))) 0%, transparent 70%),
+        radial-gradient(ellipse 90% 30% at 50% 100%, hsla(280, 95%, 60%, calc(0.18 * var(--glow-mult))) 0%, transparent 70%),
+        radial-gradient(circle, hsla(280, 100%, 75%, var(--dot-opacity)) 1px, transparent 1.5px),
+        linear-gradient(180deg, hsl(265, 50%, 5%) 0%, hsl(268, 50%, 4%) 50%, hsl(265, 50%, 5%) 100%);
+      background-size: 100% 60vh, 100% 60vh, 100% 60vh, 18px 18px, 100% 100%;
+      background-attachment: scroll, scroll, scroll, scroll, scroll;
+    }
+  }
+
 
 
   h1, h2, h3, h4, h5, h6 {
