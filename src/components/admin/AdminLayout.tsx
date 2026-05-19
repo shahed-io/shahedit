@@ -105,6 +105,7 @@ const navGroups: NavGroup[] = [
       { label: "AI Support", icon: MessageSquare, href: "/admin/ai-support", section: "ai-support" },
       { label: "Admin Users", icon: Shield, href: "/admin/users", section: "users" },
       { label: "Footer Editor", icon: LayoutTemplate, href: "/admin/footer", section: "footer" },
+      { label: "Hero Banners", icon: LayoutTemplate, href: "/admin/banners", badge: "NEW", section: "banners" },
       { label: "Site Settings", icon: Settings, href: "/admin/settings", section: "settings" },
     ],
   },

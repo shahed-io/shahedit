@@ -26,6 +26,7 @@ export type AdminSection =
   | "faq"
   | "careers"
   | "popular-searches"
+  | "banners"
   | "footer"
   | "ai-support"
   | "ai-writer"
@@ -73,6 +74,7 @@ const PERMISSIONS: Record<AdminSection, AppRole[]> = {
   careers:            ["super_admin", "admin", "editor"],
   "popular-searches": ["super_admin", "admin", "editor"],
   footer:             ["super_admin", "admin", "editor"],
+  banners:            ["super_admin", "admin", "editor"],
   "ai-support":       ["super_admin", "admin", "manager"],
   "ai-writer":        ["super_admin", "admin", "editor"],
   coupons:            ["super_admin", "admin", "manager"],
