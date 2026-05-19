@@ -57,6 +57,7 @@ const navGroups: NavGroup[] = [
       { label: "Expenses", icon: TrendingDown, href: "/admin/expenses", badge: "NEW", section: "expenses" },
       { label: "Knowledge Base", icon: BookOpen, href: "/admin/knowledge-base", badge: "NEW", section: "knowledge-base" },
       { label: "Newsletter", icon: Mail, href: "/admin/newsletter", badge: "NEW", section: "newsletter" },
+    ],
   },
   {
     title: "Catalog",
