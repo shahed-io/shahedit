@@ -207,21 +207,21 @@
     font-family: 'Inter', sans-serif;
     background-color: hsl(265, 50%, 5%);
     /* Banner-style background applied site-wide:
-       - soft purple/magenta glow accents (top-left & right edge)
-       - fine tech grid pattern (fixed, uniform across all sections)
+       - soft purple/magenta glow accents (top-left & right)
+       - subtle dotted grid pattern (the "ফুটা ফুটা" look)
        - deep midnight purple base */
     background-image:
-      radial-gradient(ellipse 35% 30% at 5% 0%, hsla(285, 95%, 65%, 0.28) 0%, transparent 60%),
-      radial-gradient(ellipse 25% 60% at 100% 30%, hsla(320, 90%, 55%, 0.22) 0%, transparent 65%),
+      radial-gradient(ellipse 35% 30% at 5% 0%, hsla(285, 95%, 65%, 0.30) 0%, transparent 60%),
+      radial-gradient(ellipse 28% 60% at 100% 25%, hsla(320, 90%, 55%, 0.22) 0%, transparent 65%),
       radial-gradient(ellipse 30% 25% at 95% 0%, hsla(280, 95%, 60%, 0.18) 0%, transparent 60%),
-      linear-gradient(rgba(168, 85, 247, 0.055) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(168, 85, 247, 0.055) 1px, transparent 1px),
+      radial-gradient(circle, rgba(190, 130, 255, 0.18) 1px, transparent 1.5px),
       linear-gradient(180deg, hsl(265, 50%, 5%) 0%, hsl(268, 50%, 4%) 50%, hsl(265, 50%, 5%) 100%);
-    background-repeat: no-repeat, no-repeat, no-repeat, repeat, repeat, no-repeat;
-    background-size: 100% 100%, 100% 100%, 100% 100%, 48px 48px, 48px 48px, 100% 100%;
-    background-attachment: fixed, fixed, fixed, fixed, fixed, fixed;
+    background-repeat: no-repeat, no-repeat, no-repeat, repeat, no-repeat;
+    background-size: 100% 100%, 100% 100%, 100% 100%, 26px 26px, 100% 100%;
+    background-attachment: fixed, fixed, fixed, fixed, fixed;
     min-height: 100vh;
   }
+
 
 
   h1, h2, h3, h4, h5, h6 {
