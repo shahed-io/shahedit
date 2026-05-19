@@ -1,14 +1,7 @@
 import { motion } from "framer-motion";
 import { Smartphone, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-
-const methods = [
-  { label: "বিকাশ", sublabel: "Send Money", number: "01820060046", color: "#E2136E", short: "bK" },
-  { label: "নগদ", sublabel: "Send Money", number: "01820060046", color: "#F6821F", short: "NG" },
-  { label: "রকেট", sublabel: "Send Money", number: "01820060046", color: "#8B1FA8", short: "RK" },
-  { label: "উপায়", sublabel: "Send Money", number: "01820060046", color: "#00A651", short: "UP" },
-  { label: "বিকাশ মার্চেন্ট", sublabel: "Merchant", number: "01820060046", color: "#E2136E", short: "bM" },
-];
+import { usePaymentMethods } from "@/hooks/usePaymentMethods";
 
 const PaymentSection = () => (
   <section className="py-20 relative">
