@@ -215,6 +215,7 @@ const AppWithAnalytics = () => {
         <Route path="/delivery-policy" element={<DeliveryPolicyPage />} />
         <Route path="/complaint-policy" element={<ComplaintPolicyPage />} />
         <Route path="/payment" element={<PaymentPage />} />
+        <Route path="/payment/bkash/callback" element={<BkashCallbackPage />} />
         <Route path="/refund-request" element={<RefundRequestPage />} />
         <Route path="/my-refunds" element={<MyRefundsPage />} />
         <Route path="/product/:id" element={<ProductDetailsPage />} />
