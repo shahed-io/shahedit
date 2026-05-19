@@ -10,6 +10,7 @@ export type AdminSection =
   | "refunds"
   | "payments"
   | "orders"
+  | "products"
   | "client-docs"
   | "services"
   | "service-packages"
