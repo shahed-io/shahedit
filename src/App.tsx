@@ -10,6 +10,7 @@ import { ThemeProvider } from "@/contexts/ThemeContext";
 import { useAnalyticsInjection } from "@/hooks/useAnalyticsInjection";
 import { SEO } from "@/components/SEO";
 import GlobalSupport from "@/components/GlobalSupport";
+import ThemeAppearanceProvider from "@/components/ThemeAppearanceProvider";
 import { lazy, Suspense } from "react";
 
 // Eagerly loaded (most-visited / lightweight)
