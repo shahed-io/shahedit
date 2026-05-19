@@ -1,5 +1,6 @@
 import { Star, ArrowRight, Zap, CreditCard, MessageCircle, X, Copy, Smartphone, Send, CheckCircle, ChevronRight, ChevronLeft, Info, PenLine, Search, User as UserIcon, Mail, Phone, Tag, ShieldCheck, Sparkles } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { usePaymentMethods } from "@/hooks/usePaymentMethods";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
@@ -27,13 +28,9 @@ export interface ServicePackageRow {
   services?: { title: string } | null;
 }
 
-const paymentMethods = [
-  { id: "bkash_send", label: "বিকাশ", sublabel: "Send Money", number: "01820060046", color: "#E2136E", short: "bK" },
-  { id: "nagad_send", label: "নগদ", sublabel: "Send Money", number: "01820060046", color: "#F6821F", short: "NG" },
-  { id: "rocket_send", label: "রকেট", sublabel: "Send Money", number: "01820060046", color: "#8B1FA8", short: "RK" },
-  { id: "upay_send", label: "উপায়", sublabel: "Send Money", number: "01820060046", color: "#00A651", short: "UP" },
-  { id: "bkash_merchant", label: "বিকাশ মার্চেন্ট", sublabel: "Merchant", number: "01820060046", color: "#E2136E", short: "bM" },
-];
+// Hardcoded fallback removed — payment methods now come from `payment_methods` table
+// (see usePaymentMethods hook). Admin can edit numbers from Admin → Payments page.
+
 
 export const formatPrice = (price: number) => `৳ ${price.toLocaleString("en-IN")}`;
 
@@ -50,6 +47,11 @@ type CheckoutStep = "info" | "method" | "confirm" | "done";
 
 export const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose: () => void }) => {
   const { user } = useAuth();
+  const { methods: dbMethods } = usePaymentMethods();
+  const paymentMethods = useMemo(() => dbMethods.map(m => ({
+    id: m.method_id, label: m.label, sublabel: m.sublabel ?? "",
+    number: m.number, color: m.color, short: m.short_code, instructions: m.instructions,
+  })), [dbMethods]);
   const [step, setStep] = useState<CheckoutStep>("info");
   const [selected, setSelected] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);

@@ -1,16 +1,11 @@
 import { motion } from "framer-motion";
 import { Smartphone, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { usePaymentMethods } from "@/hooks/usePaymentMethods";
 
-const methods = [
-  { label: "বিকাশ", sublabel: "Send Money", number: "01820060046", color: "#E2136E", short: "bK" },
-  { label: "নগদ", sublabel: "Send Money", number: "01820060046", color: "#F6821F", short: "NG" },
-  { label: "রকেট", sublabel: "Send Money", number: "01820060046", color: "#8B1FA8", short: "RK" },
-  { label: "উপায়", sublabel: "Send Money", number: "01820060046", color: "#00A651", short: "UP" },
-  { label: "বিকাশ মার্চেন্ট", sublabel: "Merchant", number: "01820060046", color: "#E2136E", short: "bM" },
-];
-
-const PaymentSection = () => (
+const PaymentSection = () => {
+  const { methods } = usePaymentMethods();
+  return (
   <section className="py-20 relative">
     <div className="container mx-auto px-4 max-w-5xl">
       <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
@@ -29,7 +24,7 @@ const PaymentSection = () => (
       <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-10">
         {methods.map((m, i) => (
           <motion.div
-            key={m.label + m.sublabel}
+            key={m.id}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -38,7 +33,7 @@ const PaymentSection = () => (
           >
             <div className="w-12 h-12 rounded-xl mx-auto mb-3 flex items-center justify-center text-white font-bold text-sm"
               style={{ background: m.color }}>
-              {m.short}
+              {m.short_code}
             </div>
             <p className="font-bold text-foreground text-sm">{m.label}</p>
             <p className="text-xs text-muted-foreground mb-2">{m.sublabel}</p>
@@ -62,6 +57,7 @@ const PaymentSection = () => (
       </motion.div>
     </div>
   </section>
-);
+  );
+};
 
 export default PaymentSection;
