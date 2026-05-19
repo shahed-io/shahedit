@@ -224,21 +224,22 @@ const AdminDashboard = () => {
 
       {/* Revenue KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <KpiCard label="Revenue Today" value={fmtBDT(kpi.revToday)} icon={DollarSign} accent="emerald" />
-        <KpiCard label="Revenue (7d)" value={fmtBDT(kpi.revWeek)} icon={TrendingUp} accent="violet" />
-        <KpiCard label="Revenue (30d)" value={fmtBDT(kpi.revMonth)} icon={Activity} accent="magenta" />
-        <KpiCard label="Total Revenue" value={fmtBDT(kpi.revTotal)} icon={Wallet} accent="amber" />
+        <KpiCard label="Revenue Today" value={fmtBDT(kpi.revToday)} icon={DollarSign} accent="emerald" href="/admin/orders" />
+        <KpiCard label="Revenue (7d)" value={fmtBDT(kpi.revWeek)} icon={TrendingUp} accent="violet" href="/admin/orders" />
+        <KpiCard label="Revenue (30d)" value={fmtBDT(kpi.revMonth)} icon={Activity} accent="magenta" href="/admin/analytics" />
+        <KpiCard label="Total Revenue" value={fmtBDT(kpi.revTotal)} icon={Wallet} accent="amber" href="/admin/invoices" />
       </div>
 
       {/* Operations KPIs */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
-        <KpiCard label="Total Orders" value={kpi.ordersTotal} icon={ShoppingCart} accent="violet" />
-        <KpiCard label="In Progress" value={kpi.ordersInProgress} icon={Clock} accent="sky" />
-        <KpiCard label="Pending Pay" value={kpi.paymentsPending} icon={CreditCard} accent="amber" />
-        <KpiCard label="New Leads" value={kpi.leadsNew} icon={Inbox} accent="magenta" />
-        <KpiCard label="Refunds" value={kpi.refundsPending} icon={RefreshCw} accent="rose" />
-        <KpiCard label="Pageviews 30d" value={kpi.pageviews30} icon={Eye} accent="emerald" />
+        <KpiCard label="Total Orders" value={kpi.ordersTotal} icon={ShoppingCart} accent="violet" href="/admin/orders" />
+        <KpiCard label="In Progress" value={kpi.ordersInProgress} icon={Clock} accent="sky" href="/admin/orders" />
+        <KpiCard label="Pending Pay" value={kpi.paymentsPending} icon={CreditCard} accent="amber" href="/admin/payments" />
+        <KpiCard label="New Leads" value={kpi.leadsNew} icon={Inbox} accent="magenta" href="/admin/leads" />
+        <KpiCard label="Refunds" value={kpi.refundsPending} icon={RefreshCw} accent="rose" href="/admin/refunds" />
+        <KpiCard label="Pageviews 30d" value={kpi.pageviews30} icon={Eye} accent="emerald" href="/admin/analytics" />
       </div>
+
 
       {/* Quick Actions */}
       <GlassCard className="p-5 mb-8">
