@@ -370,9 +370,9 @@ export const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose
 
             {step === "pay" && (
               <motion.div key="pay" initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -16 }} className="space-y-4">
-                {/* Method tiles — only 2 */}
-                <div className="grid grid-cols-2 gap-3">
-                  {CHECKOUT_METHODS.map(m => {
+                {/* Method tiles */}
+                <div className={`grid gap-3 ${availableMethods.length === 1 ? "grid-cols-1" : "grid-cols-2"}`}>
+                  {availableMethods.map(m => {
                     const active = selected === m.id;
                     return (
                       <motion.button key={m.id} whileTap={{ scale: 0.97 }}
@@ -410,42 +410,41 @@ export const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose
 
                 {selected === "wallet" && (
                   <div className="rounded-2xl p-4 border border-violet-200 bg-violet-50/60 space-y-3">
-                    <p className="text-xs font-bold text-slate-700">কোন ওয়ালেটে পাঠাবেন বেছে নিন:</p>
-                    <div className="grid grid-cols-2 gap-2">
-                      {walletNumbers.map(w => {
-                        const active = form.wallet_number === w.number;
-                        return (
-                          <button key={w.id} type="button"
-                            onClick={() => setForm(f => ({ ...f, wallet_number: w.number }))}
-                            className={`text-left rounded-xl p-2.5 border transition-all ${active ? "border-violet-500 bg-white shadow-sm" : "border-slate-200 bg-white/70 hover:border-slate-300"}`}>
-                            <div className="flex items-center gap-2">
-                              <div className="w-7 h-7 rounded-lg flex items-center justify-center text-white text-[10px] font-bold"
-                                style={{ background: w.color }}>{w.short_code}</div>
-                              <div className="min-w-0">
-                                <p className="text-[11px] font-bold text-slate-700 truncate">{w.label}</p>
-                                <p className="text-[10px] text-slate-500 truncate">{w.number}</p>
-                              </div>
-                            </div>
-                          </button>
-                        );
-                      })}
+                    <div className="flex items-start gap-3">
+                      <div className="w-9 h-9 rounded-xl flex items-center justify-center text-white shrink-0"
+                        style={{ background: 'linear-gradient(135deg,#7c3aed,#a855f7)' }}>
+                        <Send size={16} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-bold text-slate-800">Wallet Top-up <span className="text-[10px] font-semibold text-pink-600 ml-1">via bKash Online</span></p>
+                        <p className="text-xs text-slate-600 mt-0.5 leading-relaxed">{wallet.note}</p>
+                      </div>
                     </div>
-                    {form.wallet_number && (
-                      <div className="flex items-center justify-between gap-2 rounded-xl bg-white border border-violet-200 px-3 py-2">
-                        <div className="text-xs text-slate-600 truncate">
-                          <span className="font-semibold text-slate-800">{form.wallet_number}</span> নম্বরে <strong>{formatPrice(finalPrice)}</strong> পাঠান
-                        </div>
-                        <button onClick={() => copyNumber(form.wallet_number)}
-                          className="shrink-0 text-[11px] font-bold px-2.5 py-1 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 flex items-center gap-1">
-                          <Copy size={11} /> কপি
-                        </button>
+
+                    {/* Quick amounts */}
+                    {wallet.quickAmounts.length > 0 && (
+                      <div className="grid grid-cols-4 gap-2">
+                        {wallet.quickAmounts.map(amt => {
+                          const active = topupAmount === amt;
+                          return (
+                            <button key={amt} type="button" onClick={() => setTopupAmount(amt)}
+                              className={`rounded-xl py-2 text-xs font-bold transition-all border ${active ? "border-violet-500 bg-violet-500 text-white shadow-sm" : "border-slate-200 bg-white text-slate-700 hover:border-slate-300"}`}>
+                              ৳{amt.toLocaleString("en-IN")}
+                            </button>
+                          );
+                        })}
                       </div>
                     )}
+
+                    {/* Custom amount */}
                     <div>
-                      <label className="text-[11px] font-semibold text-slate-600 mb-1 block">Transaction ID *</label>
-                      <input value={form.transaction_id}
-                        onChange={e => setForm(f => ({ ...f, transaction_id: e.target.value }))}
-                        placeholder="যেমন: 8JK2FT1X9P"
+                      <label className="text-[11px] font-semibold text-slate-600 mb-1 block">
+                        নিজে amount লিখুন (৳{wallet.min.toLocaleString("en-IN")} – ৳{wallet.max.toLocaleString("en-IN")})
+                      </label>
+                      <input type="number" value={topupAmount || ""}
+                        onChange={e => setTopupAmount(Number(e.target.value))}
+                        min={wallet.min} max={wallet.max}
+                        placeholder={`যেমন: ${wallet.min}`}
                         className="w-full rounded-xl px-3 py-2.5 text-sm bg-white border border-slate-200 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 transition" />
                     </div>
                   </div>
@@ -453,13 +452,17 @@ export const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose
 
                 {/* Total row */}
                 <div className="flex items-center justify-between rounded-2xl border border-slate-200 px-4 py-3">
-                  <span className="text-sm font-semibold text-slate-700">পেমেন্ট মোট</span>
-                  <span className="text-xl font-black text-fuchsia-600">{formatPrice(finalPrice)}</span>
+                  <span className="text-sm font-semibold text-slate-700">
+                    {selected === "wallet" ? "টপ-আপ পরিমাণ" : "পেমেন্ট মোট"}
+                  </span>
+                  <span className="text-xl font-black text-fuchsia-600">
+                    {formatPrice(selected === "wallet" ? (topupAmount || 0) : finalPrice)}
+                  </span>
                 </div>
 
                 {/* Big CTA */}
                 <motion.button whileTap={{ scale: 0.98 }} onClick={handlePay}
-                  disabled={loading || bkashLoading}
+                  disabled={bkashLoading}
                   className="w-full py-4 rounded-full text-[15px] font-bold text-white flex items-center justify-center gap-2 disabled:opacity-60"
                   style={{
                     background: selected === "bkash_online"
@@ -469,7 +472,7 @@ export const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose
                       ? '0 12px 30px -10px rgba(226,19,110,0.55)'
                       : '0 12px 30px -10px rgba(124,58,237,0.5)',
                   }}>
-                  {bkashLoading || loading ? (
+                  {bkashLoading ? (
                     "প্রসেস হচ্ছে..."
                   ) : selected === "bkash_online" ? (
                     <>
@@ -478,7 +481,8 @@ export const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose
                     </>
                   ) : (
                     <>
-                      <Send size={14} /> Wallet পেমেন্ট জমা দিন
+                      <span className="w-6 h-6 rounded-full bg-white/25 flex items-center justify-center"><Send size={12} /></span>
+                      Wallet Top-up <span className="opacity-90">{formatPrice(topupAmount || 0)}</span>
                     </>
                   )}
                 </motion.button>
