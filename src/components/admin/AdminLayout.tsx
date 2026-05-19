@@ -421,6 +421,5 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     </div>
   );
 };
-};
 
 export default AdminLayout;
