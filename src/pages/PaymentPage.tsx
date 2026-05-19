@@ -21,11 +21,42 @@ const PaymentPage = () => {
   const [selected, setSelected] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [bkashLoading, setBkashLoading] = useState(false);
   const [form, setForm] = useState({
     name: "", phone: "", email: "", service: "", amount: "", transaction_id: "", note: ""
   });
 
   const selectedMethod = paymentMethods.find(m => m.id === selected);
+
+  const payWithBkashPGW = async () => {
+    if (!form.amount || isNaN(Number(form.amount)) || Number(form.amount) <= 0) {
+      toast.error("সঠিক পরিমাণ দিন"); return;
+    }
+    if (!form.name || !form.phone) { toast.error("নাম ও মোবাইল নম্বর দিন"); return; }
+    setBkashLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("bkash-create-payment", {
+        body: {
+          amount: Number(form.amount),
+          customer_name: form.name,
+          customer_msisdn: form.phone,
+          email: form.email || null,
+          service: form.service || null,
+          note: form.note || null,
+          callback_url: `${window.location.origin}/payment/bkash/callback`,
+        },
+      });
+      if (error || !data?.success) {
+        toast.error(data?.error || "bKash পেমেন্ট শুরু করা যায়নি");
+        return;
+      }
+      window.location.href = data.bkashURL;
+    } catch (e) {
+      toast.error("সমস্যা হয়েছে");
+    } finally {
+      setBkashLoading(false);
+    }
+  };
 
   const copyNumber = (num: string) => {
     navigator.clipboard.writeText(num);
