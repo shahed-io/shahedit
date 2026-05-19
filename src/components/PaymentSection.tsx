@@ -24,7 +24,7 @@ const PaymentSection = () => {
       <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-10">
         {methods.map((m, i) => (
           <motion.div
-            key={m.label + m.sublabel}
+            key={m.id}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -33,7 +33,7 @@ const PaymentSection = () => {
           >
             <div className="w-12 h-12 rounded-xl mx-auto mb-3 flex items-center justify-center text-white font-bold text-sm"
               style={{ background: m.color }}>
-              {m.short}
+              {m.short_code}
             </div>
             <p className="font-bold text-foreground text-sm">{m.label}</p>
             <p className="text-xs text-muted-foreground mb-2">{m.sublabel}</p>
