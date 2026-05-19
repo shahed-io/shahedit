@@ -224,21 +224,22 @@ const AdminDashboard = () => {
 
       {/* Revenue KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <KpiCard label="Revenue Today" value={fmtBDT(kpi.revToday)} icon={DollarSign} accent="emerald" />
-        <KpiCard label="Revenue (7d)" value={fmtBDT(kpi.revWeek)} icon={TrendingUp} accent="violet" />
-        <KpiCard label="Revenue (30d)" value={fmtBDT(kpi.revMonth)} icon={Activity} accent="magenta" />
-        <KpiCard label="Total Revenue" value={fmtBDT(kpi.revTotal)} icon={Wallet} accent="amber" />
+        <KpiCard label="Revenue Today" value={fmtBDT(kpi.revToday)} icon={DollarSign} accent="emerald" href="/admin/orders" />
+        <KpiCard label="Revenue (7d)" value={fmtBDT(kpi.revWeek)} icon={TrendingUp} accent="violet" href="/admin/orders" />
+        <KpiCard label="Revenue (30d)" value={fmtBDT(kpi.revMonth)} icon={Activity} accent="magenta" href="/admin/analytics" />
+        <KpiCard label="Total Revenue" value={fmtBDT(kpi.revTotal)} icon={Wallet} accent="amber" href="/admin/invoices" />
       </div>
 
       {/* Operations KPIs */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
-        <KpiCard label="Total Orders" value={kpi.ordersTotal} icon={ShoppingCart} accent="violet" />
-        <KpiCard label="In Progress" value={kpi.ordersInProgress} icon={Clock} accent="sky" />
-        <KpiCard label="Pending Pay" value={kpi.paymentsPending} icon={CreditCard} accent="amber" />
-        <KpiCard label="New Leads" value={kpi.leadsNew} icon={Inbox} accent="magenta" />
-        <KpiCard label="Refunds" value={kpi.refundsPending} icon={RefreshCw} accent="rose" />
-        <KpiCard label="Pageviews 30d" value={kpi.pageviews30} icon={Eye} accent="emerald" />
+        <KpiCard label="Total Orders" value={kpi.ordersTotal} icon={ShoppingCart} accent="violet" href="/admin/orders" />
+        <KpiCard label="In Progress" value={kpi.ordersInProgress} icon={Clock} accent="sky" href="/admin/orders" />
+        <KpiCard label="Pending Pay" value={kpi.paymentsPending} icon={CreditCard} accent="amber" href="/admin/payments" />
+        <KpiCard label="New Leads" value={kpi.leadsNew} icon={Inbox} accent="magenta" href="/admin/leads" />
+        <KpiCard label="Refunds" value={kpi.refundsPending} icon={RefreshCw} accent="rose" href="/admin/refunds" />
+        <KpiCard label="Pageviews 30d" value={kpi.pageviews30} icon={Eye} accent="emerald" href="/admin/analytics" />
       </div>
+
 
       {/* Quick Actions */}
       <GlassCard className="p-5 mb-8">
@@ -341,7 +342,7 @@ const AdminDashboard = () => {
           ) : (
             <div className="space-y-2">
               {recentOrders.map(o => (
-                <div key={o.id} className="flex items-center justify-between p-3 rounded-xl bg-white/[0.02] border border-primary/10 hover:border-primary/30 transition">
+                <Link key={o.id} to="/admin/orders" className="flex items-center justify-between p-3 rounded-xl bg-white/[0.02] border border-primary/10 hover:border-primary/30 hover:bg-white/[0.04] transition cursor-pointer">
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-medium text-foreground truncate">{o.product_title}</p>
                     <p className="text-xs text-muted-foreground">{o.customer_name} · {o.order_number}</p>
@@ -350,9 +351,10 @@ const AdminDashboard = () => {
                     <span className="text-sm font-bold text-emerald-400">{fmtBDT(Number(o.amount))}</span>
                     <StatusBadge status={o.status} />
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
+
           )}
         </GlassCard>
 
@@ -369,7 +371,7 @@ const AdminDashboard = () => {
           ) : (
             <div className="space-y-2">
               {pendingPayments.map(p => (
-                <div key={p.id} className="flex items-center justify-between p-3 rounded-xl bg-white/[0.02] border border-primary/10 hover:border-primary/30 transition">
+                <Link key={p.id} to="/admin/payments" className="flex items-center justify-between p-3 rounded-xl bg-white/[0.02] border border-primary/10 hover:border-primary/30 hover:bg-white/[0.04] transition cursor-pointer">
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-medium text-foreground truncate">{p.name}</p>
                     <p className="text-xs text-muted-foreground capitalize">{p.payment_method}</p>
@@ -378,9 +380,10 @@ const AdminDashboard = () => {
                     <span className="text-sm font-bold text-amber-400">{fmtBDT(Number(p.amount))}</span>
                     <StatusBadge status={p.status} />
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
+
           )}
         </GlassCard>
       </div>
@@ -397,9 +400,9 @@ const AdminDashboard = () => {
                 const max = topServices[0]?.revenue || 1;
                 const pct = (s.revenue / max) * 100;
                 return (
-                  <div key={s.name}>
+                  <Link key={s.name} to="/admin/orders" className="block group/row cursor-pointer">
                     <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-sm text-foreground flex items-center gap-2">
+                      <span className="text-sm text-foreground flex items-center gap-2 group-hover/row:text-primary transition">
                         <span className="text-xs text-muted-foreground w-5">#{i + 1}</span>
                         {s.name}
                       </span>
@@ -408,10 +411,11 @@ const AdminDashboard = () => {
                     <div className="h-2 bg-white/5 rounded-full overflow-hidden">
                       <div className="h-full bg-gradient-to-r from-primary to-accent rounded-full" style={{ width: `${pct}%` }} />
                     </div>
-                  </div>
+                  </Link>
                 );
               })}
             </div>
+
           )}
         </GlassCard>
 
@@ -425,7 +429,7 @@ const AdminDashboard = () => {
           ) : (
             <div className="space-y-2">
               {recentLeads.map(l => (
-                <div key={l.id} className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-primary/10 hover:border-primary/30 transition">
+                <Link key={l.id} to="/admin/leads" className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-primary/10 hover:border-primary/30 hover:bg-white/[0.04] transition cursor-pointer">
                   <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
                     {l.name?.[0]?.toUpperCase()}
                   </div>
@@ -434,9 +438,10 @@ const AdminDashboard = () => {
                     <p className="text-xs text-muted-foreground truncate">{l.service_interested || l.email}</p>
                   </div>
                   <StatusBadge status={l.status} />
-                </div>
+                </Link>
               ))}
             </div>
+
           )}
         </GlassCard>
       </div>
@@ -450,14 +455,15 @@ const AdminDashboard = () => {
           ) : (
             <div className="space-y-2">
               {topPages.map((p, i) => (
-                <div key={p.path} className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] border border-primary/10">
+                <a key={p.path} href={p.path} target="_blank" rel="noreferrer" className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] border border-primary/10 hover:border-primary/30 hover:bg-white/[0.04] transition cursor-pointer">
                   <span className="text-xs text-foreground truncate flex-1 mr-2">
                     <span className="text-muted-foreground mr-2">#{i + 1}</span>{p.path}
                   </span>
                   <span className="text-xs text-primary font-semibold">{p.views}</span>
-                </div>
+                </a>
               ))}
             </div>
+
           )}
         </GlassCard>
 
@@ -505,22 +511,23 @@ const AdminDashboard = () => {
           <SectionTitle><Activity className="w-4 h-4" /> System Overview</SectionTitle>
           <div className="grid grid-cols-2 gap-3">
             {[
-              { label: "Services", value: counts.services, icon: Briefcase },
-              { label: "Products", value: counts.products, icon: Sparkles },
-              { label: "Blog Posts", value: counts.blog, icon: FileText },
-              { label: "Projects", value: counts.projects, icon: FolderOpen },
-              { label: "Users", value: counts.users, icon: Users },
-              { label: "Avg Rating", value: kpi.reviewsAvg.toFixed(1) + "★", icon: Star },
+              { label: "Services", value: counts.services, icon: Briefcase, href: "/admin/services" },
+              { label: "Products", value: counts.products, icon: Sparkles, href: "/admin/products" },
+              { label: "Blog Posts", value: counts.blog, icon: FileText, href: "/admin/crud?table=blog_posts" },
+              { label: "Projects", value: counts.projects, icon: FolderOpen, href: "/admin/projects" },
+              { label: "Users", value: counts.users, icon: Users, href: "/admin/users" },
+              { label: "Avg Rating", value: kpi.reviewsAvg.toFixed(1) + "★", icon: Star, href: "/admin/products" },
             ].map(c => (
-              <div key={c.label} className="p-3 rounded-xl bg-white/[0.02] border border-primary/10">
+              <Link key={c.label} to={c.href} className="p-3 rounded-xl bg-white/[0.02] border border-primary/10 hover:border-primary/30 hover:bg-white/[0.04] transition cursor-pointer block">
                 <div className="flex items-center justify-between mb-1">
                   <c.icon className="w-4 h-4 text-primary/70" />
                 </div>
                 <p className="text-xl font-bold font-syne text-foreground">{c.value}</p>
                 <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{c.label}</p>
-              </div>
+              </Link>
             ))}
           </div>
+
         </GlassCard>
       </div>
     </AdminPage>

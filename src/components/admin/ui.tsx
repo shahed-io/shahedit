@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { LucideIcon } from "lucide-react";
+import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
+
 
 /** Royal Purple + Magenta admin UI primitives — premium glassmorphism */
 
@@ -70,13 +72,15 @@ export const GlassCard = ({
 );
 
 export const KpiCard = ({
-  label, value, delta, icon: Icon, accent = "violet",
+  label, value, delta, icon: Icon, accent = "violet", href, onClick,
 }: {
   label: string;
   value: string | number;
   delta?: { value: string; positive?: boolean };
   icon?: LucideIcon;
   accent?: "violet" | "magenta" | "emerald" | "rose" | "sky" | "amber";
+  href?: string;
+  onClick?: () => void;
 }) => {
   const accents = {
     violet:  { tile: "from-primary/35 to-primary/10 border-primary/40 text-primary", glow: "bg-primary/30" },
@@ -87,8 +91,8 @@ export const KpiCard = ({
     amber:   { tile: "from-amber-400/35 to-amber-600/10 border-amber-400/40 text-amber-400", glow: "bg-amber-500/30" },
   } as const;
   const a = accents[accent];
-  return (
-    <GlassCard hover className="p-5">
+  const inner = (
+    <GlassCard hover className={cn("p-5 h-full", (href || onClick) && "cursor-pointer")}>
       {/* ambient corner glow */}
       <div className={cn("pointer-events-none absolute -right-10 -bottom-10 w-32 h-32 rounded-full blur-3xl opacity-40 group-hover:opacity-70 transition-opacity duration-500", a.glow)} />
       <div className="relative flex items-start justify-between">
@@ -119,7 +123,11 @@ export const KpiCard = ({
       </div>
     </GlassCard>
   );
+  if (href) return <Link to={href} className="block h-full">{inner}</Link>;
+  if (onClick) return <button type="button" onClick={onClick} className="block h-full w-full text-left">{inner}</button>;
+  return inner;
 };
+
 
 export const SectionTitle = ({ children }: { children: React.ReactNode }) => (
   <h2 className="text-lg font-bold font-syne text-foreground/90 mb-4 flex items-center gap-2.5 tracking-tight">
