@@ -56,6 +56,7 @@ const AdminActivityLog = lazy(() => import("./pages/admin/AdminActivityLog"));
 const AdminSitemap = lazy(() => import("./pages/admin/AdminSitemap"));
 const AdminSchemaBuilder = lazy(() => import("./pages/admin/AdminSchemaBuilder"));
 const AdminSEOTools = lazy(() => import("./pages/admin/AdminSEOTools"));
+const AdminProducts = lazy(() => import("./pages/admin/AdminProducts"));
 
 // Auth / user pages
 const DashboardPage = lazy(() => import("./pages/DashboardPage"));
