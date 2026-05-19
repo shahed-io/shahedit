@@ -63,7 +63,30 @@ const AdminBkashPGW = () => {
     if (data?.value === "live" || data?.value === "sandbox") setMode(data.value as any);
   };
 
-  useEffect(() => { fetchTxns(); fetchMode(); }, []);
+  useEffect(() => {
+    fetchTxns();
+    fetchMode();
+    const channel = supabase
+      .channel("bkash_txns_admin")
+      .on("postgres_changes", { event: "*", schema: "public", table: "bkash_transactions" }, (payload: any) => {
+        setTxns((prev) => {
+          if (payload.eventType === "INSERT") {
+            if (prev.some((t) => t.id === payload.new.id)) return prev;
+            toast.success(`নতুন bKash লেনদেন: ৳${Number(payload.new.amount).toLocaleString("en-IN")}`);
+            return [payload.new as BkashTxn, ...prev];
+          }
+          if (payload.eventType === "UPDATE") {
+            return prev.map((t) => (t.id === payload.new.id ? (payload.new as BkashTxn) : t));
+          }
+          if (payload.eventType === "DELETE") {
+            return prev.filter((t) => t.id !== payload.old.id);
+          }
+          return prev;
+        });
+      })
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, []);
 
   const saveMode = async (next: "sandbox" | "live") => {
     setSaving(true);
@@ -111,9 +134,18 @@ const AdminBkashPGW = () => {
           </h1>
           <p className="text-slate-400 text-sm">bKash PGW (Tokenized Checkout) — পেমেন্ট ও লেনদেন</p>
         </div>
-        <Button onClick={fetchTxns} variant="outline" size="sm" className="gap-2 border-slate-700 text-slate-300">
-          <RefreshCw size={14} /> রিফ্রেশ
-        </Button>
+        <div className="flex items-center gap-2">
+          <span className="flex items-center gap-1.5 text-[11px] text-green-400 bg-green-500/10 border border-green-500/20 px-2 py-1 rounded-full">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500"></span>
+            </span>
+            Live
+          </span>
+          <Button onClick={fetchTxns} variant="outline" size="sm" className="gap-2 border-slate-700 text-slate-300">
+            <RefreshCw size={14} /> রিফ্রেশ
+          </Button>
+        </div>
       </div>
 
       {/* Mode + Config */}
