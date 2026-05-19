@@ -110,6 +110,75 @@ export type Database = {
         }
         Relationships: []
       }
+      bkash_transactions: {
+        Row: {
+          amount: number
+          created_at: string
+          currency: string
+          customer_msisdn: string | null
+          customer_name: string | null
+          id: string
+          intent: string | null
+          merchant_invoice_number: string | null
+          mode: string
+          note: string | null
+          payer_reference: string | null
+          payment_create_time: string | null
+          payment_execute_time: string | null
+          payment_id: string | null
+          raw_payload: Json | null
+          service: string | null
+          status: string
+          trx_id: string | null
+          updated_at: string
+          user_email: string | null
+        }
+        Insert: {
+          amount?: number
+          created_at?: string
+          currency?: string
+          customer_msisdn?: string | null
+          customer_name?: string | null
+          id?: string
+          intent?: string | null
+          merchant_invoice_number?: string | null
+          mode?: string
+          note?: string | null
+          payer_reference?: string | null
+          payment_create_time?: string | null
+          payment_execute_time?: string | null
+          payment_id?: string | null
+          raw_payload?: Json | null
+          service?: string | null
+          status?: string
+          trx_id?: string | null
+          updated_at?: string
+          user_email?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          currency?: string
+          customer_msisdn?: string | null
+          customer_name?: string | null
+          id?: string
+          intent?: string | null
+          merchant_invoice_number?: string | null
+          mode?: string
+          note?: string | null
+          payer_reference?: string | null
+          payment_create_time?: string | null
+          payment_execute_time?: string | null
+          payment_id?: string | null
+          raw_payload?: Json | null
+          service?: string | null
+          status?: string
+          trx_id?: string | null
+          updated_at?: string
+          user_email?: string | null
+        }
+        Relationships: []
+      }
       blog_categories: {
         Row: {
           created_at: string
