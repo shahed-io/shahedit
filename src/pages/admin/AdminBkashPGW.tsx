@@ -67,7 +67,20 @@ const AdminBkashPGW = () => {
     toast.success(`bKash মোড: ${next.toUpperCase()}`);
   };
 
-  const filtered = txns.filter(t => filter === "all" ? true : t.status === filter);
+  const q = search.trim().toLowerCase();
+  const filtered = txns.filter(t => {
+    if (filter !== "all" && t.status !== filter) return false;
+    if (!q) return true;
+    return (
+      t.payment_id?.toLowerCase().includes(q) ||
+      t.trx_id?.toLowerCase().includes(q) ||
+      t.merchant_invoice_number?.toLowerCase().includes(q) ||
+      t.customer_msisdn?.toLowerCase().includes(q) ||
+      t.payer_reference?.toLowerCase().includes(q) ||
+      t.customer_name?.toLowerCase().includes(q) ||
+      t.user_email?.toLowerCase().includes(q)
+    );
+  });
   const stats = {
     total: txns.length,
     initiated: txns.filter(t => t.status === "initiated").length,
