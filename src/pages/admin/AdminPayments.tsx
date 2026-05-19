@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { openInvoice } from "@/lib/invoice";
 import { PaymentMethodsManager } from "@/components/admin/PaymentMethodsManager";
+import { WalletSettingsManager } from "@/components/admin/WalletSettingsManager";
 
 interface Payment {
   id: string;
