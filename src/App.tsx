@@ -56,6 +56,7 @@ const AdminActivityLog = lazy(() => import("./pages/admin/AdminActivityLog"));
 const AdminSitemap = lazy(() => import("./pages/admin/AdminSitemap"));
 const AdminSchemaBuilder = lazy(() => import("./pages/admin/AdminSchemaBuilder"));
 const AdminSEOTools = lazy(() => import("./pages/admin/AdminSEOTools"));
+const AdminProducts = lazy(() => import("./pages/admin/AdminProducts"));
 
 // Auth / user pages
 const DashboardPage = lazy(() => import("./pages/DashboardPage"));
@@ -173,6 +174,7 @@ const AdminRoutes = () => (
         <Route path="sitemap" element={<RoleRoute section="sitemap"><AdminSitemap /></RoleRoute>} />
         <Route path="schema" element={<RoleRoute section="schema"><AdminSchemaBuilder /></RoleRoute>} />
         <Route path="seo-tools" element={<RoleRoute section="seo-tools"><AdminSEOTools /></RoleRoute>} />
+        <Route path="products" element={<RoleRoute section="products"><AdminProducts /></RoleRoute>} />
       </Routes>
       </Suspense>
     </AdminLayout>
