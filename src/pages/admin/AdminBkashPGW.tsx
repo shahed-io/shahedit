@@ -46,6 +46,8 @@ const AdminBkashPGW = () => {
   const [filter, setFilter] = useState<"all" | "initiated" | "completed" | "failed">("all");
   const [expanded, setExpanded] = useState<string | null>(null);
   const [search, setSearch] = useState("");
+  const [dateFrom, setDateFrom] = useState<Date | undefined>();
+  const [dateTo, setDateTo] = useState<Date | undefined>();
 
   const callbackUrl = `${window.location.origin}/payment/bkash/callback`;
 
