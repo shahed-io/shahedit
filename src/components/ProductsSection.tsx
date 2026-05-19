@@ -155,7 +155,8 @@ export const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose
   const inputCls = "w-full rounded-xl pl-10 pr-3 py-3 text-sm bg-white/5 border border-white/10 text-foreground placeholder:text-foreground/30 focus:outline-none focus:border-primary/60 focus:bg-white/8 transition-all";
 
   return (
-    <div className="fixed inset-0 z-[999] flex items-center justify-center p-4" onClick={onClose}>
+    <div className="fixed inset-0 z-[999] flex items-center justify-center p-4" role="dialog" aria-modal="true">
+      {/* Locked backdrop — clicking outside does NOT close the modal */}
       <div className="absolute inset-0 bg-black/75 backdrop-blur-md" />
       <motion.div
         initial={{ opacity: 0, scale: 0.94, y: 24 }}
@@ -168,7 +169,6 @@ export const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose
           border: '1px solid rgba(168,85,247,0.3)',
           boxShadow: '0 30px 90px -20px rgba(168,85,247,0.35), inset 0 1px 0 rgba(255,255,255,0.06)'
         }}
-        onClick={e => e.stopPropagation()}
       >
         {/* Glow accent */}
         <div className="pointer-events-none absolute -top-20 -left-20 w-72 h-72 rounded-full blur-3xl opacity-30"
@@ -578,7 +578,8 @@ const DetailsModal = ({ pkg, onClose, onPay, c }: {
   );
 
   return (
-    <div className="fixed inset-0 z-[998] flex items-center justify-center p-4" onClick={onClose}>
+    <div className="fixed inset-0 z-[998] flex items-center justify-center p-4" role="dialog" aria-modal="true">
+      {/* Locked backdrop — outside click does NOT close */}
       <div className="absolute inset-0 bg-black/75 backdrop-blur-sm" />
       <motion.div
         initial={{ opacity: 0, scale: 0.88, y: 30 }}
@@ -587,7 +588,6 @@ const DetailsModal = ({ pkg, onClose, onPay, c }: {
         transition={{ type: "spring", stiffness: 320, damping: 28 }}
         className="relative w-full max-w-md rounded-3xl overflow-hidden shadow-2xl max-h-[88vh] overflow-y-auto"
         style={{ background: 'hsl(265,45%,6%)', border: `1px solid ${c.border}` }}
-        onClick={e => e.stopPropagation()}
       >
         {/* Hero image or gradient */}
         <div className="relative h-44 flex items-center justify-center overflow-hidden"
