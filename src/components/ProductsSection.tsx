@@ -45,22 +45,88 @@ export const cardColors = [
   { color: "hsl(45,93%,58%)", bg: "rgba(234,179,8,0.10)", border: "rgba(234,179,8,0.22)" },
 ];
 
-// ─── Payment Modal ───────────────────────────────────────────────────────────
+// ─── Premium Multi-Step Checkout Modal ───────────────────────────────────────
+type CheckoutStep = "info" | "method" | "confirm" | "done";
+
 export const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose: () => void }) => {
-  const [step, setStep] = useState<"method" | "form" | "done">("method");
+  const { user } = useAuth();
+  const [step, setStep] = useState<CheckoutStep>("info");
   const [selected, setSelected] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [couponLoading, setCouponLoading] = useState(false);
+  const [couponCode, setCouponCode] = useState("");
+  const [discount, setDiscount] = useState<{ code: string; amount: number } | null>(null);
   const [form, setForm] = useState({
     name: "", phone: "", email: "", transaction_id: "", note: "",
   });
 
+  // Prefill from logged-in user
+  useEffect(() => {
+    if (!user) return;
+    (async () => {
+      const { data } = await supabase
+        .from("profiles")
+        .select("full_name, phone")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      setForm(f => ({
+        ...f,
+        email: f.email || user.email || "",
+        name: f.name || data?.full_name || (user.user_metadata as any)?.full_name || "",
+        phone: f.phone || (data as any)?.phone || "",
+      }));
+    })();
+  }, [user]);
+
   const selectedMethod = paymentMethods.find(m => m.id === selected);
-  const price = pkg.price ?? 0;
+  const basePrice = pkg.price ?? 0;
+  const finalPrice = Math.max(0, basePrice - (discount?.amount ?? 0));
   const serviceName = `${pkg.services?.title ?? ""} — ${pkg.title}`;
+
+  const stepIndex = step === "info" ? 0 : step === "method" ? 1 : step === "confirm" ? 2 : 3;
+  const steps = [
+    { key: "info", label: "আপনার তথ্য", icon: UserIcon },
+    { key: "method", label: "পেমেন্ট মেথড", icon: CreditCard },
+    { key: "confirm", label: "নিশ্চিত করুন", icon: ShieldCheck },
+  ];
 
   const copyNumber = (num: string) => {
     navigator.clipboard.writeText(num);
     toast.success("নম্বর কপি হয়েছে!");
+  };
+
+  const applyCoupon = async () => {
+    const code = couponCode.trim().toUpperCase();
+    if (!code) { toast.error("কুপন কোড দিন"); return; }
+    setCouponLoading(true);
+    const { data, error } = await supabase
+      .from("coupons" as any)
+      .select("*")
+      .eq("code", code)
+      .eq("is_active", true)
+      .maybeSingle();
+    setCouponLoading(false);
+    if (error || !data) { toast.error("কুপন কোড সঠিক নয়"); return; }
+    const c: any = data;
+    const now = new Date();
+    if (c.valid_from && new Date(c.valid_from) > now) { toast.error("কুপন এখনো সক্রিয় হয়নি"); return; }
+    if (c.valid_until && new Date(c.valid_until) < now) { toast.error("কুপনের মেয়াদ শেষ"); return; }
+    if (c.max_uses && c.used_count >= c.max_uses) { toast.error("কুপনের সীমা শেষ"); return; }
+    if (c.min_order_amount && basePrice < Number(c.min_order_amount)) {
+      toast.error(`এই কুপনের জন্য সর্বনিম্ন অর্ডার ৳${c.min_order_amount}`); return;
+    }
+    const amount = c.discount_type === "percentage"
+      ? Math.round((basePrice * Number(c.discount_value)) / 100)
+      : Number(c.discount_value);
+    setDiscount({ code: c.code, amount: Math.min(amount, basePrice) });
+    toast.success(`কুপন প্রয়োগ হয়েছে! ৳${Math.min(amount, basePrice)} ছাড়`);
+  };
+
+  const goNextFromInfo = () => {
+    if (!form.name.trim()) { toast.error("নাম লিখুন"); return; }
+    if (!form.phone.trim() || form.phone.trim().length < 11) { toast.error("সঠিক মোবাইল নম্বর দিন"); return; }
+    if (!form.email.trim() || !/^\S+@\S+\.\S+$/.test(form.email)) { toast.error("সঠিক ইমেইল দিন"); return; }
+    setStep("method");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -73,10 +139,10 @@ export const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose
       phone: form.phone,
       email: form.email || null,
       service: serviceName,
-      amount: price,
+      amount: finalPrice,
       payment_method: selectedMethod?.label,
       transaction_id: form.transaction_id,
-      note: form.note || null,
+      note: [discount ? `Coupon: ${discount.code} (-৳${discount.amount})` : null, form.note].filter(Boolean).join(" | ") || null,
       status: "pending",
     });
     setLoading(false);
@@ -84,164 +150,314 @@ export const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose
     setStep("done");
   };
 
+  const inputCls = "w-full rounded-xl pl-10 pr-3 py-3 text-sm bg-white/5 border border-white/10 text-foreground placeholder:text-foreground/30 focus:outline-none focus:border-primary/60 focus:bg-white/8 transition-all";
+
   return (
     <div className="fixed inset-0 z-[999] flex items-center justify-center p-4" onClick={onClose}>
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+      <div className="absolute inset-0 bg-black/75 backdrop-blur-md" />
       <motion.div
-        initial={{ opacity: 0, scale: 0.92, y: 20 }}
+        initial={{ opacity: 0, scale: 0.94, y: 24 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.92, y: 20 }}
-        transition={{ type: "spring", stiffness: 300, damping: 25 }}
-        className="relative w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl max-h-[90vh] overflow-y-auto"
-        style={{ background: 'hsl(265,45%,6%)', border: '1px solid rgba(168,85,247,0.25)' }}
+        exit={{ opacity: 0, scale: 0.94, y: 24 }}
+        transition={{ type: "spring", stiffness: 320, damping: 28 }}
+        className="relative w-full max-w-xl rounded-3xl overflow-hidden shadow-2xl max-h-[92vh] overflow-y-auto"
+        style={{
+          background: 'linear-gradient(160deg, hsl(265,50%,8%) 0%, hsl(280,45%,6%) 100%)',
+          border: '1px solid rgba(168,85,247,0.3)',
+          boxShadow: '0 30px 90px -20px rgba(168,85,247,0.35), inset 0 1px 0 rgba(255,255,255,0.06)'
+        }}
         onClick={e => e.stopPropagation()}
       >
+        {/* Glow accent */}
+        <div className="pointer-events-none absolute -top-20 -left-20 w-72 h-72 rounded-full blur-3xl opacity-30"
+          style={{ background: 'radial-gradient(circle, hsl(270,92%,65%) 0%, transparent 70%)' }} />
+        <div className="pointer-events-none absolute -bottom-20 -right-20 w-72 h-72 rounded-full blur-3xl opacity-25"
+          style={{ background: 'radial-gradient(circle, hsl(320,90%,55%) 0%, transparent 70%)' }} />
+
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b border-white/8">
-          <div>
-            <p className="text-xs text-foreground/40 uppercase tracking-widest mb-1">পেমেন্ট করুন</p>
-            <h3 className="font-black text-foreground text-lg leading-tight">{pkg.title}</h3>
-            {price > 0 && (
-              <span className="text-2xl font-black mt-1 block" style={{ color: 'hsl(320,90%,55%)' }}>
-                {formatPrice(price)}
-              </span>
-            )}
+        <div className="relative flex items-center justify-between px-6 py-5 border-b border-white/8">
+          <div className="flex items-center gap-3">
+            <div className="w-11 h-11 rounded-2xl flex items-center justify-center"
+              style={{ background: 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))' }}>
+              <Sparkles size={20} className="text-white" />
+            </div>
+            <div>
+              <p className="text-[10px] text-foreground/45 uppercase tracking-[0.2em] mb-0.5">প্রিমিয়াম চেকআউট</p>
+              <h3 className="font-black text-foreground text-base leading-tight">{pkg.title}</h3>
+            </div>
           </div>
           <button onClick={onClose} className="w-9 h-9 rounded-xl flex items-center justify-center text-foreground/50 hover:text-foreground hover:bg-white/8 transition-all">
             <X size={18} />
           </button>
         </div>
 
-        <div className="px-6 py-5">
-          {step === "done" ? (
-            <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-center py-8">
-              <div className="w-16 h-16 bg-green-500/15 rounded-full flex items-center justify-center mx-auto mb-4">
-                <CheckCircle size={32} className="text-green-400" />
-              </div>
-              <h4 className="text-xl font-bold text-foreground mb-2">সফলভাবে জমা হয়েছে! ✅</h4>
-              <p className="text-foreground/50 text-sm mb-1">আপনার পেমেন্ট তথ্য পাওয়া গেছে।</p>
-              <p className="text-foreground/40 text-xs">২৪ ঘন্টার মধ্যে WhatsApp/Email-এ কনফার্মেশন পাবেন।</p>
-              <button onClick={onClose} className="mt-6 px-6 py-2.5 rounded-xl text-sm font-bold text-white glossy-btn"
-                style={{ background: 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))' }}>
-                বন্ধ করুন
-              </button>
-            </motion.div>
-          ) : step === "method" ? (
-            <>
-              <p className="text-sm font-semibold text-foreground/70 mb-4">পেমেন্ট মেথড বেছে নিন</p>
-              <div className="grid grid-cols-5 gap-2 mb-6">
-                {paymentMethods.map(m => (
-                  <motion.button
-                    key={m.id}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => setSelected(m.id)}
-                    className={`rounded-2xl p-3 text-center transition-all border ${selected === m.id ? "border-primary shadow-lg shadow-primary/20 bg-primary/10" : "border-white/8 bg-white/4 hover:border-white/20"}`}
-                  >
-                    <div className="w-9 h-9 rounded-xl mx-auto mb-1.5 flex items-center justify-center text-white text-xs font-bold"
-                      style={{ background: m.color }}>
-                      {m.short}
+        {/* Stepper */}
+        {step !== "done" && (
+          <div className="relative px-6 pt-5 pb-2">
+            <div className="flex items-center justify-between">
+              {steps.map((s, i) => {
+                const active = i === stepIndex;
+                const done = i < stepIndex;
+                const Icon = s.icon;
+                return (
+                  <div key={s.key} className="flex items-center flex-1 last:flex-none">
+                    <div className="flex flex-col items-center gap-1.5">
+                      <motion.div
+                        animate={{ scale: active ? 1.08 : 1 }}
+                        className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all"
+                        style={{
+                          background: done || active ? 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))' : 'rgba(255,255,255,0.04)',
+                          borderColor: done || active ? 'transparent' : 'rgba(255,255,255,0.1)',
+                          color: done || active ? '#fff' : 'rgba(255,255,255,0.4)',
+                          boxShadow: active ? '0 0 0 4px rgba(168,85,247,0.15)' : 'none',
+                        }}>
+                        {done ? <CheckCircle size={16} /> : <Icon size={14} />}
+                      </motion.div>
+                      <p className="text-[10px] font-semibold whitespace-nowrap"
+                        style={{ color: active ? 'hsl(320,90%,70%)' : done ? 'hsl(270,80%,75%)' : 'rgba(255,255,255,0.35)' }}>
+                        {s.label}
+                      </p>
                     </div>
-                    <p className="text-[10px] font-semibold text-foreground/70 leading-tight">{m.label}</p>
-                    <p className="text-[9px] text-foreground/40">{m.sublabel}</p>
-                  </motion.button>
-                ))}
-              </div>
-
-              {selectedMethod && (
-                <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
-                  className="rounded-2xl border border-primary/25 p-4 flex items-center justify-between gap-3 mb-5"
-                  style={{ background: 'rgba(168,85,247,0.08)' }}>
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm"
-                      style={{ background: selectedMethod.color }}>
-                      <Smartphone size={18} />
-                    </div>
-                    <div>
-                      <p className="text-xs text-foreground/45">{selectedMethod.label} · {selectedMethod.sublabel}</p>
-                      <p className="text-lg font-black text-foreground tracking-wide">{selectedMethod.number}</p>
-                    </div>
+                    {i < steps.length - 1 && (
+                      <div className="flex-1 h-[2px] mx-2 rounded-full overflow-hidden -mt-5"
+                        style={{ background: 'rgba(255,255,255,0.06)' }}>
+                        <motion.div
+                          initial={{ width: 0 }}
+                          animate={{ width: i < stepIndex ? '100%' : '0%' }}
+                          transition={{ duration: 0.4 }}
+                          className="h-full"
+                          style={{ background: 'linear-gradient(90deg, hsl(270,92%,65%), hsl(320,90%,48%))' }} />
+                      </div>
+                    )}
                   </div>
-                  <button onClick={() => copyNumber(selectedMethod.number)}
-                    className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border border-white/12 text-foreground/60 hover:text-foreground hover:bg-white/8 transition-all">
-                    <Copy size={12} /> কপি
-                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        <div className="relative px-6 pt-3 pb-6">
+          <AnimatePresence mode="wait">
+            {step === "done" && (
+              <motion.div key="done" initial={{ scale: 0.85, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-center py-10">
+                <motion.div
+                  initial={{ scale: 0 }} animate={{ scale: 1 }}
+                  transition={{ type: "spring", delay: 0.1, stiffness: 200 }}
+                  className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-5"
+                  style={{ background: 'linear-gradient(135deg, hsl(150,80%,45%), hsl(170,80%,40%))', boxShadow: '0 0 40px rgba(34,197,94,0.4)' }}>
+                  <CheckCircle size={40} className="text-white" />
                 </motion.div>
-              )}
+                <h4 className="text-2xl font-black text-foreground mb-2">অর্ডার সফল! 🎉</h4>
+                <p className="text-foreground/60 text-sm mb-1">আপনার পেমেন্ট তথ্য আমরা পেয়েছি।</p>
+                <p className="text-foreground/40 text-xs">২৪ ঘন্টার মধ্যে WhatsApp/Email-এ কনফার্মেশন পাবেন।</p>
+                <button onClick={onClose} className="mt-7 px-8 py-3 rounded-2xl text-sm font-bold text-white glossy-btn"
+                  style={{ background: 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))' }}>
+                  বন্ধ করুন
+                </button>
+              </motion.div>
+            )}
 
-              <motion.button
-                whileHover={{ scale: selected ? 1.02 : 1 }}
-                whileTap={{ scale: selected ? 0.98 : 1 }}
-                onClick={() => selected && setStep("form")}
-                disabled={!selected}
-                className={`w-full py-3 rounded-2xl text-sm font-bold text-white transition-all ${selected ? "glossy-btn" : "opacity-40 cursor-not-allowed"}`}
-                style={{ background: selected ? 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))' : 'rgba(255,255,255,0.08)' }}>
-                পরের ধাপ →
-              </motion.button>
-            </>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="rounded-2xl border border-primary/20 p-3 mb-2 flex items-center gap-3"
-                style={{ background: 'rgba(236,72,153,0.07)' }}>
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs font-bold"
-                  style={{ background: selectedMethod?.color }}>
-                  {selectedMethod?.short}
-                </div>
+            {step === "info" && (
+              <motion.div key="info" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-4">
+                {user && (
+                  <div className="flex items-center gap-2 text-[11px] font-semibold px-3 py-1.5 rounded-full w-fit"
+                    style={{ background: 'rgba(34,197,94,0.12)', color: 'hsl(150,80%,70%)', border: '1px solid rgba(34,197,94,0.25)' }}>
+                    <CheckCircle size={12} /> লগইন আছেন
+                  </div>
+                )}
+
                 <div>
-                  <p className="text-xs text-foreground/45">{selectedMethod?.label}</p>
-                  <p className="text-sm font-black text-foreground">{selectedMethod?.number}</p>
+                  <label className="text-xs font-semibold text-foreground/65 mb-1.5 block">পুরো নাম *</label>
+                  <div className="relative">
+                    <UserIcon size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/40" />
+                    <input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                      placeholder="আপনার নাম" className={inputCls} />
+                  </div>
                 </div>
-                <button type="button" onClick={() => setStep("method")} className="ml-auto text-xs text-foreground/40 hover:text-foreground/70 underline">পরিবর্তন</button>
-              </div>
 
-              <p className="text-xs text-foreground/50 -mt-1 mb-2">
-                উপরের নম্বরে <strong className="text-foreground/80">{price > 0 ? formatPrice(price) : "পরিমাণ"}</strong> পাঠান, তারপর নিচের ফর্ম পূরণ করুন।
-              </p>
-
-              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-semibold text-foreground/60 mb-1 block">নাম *</label>
-                  <input required value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                    placeholder="পূর্ণ নাম"
-                    className="w-full rounded-xl px-3 py-2.5 text-sm bg-white/5 border border-white/10 text-foreground placeholder:text-foreground/30 focus:outline-none focus:border-primary/50" />
+                  <label className="text-xs font-semibold text-foreground/65 mb-1.5 block">ইমেইল *</label>
+                  <div className="relative">
+                    <Mail size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/40" />
+                    <input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                      placeholder="example@email.com" className={inputCls} />
+                  </div>
                 </div>
+
                 <div>
-                  <label className="text-xs font-semibold text-foreground/60 mb-1 block">মোবাইল *</label>
-                  <input required value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
-                    placeholder="01XXXXXXXXX"
-                    className="w-full rounded-xl px-3 py-2.5 text-sm bg-white/5 border border-white/10 text-foreground placeholder:text-foreground/30 focus:outline-none focus:border-primary/50" />
+                  <label className="text-xs font-semibold text-foreground/65 mb-1.5 block">ফোন নম্বর *</label>
+                  <div className="relative">
+                    <Phone size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/40" />
+                    <input value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
+                      placeholder="01XXXXXXXXX" className={inputCls} />
+                  </div>
                 </div>
-              </div>
 
-              <div>
-                <label className="text-xs font-semibold text-foreground/60 mb-1 block">Transaction ID *</label>
-                <input required value={form.transaction_id} onChange={e => setForm(f => ({ ...f, transaction_id: e.target.value }))}
-                  placeholder="যেমন: 8JK2FT1X9P"
-                  className="w-full rounded-xl px-3 py-2.5 text-sm bg-white/5 border border-white/10 text-foreground placeholder:text-foreground/30 focus:outline-none focus:border-primary/50" />
-              </div>
+                <div>
+                  <label className="text-xs font-semibold text-foreground/65 mb-1.5 block">কুপন কোড (ঐচ্ছিক)</label>
+                  <div className="flex gap-2">
+                    <div className="relative flex-1">
+                      <Tag size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/40" />
+                      <input value={couponCode} onChange={e => setCouponCode(e.target.value)}
+                        disabled={!!discount} placeholder="SAVE20" className={inputCls + " uppercase disabled:opacity-60"} />
+                    </div>
+                    {discount ? (
+                      <button type="button" onClick={() => { setDiscount(null); setCouponCode(""); }}
+                        className="px-4 rounded-xl text-xs font-bold border border-white/15 text-foreground/70 hover:bg-white/8 transition">
+                        সরান
+                      </button>
+                    ) : (
+                      <button type="button" onClick={applyCoupon} disabled={couponLoading}
+                        className="px-5 rounded-xl text-xs font-bold text-white transition"
+                        style={{ background: 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))' }}>
+                        {couponLoading ? "..." : "Apply"}
+                      </button>
+                    )}
+                  </div>
+                </div>
 
-              <div>
-                <label className="text-xs font-semibold text-foreground/60 mb-1 block">ইমেইল (ঐচ্ছিক)</label>
-                <input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-                  placeholder="example@email.com"
-                  className="w-full rounded-xl px-3 py-2.5 text-sm bg-white/5 border border-white/10 text-foreground placeholder:text-foreground/30 focus:outline-none focus:border-primary/50" />
-              </div>
+                {/* Price summary */}
+                <div className="rounded-2xl p-4 space-y-2"
+                  style={{ background: 'rgba(168,85,247,0.07)', border: '1px solid rgba(168,85,247,0.2)' }}>
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-foreground/65">মূল্য</span>
+                    <span className="font-bold text-foreground/85">{formatPrice(basePrice)}</span>
+                  </div>
+                  {discount && (
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-green-400">কুপন ({discount.code})</span>
+                      <span className="font-bold text-green-400">− {formatPrice(discount.amount)}</span>
+                    </div>
+                  )}
+                  <div className="h-px bg-white/10" />
+                  <div className="flex justify-between items-center">
+                    <span className="text-base font-bold text-foreground">মোট</span>
+                    <span className="text-2xl font-black" style={{ color: 'hsl(320,90%,70%)' }}>{formatPrice(finalPrice)}</span>
+                  </div>
+                </div>
 
-              <div>
-                <label className="text-xs font-semibold text-foreground/60 mb-1 block">বিশেষ নোট (ঐচ্ছিক)</label>
-                <input value={form.note} onChange={e => setForm(f => ({ ...f, note: e.target.value }))}
-                  placeholder="কোনো বিশেষ তথ্য..."
-                  className="w-full rounded-xl px-3 py-2.5 text-sm bg-white/5 border border-white/10 text-foreground placeholder:text-foreground/30 focus:outline-none focus:border-primary/50" />
-              </div>
+                <motion.button whileTap={{ scale: 0.98 }} onClick={goNextFromInfo}
+                  className="w-full py-3.5 rounded-2xl text-sm font-bold text-white glossy-btn flex items-center justify-center gap-2"
+                  style={{ background: 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))' }}>
+                  পেমেন্টে যান <ChevronRight size={16} />
+                </motion.button>
+              </motion.div>
+            )}
 
-              <button type="submit" disabled={loading}
-                className="w-full py-3 rounded-2xl text-sm font-bold text-white glossy-btn flex items-center justify-center gap-2"
-                style={{ background: 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))' }}>
-                {loading ? "জমা হচ্ছে..." : <><Send size={15} /> পেমেন্ট জমা দিন</>}
-              </button>
-              <p className="text-[10px] text-foreground/35 text-center">পেমেন্ট যাচাই হলে ২৪ ঘন্টার মধ্যে কনফার্মেশন পাবেন।</p>
-            </form>
-          )}
+            {step === "method" && (
+              <motion.div key="method" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
+                <p className="text-sm font-semibold text-foreground/75 mb-4">পেমেন্ট মেথড বেছে নিন</p>
+                <div className="grid grid-cols-5 gap-2 mb-5">
+                  {paymentMethods.map(m => (
+                    <motion.button key={m.id} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+                      onClick={() => setSelected(m.id)}
+                      className={`rounded-2xl p-3 text-center transition-all border ${selected === m.id ? "border-primary shadow-lg shadow-primary/20 bg-primary/10" : "border-white/8 bg-white/4 hover:border-white/20"}`}>
+                      <div className="w-9 h-9 rounded-xl mx-auto mb-1.5 flex items-center justify-center text-white text-xs font-bold"
+                        style={{ background: m.color }}>{m.short}</div>
+                      <p className="text-[10px] font-semibold text-foreground/75 leading-tight">{m.label}</p>
+                      <p className="text-[9px] text-foreground/40">{m.sublabel}</p>
+                    </motion.button>
+                  ))}
+                </div>
+
+                {selectedMethod && (
+                  <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+                    className="rounded-2xl border border-primary/25 p-4 flex items-center justify-between gap-3 mb-5"
+                    style={{ background: 'rgba(168,85,247,0.08)' }}>
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white"
+                        style={{ background: selectedMethod.color }}><Smartphone size={18} /></div>
+                      <div>
+                        <p className="text-xs text-foreground/45">{selectedMethod.label} · {selectedMethod.sublabel}</p>
+                        <p className="text-lg font-black text-foreground tracking-wide">{selectedMethod.number}</p>
+                      </div>
+                    </div>
+                    <button onClick={() => copyNumber(selectedMethod.number)}
+                      className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border border-white/12 text-foreground/70 hover:text-foreground hover:bg-white/8 transition-all">
+                      <Copy size={12} /> কপি
+                    </button>
+                  </motion.div>
+                )}
+
+                <div className="rounded-xl p-3 mb-5 text-xs text-foreground/65 flex gap-2"
+                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                  <Info size={14} className="text-primary shrink-0 mt-0.5" />
+                  <span>উপরের নম্বরে <strong className="text-foreground">{formatPrice(finalPrice)}</strong> পাঠান। তারপর Transaction ID দিয়ে নিশ্চিত করুন।</span>
+                </div>
+
+                <div className="flex gap-2">
+                  <button onClick={() => setStep("info")}
+                    className="px-4 py-3 rounded-2xl text-sm font-bold border border-white/12 text-foreground/70 hover:bg-white/8 transition flex items-center gap-1">
+                    <ChevronLeft size={16} /> পেছনে
+                  </button>
+                  <motion.button whileTap={{ scale: selected ? 0.98 : 1 }} onClick={() => selected && setStep("confirm")}
+                    disabled={!selected}
+                    className={`flex-1 py-3 rounded-2xl text-sm font-bold text-white transition-all flex items-center justify-center gap-2 ${selected ? "glossy-btn" : "opacity-40 cursor-not-allowed"}`}
+                    style={{ background: selected ? 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))' : 'rgba(255,255,255,0.08)' }}>
+                    পরের ধাপ <ChevronRight size={16} />
+                  </motion.button>
+                </div>
+              </motion.div>
+            )}
+
+            {step === "confirm" && (
+              <motion.form key="confirm" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
+                onSubmit={handleSubmit} className="space-y-4">
+                <div className="rounded-2xl border border-primary/20 p-3 flex items-center gap-3"
+                  style={{ background: 'rgba(236,72,153,0.07)' }}>
+                  <div className="w-9 h-9 rounded-lg flex items-center justify-center text-white text-xs font-bold"
+                    style={{ background: selectedMethod?.color }}>{selectedMethod?.short}</div>
+                  <div className="flex-1">
+                    <p className="text-[11px] text-foreground/45">{selectedMethod?.label} নম্বর</p>
+                    <p className="text-sm font-black text-foreground">{selectedMethod?.number}</p>
+                  </div>
+                  <button type="button" onClick={() => copyNumber(selectedMethod!.number)}
+                    className="text-xs font-semibold px-2.5 py-1.5 rounded-lg border border-white/12 text-foreground/70 hover:bg-white/8 transition">
+                    <Copy size={12} />
+                  </button>
+                </div>
+
+                <p className="text-xs text-foreground/55 leading-relaxed">
+                  উপরের নম্বরে <strong className="text-foreground/90">{formatPrice(finalPrice)}</strong> পাঠানোর পর প্রাপ্ত Transaction ID নিচে লিখুন।
+                </p>
+
+                <div>
+                  <label className="text-xs font-semibold text-foreground/65 mb-1.5 block">Transaction ID *</label>
+                  <input required value={form.transaction_id} onChange={e => setForm(f => ({ ...f, transaction_id: e.target.value }))}
+                    placeholder="যেমন: 8JK2FT1X9P"
+                    className="w-full rounded-xl px-3 py-3 text-sm bg-white/5 border border-white/10 text-foreground placeholder:text-foreground/30 focus:outline-none focus:border-primary/60 transition" />
+                </div>
+
+                <div>
+                  <label className="text-xs font-semibold text-foreground/65 mb-1.5 block">বিশেষ নোট (ঐচ্ছিক)</label>
+                  <textarea value={form.note} onChange={e => setForm(f => ({ ...f, note: e.target.value }))}
+                    placeholder="কোনো বিশেষ তথ্য..." rows={2}
+                    className="w-full rounded-xl px-3 py-2.5 text-sm bg-white/5 border border-white/10 text-foreground placeholder:text-foreground/30 focus:outline-none focus:border-primary/60 transition resize-none" />
+                </div>
+
+                <div className="rounded-2xl p-3 flex justify-between items-center"
+                  style={{ background: 'rgba(168,85,247,0.07)', border: '1px solid rgba(168,85,247,0.2)' }}>
+                  <span className="text-sm font-bold text-foreground">পরিশোধ করতে হবে</span>
+                  <span className="text-xl font-black" style={{ color: 'hsl(320,90%,70%)' }}>{formatPrice(finalPrice)}</span>
+                </div>
+
+                <div className="flex gap-2">
+                  <button type="button" onClick={() => setStep("method")}
+                    className="px-4 py-3 rounded-2xl text-sm font-bold border border-white/12 text-foreground/70 hover:bg-white/8 transition flex items-center gap-1">
+                    <ChevronLeft size={16} /> পেছনে
+                  </button>
+                  <button type="submit" disabled={loading}
+                    className="flex-1 py-3 rounded-2xl text-sm font-bold text-white glossy-btn flex items-center justify-center gap-2"
+                    style={{ background: 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))' }}>
+                    {loading ? "জমা হচ্ছে..." : <><Send size={15} /> পেমেন্ট জমা দিন</>}
+                  </button>
+                </div>
+                <p className="text-[10px] text-foreground/35 text-center flex items-center justify-center gap-1">
+                  <ShieldCheck size={11} /> পেমেন্ট যাচাই হলে ২৪ ঘন্টার মধ্যে কনফার্মেশন পাবেন।
+                </p>
+              </motion.form>
+            )}
+          </AnimatePresence>
         </div>
       </motion.div>
     </div>
