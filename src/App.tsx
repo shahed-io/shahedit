@@ -175,6 +175,7 @@ const AdminRoutes = () => (
         <Route path="seo" element={<RoleRoute section="seo"><AdminSEO /></RoleRoute>} />
         <Route path="users" element={<RoleRoute section="users"><AdminUsers /></RoleRoute>} />
         <Route path="footer" element={<RoleRoute section="footer"><AdminFooterEditor /></RoleRoute>} />
+        <Route path="banners" element={<RoleRoute section="banners"><AdminBanners /></RoleRoute>} />
         <Route path="client-docs" element={<RoleRoute section="client-docs"><AdminClientDocuments /></RoleRoute>} />
         <Route path="popular-searches" element={<RoleRoute section="popular-searches"><AdminPopularSearches /></RoleRoute>} />
         <Route path="analytics" element={<RoleRoute section="analytics"><AdminAnalytics /></RoleRoute>} />
