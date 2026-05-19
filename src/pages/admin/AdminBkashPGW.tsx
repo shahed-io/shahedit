@@ -63,7 +63,30 @@ const AdminBkashPGW = () => {
     if (data?.value === "live" || data?.value === "sandbox") setMode(data.value as any);
   };
 
-  useEffect(() => { fetchTxns(); fetchMode(); }, []);
+  useEffect(() => {
+    fetchTxns();
+    fetchMode();
+    const channel = supabase
+      .channel("bkash_txns_admin")
+      .on("postgres_changes", { event: "*", schema: "public", table: "bkash_transactions" }, (payload: any) => {
+        setTxns((prev) => {
+          if (payload.eventType === "INSERT") {
+            if (prev.some((t) => t.id === payload.new.id)) return prev;
+            toast.success(`নতুন bKash লেনদেন: ৳${Number(payload.new.amount).toLocaleString("en-IN")}`);
+            return [payload.new as BkashTxn, ...prev];
+          }
+          if (payload.eventType === "UPDATE") {
+            return prev.map((t) => (t.id === payload.new.id ? (payload.new as BkashTxn) : t));
+          }
+          if (payload.eventType === "DELETE") {
+            return prev.filter((t) => t.id !== payload.old.id);
+          }
+          return prev;
+        });
+      })
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, []);
 
   const saveMode = async (next: "sandbox" | "live") => {
     setSaving(true);
