@@ -47,6 +47,11 @@ type CheckoutStep = "info" | "method" | "confirm" | "done";
 
 export const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose: () => void }) => {
   const { user } = useAuth();
+  const { methods: dbMethods } = usePaymentMethods();
+  const paymentMethods = useMemo(() => dbMethods.map(m => ({
+    id: m.method_id, label: m.label, sublabel: m.sublabel ?? "",
+    number: m.number, color: m.color, short: m.short_code, instructions: m.instructions,
+  })), [dbMethods]);
   const [step, setStep] = useState<CheckoutStep>("info");
   const [selected, setSelected] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
