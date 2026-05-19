@@ -278,20 +278,21 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                         return (
                           <Link key={item.href} to={item.href}>
                             <motion.div
-                              whileHover={{ x: 2 }}
-                              className={`relative flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                              whileHover={{ x: 3 }}
+                              transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                              className={`relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                                 active
-                                  ? "bg-gradient-to-r from-primary/25 via-accent/15 to-transparent text-foreground border border-primary/30 shadow-[0_4px_18px_-8px_hsl(var(--primary)/0.6)]"
-                                  : "text-muted-foreground hover:text-foreground hover:bg-primary/8"
+                                  ? "bg-gradient-to-r from-primary/30 via-accent/15 to-transparent text-foreground border border-primary/40 shadow-[0_6px_24px_-10px_hsl(var(--primary)/0.75),inset_0_1px_0_hsl(var(--primary)/0.2)]"
+                                  : "text-muted-foreground hover:text-foreground hover:bg-primary/10 border border-transparent hover:border-primary/15"
                               }`}
                             >
                               {active && (
                                 <motion.span
                                   layoutId="activeNav"
-                                  className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 bg-gradient-to-b from-primary to-accent rounded-r-full"
+                                  className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-gradient-to-b from-primary to-accent rounded-r-full shadow-[0_0_12px_hsl(var(--primary)/0.9)]"
                                 />
                               )}
-                              <item.icon size={16} className={active ? "text-primary" : ""} />
+                              <item.icon size={16} className={active ? "text-primary drop-shadow-[0_0_6px_hsl(var(--primary)/0.7)]" : ""} />
                               <AnimatePresence mode="wait">
                                 {!collapsed && (
                                   <motion.span
@@ -305,7 +306,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                                 )}
                               </AnimatePresence>
                               {!collapsed && item.badge && (
-                                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-accent/20 text-accent border border-accent/30">
+                                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-gradient-to-r from-accent/30 to-primary/20 text-accent border border-accent/40 shadow-[0_0_8px_hsl(var(--accent)/0.4)]">
                                   {item.badge}
                                 </span>
                               )}
