@@ -242,6 +242,7 @@ const AppWithAnalytics = () => {
         <Route path="/admin/*" element={<AdminRoutes />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <ThemeAppearanceProvider />
       <GlobalSupport />
     </Suspense>
   );
