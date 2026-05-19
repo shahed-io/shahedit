@@ -217,7 +217,13 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
 
         {/* Nav Groups */}
         <nav className="flex-1 overflow-y-auto py-3 px-2 space-y-1 scrollbar-thin scrollbar-thumb-primary/20">
-          {visibleGroups.map((group) => {
+          {loading ? (
+            <div className="space-y-2 px-2 pt-2">
+              {Array.from({ length: 10 }).map((_, i) => (
+                <div key={i} className="h-7 rounded-md bg-primary/5 animate-pulse" />
+              ))}
+            </div>
+          ) : visibleGroups.map((group) => {
             const isOpen = collapsed ? false : (openGroups[group.title] ?? false);
             return (
               <div key={group.title} className="mb-1">
