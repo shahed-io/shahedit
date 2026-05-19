@@ -8,7 +8,8 @@ import {
   Inbox, ChevronLeft, Menu, LogOut, Bell, Shield, Package, CreditCard,
   LayoutTemplate, Search, TrendingUp, Sparkles, Globe, Tag, Mail,
   History, BarChart3, ArrowLeftRight, ChevronDown, Crown, ExternalLink,
-  Zap, RefreshCcw, Image as ImageIcon, FolderTree,
+  Zap, RefreshCcw, Image as ImageIcon, FolderTree, BookOpen, ListChecks,
+  Receipt, TrendingDown, ClipboardList,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -42,7 +43,20 @@ const navGroups: NavGroup[] = [
       { label: "Payments", icon: CreditCard, href: "/admin/payments", section: "payments" },
       { label: "bKash PGW", icon: Zap, href: "/admin/bkash-pgw", badge: "NEW", section: "payments" },
       { label: "Orders & Delivery", icon: Package, href: "/admin/orders", section: "orders" },
+      { label: "Custom Order", icon: ClipboardList, href: "/admin/custom-order", badge: "NEW", section: "custom-order" },
+      { label: "Quotations", icon: FileText, href: "/admin/quotations", badge: "NEW", section: "quotations" },
+      { label: "Invoices", icon: Receipt, href: "/admin/invoices", badge: "NEW", section: "invoices" },
       { label: "Coupons", icon: Tag, href: "/admin/coupons", badge: "NEW", section: "coupons" },
+    ],
+  },
+  {
+    title: "Operations",
+    icon: ListChecks,
+    items: [
+      { label: "Projects & Tasks", icon: Briefcase, href: "/admin/projects", badge: "NEW", section: "projects" },
+      { label: "Expenses", icon: TrendingDown, href: "/admin/expenses", badge: "NEW", section: "expenses" },
+      { label: "Knowledge Base", icon: BookOpen, href: "/admin/knowledge-base", badge: "NEW", section: "knowledge-base" },
+      { label: "Newsletter", icon: Mail, href: "/admin/newsletter", badge: "NEW", section: "newsletter" },
     ],
   },
   {
