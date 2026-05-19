@@ -417,8 +417,10 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           </motion.div>
         </main>
       </div>
+      </div>
     </div>
   );
+};
 };
 
 export default AdminLayout;
