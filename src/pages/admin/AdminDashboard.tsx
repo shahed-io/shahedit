@@ -400,9 +400,9 @@ const AdminDashboard = () => {
                 const max = topServices[0]?.revenue || 1;
                 const pct = (s.revenue / max) * 100;
                 return (
-                  <div key={s.name}>
+                  <Link key={s.name} to="/admin/orders" className="block group/row cursor-pointer">
                     <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-sm text-foreground flex items-center gap-2">
+                      <span className="text-sm text-foreground flex items-center gap-2 group-hover/row:text-primary transition">
                         <span className="text-xs text-muted-foreground w-5">#{i + 1}</span>
                         {s.name}
                       </span>
@@ -411,10 +411,11 @@ const AdminDashboard = () => {
                     <div className="h-2 bg-white/5 rounded-full overflow-hidden">
                       <div className="h-full bg-gradient-to-r from-primary to-accent rounded-full" style={{ width: `${pct}%` }} />
                     </div>
-                  </div>
+                  </Link>
                 );
               })}
             </div>
+
           )}
         </GlassCard>
 
