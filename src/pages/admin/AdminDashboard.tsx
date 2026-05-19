@@ -511,22 +511,23 @@ const AdminDashboard = () => {
           <SectionTitle><Activity className="w-4 h-4" /> System Overview</SectionTitle>
           <div className="grid grid-cols-2 gap-3">
             {[
-              { label: "Services", value: counts.services, icon: Briefcase },
-              { label: "Products", value: counts.products, icon: Sparkles },
-              { label: "Blog Posts", value: counts.blog, icon: FileText },
-              { label: "Projects", value: counts.projects, icon: FolderOpen },
-              { label: "Users", value: counts.users, icon: Users },
-              { label: "Avg Rating", value: kpi.reviewsAvg.toFixed(1) + "★", icon: Star },
+              { label: "Services", value: counts.services, icon: Briefcase, href: "/admin/services" },
+              { label: "Products", value: counts.products, icon: Sparkles, href: "/admin/products" },
+              { label: "Blog Posts", value: counts.blog, icon: FileText, href: "/admin/crud?table=blog_posts" },
+              { label: "Projects", value: counts.projects, icon: FolderOpen, href: "/admin/projects" },
+              { label: "Users", value: counts.users, icon: Users, href: "/admin/users" },
+              { label: "Avg Rating", value: kpi.reviewsAvg.toFixed(1) + "★", icon: Star, href: "/admin/products" },
             ].map(c => (
-              <div key={c.label} className="p-3 rounded-xl bg-white/[0.02] border border-primary/10">
+              <Link key={c.label} to={c.href} className="p-3 rounded-xl bg-white/[0.02] border border-primary/10 hover:border-primary/30 hover:bg-white/[0.04] transition cursor-pointer block">
                 <div className="flex items-center justify-between mb-1">
                   <c.icon className="w-4 h-4 text-primary/70" />
                 </div>
                 <p className="text-xl font-bold font-syne text-foreground">{c.value}</p>
                 <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{c.label}</p>
-              </div>
+              </Link>
             ))}
           </div>
+
         </GlassCard>
       </div>
     </AdminPage>
