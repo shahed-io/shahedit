@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { RefreshCw, Zap, CheckCircle2, AlertTriangle, Copy, Hash, Phone, User, Calendar, Receipt } from "lucide-react";
+import { RefreshCw, Zap, CheckCircle2, AlertTriangle, Copy, Hash, Phone, User, Calendar, Receipt, Search, X } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 interface BkashTxn {
@@ -40,6 +41,7 @@ const AdminBkashPGW = () => {
   const [saving, setSaving] = useState(false);
   const [filter, setFilter] = useState<"all" | "initiated" | "completed" | "failed">("all");
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [search, setSearch] = useState("");
 
   const callbackUrl = `${window.location.origin}/payment/bkash/callback`;
 
@@ -65,7 +67,20 @@ const AdminBkashPGW = () => {
     toast.success(`bKash মোড: ${next.toUpperCase()}`);
   };
 
-  const filtered = txns.filter(t => filter === "all" ? true : t.status === filter);
+  const q = search.trim().toLowerCase();
+  const filtered = txns.filter(t => {
+    if (filter !== "all" && t.status !== filter) return false;
+    if (!q) return true;
+    return (
+      t.payment_id?.toLowerCase().includes(q) ||
+      t.trx_id?.toLowerCase().includes(q) ||
+      t.merchant_invoice_number?.toLowerCase().includes(q) ||
+      t.customer_msisdn?.toLowerCase().includes(q) ||
+      t.payer_reference?.toLowerCase().includes(q) ||
+      t.customer_name?.toLowerCase().includes(q) ||
+      t.user_email?.toLowerCase().includes(q)
+    );
+  });
   const stats = {
     total: txns.length,
     initiated: txns.filter(t => t.status === "initiated").length,
@@ -159,14 +174,31 @@ const AdminBkashPGW = () => {
         ))}
       </div>
 
+      {/* Search */}
+      <div className="relative">
+        <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+        <Input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Payment ID, TrxID, Invoice, ফোন, নাম, ইমেইল দিয়ে খুঁজুন..."
+          className="pl-9 pr-9 bg-slate-900 border-slate-800 text-slate-200 placeholder:text-slate-500"
+        />
+        {search && (
+          <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white">
+            <X size={14} />
+          </button>
+        )}
+      </div>
+
       {/* Filter */}
-      <div className="flex gap-2 flex-wrap">
+      <div className="flex gap-2 flex-wrap items-center">
         {(["all", "initiated", "completed", "failed"] as const).map(f => (
           <button key={f} onClick={() => setFilter(f)}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${filter === f ? "bg-pink-600 text-white" : "bg-slate-800 text-slate-400 hover:text-white"}`}>
             {f === "all" ? "সব" : f}
           </button>
         ))}
+        <span className="text-slate-500 text-xs ml-auto">{filtered.length} টি ফলাফল</span>
       </div>
 
       {/* List */}
