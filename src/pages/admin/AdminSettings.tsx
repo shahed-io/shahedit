@@ -193,6 +193,92 @@ const AnalyticsSettings = ({
   );
 };
 
+const AppearanceSettings = ({
+  values,
+  setValues,
+  saving,
+  onSave,
+}: {
+  values: Record<string, string>;
+  setValues: React.Dispatch<React.SetStateAction<Record<string, string>>>;
+  saving: boolean;
+  onSave: () => void;
+}) => {
+  const glow = parseFloat(values["theme_glow_intensity"] ?? "1");
+  const dot = parseFloat(values["theme_dot_opacity"] ?? "0.18");
+
+  return (
+    <div className="space-y-6">
+      <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6 space-y-6">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-fuchsia-500/20 flex items-center justify-center">
+            <Sparkles size={20} className="text-fuchsia-400" />
+          </div>
+          <div>
+            <h3 className="text-white font-bold text-base">ব্যাকগ্রাউন্ড গ্লো ইন্টেনসিটি</h3>
+            <p className="text-slate-400 text-xs">পার্পল/ম্যাজেন্টা গ্লো-এর উজ্জ্বলতা নিয়ন্ত্রণ করুন (0 = বন্ধ, 2 = সর্বোচ্চ)</p>
+          </div>
+          <span className="ml-auto text-fuchsia-300 font-mono text-sm bg-fuchsia-500/10 border border-fuchsia-400/30 rounded-lg px-3 py-1">
+            {glow.toFixed(2)}×
+          </span>
+        </div>
+        <Slider
+          value={[glow]}
+          min={0}
+          max={2}
+          step={0.05}
+          onValueChange={(v) =>
+            setValues((p) => ({ ...p, theme_glow_intensity: String(v[0]) }))
+          }
+        />
+        <div className="flex justify-between text-[10px] uppercase tracking-wider text-slate-500">
+          <span>Off</span>
+          <span>Default (1×)</span>
+          <span>Max (2×)</span>
+        </div>
+      </div>
+
+      <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6 space-y-6">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center">
+            <Sparkles size={20} className="text-purple-400" />
+          </div>
+          <div>
+            <h3 className="text-white font-bold text-base">ডটেড প্যাটার্ন অপাসিটি</h3>
+            <p className="text-slate-400 text-xs">ফুটা ফুটা ব্যাকগ্রাউন্ড প্যাটার্নের ঘনত্ব (0 = বন্ধ, 1 = সর্বোচ্চ)</p>
+          </div>
+          <span className="ml-auto text-purple-300 font-mono text-sm bg-purple-500/10 border border-purple-400/30 rounded-lg px-3 py-1">
+            {dot.toFixed(2)}
+          </span>
+        </div>
+        <Slider
+          value={[dot]}
+          min={0}
+          max={1}
+          step={0.01}
+          onValueChange={(v) =>
+            setValues((p) => ({ ...p, theme_dot_opacity: String(v[0]) }))
+          }
+        />
+        <div className="flex justify-between text-[10px] uppercase tracking-wider text-slate-500">
+          <span>Off</span>
+          <span>Default (0.18)</span>
+          <span>Max (1.0)</span>
+        </div>
+      </div>
+
+      <div className="bg-slate-900/60 border border-slate-700/50 rounded-xl p-4 flex items-start gap-2 text-xs text-slate-400">
+        <Info size={14} className="text-fuchsia-400 mt-0.5 shrink-0" />
+        <span>সংরক্ষণের পর পরিবর্তনগুলো দেখতে পেজ রিফ্রেশ করুন। সাইটের সকল পেজে সাথে সাথে প্রভাব পড়বে।</span>
+      </div>
+
+      <Button onClick={onSave} disabled={saving} className="bg-fuchsia-600 hover:bg-fuchsia-500 gap-2 w-full sm:w-auto">
+        <Save size={15} /> {saving ? "সংরক্ষণ হচ্ছে..." : "Appearance সংরক্ষণ করুন"}
+      </Button>
+    </div>
+  );
+};
+
 const AdminSettings = () => {
   const [settings, setSettings] = useState<SiteSetting[]>([]);
   const [values, setValues] = useState<Record<string, string>>({});
