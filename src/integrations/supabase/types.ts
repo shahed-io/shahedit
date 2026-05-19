@@ -1078,6 +1078,93 @@ export type Database = {
           },
         ]
       }
+      products: {
+        Row: {
+          badge: string | null
+          brand: string | null
+          category: string | null
+          created_at: string
+          currency: string
+          description: string | null
+          dimensions: string | null
+          gallery_urls: string[] | null
+          id: string
+          image_url: string | null
+          in_stock: boolean
+          is_featured: boolean
+          is_published: boolean
+          meta_description: string | null
+          meta_title: string | null
+          original_price: number | null
+          price: number
+          short_description: string | null
+          sku: string | null
+          slug: string
+          sort_order: number
+          stock_quantity: number
+          tags: string[] | null
+          title: string
+          updated_at: string
+          weight_grams: number | null
+        }
+        Insert: {
+          badge?: string | null
+          brand?: string | null
+          category?: string | null
+          created_at?: string
+          currency?: string
+          description?: string | null
+          dimensions?: string | null
+          gallery_urls?: string[] | null
+          id?: string
+          image_url?: string | null
+          in_stock?: boolean
+          is_featured?: boolean
+          is_published?: boolean
+          meta_description?: string | null
+          meta_title?: string | null
+          original_price?: number | null
+          price?: number
+          short_description?: string | null
+          sku?: string | null
+          slug: string
+          sort_order?: number
+          stock_quantity?: number
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+          weight_grams?: number | null
+        }
+        Update: {
+          badge?: string | null
+          brand?: string | null
+          category?: string | null
+          created_at?: string
+          currency?: string
+          description?: string | null
+          dimensions?: string | null
+          gallery_urls?: string[] | null
+          id?: string
+          image_url?: string | null
+          in_stock?: boolean
+          is_featured?: boolean
+          is_published?: boolean
+          meta_description?: string | null
+          meta_title?: string | null
+          original_price?: number | null
+          price?: number
+          short_description?: string | null
+          sku?: string | null
+          slug?: string
+          sort_order?: number
+          stock_quantity?: number
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+          weight_grams?: number | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
