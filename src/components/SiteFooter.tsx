@@ -260,8 +260,33 @@ const SiteFooter = () => {
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="rounded-2xl p-5 sm:p-6 bg-white/[0.04] backdrop-blur-xl border border-white/10 flex flex-col lg:flex-row items-center justify-between gap-5"
+          className="relative rounded-2xl p-5 sm:p-6 flex flex-col lg:flex-row items-center justify-between gap-5 overflow-hidden"
+          style={{
+            background:
+              "linear-gradient(155deg, hsla(265, 55%, 12%, 0.85) 0%, hsla(280, 60%, 9%, 0.80) 50%, hsla(255, 50%, 7%, 0.88) 100%)",
+            border: "1px solid hsla(280, 80%, 65%, 0.18)",
+            backdropFilter: "blur(18px)",
+            WebkitBackdropFilter: "blur(18px)",
+            boxShadow:
+              "0 10px 40px -12px hsla(270, 90%, 40%, 0.35), inset 0 1px 0 hsla(0, 0%, 100%, 0.05)",
+          }}
         >
+          <div
+            className="absolute inset-0 opacity-40 pointer-events-none"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle, hsla(285, 90%, 75%, 0.18) 1px, transparent 1.5px)",
+              backgroundSize: "22px 22px",
+            }}
+          />
+          <div
+            className="absolute -top-16 -right-16 w-40 h-40 rounded-full opacity-50 pointer-events-none"
+            style={{
+              background:
+                "radial-gradient(circle, hsla(320, 90%, 55%, 0.28), transparent 70%)",
+              filter: "blur(30px)",
+            }}
+          />
           <div className="flex items-center gap-4">
             <div className="relative shrink-0">
               {/* Rotating conic glow ring */}
