@@ -74,8 +74,13 @@ const AdminBkashPGW = () => {
   };
 
   const q = search.trim().toLowerCase();
+  const fromMs = dateFrom ? new Date(dateFrom.setHours(0, 0, 0, 0)).getTime() : null;
+  const toMs = dateTo ? new Date(new Date(dateTo).setHours(23, 59, 59, 999)).getTime() : null;
   const filtered = txns.filter(t => {
     if (filter !== "all" && t.status !== filter) return false;
+    const ts = new Date(t.created_at).getTime();
+    if (fromMs && ts < fromMs) return false;
+    if (toMs && ts > toMs) return false;
     if (!q) return true;
     return (
       t.payment_id?.toLowerCase().includes(q) ||
