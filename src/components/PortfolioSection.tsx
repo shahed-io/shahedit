@@ -82,6 +82,7 @@ const PortfolioSection = () => {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.09, type: "spring", stiffness: 120 }}
                 whileHover={{ y: -8 }}
+                whileTap={{ scale: 0.96, y: 0, transition: { duration: 0.12 } }}
                 className="group relative rounded-3xl cursor-pointer"
                 style={{ padding: '1px', background: 'linear-gradient(135deg, rgba(168,85,247,0.50), rgba(236,72,153,0.32) 50%, rgba(99,102,241,0.40))' }}
               >
