@@ -302,7 +302,9 @@ const AdminSettings = () => {
     setSaving(true);
     const keysToSave = activeGroup === "analytics"
       ? ["ga4_measurement_id", "gsc_verification_code", "gsc_sitemap_url"]
-      : settings.filter(s => s.group_name === activeGroup).map(s => s.key);
+      : activeGroup === "appearance"
+        ? ["theme_glow_intensity", "theme_dot_opacity"]
+        : settings.filter(s => s.group_name === activeGroup).map(s => s.key);
 
     const items = settings.filter(s => keysToSave.includes(s.key));
     await Promise.all(
@@ -310,6 +312,16 @@ const AdminSettings = () => {
         supabase.from("site_settings").update({ value: values[s.key] ?? "" }).eq("id", s.id)
       )
     );
+
+    // Apply appearance changes immediately to the live document
+    if (activeGroup === "appearance") {
+      const root = document.documentElement;
+      const g = parseFloat(values["theme_glow_intensity"] ?? "1");
+      const d = parseFloat(values["theme_dot_opacity"] ?? "0.18");
+      if (!Number.isNaN(g)) root.style.setProperty("--glow-mult", String(g));
+      if (!Number.isNaN(d)) root.style.setProperty("--dot-opacity", String(d));
+    }
+
     setSaving(false);
     toast.success("Settings saved!");
   };
@@ -321,6 +333,7 @@ const AdminSettings = () => {
     social: "Social",
     branding: "Branding",
     seo: "SEO",
+    appearance: "✨ Appearance",
     analytics: "📊 Analytics",
   };
 
@@ -331,7 +344,7 @@ const AdminSettings = () => {
           <h1 className="text-2xl font-bold text-white">Site Settings</h1>
           <p className="text-slate-400 text-sm">Manage your website configuration</p>
         </div>
-        {activeGroup !== "analytics" && (
+        {activeGroup !== "analytics" && activeGroup !== "appearance" && (
           <Button onClick={saveSettings} disabled={saving} className="bg-teal-600 hover:bg-teal-500 gap-2">
             <Save size={15} /> {saving ? "Saving..." : "Save Changes"}
           </Button>
@@ -353,6 +366,10 @@ const AdminSettings = () => {
       {activeGroup === "analytics" ? (
         <motion.div key="analytics" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
           <AnalyticsSettings values={values} setValues={setValues} saving={saving} onSave={saveSettings} />
+        </motion.div>
+      ) : activeGroup === "appearance" ? (
+        <motion.div key="appearance" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+          <AppearanceSettings values={values} setValues={setValues} saving={saving} onSave={saveSettings} />
         </motion.div>
       ) : (
         <motion.div
