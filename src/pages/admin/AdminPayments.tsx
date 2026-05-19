@@ -6,6 +6,7 @@ import { CheckCircle, XCircle, Clock, RefreshCw, Settings, Zap, User, Phone, Cre
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { openInvoice } from "@/lib/invoice";
+import { PaymentMethodsManager } from "@/components/admin/PaymentMethodsManager";
 
 interface Payment {
   id: string;
