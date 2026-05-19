@@ -63,12 +63,9 @@ const CHECKOUT_METHODS: PayMethodTile[] = [
 export const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose: () => void }) => {
   const { user } = useAuth();
   const { methods: dbMethods } = usePaymentMethods();
-  // For the "Wallet" tile we surface the active mobile-wallet send-money numbers
-  // (bKash / Nagad / Rocket / Upay) stored in the DB. bKash Online is the PGW flow.
-  const walletNumbers = useMemo(
-    () => dbMethods.filter(m => m.method_id !== "bkash_merchant"),
-    [dbMethods]
-  );
+  const { settings: wallet } = useWalletSettings();
+  // Kept for reference but no longer surfaced in checkout — wallet now goes via bKash PGW.
+  void dbMethods;
 
   const [step, setStep] = useState<CheckoutStep>("info");
   const [selected, setSelected] = useState<PayMethodId>("bkash_online");
@@ -77,9 +74,28 @@ export const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose
   const [couponLoading, setCouponLoading] = useState(false);
   const [couponCode, setCouponCode] = useState("");
   const [discount, setDiscount] = useState<{ code: string; amount: number } | null>(null);
+  const [topupAmount, setTopupAmount] = useState<number>(0);
   const [form, setForm] = useState({
-    name: "", phone: "", email: "", transaction_id: "", note: "", wallet_number: "",
+    name: "", phone: "", email: "", transaction_id: "", note: "",
   });
+
+  // Initialize default top-up amount once settings load
+  useEffect(() => {
+    if (!topupAmount && wallet.quickAmounts.length > 0) {
+      setTopupAmount(wallet.quickAmounts[0]);
+    }
+  }, [wallet.quickAmounts, topupAmount]);
+
+  // Hide Wallet method if admin disabled it
+  const availableMethods = useMemo(
+    () => CHECKOUT_METHODS.filter(m => m.id !== "wallet" || wallet.enabled),
+    [wallet.enabled]
+  );
+
+  // If wallet was selected but admin disabled it, fall back to bKash online
+  useEffect(() => {
+    if (selected === "wallet" && !wallet.enabled) setSelected("bkash_online");
+  }, [selected, wallet.enabled]);
 
   // Prefill from logged-in user
   useEffect(() => {
