@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle, Copy, Smartphone, Send, Zap } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -8,16 +8,17 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-
-const paymentMethods = [
-  { id: "bkash_send", label: "বিকাশ (Send Money)", number: "01820060046", color: "#E2136E", logo: "Bkash" },
-  { id: "nagad_send", label: "নগদ (Send Money)", number: "01820060046", color: "#F6821F", logo: "নগদ" },
-  { id: "rocket_send", label: "রকেট (Send Money)", number: "01820060046", color: "#8B1FA8", logo: "Rocket" },
-  { id: "upay_send", label: "উপায় (Send Money)", number: "01820060046", color: "#00A651", logo: "উপায়" },
-  { id: "bkash_merchant", label: "বিকাশ মার্চেন্ট", number: "01820060046", color: "#E2136E", logo: "Bkash" },
-];
+import { usePaymentMethods } from "@/hooks/usePaymentMethods";
 
 const PaymentPage = () => {
+  const { methods: dbMethods } = usePaymentMethods();
+  const paymentMethods = useMemo(() => dbMethods.map(m => ({
+    id: m.method_id,
+    label: m.sublabel ? `${m.label} (${m.sublabel})` : m.label,
+    number: m.number,
+    color: m.color,
+    logo: m.short_code,
+  })), [dbMethods]);
   const [selected, setSelected] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
