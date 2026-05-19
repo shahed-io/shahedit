@@ -992,6 +992,51 @@ export type Database = {
           },
         ]
       }
+      payment_methods: {
+        Row: {
+          color: string
+          created_at: string
+          id: string
+          instructions: string | null
+          is_active: boolean
+          label: string
+          method_id: string
+          number: string
+          short_code: string
+          sort_order: number
+          sublabel: string | null
+          updated_at: string
+        }
+        Insert: {
+          color?: string
+          created_at?: string
+          id?: string
+          instructions?: string | null
+          is_active?: boolean
+          label: string
+          method_id: string
+          number: string
+          short_code?: string
+          sort_order?: number
+          sublabel?: string | null
+          updated_at?: string
+        }
+        Update: {
+          color?: string
+          created_at?: string
+          id?: string
+          instructions?: string | null
+          is_active?: boolean
+          label?: string
+          method_id?: string
+          number?: string
+          short_code?: string
+          sort_order?: number
+          sublabel?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       payment_submissions: {
         Row: {
           amount: number
