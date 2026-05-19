@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
@@ -103,25 +103,30 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
   const [notifications, setNotifications] = useState<any[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
-  const { user, role, signOut } = useAuth();
+  const { user, role, loading, signOut } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+  const initializedGroups = useRef(false);
 
-  // Filter nav items by current role permissions
-  const visibleGroups = navGroups
-    .map((g) => ({ ...g, items: g.items.filter((it) => canAccess(role, it.section)) }))
-    .filter((g) => g.items.length > 0);
+  // Filter nav items by current role permissions — memoized to keep stable
+  // reference and avoid effect loops while role is loading.
+  const visibleGroups = useMemo(
+    () =>
+      navGroups
+        .map((g) => ({ ...g, items: g.items.filter((it) => canAccess(role, it.section)) }))
+        .filter((g) => g.items.length > 0),
+    [role]
+  );
 
-  // Open all groups by default (keep user's manual toggles)
+  // Open all groups by default — only once, after auth has finished loading,
+  // to prevent the nav from "jumping" as role-gated items appear.
   useEffect(() => {
-    setOpenGroups((prev) => {
-      const next: Record<string, boolean> = { ...prev };
-      visibleGroups.forEach((g) => {
-        if (next[g.title] === undefined) next[g.title] = true;
-      });
-      return next;
-    });
-  }, [visibleGroups.length]);
+    if (loading || initializedGroups.current) return;
+    const next: Record<string, boolean> = {};
+    visibleGroups.forEach((g) => { next[g.title] = true; });
+    setOpenGroups(next);
+    initializedGroups.current = true;
+  }, [loading, visibleGroups]);
 
   // Notifications: poll latest leads + payments + orders
   useEffect(() => {
@@ -212,7 +217,13 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
 
         {/* Nav Groups */}
         <nav className="flex-1 overflow-y-auto py-3 px-2 space-y-1 scrollbar-thin scrollbar-thumb-primary/20">
-          {visibleGroups.map((group) => {
+          {loading ? (
+            <div className="space-y-2 px-2 pt-2">
+              {Array.from({ length: 10 }).map((_, i) => (
+                <div key={i} className="h-7 rounded-md bg-primary/5 animate-pulse" />
+              ))}
+            </div>
+          ) : visibleGroups.map((group) => {
             const isOpen = collapsed ? false : (openGroups[group.title] ?? false);
             return (
               <div key={group.title} className="mb-1">
