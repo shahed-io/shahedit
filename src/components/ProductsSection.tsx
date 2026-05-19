@@ -162,18 +162,29 @@ export const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose
     setStep("pay");
   };
 
-  // bKash PGW: redirect to hosted checkout
-  const payWithBkashOnline = async () => {
+  // bKash PGW: redirect to hosted checkout.
+  // `mode` selects label: "purchase" for product checkout, "topup" for wallet top-up.
+  const payWithBkashOnline = async (mode: "purchase" | "topup" = "purchase") => {
+    const isTopup = mode === "topup";
+    const amount = isTopup ? topupAmount : finalPrice;
+    if (isTopup) {
+      if (!amount || amount < wallet.min) { toast.error(`সর্বনিম্ন টপ-আপ ৳${wallet.min}`); return; }
+      if (amount > wallet.max) { toast.error(`সর্বোচ্চ টপ-আপ ৳${wallet.max}`); return; }
+    }
     setBkashLoading(true);
     try {
       const { data, error } = await supabase.functions.invoke("bkash-create-payment", {
         body: {
-          amount: finalPrice,
+          amount,
           customer_name: form.name,
           customer_msisdn: form.phone,
           email: form.email || null,
-          service: serviceName,
-          note: [discount ? `Coupon: ${discount.code} (-৳${discount.amount})` : null, form.note].filter(Boolean).join(" | ") || null,
+          service: isTopup ? `Wallet Top-up — ৳${amount}` : serviceName,
+          note: [
+            isTopup ? `Wallet Top-up for ${serviceName}` : null,
+            discount ? `Coupon: ${discount.code} (-৳${discount.amount})` : null,
+            form.note,
+          ].filter(Boolean).join(" | ") || null,
           callback_url: `${window.location.origin}/payment/bkash/callback`,
         },
       });
@@ -189,31 +200,12 @@ export const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose
     }
   };
 
-  // Wallet (manual): record a pending submission with transaction ID
-  const payWithWallet = async () => {
-    if (!form.wallet_number) { toast.error("কোন ওয়ালেট পাঠিয়েছেন সিলেক্ট করুন"); return; }
-    if (!form.transaction_id.trim()) { toast.error("Transaction ID দিন"); return; }
-    setLoading(true);
-    const { error } = await supabase.from("payment_submissions" as any).insert({
-      name: form.name,
-      phone: form.phone,
-      email: form.email || null,
-      service: serviceName,
-      amount: finalPrice,
-      payment_method: `Wallet — ${form.wallet_number}`,
-      transaction_id: form.transaction_id,
-      note: [discount ? `Coupon: ${discount.code} (-৳${discount.amount})` : null, form.note].filter(Boolean).join(" | ") || null,
-      status: "pending",
-    });
-    setLoading(false);
-    if (error) { toast.error("সমস্যা হয়েছে, আবার চেষ্টা করুন"); return; }
-    setStep("done");
-  };
-
   const handlePay = () => {
-    if (selected === "bkash_online") payWithBkashOnline();
-    else payWithWallet();
+    if (selected === "bkash_online") payWithBkashOnline("purchase");
+    else payWithBkashOnline("topup");
   };
+  void loading; void setLoading;
+
 
   // Light-theme input class
   const inputCls = "w-full rounded-xl pl-10 pr-3 py-3 text-sm bg-white border border-slate-200 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-fuchsia-400 focus:ring-2 focus:ring-fuchsia-100 transition-all";
