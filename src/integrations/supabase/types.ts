@@ -769,6 +769,75 @@ export type Database = {
         }
         Relationships: []
       }
+      hero_slides: {
+        Row: {
+          autoplay_seconds: number
+          background_image_url: string | null
+          badge_text: string | null
+          cards: Json
+          countdown_end_at: string | null
+          countdown_label: string | null
+          created_at: string
+          description: string | null
+          headline: string
+          highlight: string | null
+          id: string
+          is_active: boolean
+          primary_cta_label: string | null
+          primary_cta_link: string | null
+          secondary_cta_label: string | null
+          secondary_cta_link: string | null
+          show_countdown: boolean
+          sort_order: number
+          stats: Json
+          updated_at: string
+        }
+        Insert: {
+          autoplay_seconds?: number
+          background_image_url?: string | null
+          badge_text?: string | null
+          cards?: Json
+          countdown_end_at?: string | null
+          countdown_label?: string | null
+          created_at?: string
+          description?: string | null
+          headline?: string
+          highlight?: string | null
+          id?: string
+          is_active?: boolean
+          primary_cta_label?: string | null
+          primary_cta_link?: string | null
+          secondary_cta_label?: string | null
+          secondary_cta_link?: string | null
+          show_countdown?: boolean
+          sort_order?: number
+          stats?: Json
+          updated_at?: string
+        }
+        Update: {
+          autoplay_seconds?: number
+          background_image_url?: string | null
+          badge_text?: string | null
+          cards?: Json
+          countdown_end_at?: string | null
+          countdown_label?: string | null
+          created_at?: string
+          description?: string | null
+          headline?: string
+          highlight?: string | null
+          id?: string
+          is_active?: boolean
+          primary_cta_label?: string | null
+          primary_cta_link?: string | null
+          secondary_cta_label?: string | null
+          secondary_cta_link?: string | null
+          show_countdown?: boolean
+          sort_order?: number
+          stats?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
       invoice_items: {
         Row: {
           amount: number
