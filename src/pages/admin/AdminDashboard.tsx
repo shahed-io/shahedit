@@ -455,14 +455,15 @@ const AdminDashboard = () => {
           ) : (
             <div className="space-y-2">
               {topPages.map((p, i) => (
-                <div key={p.path} className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] border border-primary/10">
+                <a key={p.path} href={p.path} target="_blank" rel="noreferrer" className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] border border-primary/10 hover:border-primary/30 hover:bg-white/[0.04] transition cursor-pointer">
                   <span className="text-xs text-foreground truncate flex-1 mr-2">
                     <span className="text-muted-foreground mr-2">#{i + 1}</span>{p.path}
                   </span>
                   <span className="text-xs text-primary font-semibold">{p.views}</span>
-                </div>
+                </a>
               ))}
             </div>
+
           )}
         </GlassCard>
 
