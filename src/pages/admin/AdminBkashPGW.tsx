@@ -134,9 +134,18 @@ const AdminBkashPGW = () => {
           </h1>
           <p className="text-slate-400 text-sm">bKash PGW (Tokenized Checkout) — পেমেন্ট ও লেনদেন</p>
         </div>
-        <Button onClick={fetchTxns} variant="outline" size="sm" className="gap-2 border-slate-700 text-slate-300">
-          <RefreshCw size={14} /> রিফ্রেশ
-        </Button>
+        <div className="flex items-center gap-2">
+          <span className="flex items-center gap-1.5 text-[11px] text-green-400 bg-green-500/10 border border-green-500/20 px-2 py-1 rounded-full">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500"></span>
+            </span>
+            Live
+          </span>
+          <Button onClick={fetchTxns} variant="outline" size="sm" className="gap-2 border-slate-700 text-slate-300">
+            <RefreshCw size={14} /> রিফ্রেশ
+          </Button>
+        </div>
       </div>
 
       {/* Mode + Config */}
