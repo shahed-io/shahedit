@@ -26,6 +26,7 @@ export type AdminSection =
   | "faq"
   | "careers"
   | "popular-searches"
+  | "banners"
   | "footer"
   | "ai-support"
   | "ai-writer"
