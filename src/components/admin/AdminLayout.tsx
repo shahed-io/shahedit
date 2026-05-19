@@ -180,13 +180,27 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     visibleGroups.flatMap((g) => g.items).find((i) => isItemActive(i.href))?.label ?? "Admin Panel";
 
   return (
-    <div
-      className="flex h-screen overflow-hidden font-inter text-foreground"
-      style={{
-        background:
-          "radial-gradient(ellipse 75% 65% at -5% -5%, hsl(var(--primary) / 0.22) 0%, transparent 60%), radial-gradient(ellipse 60% 55% at 105% 0%, hsl(var(--accent) / 0.18) 0%, transparent 55%), radial-gradient(ellipse 70% 60% at 50% 110%, hsl(var(--primary) / 0.14) 0%, transparent 60%), hsl(var(--background))",
-      }}
-    >
+    <div className="relative h-screen overflow-hidden font-inter text-foreground">
+      {/* Static background orbs — matches public site (Index.tsx) */}
+      <div
+        className="fixed inset-0 pointer-events-none overflow-hidden z-0"
+        style={{ contain: "strict", transform: "translateZ(0)" }}
+      >
+        <div
+          className="orb orb-primary absolute"
+          style={{ width: 600, height: 600, top: "-150px", left: "-150px", opacity: 0.12, willChange: "transform" }}
+        />
+        <div
+          className="orb orb-accent absolute"
+          style={{ width: 500, height: 500, top: "-100px", right: "-150px", opacity: 0.1, willChange: "transform" }}
+        />
+        <div
+          className="orb orb-primary absolute"
+          style={{ width: 500, height: 500, bottom: "10%", left: "-100px", opacity: 0.09, willChange: "transform" }}
+        />
+      </div>
+
+      <div className="relative z-10 flex h-full overflow-hidden">
       {/* Sidebar */}
       <motion.aside
         animate={{ width: collapsed ? 76 : 270 }}
@@ -194,7 +208,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
         className="flex-shrink-0 flex flex-col overflow-hidden border-r border-primary/15"
         style={{
           background:
-            "linear-gradient(180deg, hsl(var(--card) / 0.85) 0%, hsl(var(--background) / 0.95) 100%)",
+            "linear-gradient(180deg, hsl(var(--card) / 0.65) 0%, hsl(var(--background) / 0.55) 100%)",
           backdropFilter: "blur(24px)",
         }}
       >
@@ -402,6 +416,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
             {children}
           </motion.div>
         </main>
+      </div>
       </div>
     </div>
   );
