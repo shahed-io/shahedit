@@ -52,10 +52,39 @@ const FooterColumn = ({ title, Icon, accent, items }: ColumnProps) => (
     initial={{ opacity: 0, y: 16 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
-    className="group relative rounded-2xl p-6 sm:p-7 bg-white/[0.03] backdrop-blur-xl border border-white/10 hover:border-white/20 hover:bg-white/[0.05] transition-all duration-300 overflow-hidden"
+    className="group relative rounded-2xl p-6 sm:p-7 overflow-hidden transition-all duration-300 hover:-translate-y-1"
+    style={{
+      background:
+        "linear-gradient(155deg, hsla(265, 55%, 12%, 0.85) 0%, hsla(280, 60%, 9%, 0.80) 50%, hsla(255, 50%, 7%, 0.88) 100%)",
+      border: "1px solid hsla(280, 80%, 65%, 0.18)",
+      backdropFilter: "blur(18px)",
+      WebkitBackdropFilter: "blur(18px)",
+      boxShadow:
+        "0 10px 40px -12px hsla(270, 90%, 40%, 0.35), inset 0 1px 0 hsla(0, 0%, 100%, 0.05)",
+    }}
   >
-    {/* subtle top shimmer line on hover */}
-    <div className={`absolute top-0 left-0 right-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-transparent ${accent.includes('primary') ? 'via-primary' : accent.includes('blue') ? 'via-accent' : 'via-emerald-400'} to-transparent`} />
+    {/* dotted overlay matching site background */}
+    <div
+      className="absolute inset-0 opacity-40 pointer-events-none"
+      style={{
+        backgroundImage:
+          "radial-gradient(circle, hsla(285, 90%, 75%, 0.18) 1px, transparent 1.5px)",
+        backgroundSize: "22px 22px",
+      }}
+    />
+    {/* corner glow */}
+    <div
+      className="absolute -top-16 -right-16 w-40 h-40 rounded-full opacity-50 pointer-events-none"
+      style={{
+        background:
+          "radial-gradient(circle, hsla(285, 95%, 60%, 0.30), transparent 70%)",
+        filter: "blur(30px)",
+      }}
+    />
+    {/* hover shimmer */}
+    <div
+      className={`absolute top-0 left-0 right-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-transparent ${accent.includes("primary") ? "via-primary" : accent.includes("blue") ? "via-accent" : "via-emerald-400"} to-transparent`}
+    />
     <div className="relative">
       <div className="flex items-center gap-3 mb-5">
         <span className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 bg-gradient-to-br ${accent} shadow-lg`}>
@@ -63,7 +92,7 @@ const FooterColumn = ({ title, Icon, accent, items }: ColumnProps) => (
         </span>
         <h4 className="font-bold text-foreground/90 text-sm tracking-[0.18em] uppercase">{title}</h4>
       </div>
-      <div className="h-px bg-gradient-to-r from-white/15 via-white/5 to-transparent mb-4" />
+      <div className="h-px bg-gradient-to-r from-white/20 via-white/5 to-transparent mb-4" />
       <ul className="space-y-3 text-sm">
         {items.map((it) => (
           <li key={it.label}>
