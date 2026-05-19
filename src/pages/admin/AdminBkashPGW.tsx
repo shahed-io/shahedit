@@ -201,6 +201,50 @@ const AdminBkashPGW = () => {
         )}
       </div>
 
+      {/* Date Range */}
+      <div className="flex gap-2 flex-wrap items-center">
+        <CalendarRange size={14} className="text-slate-400" />
+        <span className="text-slate-400 text-xs">তারিখ রেঞ্জ:</span>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant="outline" size="sm" className={cn("h-8 gap-2 border-slate-700 bg-slate-900 text-xs font-normal", !dateFrom && "text-slate-500")}>
+              <Calendar size={12} />
+              {dateFrom ? format(dateFrom, "dd MMM yyyy") : "From"}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0 bg-slate-900 border-slate-800" align="start">
+            <DatePicker mode="single" selected={dateFrom} onSelect={setDateFrom} initialFocus className={cn("p-3 pointer-events-auto")} />
+          </PopoverContent>
+        </Popover>
+        <span className="text-slate-500 text-xs">→</span>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant="outline" size="sm" className={cn("h-8 gap-2 border-slate-700 bg-slate-900 text-xs font-normal", !dateTo && "text-slate-500")}>
+              <Calendar size={12} />
+              {dateTo ? format(dateTo, "dd MMM yyyy") : "To"}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0 bg-slate-900 border-slate-800" align="start">
+            <DatePicker mode="single" selected={dateTo} onSelect={setDateTo} disabled={(d) => (dateFrom ? d < dateFrom : false)} initialFocus className={cn("p-3 pointer-events-auto")} />
+          </PopoverContent>
+        </Popover>
+        {[
+          { label: "আজ", days: 0 },
+          { label: "৭ দিন", days: 7 },
+          { label: "৩০ দিন", days: 30 },
+        ].map(p => (
+          <button key={p.label} onClick={() => { const to = new Date(); const from = new Date(); from.setDate(from.getDate() - p.days); setDateFrom(from); setDateTo(to); }}
+            className="px-2 py-1 rounded-md text-[11px] bg-slate-800 text-slate-300 hover:bg-slate-700">
+            {p.label}
+          </button>
+        ))}
+        {(dateFrom || dateTo) && (
+          <button onClick={() => { setDateFrom(undefined); setDateTo(undefined); }} className="text-slate-400 hover:text-white text-[11px] flex items-center gap-1">
+            <X size={11} /> ক্লিয়ার
+          </button>
+        )}
+      </div>
+
       {/* Filter */}
       <div className="flex gap-2 flex-wrap items-center">
         {(["all", "initiated", "completed", "failed"] as const).map(f => (
