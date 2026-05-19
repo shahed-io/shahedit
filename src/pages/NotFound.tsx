@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Home, LayoutDashboard, ArrowLeft, AlertTriangle, Search } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import SEO from "@/components/SEO";
+import { SEO } from "@/components/SEO";
 
 const NotFound = () => {
   const location = useLocation();
