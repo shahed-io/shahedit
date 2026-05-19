@@ -342,7 +342,7 @@ const AdminDashboard = () => {
           ) : (
             <div className="space-y-2">
               {recentOrders.map(o => (
-                <div key={o.id} className="flex items-center justify-between p-3 rounded-xl bg-white/[0.02] border border-primary/10 hover:border-primary/30 transition">
+                <Link key={o.id} to="/admin/orders" className="flex items-center justify-between p-3 rounded-xl bg-white/[0.02] border border-primary/10 hover:border-primary/30 hover:bg-white/[0.04] transition cursor-pointer">
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-medium text-foreground truncate">{o.product_title}</p>
                     <p className="text-xs text-muted-foreground">{o.customer_name} · {o.order_number}</p>
@@ -351,9 +351,10 @@ const AdminDashboard = () => {
                     <span className="text-sm font-bold text-emerald-400">{fmtBDT(Number(o.amount))}</span>
                     <StatusBadge status={o.status} />
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
+
           )}
         </GlassCard>
 
