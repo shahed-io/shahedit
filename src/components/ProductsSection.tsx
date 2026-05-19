@@ -578,7 +578,8 @@ const DetailsModal = ({ pkg, onClose, onPay, c }: {
   );
 
   return (
-    <div className="fixed inset-0 z-[998] flex items-center justify-center p-4" onClick={onClose}>
+    <div className="fixed inset-0 z-[998] flex items-center justify-center p-4" role="dialog" aria-modal="true">
+      {/* Locked backdrop — outside click does NOT close */}
       <div className="absolute inset-0 bg-black/75 backdrop-blur-sm" />
       <motion.div
         initial={{ opacity: 0, scale: 0.88, y: 30 }}
@@ -587,7 +588,6 @@ const DetailsModal = ({ pkg, onClose, onPay, c }: {
         transition={{ type: "spring", stiffness: 320, damping: 28 }}
         className="relative w-full max-w-md rounded-3xl overflow-hidden shadow-2xl max-h-[88vh] overflow-y-auto"
         style={{ background: 'hsl(265,45%,6%)', border: `1px solid ${c.border}` }}
-        onClick={e => e.stopPropagation()}
       >
         {/* Hero image or gradient */}
         <div className="relative h-44 flex items-center justify-center overflow-hidden"
