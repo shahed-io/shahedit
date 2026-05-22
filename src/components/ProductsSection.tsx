@@ -793,11 +793,21 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
     ? Math.round((1 - pkg.price / pkg.original_price) * 100)
     : null;
   const [showPayment, setShowPayment] = useState(false);
+  const [ripple, setRipple] = useState<{ x: number; y: number; id: number } | null>(null);
   const { stat: ratingStat } = useProductRating(pkg.id);
 
   const waMessage = encodeURIComponent(
     `হ্যালো! আমি "${pkg.title}" প্যাকেজটি অর্ডার করতে চাই।${pkg.price ? ` মূল্য: ৳${pkg.price.toLocaleString("en-IN")}` : ""} অনুগ্রহ করে আরও তথ্য দিন।`
   );
+
+  const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    setRipple({ x, y, id: Date.now() });
+    // Let the ripple flash briefly before navigating
+    setTimeout(() => navigate(`/product/${pkg.slug || pkg.id}`), 280);
+  };
 
   return (
     <>
@@ -807,8 +817,8 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
         viewport={{ once: true }}
         transition={{ delay: index * 0.1, type: "spring", stiffness: 120 }}
         whileHover={{ y: -8, scale: 1.015 }}
-        whileTap={{ scale: 0.97 }}
-        onClick={() => navigate(`/product/${pkg.slug || pkg.id}`)}
+        whileTap={{ scale: 0.94, rotate: -0.4, transition: { type: "spring", stiffness: 500, damping: 18 } }}
+        onClick={handleCardClick}
         className="group relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 flex flex-col backdrop-blur-xl"
         style={{
           background: `linear-gradient(160deg, ${c.color}10 0%, rgba(10,6,24,0.85) 45%, rgba(6,3,16,0.95) 100%)`,
@@ -816,6 +826,42 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
           boxShadow: `0 10px 40px -12px ${c.color}30, inset 0 1px 0 rgba(255,255,255,0.06)`,
         }}
       >
+        {/* Click ripple + flash */}
+        <AnimatePresence>
+          {ripple && (
+            <>
+              <motion.span
+                key={`r-${ripple.id}`}
+                initial={{ scale: 0, opacity: 0.55 }}
+                animate={{ scale: 6, opacity: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+                onAnimationComplete={() => setRipple(null)}
+                className="pointer-events-none absolute rounded-full z-20"
+                style={{
+                  left: ripple.x - 60,
+                  top: ripple.y - 60,
+                  width: 120,
+                  height: 120,
+                  background: `radial-gradient(circle, ${c.color}aa 0%, ${c.color}55 40%, transparent 70%)`,
+                  mixBlendMode: "screen",
+                }}
+              />
+              <motion.span
+                key={`f-${ripple.id}`}
+                initial={{ opacity: 0.35 }}
+                animate={{ opacity: 0 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className="pointer-events-none absolute inset-0 z-20"
+                style={{
+                  background: `radial-gradient(circle at ${ripple.x}px ${ripple.y}px, ${c.color}55, transparent 60%)`,
+                  mixBlendMode: "screen",
+                }}
+              />
+            </>
+          )}
+        </AnimatePresence>
+
         {/* Animated gradient glow border */}
         <div
           aria-hidden
