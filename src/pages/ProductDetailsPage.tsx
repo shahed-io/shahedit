@@ -17,6 +17,8 @@ import { sanitizeHtml } from "@/lib/sanitize";
 import { StarRating } from "@/components/StarRating";
 import { ProductReviews } from "@/components/ProductReviews";
 import { useProductRating } from "@/hooks/useProductRatings";
+import { trackRecentlyViewed } from "@/hooks/useRecentlyViewed";
+import RecentlyViewedSection from "@/components/RecentlyViewedSection";
 
 export default function ProductDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -42,6 +44,7 @@ export default function ProductDetailsPage() {
     query.then(({ data }) => {
       const row = data as ServicePackageRow | null;
       setPkg(row);
+      if (row?.id) trackRecentlyViewed(row.id);
       setLoading(false);
       // If user came via UUID and a slug exists, redirect to the pretty URL
       if (row && isUuid && row.slug) {
@@ -432,6 +435,9 @@ export default function ProductDetailsPage() {
           </div>
         )}
       </main>
+
+      <RecentlyViewedSection limit={4} compact />
+
 
       <SiteFooter />
 

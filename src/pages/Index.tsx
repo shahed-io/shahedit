@@ -10,6 +10,7 @@ import AboutSection from "@/components/AboutSection";
 import FaqSection from "@/components/FaqSection";
 
 
+import RecentlyViewedSection from "@/components/RecentlyViewedSection";
 import SiteFooter from "@/components/SiteFooter";
 
 const Index = () => {
@@ -30,6 +31,9 @@ const Index = () => {
         </div>
         <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 1000px' }}>
           <ProductsSection />
+        </div>
+        <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 600px' }}>
+          <RecentlyViewedSection limit={4} />
         </div>
         <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 800px' }}>
           <PortfolioSection />
