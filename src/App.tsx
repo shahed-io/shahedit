@@ -83,6 +83,7 @@ const BlogPostPage = lazy(() => import("./pages/BlogPostPage"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
 const FAQPage = lazy(() => import("./pages/FAQPage"));
+const TechDetailsPage = lazy(() => import("./pages/TechDetailsPage"));
 const PricingPage = lazy(() => import("./pages/PricingPage"));
 const CareersPage = lazy(() => import("./pages/CareersPage"));
 const GetQuotePage = lazy(() => import("./pages/GetQuotePage"));
