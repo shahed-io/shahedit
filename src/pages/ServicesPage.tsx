@@ -245,21 +245,25 @@ const ServicesPage = () => {
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, scale: 0.95 }}
                           transition={{ delay: Math.min(i * 0.03, 0.3) }}
-                          whileHover={{ y: -4 }}
-                          className="group relative rounded-2xl overflow-hidden border flex flex-col"
+                          whileHover={{ y: -6 }}
+                          whileTap={{ scale: 0.97, y: 0, transition: { duration: 0.12 } }}
+                          className="group relative rounded-3xl overflow-hidden border border-white/[0.06] hover:border-[hsl(320,90%,60%)]/40 transition-all duration-700 flex flex-col"
                           style={{
-                            background: `hsla(${accent}, 0.05)`,
-                            borderColor: `hsla(${accent}, 0.20)`,
+                            background: "linear-gradient(180deg, #1a0b2e 0%, #0f0620 100%)",
+                            boxShadow:
+                              "0 24px 60px -20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.04)",
                           }}
                         >
                           {/* Image */}
                           <Link to={`/product/${p.slug ?? p.id}`} className="block relative aspect-square overflow-hidden">
                             {p.image_url ? (
-                              <img
+                              <motion.img
                                 src={p.image_url}
                                 alt={p.title}
                                 loading="lazy"
-                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                className="w-full h-full object-cover"
+                                whileHover={{ scale: 1.1, rotate: 1 }}
+                                transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
                               />
                             ) : (
                               <div className="w-full h-full flex items-center justify-center"
@@ -267,52 +271,68 @@ const ServicesPage = () => {
                                 <ShoppingCart size={40} style={{ color: `hsl(${accent})` }} />
                               </div>
                             )}
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#0a0212] via-[#0a0212]/30 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-500" />
                             {discount && (
-                              <span className="absolute top-2 left-2 text-[10px] font-black px-2 py-1 rounded-md bg-red-500 text-white shadow">
+                              <span className="absolute top-3 left-3 text-[10px] font-black px-2.5 py-1 rounded-full backdrop-blur-xl bg-white/10 border border-white/15 text-white shadow-lg">
                                 -{discount}%
                               </span>
                             )}
                             {p.is_featured ? (
-                              <span className="absolute top-2 right-2 text-[10px] font-black px-2 py-1 rounded-md text-white shadow inline-flex items-center gap-1"
-                                style={{ background: `linear-gradient(135deg, hsl(${accent}), hsl(320,90%,55%))` }}>
-                                <Star size={9} fill="currentColor" /> Premium
+                              <span className="absolute top-3 right-3 text-[10px] font-bold tracking-[0.15em] uppercase px-2.5 py-1 rounded-full backdrop-blur-xl bg-white/10 border border-white/15 text-white shadow-lg inline-flex items-center gap-1">
+                                <Star size={9} fill="currentColor" style={{ color: "hsl(320,90%,68%)" }} /> Premium
                               </span>
                             ) : p.badge ? (
-                              <span className="absolute top-2 right-2 text-[10px] font-black px-2 py-1 rounded-md text-white shadow"
-                                style={{ background: `hsl(${accent})` }}>
+                              <span className="absolute top-3 right-3 text-[10px] font-bold tracking-[0.15em] uppercase px-2.5 py-1 rounded-full backdrop-blur-xl bg-white/10 border border-white/15 text-white shadow-lg">
                                 {p.badge}
                               </span>
                             ) : null}
                           </Link>
 
                           {/* Body */}
-                          <div className="p-4 flex flex-col flex-1">
+                          <div className="p-4 flex flex-col flex-1 relative">
                             <Link to={`/product/${p.slug ?? p.id}`} className="block">
-                              <h3 className="text-sm font-bold text-foreground leading-tight mb-2 line-clamp-2 group-hover:text-white transition-colors">
-                                {p.title}
+                              <h3 className="text-sm font-extrabold leading-tight mb-2 line-clamp-2 font-syne">
+                                <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-white/65">
+                                  {p.title}
+                                </span>
                               </h3>
                             </Link>
                             <div className="flex items-end justify-between mt-auto">
                               <div>
-                                <p className="text-lg font-black" style={{ color: `hsl(${accent})` }}>
+                                <p className="text-lg font-black" style={{ color: "hsl(320,90%,68%)" }}>
                                   {p.price != null ? formatBdt(p.price) : "—"}
                                 </p>
                                 {p.original_price != null && p.price != null && p.original_price > p.price && (
-                                  <p className="text-[11px] text-foreground/40 line-through leading-none">{formatBdt(p.original_price)}</p>
+                                  <p className="text-[11px] text-white/40 line-through leading-none">{formatBdt(p.original_price)}</p>
                                 )}
                               </div>
-                              <Link
-                                to={`/product/${p.slug ?? p.id}`}
-                                aria-label="অর্ডার করুন"
-                                className="w-9 h-9 rounded-full flex items-center justify-center text-white shadow-lg transition-transform hover:scale-110"
-                                style={{ background: `linear-gradient(135deg, hsl(${accent}), hsl(320,90%,48%))` }}
-                              >
-                                <ShoppingCart size={15} />
-                              </Link>
+                              <motion.div whileHover={{ scale: 1.1, rotate: -6 }} transition={{ type: "spring", stiffness: 280 }}>
+                                <Link
+                                  to={`/product/${p.slug ?? p.id}`}
+                                  aria-label="অর্ডার করুন"
+                                  className="relative w-10 h-10 rounded-2xl flex items-center justify-center text-white"
+                                  style={{
+                                    background: "hsl(320,90%,55%)",
+                                    boxShadow: "0 10px 40px -10px hsla(320,90%,55%,0.55)",
+                                  }}
+                                >
+                                  <ShoppingCart size={15} />
+                                  <div className="absolute inset-1 border border-white/20 rounded-xl pointer-events-none" />
+                                </Link>
+                              </motion.div>
                             </div>
                           </div>
+                          {/* Bottom reveal edge */}
+                          <div
+                            className="absolute bottom-0 left-0 h-[3px] w-0 group-hover:w-full transition-all duration-700 pointer-events-none"
+                            style={{
+                              background:
+                                "linear-gradient(90deg, hsl(320,90%,55%), hsl(270,92%,55%))",
+                            }}
+                          />
                         </motion.div>
                       );
+
                     })}
                   </div>
                 </AnimatePresence>
