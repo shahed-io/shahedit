@@ -370,3 +370,28 @@ export const techDetails: Record<string, TechDetail> = {
     ],
   },
 };
+
+// Slug ↔ name mapping for dedicated detail pages (/tech/:slug)
+export const techSlugMap: Record<string, string> = {
+  react: "React",
+  nextjs: "Next.js",
+  nodejs: "Node.js",
+  typescript: "TypeScript",
+  wordpress: "WordPress",
+  php: "PHP",
+  laravel: "Laravel",
+  mongodb: "MongoDB",
+  mysql: "MySQL",
+  figma: "Figma",
+  flutter: "Flutter",
+  python: "Python",
+};
+
+export const techNameToSlug: Record<string, string> = Object.fromEntries(
+  Object.entries(techSlugMap).map(([slug, name]) => [name, slug])
+);
+
+export const getTechBySlug = (slug: string): TechDetail | null => {
+  const name = techSlugMap[slug.toLowerCase()];
+  return name ? techDetails[name] ?? null : null;
+};
