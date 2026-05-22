@@ -806,38 +806,20 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ delay: index * 0.08, type: "spring", stiffness: 120 }}
-        whileHover={{ y: -8 }}
+        whileHover={{ y: -6 }}
         whileTap={{ scale: 0.98 }}
         onClick={() => navigate(`/product/${pkg.slug || pkg.id}`)}
-        className="group relative cursor-pointer flex flex-col rounded-[2rem] overflow-hidden transition-all duration-500"
+        className="group relative cursor-pointer flex flex-col rounded-[2rem] overflow-hidden border border-white/10 bg-white/[0.04] backdrop-blur-xl transition-all duration-500 hover:border-pink-500/50"
         style={{
-          background: 'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
-          backdropFilter: 'blur(24px)',
-          WebkitBackdropFilter: 'blur(24px)',
-          boxShadow: '0 10px 30px -15px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.08)',
+          boxShadow: '0 10px 30px -15px rgba(0,0,0,0.6)',
         }}
         onMouseEnter={(e) => {
-          (e.currentTarget as HTMLElement).style.boxShadow = '0 30px 70px -20px rgba(236,72,153,0.35), 0 0 0 1px rgba(236,72,153,0.25), inset 0 1px 0 rgba(255,255,255,0.15)';
+          (e.currentTarget as HTMLElement).style.boxShadow = '0 25px 60px -20px rgba(236,72,153,0.25), 0 0 0 1px rgba(236,72,153,0.15)';
         }}
         onMouseLeave={(e) => {
-          (e.currentTarget as HTMLElement).style.boxShadow = '0 10px 30px -15px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.08)';
+          (e.currentTarget as HTMLElement).style.boxShadow = '0 10px 30px -15px rgba(0,0,0,0.6)';
         }}
       >
-        {/* Gradient border ring */}
-        <div
-          className="pointer-events-none absolute inset-0 rounded-[2rem] opacity-60 group-hover:opacity-100 transition-opacity duration-500"
-          style={{
-            padding: '1px',
-            background: 'linear-gradient(135deg, rgba(255,255,255,0.18), rgba(236,72,153,0.0) 35%, rgba(168,85,247,0.0) 65%, rgba(236,72,153,0.35))',
-            WebkitMask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
-            WebkitMaskComposite: 'xor',
-            maskComposite: 'exclude',
-          }}
-        />
-
-        {/* Top hairline highlight */}
-        <div className="pointer-events-none absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
-
         {/* Image area */}
         <div className="relative aspect-video overflow-hidden">
           {pkg.image_url ? (
@@ -859,21 +841,12 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
             </div>
           )}
 
-          {/* Shimmer sweep on hover */}
-          <div className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-[1200ms] ease-out"
-            style={{ background: 'linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.18) 50%, transparent 70%)' }} />
-
           {/* Bottom fade */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#0d0714] via-transparent to-transparent pointer-events-none" />
 
           {/* Discount badge */}
           {discount && discount > 0 && (
-            <div className="absolute top-4 left-4 z-10 px-3 py-1 text-white text-[10px] font-black rounded-full"
-              style={{
-                background: 'linear-gradient(135deg, #ef4444, #ec4899)',
-                boxShadow: '0 8px 20px -4px rgba(236,72,153,0.55), inset 0 1px 0 rgba(255,255,255,0.35)',
-                letterSpacing: '0.04em',
-              }}>
+            <div className="absolute top-4 left-4 z-10 px-3 py-1 bg-gradient-to-r from-red-500 to-pink-600 text-white text-[10px] font-bold rounded-full shadow-lg">
               -{discount}% OFF
             </div>
           )}
@@ -895,20 +868,13 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
         </div>
 
         {/* Content */}
-        <div className="relative p-6 flex flex-col flex-1">
-          <span
-            className="text-[10px] font-bold uppercase tracking-[0.18em]"
-            style={{
-              background: 'linear-gradient(90deg, #f472b6, #a855f7)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}
-          >
+        <div className="p-6 flex flex-col flex-1">
+          <span className="text-[10px] font-bold text-pink-500 uppercase tracking-widest">
             {pkg.services?.title ?? "Service"}
           </span>
           <h3
-            className="text-white text-lg font-semibold mt-1.5 mb-2 line-clamp-2 group-hover:text-pink-100 transition-colors"
-            style={{ fontFamily: "'Syne', sans-serif", letterSpacing: '-0.01em' }}
+            className="text-white text-lg font-semibold mt-1 mb-2 line-clamp-2 group-hover:text-pink-100 transition-colors"
+            style={{ fontFamily: "'Syne', sans-serif" }}
           >
             {pkg.title}
           </h3>
@@ -922,9 +888,6 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
             />
           </div>
 
-          {/* Divider */}
-          <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent mb-4" />
-
           <div className="flex items-end justify-between mt-auto">
             <div className="flex flex-col">
               {pkg.original_price && (
@@ -934,14 +897,8 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
               )}
               {pkg.price ? (
                 <span
-                  className="text-2xl font-bold"
-                  style={{
-                    fontFamily: "'Syne', sans-serif",
-                    background: 'linear-gradient(135deg, #f9a8d4 0%, #ec4899 50%, #a855f7 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    filter: 'drop-shadow(0 2px 8px rgba(236,72,153,0.35))',
-                  }}
+                  className="text-2xl font-bold text-pink-500"
+                  style={{ fontFamily: "'Syne', sans-serif" }}
                 >
                   {formatPrice(pkg.price)}
                 </span>
@@ -950,15 +907,7 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
               )}
             </div>
             {pkg.price && (
-              <div
-                className="px-2.5 py-1 rounded-md text-[10px] font-semibold"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(236,72,153,0.15), rgba(168,85,247,0.15))',
-                  border: '1px solid rgba(236,72,153,0.35)',
-                  color: '#fbcfe8',
-                  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08)',
-                }}
-              >
+              <div className="px-2 py-0.5 border border-pink-500/30 rounded text-[10px] text-pink-400 font-medium">
                 সেরা অফার
               </div>
             )}
@@ -970,22 +919,7 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
               onClick={() => setShowPayment(true)}
-              className="relative flex-1 overflow-hidden text-white py-3 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-all duration-300"
-              style={{
-                background: 'linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04))',
-                border: '1px solid rgba(255,255,255,0.10)',
-                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.10)',
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.background = 'linear-gradient(135deg, #ec4899, #a855f7)';
-                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(236,72,153,0.6)';
-                (e.currentTarget as HTMLElement).style.boxShadow = '0 10px 25px -8px rgba(236,72,153,0.55), inset 0 1px 0 rgba(255,255,255,0.25)';
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.background = 'linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04))';
-                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.10)';
-                (e.currentTarget as HTMLElement).style.boxShadow = 'inset 0 1px 0 rgba(255,255,255,0.10)';
-              }}
+              className="flex-1 bg-white/10 hover:bg-pink-600 text-white py-3 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-all duration-300 border border-white/5 hover:border-pink-400/60"
             >
               <CreditCard size={14} /> পেমেন্ট
             </motion.button>
@@ -995,12 +929,7 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
               rel="noopener noreferrer"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="w-12 h-12 text-green-400 rounded-xl flex items-center justify-center transition-all shrink-0"
-              style={{
-                background: 'linear-gradient(135deg, rgba(34,197,94,0.18), rgba(34,197,94,0.06))',
-                border: '1px solid rgba(34,197,94,0.30)',
-                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08), 0 4px 14px -6px rgba(34,197,94,0.35)',
-              }}
+              className="w-12 h-12 bg-green-500/10 hover:bg-green-500/20 text-green-500 border border-green-500/20 rounded-xl flex items-center justify-center transition-colors shrink-0"
               title="WhatsApp-এ অর্ডার করুন"
             >
               <MessageCircle size={20} />
@@ -1016,7 +945,6 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
     </>
   );
 };
-
 
 
 interface ServiceGroup {
