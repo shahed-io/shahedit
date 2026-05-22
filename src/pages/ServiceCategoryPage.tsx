@@ -599,57 +599,76 @@ const ServiceCategoryPage = () => {
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.06 }}
+                  transition={{ delay: i * 0.06, type: "spring", stiffness: 120 }}
                   whileHover={{ y: -6 }}
-                  className={`relative rounded-2xl border overflow-hidden transition-all flex flex-col ${p.is_featured ? "shadow-2xl" : ""}`}
+                  whileTap={{ scale: 0.97, y: 0, transition: { duration: 0.12 } }}
+                  className="group relative rounded-3xl overflow-hidden border border-white/[0.06] hover:border-[hsl(320,90%,60%)]/40 transition-all duration-700 flex flex-col"
                   style={{
-                    background: p.is_featured ? `hsla(${cat.accent}, 0.12)` : cat.bg,
-                    borderColor: p.is_featured ? `hsl(${cat.accent})` : cat.border,
+                    background: "linear-gradient(180deg, #1a0b2e 0%, #0f0620 100%)",
+                    boxShadow:
+                      "0 24px 60px -20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.04)",
                   }}
                 >
+                  {/* Top glass badges */}
                   {p.is_featured && (
-                    <span className="absolute top-3 right-3 z-10 inline-flex items-center gap-1 bg-gradient-to-r from-amber-400 to-orange-500 text-black text-[10px] font-black px-3 py-1 rounded-full shadow-lg">
-                      <Star size={9} fill="currentColor" /> Featured
+                    <span className="absolute top-4 right-4 z-10 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 text-[10px] font-bold tracking-[0.15em] uppercase text-white shadow-lg">
+                      <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: "hsl(320,90%,60%)", boxShadow: "0 0 8px hsl(320,90%,60%)" }} />
+                      Featured
                     </span>
                   )}
                   {p.badge && !p.is_featured && (
-                    <span className="absolute top-3 right-3 z-10 inline-flex items-center text-[10px] font-bold px-2.5 py-1 rounded-full text-white"
-                      style={{ background: `hsl(${cat.accent})` }}>
+                    <span className="absolute top-4 right-4 z-10 inline-flex items-center text-[10px] font-bold tracking-[0.15em] uppercase px-3 py-1 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 text-white shadow-lg">
                       {p.badge}
                     </span>
                   )}
 
-                  {p.image_url ? (
-                    <div className="w-full h-44 overflow-hidden">
-                      <img src={p.image_url} alt={p.title} className="w-full h-full object-cover" loading="lazy" />
-                    </div>
-                  ) : (
-                    <div className="w-full h-44 flex items-center justify-center"
-                      style={{ background: `linear-gradient(135deg, hsla(${cat.accent}, 0.25), hsla(${cat.accent}, 0.05))` }}>
-                      <Icon size={48} style={{ color: `hsl(${cat.accent})` }} />
-                    </div>
-                  )}
+                  <div className="relative w-full h-48 overflow-hidden">
+                    {p.image_url ? (
+                      <motion.img
+                        src={p.image_url}
+                        alt={p.title}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                        whileHover={{ scale: 1.1, rotate: 1 }}
+                        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center"
+                        style={{ background: `linear-gradient(135deg, hsla(${cat.accent}, 0.30), hsla(${cat.accent}, 0.05))` }}>
+                        <Icon size={48} style={{ color: `hsl(${cat.accent})` }} />
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0212] via-[#0a0212]/35 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-[hsl(320,90%,55%)]/12 via-transparent to-transparent mix-blend-overlay" />
+                  </div>
 
-                  <div className="p-6 flex-1 flex flex-col">
-                    <h3 className="text-lg font-black text-foreground mb-1 leading-tight">{p.title}</h3>
+                  <div className="p-6 flex-1 flex flex-col relative">
+                    <span className="text-[10px] font-medium tracking-[0.35em] uppercase opacity-80 mb-2" style={{ color: "hsl(320,90%,68%)" }}>
+                      Premium Package
+                    </span>
+                    <h3 className="text-lg font-extrabold leading-tight mb-1 font-syne">
+                      <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-white/65">
+                        {p.title}
+                      </span>
+                    </h3>
                     {p.short_description && (
-                      <p className="text-foreground/55 text-xs mb-3 line-clamp-2">{p.short_description}</p>
+                      <p className="text-white/55 text-xs mb-3 line-clamp-2">{p.short_description}</p>
                     )}
 
                     <div className="flex items-baseline gap-2 mb-3">
-                      <p className="text-2xl font-black" style={{ color: `hsl(${cat.accent})` }}>
+                      <p className="text-2xl font-black" style={{ color: "hsl(320,90%,68%)" }}>
                         {p.price != null ? `৳${formatBdt(p.price)}` : "—"}
                       </p>
                       {p.original_price != null && p.price != null && p.original_price > p.price && (
-                        <p className="text-xs text-foreground/40 line-through">৳{formatBdt(p.original_price)}</p>
+                        <p className="text-xs text-white/40 line-through">৳{formatBdt(p.original_price)}</p>
                       )}
                     </div>
 
                     {p.features && p.features.length > 0 && (
                       <ul className="space-y-1.5 mb-5 flex-1">
                         {p.features.slice(0, 4).map((f, j) => (
-                          <li key={j} className="flex items-start gap-2 text-xs text-foreground/65">
-                            <CheckCircle2 size={13} className="shrink-0 mt-0.5" style={{ color: `hsl(${cat.accent})` }} />
+                          <li key={j} className="flex items-start gap-2 text-xs text-white/70">
+                            <CheckCircle2 size={13} className="shrink-0 mt-0.5" style={{ color: "hsl(320,90%,68%)" }} />
                             {f}
                           </li>
                         ))}
@@ -659,21 +678,34 @@ const ServiceCategoryPage = () => {
                     <div className="mt-auto flex gap-2">
                       <Link
                         to={`/product/${p.slug ?? p.id}`}
-                        className="flex-1 text-center py-2.5 rounded-xl text-xs font-bold text-foreground/80 border border-white/15 hover:bg-white/5 transition-all"
+                        className="flex-1 text-center py-2.5 rounded-xl text-xs font-bold text-white/80 border border-white/15 hover:bg-white/5 transition-all"
                       >
                         বিস্তারিত
                       </Link>
-                      <button
+                      <motion.button
+                        whileTap={{ scale: 0.97 }}
                         onClick={() => setQuickQuoteFor(p)}
-                        className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold text-white transition-all hover:scale-[1.02]"
-                        style={{ background: `linear-gradient(135deg, hsl(${cat.accent}), hsl(320,90%,48%))` }}
+                        className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold text-white transition-all"
+                        style={{
+                          background: "hsl(320,90%,55%)",
+                          boxShadow: "0 10px 30px -10px hsla(320,90%,55%,0.55)",
+                        }}
                       >
                         <Zap size={13} /> কুইক কোট
-                      </button>
+                      </motion.button>
                     </div>
                   </div>
+                  {/* Bottom reveal edge */}
+                  <div
+                    className="absolute bottom-0 left-0 h-[3px] w-0 group-hover:w-full transition-all duration-700 pointer-events-none"
+                    style={{
+                      background:
+                        "linear-gradient(90deg, hsl(320,90%,55%), hsl(270,92%,55%))",
+                    }}
+                  />
                 </motion.div>
               ))}
+
             </div>
           )}
         </div>
