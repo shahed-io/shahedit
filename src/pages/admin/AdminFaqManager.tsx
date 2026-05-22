@@ -76,7 +76,7 @@ export default function AdminFaqManager() {
     const payload = {
       section_key: "faq_section",
       label: "FAQ Section (Homepage)",
-      content: content as unknown as Record<string, unknown>,
+      content: content as any,
       is_published: sectionPublished,
     };
     const { error } = sectionId
