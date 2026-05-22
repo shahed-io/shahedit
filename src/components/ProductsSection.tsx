@@ -897,8 +897,12 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
               )}
               {pkg.price ? (
                 <span
-                  className="text-2xl font-bold text-pink-500"
-                  style={{ fontFamily: "'Syne', sans-serif" }}
+                  className="text-2xl font-bold"
+                  style={{
+                    fontFamily: "'Syne', sans-serif",
+                    color: c.color,
+                    textShadow: `0 0 24px ${c.color}55`,
+                  }}
                 >
                   {formatPrice(pkg.price)}
                 </span>
@@ -907,8 +911,11 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
               )}
             </div>
             {pkg.price && (
-              <div className="px-2 py-0.5 border border-pink-500/30 rounded text-[10px] text-pink-400 font-medium">
-                সেরা অফার
+              <div
+                className="text-[10px] font-semibold leading-tight text-right uppercase tracking-wider"
+                style={{ color: `${c.color}cc` }}
+              >
+                সেরা<br />অফার
               </div>
             )}
           </div>
