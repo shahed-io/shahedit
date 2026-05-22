@@ -70,7 +70,7 @@ const PortfolioSection = () => {
             <p className="text-foreground/40">কোনো প্রজেক্ট নেই। Admin থেকে যোগ করুন।</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
             {projects.map((project, i) => (
               <motion.a
                 key={project.id}
@@ -81,83 +81,79 @@ const PortfolioSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.09, type: "spring", stiffness: 120 }}
-                whileHover={{ y: -8 }}
-                whileTap={{ scale: 0.96, y: 0, transition: { duration: 0.12 } }}
-                className="group relative rounded-3xl cursor-pointer"
-                style={{ padding: '1px', background: 'linear-gradient(135deg, rgba(168,85,247,0.50), rgba(236,72,153,0.32) 50%, rgba(99,102,241,0.40))' }}
+                whileHover={{ y: -6 }}
+                whileTap={{ scale: 0.97, y: 0, transition: { duration: 0.12 } }}
+                className="group relative block aspect-[16/11] overflow-hidden rounded-3xl cursor-pointer border border-white/[0.06] hover:border-[hsl(320,90%,60%)]/40 transition-all duration-700"
+                style={{
+                  background: 'linear-gradient(180deg, #1a0b2e 0%, #0f0620 100%)',
+                  boxShadow: '0 24px 60px -20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.04)',
+                }}
               >
-                <div
-                  className="relative rounded-[calc(1.5rem-1px)] overflow-hidden h-full"
-                  style={{
-                    background: 'linear-gradient(180deg, rgba(20,12,40,0.92), rgba(12,6,28,0.96))',
-                    boxShadow: '0 18px 48px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.05)',
-                  }}
-                >
-                  <div className="aspect-[4/3] overflow-hidden relative bg-gradient-to-br from-primary/10 to-accent/10">
-                    {project.image_url ? (
-                      <motion.img
-                        src={project.image_url}
-                        alt={project.title}
-                        className="w-full h-full object-cover"
-                        whileHover={{ scale: 1.10 }}
-                        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                {/* Background image */}
+                <div className="absolute inset-0 z-0 overflow-hidden">
+                  {project.image_url ? (
+                    <motion.img
+                      src={project.image_url}
+                      alt={project.title}
+                      className="h-full w-full object-cover"
+                      whileHover={{ scale: 1.1, rotate: 1 }}
+                      transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                    />
+                  ) : (
+                    <div className="h-full w-full flex items-center justify-center text-6xl bg-gradient-to-br from-primary/15 to-accent/15">🖥️</div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0212] via-[#0a0212]/40 to-transparent opacity-90 group-hover:opacity-75 transition-opacity duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-[hsl(320,90%,55%)]/12 via-transparent to-transparent mix-blend-overlay" />
+                </div>
+
+                {/* Top glass badge */}
+                {project.category && (
+                  <div className="absolute top-5 left-5 z-10">
+                    <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-xl border border-white/10 shadow-lg group-hover:bg-[hsl(320,90%,55%)]/20 group-hover:border-[hsl(320,90%,60%)]/40 transition-all duration-500">
+                      <span
+                        className="w-1.5 h-1.5 rounded-full animate-pulse"
+                        style={{ background: 'hsl(320,90%,60%)', boxShadow: '0 0 8px hsl(320,90%,60%)' }}
                       />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-5xl">🖥️</div>
-                    )}
-
-                    {/* Persistent legibility gradient */}
-                    <div className="absolute inset-x-0 bottom-0 h-2/3 pointer-events-none"
-                      style={{ background: 'linear-gradient(to top, rgba(8,4,20,0.95) 0%, rgba(8,4,20,0.55) 45%, transparent 100%)' }} />
-
-                    {/* Hover sheen sweep */}
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                      style={{ background: 'linear-gradient(115deg, transparent 35%, rgba(255,255,255,0.12) 50%, transparent 65%)' }} />
-
-                    {/* Category chip */}
-                    {project.category && (
-                      <div className="absolute top-3.5 left-3.5 px-3 py-1.5 text-[11px] font-bold rounded-full inline-flex items-center gap-1.5"
-                        style={{
-                          background: 'linear-gradient(135deg, rgba(168,85,247,0.28), rgba(236,72,153,0.22))',
-                          border: '1px solid rgba(168,85,247,0.50)',
-                          color: '#f0d4ff',
-                          backdropFilter: 'blur(14px)',
-                          WebkitBackdropFilter: 'blur(14px)',
-                          boxShadow: '0 4px 14px rgba(124,58,237,0.30)',
-                        }}>
-                        <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'linear-gradient(135deg, #a855f7, #ec4899)', boxShadow: '0 0 8px rgba(236,72,153,0.8)' }} />
+                      <span className="text-[10px] font-medium tracking-[0.2em] uppercase text-white/90">
                         {project.category}
-                      </div>
-                    )}
+                      </span>
+                    </div>
+                  </div>
+                )}
 
-                    {/* Title overlay (always visible) */}
-                    <div className="absolute inset-x-0 bottom-0 p-5 flex items-end justify-between gap-3">
-                      <div className="min-w-0 flex-1">
-                        <p className="text-[10px] uppercase tracking-[0.18em] font-semibold mb-1" style={{ color: 'rgba(240,212,255,0.6)' }}>
-                          Featured Work
-                        </p>
-                        <h3 className="text-white font-bold text-base leading-snug truncate">
+                {/* Bottom kinetic content */}
+                <div className="absolute inset-x-0 bottom-0 z-10 p-6 md:p-7">
+                  <div className="flex flex-col gap-1.5 transform transition-transform duration-700 group-hover:-translate-y-1">
+                    <span className="text-[10px] font-medium tracking-[0.35em] uppercase opacity-80" style={{ color: 'hsl(320,90%,68%)' }}>
+                      Featured Work
+                    </span>
+                    <div className="flex justify-between items-end gap-4">
+                      <h3 className="text-2xl md:text-[26px] font-extrabold leading-tight tracking-tight font-syne">
+                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-white/55">
                           {project.title}
-                        </h3>
-                      </div>
+                        </span>
+                      </h3>
                       <motion.div
-                        whileHover={{ scale: 1.15, rotate: 45 }}
+                        whileHover={{ scale: 1.1, rotate: -6 }}
                         transition={{ type: 'spring', stiffness: 280 }}
-                        className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0"
+                        className="relative flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-2xl shrink-0 text-white"
                         style={{
-                          background: 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,55%))',
-                          boxShadow: '0 8px 22px rgba(168,85,247,0.55), inset 0 1px 0 rgba(255,255,255,0.25)',
+                          background: 'hsl(320,90%,55%)',
+                          boxShadow: '0 10px 40px -10px hsla(320,90%,55%,0.55)',
                         }}
                       >
-                        <ArrowRight size={16} className="text-white" />
+                        <ArrowRight size={20} className="transition-transform duration-500 group-hover:translate-x-0.5" />
+                        <div className="absolute inset-1 border border-white/20 rounded-xl pointer-events-none" />
                       </motion.div>
                     </div>
                   </div>
-
-                  {/* Outer hover glow */}
-                  <div className="absolute -inset-px rounded-[calc(1.5rem-1px)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                    style={{ boxShadow: '0 30px 80px -20px rgba(168,85,247,0.55)' }} />
                 </div>
+
+                {/* Bottom reveal edge */}
+                <div
+                  className="absolute bottom-0 left-0 h-[3px] w-0 group-hover:w-full transition-all duration-700 z-10"
+                  style={{ background: 'linear-gradient(90deg, hsl(320,90%,55%), hsl(270,92%,55%))' }}
+                />
               </motion.a>
             ))}
           </div>
