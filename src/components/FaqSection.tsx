@@ -12,15 +12,34 @@ const fallbackFaqs = [
   { id: "4", question: "সাপোর্ট কখন পাওয়া যায়?", answer: "আমাদের সাপোর্ট সময় সকাল ১০:০০ থেকে রাত ১০:০০ পর্যন্ত, সপ্তাহের ৭ দিন।" },
 ];
 
+const defaultContent = {
+  badge: "সচরাচর জিজ্ঞাসা",
+  title_prefix: "আপনার",
+  title_highlight: "প্রশ্নের উত্তর",
+  description: "আমাদের সার্ভিস সম্পর্কে সবচেয়ে বেশি জিজ্ঞাসিত প্রশ্নগুলোর উত্তর এখানে পাবেন।",
+  cta_text: "সব প্রশ্ন দেখুন →",
+  cta_link: "/faq",
+};
+
 const FaqSection = () => {
   const [faqs, setFaqs] = useState<{ id: string; question: string; answer: string }[]>(fallbackFaqs);
+  const [content, setContent] = useState(defaultContent);
+  const [visible, setVisible] = useState(true);
   const [open, setOpen] = useState<string | null>(null);
 
   useEffect(() => {
     supabase.from("faqs").select("id, question, answer").eq("is_published", true).order("sort_order").limit(6).then(({ data }) => {
       if (data && data.length > 0) setFaqs(data);
     });
+    supabase.from("page_sections").select("content, is_published").eq("section_key", "faq_section").maybeSingle().then(({ data }) => {
+      if (data) {
+        setVisible(data.is_published);
+        if (data.content) setContent({ ...defaultContent, ...(data.content as any) });
+      }
+    });
   }, []);
+
+  if (!visible) return null;
 
   return (
     <section className="py-20 relative">
