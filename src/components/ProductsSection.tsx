@@ -805,178 +805,134 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ delay: index * 0.1, type: "spring", stiffness: 120 }}
-        whileHover={{ y: -8, scale: 1.015 }}
-        whileTap={{ scale: 0.97 }}
+        transition={{ delay: index * 0.08, type: "spring", stiffness: 120 }}
+        whileHover={{ y: -6 }}
+        whileTap={{ scale: 0.98 }}
         onClick={() => navigate(`/product/${pkg.slug || pkg.id}`)}
-        className="group relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 flex flex-col backdrop-blur-xl"
+        className="group relative cursor-pointer flex flex-col rounded-[2rem] overflow-hidden border border-white/10 bg-white/[0.04] backdrop-blur-xl transition-all duration-500 hover:border-pink-500/50"
         style={{
-          background: `linear-gradient(160deg, ${c.color}10 0%, rgba(10,6,24,0.85) 45%, rgba(6,3,16,0.95) 100%)`,
-          border: `1px solid ${c.color}30`,
-          boxShadow: `0 10px 40px -12px ${c.color}30, inset 0 1px 0 rgba(255,255,255,0.06)`,
+          boxShadow: '0 10px 30px -15px rgba(0,0,0,0.6)',
+        }}
+        onMouseEnter={(e) => {
+          (e.currentTarget as HTMLElement).style.boxShadow = '0 25px 60px -20px rgba(236,72,153,0.25), 0 0 0 1px rgba(236,72,153,0.15)';
+        }}
+        onMouseLeave={(e) => {
+          (e.currentTarget as HTMLElement).style.boxShadow = '0 10px 30px -15px rgba(0,0,0,0.6)';
         }}
       >
-        {/* Animated gradient glow border */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-          style={{
-            background: `conic-gradient(from 0deg, transparent 0deg, ${c.color}55 90deg, transparent 180deg, ${c.color}55 270deg, transparent 360deg)`,
-            mask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
-            WebkitMask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
-            WebkitMaskComposite: 'xor',
-            maskComposite: 'exclude',
-            padding: '1px',
-          }}
-        />
-
-        {/* Top visual area */}
-        <div className="relative h-40 flex items-center justify-center overflow-hidden"
-          style={{ background: `radial-gradient(120% 100% at 50% 0%, ${c.color}28 0%, ${c.color}08 45%, transparent 80%)` }}>
-          {/* Shine sweep on hover */}
-          <div className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-[1400ms] ease-out"
-            style={{ background: 'linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.12) 50%, transparent 70%)' }} />
+        {/* Image area */}
+        <div className="relative aspect-video overflow-hidden">
           {pkg.image_url ? (
             <img
               src={pkg.image_url}
               alt={pkg.title}
-              className="w-full h-full object-cover absolute inset-0"
+              className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
               onError={e => { (e.target as HTMLImageElement).style.display = "none"; }}
             />
           ) : (
-            <>
-              <motion.div
-                className="text-7xl font-black select-none"
-                style={{ color: `${c.color}20`, fontFamily: "'Syne', sans-serif" }}
-              >
-                {pkg.title.charAt(0)}
-              </motion.div>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-12 h-12 rounded-2xl flex items-center justify-center"
-                  style={{ background: `${c.color}18`, border: `1px solid ${c.color}30`, boxShadow: `0 0 25px ${c.color}20` }}>
-                  <Zap size={20} style={{ color: c.color }} />
-                </div>
+            <div
+              className="w-full h-full flex items-center justify-center transform group-hover:scale-110 transition-transform duration-700"
+              style={{ background: `radial-gradient(120% 100% at 50% 0%, ${c.color}35 0%, ${c.color}10 45%, rgba(13,7,20,0.95) 90%)` }}
+            >
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center"
+                style={{ background: `${c.color}1F`, border: `1px solid ${c.color}40`, boxShadow: `0 0 30px ${c.color}30` }}>
+                <Zap size={26} style={{ color: c.color }} />
               </div>
-            </>
+            </div>
           )}
 
+          {/* Bottom fade */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0d0714] via-transparent to-transparent pointer-events-none" />
+
+          {/* Discount badge */}
           {discount && discount > 0 && (
-            <motion.div
-              initial={{ scale: 0, rotate: -20 }}
-              animate={{ scale: 1, rotate: -8 }}
-              transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
-              className="absolute top-3 left-3 px-3 py-1.5 text-xs font-black rounded-full text-white shadow-lg"
-              style={{
-                background: 'linear-gradient(135deg, hsl(0,84%,60%), hsl(15,90%,55%))',
-                boxShadow: '0 6px 20px -4px hsl(0 84% 60% / 0.6), inset 0 1px 0 rgba(255,255,255,0.3)',
-              }}
-            >
+            <div className="absolute top-4 left-4 z-10 px-3 py-1 bg-gradient-to-r from-red-500 to-pink-600 text-white text-[10px] font-bold rounded-full shadow-lg">
               -{discount}% OFF
-            </motion.div>
-          )}
-          {pkg.badge === "hot" && (
-            <div className="absolute top-3 right-3 px-2.5 py-1 text-xs font-black rounded-full text-white badge-hot">
-              🔥 HOT
             </div>
+          )}
+
+          {/* Badges top-right */}
+          {pkg.badge === "hot" && (
+            <div className="absolute top-4 right-4 z-10 px-2.5 py-1 text-[10px] font-black rounded-full text-white badge-hot">🔥 HOT</div>
           )}
           {pkg.badge === "new" && (
-            <div className="absolute top-3 right-3 px-2.5 py-1 text-xs font-black rounded-full badge-new">
-              ✨ NEW
-            </div>
+            <div className="absolute top-4 right-4 z-10 px-2.5 py-1 text-[10px] font-black rounded-full badge-new">✨ NEW</div>
           )}
 
           {/* Info hover hint */}
-          <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-            <div className="flex items-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-lg"
-              style={{ background: 'rgba(0,0,0,0.55)', color: c.color, backdropFilter: 'blur(6px)' }}>
-              <Info size={9} /> বিবরণ দেখুন
+          <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+            <div className="flex items-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-lg bg-black/55 text-pink-300 backdrop-blur">
+              <Info size={9} /> বিবরণ
             </div>
           </div>
-
-          {/* Bottom fade for legibility */}
-          <div className="absolute inset-x-0 bottom-0 h-16 pointer-events-none"
-            style={{ background: 'linear-gradient(to top, rgba(6,3,16,0.95), transparent)' }} />
         </div>
 
         {/* Content */}
-        <div className="p-4 flex flex-col flex-1 relative">
-          <p className="text-[10px] text-foreground/50 mb-1.5 font-semibold uppercase tracking-wider"
-            style={{ color: `${c.color}CC` }}>
-            {pkg.services?.title ?? ""}
-          </p>
-          <h3 className="font-bold text-foreground text-[15px] mb-2 group-hover:text-white transition-colors leading-snug line-clamp-2"
-            style={{ fontFamily: "'Syne', sans-serif" }}>
+        <div className="p-6 flex flex-col flex-1">
+          <span className="text-[10px] font-bold text-pink-500 uppercase tracking-widest">
+            {pkg.services?.title ?? "Service"}
+          </span>
+          <h3
+            className="text-white text-lg font-semibold mt-1 mb-2 line-clamp-2 group-hover:text-pink-100 transition-colors"
+            style={{ fontFamily: "'Syne', sans-serif" }}
+          >
             {pkg.title}
           </h3>
 
-          <div className="mb-3">
+          <div className="flex items-center gap-2 mb-4">
             <StarRating
               average={ratingStat.average}
               count={ratingStat.count}
-              size={11}
+              size={12}
               showText={ratingStat.count > 0}
             />
           </div>
 
-          {/* Premium price chip */}
-          <div className="mb-4 mt-auto rounded-2xl px-3 py-2.5 flex items-center justify-between gap-2"
-            style={{
-              background: `linear-gradient(135deg, ${c.color}1A, ${c.color}08)`,
-              border: `1px solid ${c.color}25`,
-            }}>
+          <div className="flex items-end justify-between mt-auto">
             <div className="flex flex-col">
               {pkg.original_price && (
-                <span className="text-[10px] text-foreground/40 line-through leading-none">{formatPrice(pkg.original_price)}</span>
+                <span className="text-gray-500 text-xs line-through decoration-red-500/60">
+                  {formatPrice(pkg.original_price)}
+                </span>
               )}
               {pkg.price ? (
-                <span className="text-xl font-black leading-tight" style={{ color: c.color, fontFamily: "'Syne', sans-serif" }}>
+                <span
+                  className="text-2xl font-bold text-pink-500"
+                  style={{ fontFamily: "'Syne', sans-serif" }}
+                >
                   {formatPrice(pkg.price)}
                 </span>
               ) : (
-                <span className="text-sm font-semibold text-foreground/60">যোগাযোগ করুন</span>
+                <span className="text-sm font-semibold text-white/60">যোগাযোগ করুন</span>
               )}
             </div>
             {pkg.price && (
-              <div className="text-[9px] font-bold uppercase tracking-wider opacity-70 text-right leading-tight"
-                style={{ color: c.color }}>
-                সেরা<br />অফার
+              <div className="px-2 py-0.5 border border-pink-500/30 rounded text-[10px] text-pink-400 font-medium">
+                সেরা অফার
               </div>
             )}
           </div>
 
-          {/* Action buttons */}
-          <div className="flex gap-2" onClick={e => e.stopPropagation()}>
-            {/* Payment button */}
+          {/* Actions */}
+          <div className="mt-6 flex gap-2" onClick={e => e.stopPropagation()}>
             <motion.button
-              whileHover={{ scale: 1.03 }}
+              whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
               onClick={() => setShowPayment(true)}
-              className="flex-1 py-2.5 rounded-xl text-xs font-bold text-white glossy-btn flex items-center justify-center gap-1.5 transition-all duration-300 relative overflow-hidden"
-              style={{
-                background: `linear-gradient(135deg, ${c.color}, ${c.color}AA)`,
-                boxShadow: `0 6px 20px -4px ${c.color}55, inset 0 1px 0 rgba(255,255,255,0.25)`,
-              }}
+              className="flex-1 bg-white/10 hover:bg-pink-600 text-white py-3 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-all duration-300 border border-white/5 hover:border-pink-400/60"
             >
-              <CreditCard size={13} /> পেমেন্ট
+              <CreditCard size={14} /> পেমেন্ট
             </motion.button>
-
-            {/* WhatsApp button */}
             <motion.a
               href={`https://wa.me/8801820060046?text=${waMessage}`}
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ scale: 1.05, rotate: 3 }}
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-all"
-              style={{
-                background: 'linear-gradient(135deg, rgba(37,211,102,0.25), rgba(37,211,102,0.1))',
-                border: '1px solid rgba(37,211,102,0.45)',
-                color: '#25D366',
-                boxShadow: '0 4px 14px -4px rgba(37,211,102,0.4)',
-              }}
+              className="w-12 h-12 bg-green-500/10 hover:bg-green-500/20 text-green-500 border border-green-500/20 rounded-xl flex items-center justify-center transition-colors shrink-0"
               title="WhatsApp-এ অর্ডার করুন"
             >
-              <MessageCircle size={16} />
+              <MessageCircle size={20} />
             </motion.a>
           </div>
         </div>
@@ -989,6 +945,7 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
     </>
   );
 };
+
 
 interface ServiceGroup {
   service_id: string;
