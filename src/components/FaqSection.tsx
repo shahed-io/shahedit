@@ -107,10 +107,10 @@ const FaqSection = () => {
           className="text-center mt-10"
         >
           <Link
-            to="/faq"
+            to={content.cta_link}
             className="inline-flex items-center gap-2 text-primary hover:underline text-sm font-medium"
           >
-            সব প্রশ্ন দেখুন →
+            {content.cta_text}
           </Link>
         </motion.div>
       </div>
