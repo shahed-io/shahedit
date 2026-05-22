@@ -47,7 +47,7 @@ const AdminTestimonials = lazy(() => import("./pages/admin/AdminCrud").then(m =>
 const AdminTeam = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminTeam })));
 const AdminClients = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminClients })));
 const AdminPricing = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminPricing })));
-const AdminFAQ = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminFAQ })));
+const AdminFAQ = lazy(() => import("./pages/admin/AdminFaqManager"));
 const AdminCareers = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminCareers })));
 const AdminPopularSearches = lazy(() => import("./pages/admin/AdminPopularSearches"));
 const AdminAnalytics = lazy(() => import("./pages/admin/AdminAnalytics"));
