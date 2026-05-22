@@ -97,6 +97,7 @@ const RefundRequestPage = lazy(() => import("./pages/RefundRequestPage"));
 const MyRefundsPage = lazy(() => import("./pages/MyRefundsPage"));
 const ProductDetailsPage = lazy(() => import("./pages/ProductDetailsPage"));
 const SearchResultsPage = lazy(() => import("./pages/SearchResultsPage"));
+const TechDetailPage = lazy(() => import("./pages/TechDetailPage"));
 
 
 const queryClient = new QueryClient();
@@ -239,6 +240,8 @@ const AppWithAnalytics = () => {
         <Route path="/my-refunds" element={<MyRefundsPage />} />
         <Route path="/product/:id" element={<ProductDetailsPage />} />
         <Route path="/search" element={<SearchResultsPage />} />
+        <Route path="/tech/:slug" element={<TechDetailPage />} />
+
         {/* Admin Routes */}
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/*" element={<AdminRoutes />} />
