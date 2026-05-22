@@ -32,6 +32,9 @@ const Index = () => {
         <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 1000px' }}>
           <ProductsSection />
         </div>
+        <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 600px' }}>
+          <RecentlyViewedSection limit={4} />
+        </div>
         <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 800px' }}>
           <PortfolioSection />
         </div>
