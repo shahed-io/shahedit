@@ -52,13 +52,13 @@ const FaqSection = () => {
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-semibold uppercase tracking-widest mb-5">
             <HelpCircle size={13} />
-            সচরাচর জিজ্ঞাসা
+            {content.badge}
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            আপনার <span className="gradient-text">প্রশ্নের উত্তর</span>
+            {content.title_prefix} <span className="gradient-text">{content.title_highlight}</span>
           </h2>
           <p className="text-muted-foreground max-w-xl mx-auto text-sm">
-            আমাদের সার্ভিস সম্পর্কে সবচেয়ে বেশি জিজ্ঞাসিত প্রশ্নগুলোর উত্তর এখানে পাবেন।
+            {content.description}
           </p>
         </motion.div>
 
