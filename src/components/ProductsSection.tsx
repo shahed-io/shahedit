@@ -807,7 +807,7 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
         viewport={{ once: true }}
         transition={{ delay: index * 0.08, type: "spring", stiffness: 120 }}
         whileHover={{ y: -6 }}
-        whileTap={{ scale: 0.98 }}
+        whileTap={{ scale: 0.94, rotate: -0.4, transition: { type: "spring", stiffness: 600, damping: 18 } }}
         onClick={() => navigate(`/product/${pkg.slug || pkg.id}`)}
         className="group relative cursor-pointer flex flex-col rounded-[2rem] overflow-hidden border border-white/10 bg-white/[0.04] backdrop-blur-xl transition-all duration-500 hover:border-pink-500/50"
         style={{
@@ -897,8 +897,12 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
               )}
               {pkg.price ? (
                 <span
-                  className="text-2xl font-bold text-pink-500"
-                  style={{ fontFamily: "'Syne', sans-serif" }}
+                  className="text-2xl font-bold"
+                  style={{
+                    fontFamily: "'Syne', sans-serif",
+                    color: c.color,
+                    textShadow: `0 0 24px ${c.color}55`,
+                  }}
                 >
                   {formatPrice(pkg.price)}
                 </span>
@@ -907,8 +911,11 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
               )}
             </div>
             {pkg.price && (
-              <div className="px-2 py-0.5 border border-pink-500/30 rounded text-[10px] text-pink-400 font-medium">
-                সেরা অফার
+              <div
+                className="text-[10px] font-semibold leading-tight text-right uppercase tracking-wider"
+                style={{ color: `${c.color}cc` }}
+              >
+                সেরা<br />অফার
               </div>
             )}
           </div>
