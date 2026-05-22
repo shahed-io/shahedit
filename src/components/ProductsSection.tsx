@@ -944,8 +944,31 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
             style={{ background: 'linear-gradient(to top, rgba(6,3,16,0.95), transparent)' }} />
         </div>
 
+        {/* Glass shelf divider — separates image area from content with premium glow */}
+        <div className="relative h-[14px] -mt-px pointer-events-none">
+          {/* Frosted glass strip */}
+          <div
+            className="absolute inset-x-0 inset-y-0 backdrop-blur-md"
+            style={{
+              background: `linear-gradient(180deg, rgba(255,255,255,0.06) 0%, ${c.color}14 50%, rgba(0,0,0,0.35) 100%)`,
+              borderTop: `1px solid ${c.color}40`,
+              borderBottom: `1px solid rgba(255,255,255,0.04)`,
+              boxShadow: `0 1px 0 rgba(255,255,255,0.06) inset, 0 -8px 18px -8px ${c.color}55, 0 6px 14px -6px rgba(0,0,0,0.6)`,
+            }}
+          />
+          {/* Center accent glow line */}
+          <div
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[1.5px] w-2/3 rounded-full opacity-80 group-hover:opacity-100 group-hover:w-[85%] transition-all duration-500"
+            style={{
+              background: `linear-gradient(90deg, transparent 0%, ${c.color}cc 50%, transparent 100%)`,
+              boxShadow: `0 0 12px ${c.color}90`,
+            }}
+          />
+        </div>
+
         {/* Content */}
         <div className="p-4 flex flex-col flex-1 relative">
+
           <p className="text-[10px] text-foreground/50 mb-1.5 font-semibold uppercase tracking-wider"
             style={{ color: `${c.color}CC` }}>
             {pkg.services?.title ?? ""}
