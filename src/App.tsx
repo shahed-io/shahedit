@@ -83,7 +83,6 @@ const BlogPostPage = lazy(() => import("./pages/BlogPostPage"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
 const FAQPage = lazy(() => import("./pages/FAQPage"));
-const TechDetailsPage = lazy(() => import("./pages/TechDetailsPage"));
 const PricingPage = lazy(() => import("./pages/PricingPage"));
 const CareersPage = lazy(() => import("./pages/CareersPage"));
 const GetQuotePage = lazy(() => import("./pages/GetQuotePage"));
@@ -226,7 +225,6 @@ const AppWithAnalytics = () => {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/faq" element={<FAQPage />} />
-        <Route path="/tech/:slug" element={<TechDetailsPage />} />
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/careers" element={<CareersPage />} />
         <Route path="/get-quote" element={<GetQuotePage />} />
