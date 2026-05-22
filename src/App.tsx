@@ -226,6 +226,7 @@ const AppWithAnalytics = () => {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/faq" element={<FAQPage />} />
+        <Route path="/tech/:slug" element={<TechDetailsPage />} />
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/careers" element={<CareersPage />} />
         <Route path="/get-quote" element={<GetQuotePage />} />
