@@ -436,6 +436,9 @@ export default function ProductDetailsPage() {
         )}
       </main>
 
+      <RecentlyViewedSection limit={4} compact />
+
+
       <SiteFooter />
 
       <AnimatePresence>

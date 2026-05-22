@@ -10,6 +10,7 @@ import AboutSection from "@/components/AboutSection";
 import FaqSection from "@/components/FaqSection";
 
 
+import RecentlyViewedSection from "@/components/RecentlyViewedSection";
 import SiteFooter from "@/components/SiteFooter";
 
 const Index = () => {
