@@ -8,7 +8,7 @@ import { Switch } from "@/components/ui/switch";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { Plus, Trash2, Save, GripVertical, Eye, EyeOff, Copy } from "lucide-react";
+import { Plus, Trash2, Save, GripVertical, Eye, EyeOff, Copy, Upload, X as XIcon } from "lucide-react";
 
 type Stat = { value: string; label: string };
 type SlideCard = {
@@ -309,8 +309,53 @@ export default function AdminBanners() {
 
               {/* BG / SETTINGS */}
               <TabsContent value="bg" className="space-y-4 pt-5">
-                <Field label="Background Image URL (optional, overlay applied)">
-                  <Input placeholder="https://..." value={active.background_image_url || ""} onChange={(e) => updateActive({ background_image_url: e.target.value })} />
+                <Field label="Background Image">
+                  <div className="space-y-3">
+                    {active.background_image_url && (
+                      <div className="relative w-full max-w-md rounded-lg overflow-hidden border border-white/10">
+                        <img src={active.background_image_url} alt="Background preview" className="w-full h-40 object-cover" />
+                        <button
+                          type="button"
+                          onClick={() => updateActive({ background_image_url: "" })}
+                          className="absolute top-2 right-2 p-1.5 rounded-full bg-black/60 hover:bg-rose-600 text-white transition-colors"
+                          aria-label="Remove image"
+                        >
+                          <XIcon size={14} />
+                        </button>
+                      </div>
+                    )}
+                    <div className="flex flex-wrap items-center gap-2">
+                      <label className="inline-flex items-center gap-2 px-3 h-10 rounded-md bg-purple-600 hover:bg-purple-500 text-white text-sm font-medium cursor-pointer transition-colors">
+                        <Upload size={14} />
+                        Upload Image
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={async (e) => {
+                            const file = e.target.files?.[0];
+                            if (!file) return;
+                            if (file.size > 8 * 1024 * 1024) { toast.error("File too large (max 8MB)"); return; }
+                            const ext = file.name.split(".").pop() || "jpg";
+                            const path = `hero-banners/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+                            const t = toast.loading("Uploading…");
+                            const { error: upErr } = await supabase.storage.from("cms-media").upload(path, file, { upsert: false, cacheControl: "3600" });
+                            if (upErr) { toast.error(upErr.message, { id: t }); return; }
+                            const { data: pub } = supabase.storage.from("cms-media").getPublicUrl(path);
+                            updateActive({ background_image_url: pub.publicUrl });
+                            toast.success("Uploaded", { id: t });
+                            e.target.value = "";
+                          }}
+                        />
+                      </label>
+                      <Input
+                        placeholder="অথবা URL paste করুন: https://…"
+                        value={active.background_image_url || ""}
+                        onChange={(e) => updateActive({ background_image_url: e.target.value })}
+                        className="flex-1 min-w-[220px]"
+                      />
+                    </div>
+                  </div>
                 </Field>
                 <div className="grid md:grid-cols-2 gap-4">
                   <Field label="Autoplay Duration (seconds)">
