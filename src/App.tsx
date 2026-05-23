@@ -48,6 +48,7 @@ const AdminTeam = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ defa
 const AdminClients = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminClients })));
 const AdminPricing = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminPricing })));
 const AdminFAQ = lazy(() => import("./pages/admin/AdminFaqManager"));
+const AdminTechDetails = lazy(() => import("./pages/admin/AdminTechDetails"));
 const AdminCareers = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminCareers })));
 const AdminPopularSearches = lazy(() => import("./pages/admin/AdminPopularSearches"));
 const AdminAnalytics = lazy(() => import("./pages/admin/AdminAnalytics"));
@@ -170,6 +171,7 @@ const AdminRoutes = () => (
         <Route path="clients" element={<RoleRoute section="clients"><AdminClients /></RoleRoute>} />
         <Route path="pricing" element={<RoleRoute section="pricing"><AdminPricing /></RoleRoute>} />
         <Route path="faq" element={<RoleRoute section="faq"><AdminFAQ /></RoleRoute>} />
+        <Route path="tech-details" element={<RoleRoute section="tech-details"><AdminTechDetails /></RoleRoute>} />
         <Route path="careers" element={<RoleRoute section="careers"><AdminCareers /></RoleRoute>} />
         <Route path="ai-support" element={<RoleRoute section="ai-support"><AdminAISupport /></RoleRoute>} />
         <Route path="settings" element={<RoleRoute section="settings"><AdminSettings /></RoleRoute>} />
