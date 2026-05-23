@@ -34,10 +34,12 @@ export type AdminSection =
   | "campaigns"
   | "seo"
   | "seo-tools"
+  | "ranking-setup"
   | "sitemap"
   | "schema"
   | "redirects"
   | "settings"
+
   | "users"
   | "activity"
   | "projects"
@@ -82,7 +84,10 @@ const PERMISSIONS: Record<AdminSection, AppRole[]> = {
   campaigns:          ["super_admin", "admin", "manager"],
   seo:                ["super_admin", "admin", "editor"],
   "seo-tools":        ["super_admin", "admin", "editor"],
+  "ranking-setup":    ["super_admin", "admin"],
   sitemap:            ["super_admin", "admin", "editor"],
+
+
   schema:             ["super_admin", "admin", "editor"],
   redirects:          ["super_admin", "admin"],
   settings:           ["super_admin", "admin"],

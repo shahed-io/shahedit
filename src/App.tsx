@@ -9,6 +9,8 @@ import { canAccess, type AdminSection } from "@/lib/admin-permissions";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { useAnalyticsInjection } from "@/hooks/useAnalyticsInjection";
 import { SEO } from "@/components/SEO";
+import { AutoStructuredData } from "@/components/AutoStructuredData";
+
 import GlobalSupport from "@/components/GlobalSupport";
 import ThemeAppearanceProvider from "@/components/ThemeAppearanceProvider";
 import { lazy, Suspense } from "react";
@@ -60,6 +62,8 @@ const AdminActivityLog = lazy(() => import("./pages/admin/AdminActivityLog"));
 const AdminSitemap = lazy(() => import("./pages/admin/AdminSitemap"));
 const AdminSchemaBuilder = lazy(() => import("./pages/admin/AdminSchemaBuilder"));
 const AdminSEOTools = lazy(() => import("./pages/admin/AdminSEOTools"));
+const AdminRankingSetup = lazy(() => import("./pages/admin/AdminRankingSetup"));
+
 const AdminProducts = lazy(() => import("./pages/admin/AdminProducts"));
 const AdminProjects = lazy(() => import("./pages/admin/AdminProjects"));
 const AdminInvoices = lazy(() => import("./pages/admin/AdminInvoices"));
@@ -190,6 +194,8 @@ const AdminRoutes = () => (
         <Route path="sitemap" element={<RoleRoute section="sitemap"><AdminSitemap /></RoleRoute>} />
         <Route path="schema" element={<RoleRoute section="schema"><AdminSchemaBuilder /></RoleRoute>} />
         <Route path="seo-tools" element={<RoleRoute section="seo-tools"><AdminSEOTools /></RoleRoute>} />
+        <Route path="ranking-setup" element={<RoleRoute section="ranking-setup"><AdminRankingSetup /></RoleRoute>} />
+
         <Route path="products" element={<RoleRoute section="products"><AdminProducts /></RoleRoute>} />
         <Route path="projects" element={<RoleRoute section="projects"><AdminProjects /></RoleRoute>} />
         <Route path="invoices" element={<RoleRoute section="invoices"><AdminInvoices /></RoleRoute>} />
@@ -211,7 +217,9 @@ const AppWithAnalytics = () => {
   return (
     <Suspense fallback={<PageFallback />}>
       <SEO />
+      <AutoStructuredData />
       <Routes>
+
         {/* Auth Routes */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
