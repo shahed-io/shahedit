@@ -141,7 +141,7 @@ const TechDetailPage = () => {
           <div className="lg:col-span-2 space-y-6">
             <Card title="এটা কী?" icon={<BookOpen size={14} />}>
               <p className="text-white/80 leading-relaxed text-[15px]">
-                {detail.whatIsIt}
+                {detail.what_is_it}
               </p>
             </Card>
 
@@ -210,7 +210,7 @@ const TechDetailPage = () => {
                 <Target size={14} /> কোন কোন কাজে আদর্শ
               </h4>
               <div className="flex flex-wrap gap-2">
-                {detail.bestFor.map((b, i) => (
+                {detail.best_for.map((b, i) => (
                   <span
                     key={i}
                     className="text-xs font-medium px-3 py-1.5 rounded-full bg-white/[0.06] border border-white/10 text-white/85"
