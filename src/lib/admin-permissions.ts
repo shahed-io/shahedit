@@ -85,6 +85,8 @@ const PERMISSIONS: Record<AdminSection, AppRole[]> = {
   seo:                ["super_admin", "admin", "editor"],
   "seo-tools":        ["super_admin", "admin", "editor"],
   "ranking-setup":    ["super_admin", "admin"],
+  sitemap:            ["super_admin", "admin", "editor"],
+
 
   schema:             ["super_admin", "admin", "editor"],
   redirects:          ["super_admin", "admin"],
