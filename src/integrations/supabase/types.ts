@@ -2466,6 +2466,63 @@ export type Database = {
         }
         Relationships: []
       }
+      tech_details: {
+        Row: {
+          best_for: Json
+          category: string
+          color: string
+          cons: Json
+          created_at: string
+          history: string
+          id: string
+          is_published: boolean
+          name: string
+          pros: Json
+          slug: string
+          sort_order: number
+          symbol: string
+          tagline: string
+          updated_at: string
+          what_is_it: string
+        }
+        Insert: {
+          best_for?: Json
+          category?: string
+          color?: string
+          cons?: Json
+          created_at?: string
+          history?: string
+          id?: string
+          is_published?: boolean
+          name: string
+          pros?: Json
+          slug: string
+          sort_order?: number
+          symbol?: string
+          tagline?: string
+          updated_at?: string
+          what_is_it?: string
+        }
+        Update: {
+          best_for?: Json
+          category?: string
+          color?: string
+          cons?: Json
+          created_at?: string
+          history?: string
+          id?: string
+          is_published?: boolean
+          name?: string
+          pros?: Json
+          slug?: string
+          sort_order?: number
+          symbol?: string
+          tagline?: string
+          updated_at?: string
+          what_is_it?: string
+        }
+        Relationships: []
+      }
       term_relations: {
         Row: {
           content_id: string
