@@ -1,24 +1,12 @@
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
-import { techNameToSlug } from "@/data/techDetails";
-
-const techs = [
-  { name: "React", color: "#61DAFB", symbol: "⚛" },
-  { name: "Next.js", color: "#a0aec0", symbol: "N" },
-  { name: "Node.js", color: "#68D391", symbol: "⬡" },
-  { name: "TypeScript", color: "#63B3ED", symbol: "TS" },
-  { name: "WordPress", color: "#63AEDE", symbol: "W" },
-  { name: "PHP", color: "#A78BFA", symbol: "<?>" },
-  { name: "Laravel", color: "#FC8181", symbol: "L" },
-  { name: "MongoDB", color: "#68D391", symbol: "M" },
-  { name: "MySQL", color: "#63B3ED", symbol: "⊏" },
-  { name: "Figma", color: "#F6AD55", symbol: "▣" },
-  { name: "Flutter", color: "#63B3ED", symbol: "◇" },
-  { name: "Python", color: "#F6E05E", symbol: "🐍" },
-];
+import { fetchPublishedTechs, fallbackRows, type TechRow } from "@/lib/tech-details-api";
 
 const TechStack = () => {
+  const [techs, setTechs] = useState<TechRow[]>(fallbackRows);
+  useEffect(() => { fetchPublishedTechs().then(setTechs); }, []);
   return (
     <section id="tech-stack" className="py-24 relative overflow-hidden">
       <div className="absolute inset-0 cross-grid opacity-40" />
@@ -76,10 +64,10 @@ const TechStack = () => {
             className="grid grid-cols-3 sm:grid-cols-4 gap-3"
           >
             {techs.map((tech, i) => {
-              const slug = techNameToSlug[tech.name];
+              const slug = tech.slug;
               return (
                 <motion.div
-                  key={tech.name}
+                  key={tech.slug}
                   initial={{ opacity: 0, scale: 0.85 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}

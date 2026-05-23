@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams, Navigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -15,41 +15,30 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { SEO } from "@/components/SEO";
 import {
-  getTechBySlug,
-  techDetails,
-  techNameToSlug,
-  techSlugMap,
-} from "@/data/techDetails";
-
-const techMeta: Record<string, { color: string; symbol: string }> = {
-  React: { color: "#61DAFB", symbol: "⚛" },
-  "Next.js": { color: "#a0aec0", symbol: "N" },
-  "Node.js": { color: "#68D391", symbol: "⬡" },
-  TypeScript: { color: "#63B3ED", symbol: "TS" },
-  WordPress: { color: "#63AEDE", symbol: "W" },
-  PHP: { color: "#A78BFA", symbol: "<?>" },
-  Laravel: { color: "#FC8181", symbol: "L" },
-  MongoDB: { color: "#68D391", symbol: "M" },
-  MySQL: { color: "#63B3ED", symbol: "⊏" },
-  Figma: { color: "#F6AD55", symbol: "▣" },
-  Flutter: { color: "#63B3ED", symbol: "◇" },
-  Python: { color: "#F6E05E", symbol: "🐍" },
-};
+  fetchTechBySlug,
+  fetchPublishedTechs,
+  fallbackRows,
+  type TechRow,
+} from "@/lib/tech-details-api";
 
 const TechDetailPage = () => {
   const { slug = "" } = useParams<{ slug: string }>();
-  const detail = getTechBySlug(slug);
+  const [detail, setDetail] = useState<TechRow | null | undefined>(undefined);
+  const [all, setAll] = useState<TechRow[]>(fallbackRows);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+    fetchTechBySlug(slug).then(setDetail);
+    fetchPublishedTechs().then(setAll);
   }, [slug]);
 
+  if (detail === undefined) return null;
   if (!detail) return <Navigate to="/" replace />;
-  const meta = techMeta[detail.name] ?? { color: "#a78bfa", symbol: "•" };
+  const meta = { color: detail.color, symbol: detail.symbol };
 
   // Related technologies (same category)
-  const related = Object.values(techDetails)
-    .filter((t) => t.category === detail.category && t.name !== detail.name)
+  const related = all
+    .filter((t) => t.category === detail.category && t.slug !== detail.slug)
     .slice(0, 4);
 
   return (
@@ -152,7 +141,7 @@ const TechDetailPage = () => {
           <div className="lg:col-span-2 space-y-6">
             <Card title="এটা কী?" icon={<BookOpen size={14} />}>
               <p className="text-white/80 leading-relaxed text-[15px]">
-                {detail.whatIsIt}
+                {detail.what_is_it}
               </p>
             </Card>
 
@@ -221,7 +210,7 @@ const TechDetailPage = () => {
                 <Target size={14} /> কোন কোন কাজে আদর্শ
               </h4>
               <div className="flex flex-wrap gap-2">
-                {detail.bestFor.map((b, i) => (
+                {detail.best_for.map((b, i) => (
                   <span
                     key={i}
                     className="text-xs font-medium px-3 py-1.5 rounded-full bg-white/[0.06] border border-white/10 text-white/85"
@@ -276,23 +265,23 @@ const TechDetailPage = () => {
                 </h4>
                 <div className="space-y-2">
                   {related.map((t) => {
-                    const tm = techMeta[t.name];
-                    const tslug = techNameToSlug[t.name];
+                    const tm = { color: t.color, symbol: t.symbol };
+                    const tslug = t.slug;
                     return (
                       <Link
-                        key={t.name}
+                        key={t.slug}
                         to={`/tech/${tslug}`}
                         className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/[0.04] transition-colors group"
                       >
                         <div
                           className="w-9 h-9 rounded-lg flex items-center justify-center text-sm font-black shrink-0"
                           style={{
-                            background: `${tm?.color}18`,
-                            color: tm?.color,
-                            border: `1px solid ${tm?.color}30`,
+                            background: `${tm.color}18`,
+                            color: tm.color,
+                            border: `1px solid ${tm.color}30`,
                           }}
                         >
-                          {tm?.symbol}
+                          {tm.symbol}
                         </div>
                         <div className="min-w-0 flex-1">
                           <div className="text-sm font-semibold text-white/85 group-hover:text-white transition-colors">
@@ -324,25 +313,21 @@ const TechDetailPage = () => {
                 All Technologies
               </h4>
               <div className="flex flex-wrap gap-2">
-                {Object.entries(techSlugMap).map(([s, name]) => {
-                  const active = name === detail.name;
-                  const tm = techMeta[name];
+                {all.map((t) => {
+                  const active = t.slug === detail.slug;
+                  const tm = { color: t.color };
                   return (
                     <Link
-                      key={s}
-                      to={`/tech/${s}`}
+                      key={t.slug}
+                      to={`/tech/${t.slug}`}
                       className="text-xs font-semibold px-3 py-1.5 rounded-full border transition-colors"
                       style={{
-                        background: active
-                          ? `${tm?.color}25`
-                          : "rgba(255,255,255,0.04)",
-                        color: active ? tm?.color : "rgba(255,255,255,0.7)",
-                        borderColor: active
-                          ? `${tm?.color}50`
-                          : "rgba(255,255,255,0.08)",
+                        background: active ? `${tm.color}25` : "rgba(255,255,255,0.04)",
+                        color: active ? tm.color : "rgba(255,255,255,0.7)",
+                        borderColor: active ? `${tm.color}50` : "rgba(255,255,255,0.08)",
                       }}
                     >
-                      {name}
+                      {t.name}
                     </Link>
                   );
                 })}

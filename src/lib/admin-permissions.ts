@@ -45,7 +45,8 @@ export type AdminSection =
   | "expenses"
   | "quotations"
   | "newsletter"
-  | "knowledge-base";
+  | "knowledge-base"
+  | "tech-details";
 
 /**
  * Permission matrix: which roles can access each admin section.
@@ -94,6 +95,7 @@ const PERMISSIONS: Record<AdminSection, AppRole[]> = {
   quotations:         ["super_admin", "admin", "manager"],
   newsletter:         ["super_admin", "admin", "manager"],
   "knowledge-base":   ["super_admin", "admin", "editor"],
+  "tech-details":     ["super_admin", "admin", "editor"],
 };
 
 export function canAccess(role: AppRole | null, section: AdminSection): boolean {

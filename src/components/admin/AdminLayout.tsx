@@ -84,6 +84,7 @@ const navGroups: NavGroup[] = [
       { label: "Team", icon: UserCheck, href: "/admin/team", section: "team" },
       { label: "Careers", icon: Users, href: "/admin/careers", section: "careers" },
       { label: "FAQ", icon: HelpCircle, href: "/admin/faq", section: "faq" },
+      { label: "Tech Stack", icon: Sparkles, href: "/admin/tech-details", badge: "NEW", section: "tech-details" },
     ],
   },
   {
