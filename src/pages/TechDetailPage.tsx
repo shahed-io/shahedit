@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams, Navigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -15,41 +15,30 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { SEO } from "@/components/SEO";
 import {
-  getTechBySlug,
-  techDetails,
-  techNameToSlug,
-  techSlugMap,
-} from "@/data/techDetails";
-
-const techMeta: Record<string, { color: string; symbol: string }> = {
-  React: { color: "#61DAFB", symbol: "⚛" },
-  "Next.js": { color: "#a0aec0", symbol: "N" },
-  "Node.js": { color: "#68D391", symbol: "⬡" },
-  TypeScript: { color: "#63B3ED", symbol: "TS" },
-  WordPress: { color: "#63AEDE", symbol: "W" },
-  PHP: { color: "#A78BFA", symbol: "<?>" },
-  Laravel: { color: "#FC8181", symbol: "L" },
-  MongoDB: { color: "#68D391", symbol: "M" },
-  MySQL: { color: "#63B3ED", symbol: "⊏" },
-  Figma: { color: "#F6AD55", symbol: "▣" },
-  Flutter: { color: "#63B3ED", symbol: "◇" },
-  Python: { color: "#F6E05E", symbol: "🐍" },
-};
+  fetchTechBySlug,
+  fetchPublishedTechs,
+  fallbackRows,
+  type TechRow,
+} from "@/lib/tech-details-api";
 
 const TechDetailPage = () => {
   const { slug = "" } = useParams<{ slug: string }>();
-  const detail = getTechBySlug(slug);
+  const [detail, setDetail] = useState<TechRow | null | undefined>(undefined);
+  const [all, setAll] = useState<TechRow[]>(fallbackRows);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+    fetchTechBySlug(slug).then(setDetail);
+    fetchPublishedTechs().then(setAll);
   }, [slug]);
 
+  if (detail === undefined) return null;
   if (!detail) return <Navigate to="/" replace />;
-  const meta = techMeta[detail.name] ?? { color: "#a78bfa", symbol: "•" };
+  const meta = { color: detail.color, symbol: detail.symbol };
 
   // Related technologies (same category)
-  const related = Object.values(techDetails)
-    .filter((t) => t.category === detail.category && t.name !== detail.name)
+  const related = all
+    .filter((t) => t.category === detail.category && t.slug !== detail.slug)
     .slice(0, 4);
 
   return (
