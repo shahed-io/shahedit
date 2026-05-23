@@ -265,23 +265,23 @@ const TechDetailPage = () => {
                 </h4>
                 <div className="space-y-2">
                   {related.map((t) => {
-                    const tm = techMeta[t.name];
-                    const tslug = techNameToSlug[t.name];
+                    const tm = { color: t.color, symbol: t.symbol };
+                    const tslug = t.slug;
                     return (
                       <Link
-                        key={t.name}
+                        key={t.slug}
                         to={`/tech/${tslug}`}
                         className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/[0.04] transition-colors group"
                       >
                         <div
                           className="w-9 h-9 rounded-lg flex items-center justify-center text-sm font-black shrink-0"
                           style={{
-                            background: `${tm?.color}18`,
-                            color: tm?.color,
-                            border: `1px solid ${tm?.color}30`,
+                            background: `${tm.color}18`,
+                            color: tm.color,
+                            border: `1px solid ${tm.color}30`,
                           }}
                         >
-                          {tm?.symbol}
+                          {tm.symbol}
                         </div>
                         <div className="min-w-0 flex-1">
                           <div className="text-sm font-semibold text-white/85 group-hover:text-white transition-colors">
@@ -313,25 +313,21 @@ const TechDetailPage = () => {
                 All Technologies
               </h4>
               <div className="flex flex-wrap gap-2">
-                {Object.entries(techSlugMap).map(([s, name]) => {
-                  const active = name === detail.name;
-                  const tm = techMeta[name];
+                {all.map((t) => {
+                  const active = t.slug === detail.slug;
+                  const tm = { color: t.color };
                   return (
                     <Link
-                      key={s}
-                      to={`/tech/${s}`}
+                      key={t.slug}
+                      to={`/tech/${t.slug}`}
                       className="text-xs font-semibold px-3 py-1.5 rounded-full border transition-colors"
                       style={{
-                        background: active
-                          ? `${tm?.color}25`
-                          : "rgba(255,255,255,0.04)",
-                        color: active ? tm?.color : "rgba(255,255,255,0.7)",
-                        borderColor: active
-                          ? `${tm?.color}50`
-                          : "rgba(255,255,255,0.08)",
+                        background: active ? `${tm.color}25` : "rgba(255,255,255,0.04)",
+                        color: active ? tm.color : "rgba(255,255,255,0.7)",
+                        borderColor: active ? `${tm.color}50` : "rgba(255,255,255,0.08)",
                       }}
                     >
-                      {name}
+                      {t.name}
                     </Link>
                   );
                 })}
