@@ -91,7 +91,9 @@ const navGroups: NavGroup[] = [
     title: "SEO & Ranking",
     icon: Globe,
     items: [
+      { label: "Ranking Setup (All Google)", icon: Globe, href: "/admin/ranking-setup", badge: "NEW", section: "ranking-setup" },
       { label: "SEO Manager", icon: Search, href: "/admin/seo", section: "seo" },
+
       { label: "SEO Tools & Reports", icon: BarChart3, href: "/admin/seo-tools", badge: "NEW", section: "seo-tools" },
       { label: "Sitemap & Robots", icon: Globe, href: "/admin/sitemap", badge: "NEW", section: "sitemap" },
       { label: "Schema Builder", icon: Zap, href: "/admin/schema", badge: "NEW", section: "schema" },
