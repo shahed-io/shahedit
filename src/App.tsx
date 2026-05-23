@@ -9,6 +9,8 @@ import { canAccess, type AdminSection } from "@/lib/admin-permissions";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { useAnalyticsInjection } from "@/hooks/useAnalyticsInjection";
 import { SEO } from "@/components/SEO";
+import { AutoStructuredData } from "@/components/AutoStructuredData";
+
 import GlobalSupport from "@/components/GlobalSupport";
 import ThemeAppearanceProvider from "@/components/ThemeAppearanceProvider";
 import { lazy, Suspense } from "react";
@@ -215,7 +217,9 @@ const AppWithAnalytics = () => {
   return (
     <Suspense fallback={<PageFallback />}>
       <SEO />
+      <AutoStructuredData />
       <Routes>
+
         {/* Auth Routes */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
