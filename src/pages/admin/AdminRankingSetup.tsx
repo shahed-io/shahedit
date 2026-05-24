@@ -6,8 +6,9 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { Save, ShieldCheck, BarChart3, Target, Eye, CheckCircle2, AlertCircle, ExternalLink } from "lucide-react";
+import { Save, ShieldCheck, BarChart3, Target, Eye, CheckCircle2, AlertCircle, ExternalLink, Activity } from "lucide-react";
 import { motion } from "framer-motion";
+import { InjectionStatusPanel } from "@/components/admin/InjectionStatusPanel";
 
 type FieldDef = {
   key: string;
@@ -142,8 +143,12 @@ export default function AdminRankingSetup() {
         </Card>
       </motion.div>
 
-      <Tabs defaultValue="verification">
+      <Tabs defaultValue="status">
         <TabsList className="bg-white/5 border border-white/10 flex-wrap h-auto">
+          <TabsTrigger value="status" className="data-[state=active]:bg-emerald-500/20">
+            <Activity size={14} className="mr-2" />
+            Live Status
+          </TabsTrigger>
           {GROUPS.map((g) => {
             const Icon = g.icon;
             const configured = g.fields.filter((f) => values[f.key]?.trim()).length;
@@ -156,6 +161,10 @@ export default function AdminRankingSetup() {
             );
           })}
         </TabsList>
+
+        <TabsContent value="status" className="mt-4">
+          <InjectionStatusPanel />
+        </TabsContent>
 
         {GROUPS.map((group) => {
           const Icon = group.icon;
