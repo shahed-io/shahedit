@@ -175,6 +175,7 @@ const createWooCrudPage = (cfg: CrudConfig) => {
       setSaving(false);
       if (error) { toast.error(error.message); return; }
       toast.success(editing ? `${displayName} updated!` : `${displayName} created!`);
+      if (payload.is_published) notifyGscOnPublish();
       closePanel();
       fetch();
     };
