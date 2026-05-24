@@ -150,6 +150,10 @@ export default function AdminRankingSetup() {
             <Activity size={14} className="mr-2" />
             Live Status
           </TabsTrigger>
+          <TabsTrigger value="gsc" className="data-[state=active]:bg-blue-500/20">
+            <Send size={14} className="mr-2" />
+            GSC Submit
+          </TabsTrigger>
           {GROUPS.map((g) => {
             const Icon = g.icon;
             const configured = g.fields.filter((f) => values[f.key]?.trim()).length;
@@ -165,6 +169,10 @@ export default function AdminRankingSetup() {
 
         <TabsContent value="status" className="mt-4">
           <InjectionStatusPanel />
+        </TabsContent>
+
+        <TabsContent value="gsc" className="mt-4">
+          <GscSubmitPanel />
         </TabsContent>
 
         {GROUPS.map((group) => {
