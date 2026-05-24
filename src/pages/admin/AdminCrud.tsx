@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { notifyGscOnPublish } from "@/lib/gsc-client";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -174,6 +175,7 @@ const createWooCrudPage = (cfg: CrudConfig) => {
       setSaving(false);
       if (error) { toast.error(error.message); return; }
       toast.success(editing ? `${displayName} updated!` : `${displayName} created!`);
+      if (payload.is_published) notifyGscOnPublish();
       closePanel();
       fetch();
     };
@@ -198,12 +200,14 @@ const createWooCrudPage = (cfg: CrudConfig) => {
     const bulkTogglePublish = async (publish: boolean) => {
       for (const id of selected) await supabase.from(table as any).update({ is_published: publish }).eq("id", id);
       toast.success(`${selected.size} updated`);
+      if (publish) notifyGscOnPublish();
       setSelected(new Set());
       fetch();
     };
 
     const togglePublish = async (id: string, cur: boolean) => {
       await supabase.from(table as any).update({ is_published: !cur }).eq("id", id);
+      if (!cur) notifyGscOnPublish();
       fetch();
     };
 
