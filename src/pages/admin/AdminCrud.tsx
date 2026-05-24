@@ -200,12 +200,14 @@ const createWooCrudPage = (cfg: CrudConfig) => {
     const bulkTogglePublish = async (publish: boolean) => {
       for (const id of selected) await supabase.from(table as any).update({ is_published: publish }).eq("id", id);
       toast.success(`${selected.size} updated`);
+      if (publish) notifyGscOnPublish();
       setSelected(new Set());
       fetch();
     };
 
     const togglePublish = async (id: string, cur: boolean) => {
       await supabase.from(table as any).update({ is_published: !cur }).eq("id", id);
+      if (!cur) notifyGscOnPublish();
       fetch();
     };
 
