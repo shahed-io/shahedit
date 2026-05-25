@@ -9,12 +9,13 @@ import {
   LayoutTemplate, Search, TrendingUp, Sparkles, Globe, Tag, Mail,
   History, BarChart3, ArrowLeftRight, ChevronDown, Crown, ExternalLink,
   Zap, RefreshCcw, Image as ImageIcon, FolderTree, BookOpen, ListChecks,
-  Receipt, TrendingDown, ClipboardList,
+  Receipt, TrendingDown, ClipboardList, X, ChevronRight, Command,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import logoImg from "@/assets/logo-glossy.png";
@@ -93,7 +94,6 @@ const navGroups: NavGroup[] = [
     items: [
       { label: "Ranking Setup (All Google)", icon: Globe, href: "/admin/ranking-setup", badge: "NEW", section: "ranking-setup" },
       { label: "SEO Manager", icon: Search, href: "/admin/seo", section: "seo" },
-
       { label: "SEO Tools & Reports", icon: BarChart3, href: "/admin/seo-tools", badge: "NEW", section: "seo-tools" },
       { label: "Sitemap & Robots", icon: Globe, href: "/admin/sitemap", badge: "NEW", section: "sitemap" },
       { label: "Schema Builder", icon: Zap, href: "/admin/schema", badge: "NEW", section: "schema" },
@@ -118,16 +118,16 @@ interface AdminLayoutProps { children: React.ReactNode }
 
 const AdminLayout = ({ children }: AdminLayoutProps) => {
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
   const [notifications, setNotifications] = useState<any[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [query, setQuery] = useState("");
   const { user, role, loading, signOut } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const initializedGroups = useRef(false);
 
-  // Filter nav items by current role permissions — memoized to keep stable
-  // reference and avoid effect loops while role is loading.
   const visibleGroups = useMemo(
     () =>
       navGroups
@@ -136,8 +136,15 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     [role]
   );
 
-  // Open all groups by default — only once, after auth has finished loading,
-  // to prevent the nav from "jumping" as role-gated items appear.
+  // Filtered groups for sidebar search
+  const filteredGroups = useMemo(() => {
+    if (!query.trim()) return visibleGroups;
+    const q = query.toLowerCase();
+    return visibleGroups
+      .map((g) => ({ ...g, items: g.items.filter((it) => it.label.toLowerCase().includes(q)) }))
+      .filter((g) => g.items.length > 0);
+  }, [visibleGroups, query]);
+
   useEffect(() => {
     if (loading || initializedGroups.current) return;
     const next: Record<string, boolean> = {};
@@ -146,7 +153,9 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     initializedGroups.current = true;
   }, [loading, visibleGroups]);
 
-  // Notifications: poll latest leads + payments + orders
+  // Close mobile drawer on route change
+  useEffect(() => { setMobileOpen(false); }, [location.pathname]);
+
   useEffect(() => {
     const fetchNotifs = async () => {
       try {
@@ -179,248 +188,387 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   const isItemActive = (href: string) =>
     location.pathname === href || (href !== "/admin" && location.pathname.startsWith(href));
 
-  const currentTitle =
-    visibleGroups.flatMap((g) => g.items).find((i) => isItemActive(i.href))?.label ?? "Admin Panel";
+  const currentItem = visibleGroups.flatMap((g) => g.items).find((i) => isItemActive(i.href));
+  const currentGroup = visibleGroups.find((g) => g.items.some((i) => isItemActive(i.href)));
+  const currentTitle = currentItem?.label ?? "Dashboard";
+
+  // Sidebar markup (shared between desktop + mobile drawer)
+  const SidebarInner = ({ isMobile = false }: { isMobile?: boolean }) => (
+    <>
+      {/* Brand */}
+      <div className="px-4 pt-5 pb-4 flex items-center justify-between">
+        <AnimatePresence mode="wait">
+          {(!collapsed || isMobile) && (
+            <motion.div
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -8 }}
+              className="flex items-center gap-3"
+            >
+              <div className="relative w-11 h-11 rounded-2xl bg-gradient-to-br from-primary via-primary/90 to-accent p-[2px] shadow-[0_8px_28px_-8px_hsl(var(--primary)/0.85)]">
+                <div className="w-full h-full rounded-[14px] bg-background/95 flex items-center justify-center">
+                  <img src={logoImg} alt="Shahed IT" className="w-6 h-6 object-contain" />
+                </div>
+                <span className="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-accent ring-2 ring-background animate-pulse" />
+              </div>
+              <div className="leading-tight">
+                <p className="text-foreground font-bold text-[15px] font-syne tracking-tight">Shahed IT</p>
+                <p className="text-[10px] text-primary/90 mt-0.5 flex items-center gap-1 font-medium uppercase tracking-[0.12em]">
+                  <Crown size={9} className="text-accent" /> Admin Suite
+                </p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        {!isMobile && (
+          <button
+            onClick={() => setCollapsed(!collapsed)}
+            className="text-muted-foreground hover:text-primary p-1.5 rounded-lg hover:bg-primary/10 transition-colors ml-auto"
+            title={collapsed ? "Expand" : "Collapse"}
+          >
+            {collapsed ? <Menu size={16} /> : <ChevronLeft size={16} />}
+          </button>
+        )}
+        {isMobile && (
+          <button onClick={() => setMobileOpen(false)} className="text-muted-foreground hover:text-primary p-1.5 rounded-lg hover:bg-primary/10">
+            <X size={18} />
+          </button>
+        )}
+      </div>
+
+      {/* Search */}
+      {(!collapsed || isMobile) && (
+        <div className="px-4 pb-3">
+          <div className="relative">
+            <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/70" />
+            <Input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search menu…"
+              className="h-9 pl-8 pr-8 text-xs bg-card/40 border-primary/15 focus:border-primary/40 placeholder:text-muted-foreground/50 rounded-lg"
+            />
+            {query && (
+              <button onClick={() => setQuery("")} className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground/70 hover:text-foreground">
+                <X size={12} />
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Nav Groups */}
+      <nav className="flex-1 overflow-y-auto py-1 px-2.5 space-y-0.5 scrollbar-thin scrollbar-thumb-primary/20">
+        {loading ? (
+          <div className="space-y-2 px-2 pt-2">
+            {Array.from({ length: 10 }).map((_, i) => (
+              <div key={i} className="h-8 rounded-lg bg-primary/5 animate-pulse" />
+            ))}
+          </div>
+        ) : filteredGroups.map((group) => {
+          const isOpen = (collapsed && !isMobile) ? false : (query.trim() ? true : (openGroups[group.title] ?? false));
+          const groupActive = group.items.some((i) => isItemActive(i.href));
+          return (
+            <div key={group.title} className="mb-1">
+              {(!collapsed || isMobile) && (
+                <button
+                  onClick={() => setOpenGroups({ ...openGroups, [group.title]: !isOpen })}
+                  className={`w-full group flex items-center justify-between px-2.5 py-1.5 mt-2 text-[10px] uppercase tracking-[0.14em] font-bold transition-colors ${
+                    groupActive ? "text-primary" : "text-muted-foreground/70 hover:text-foreground"
+                  }`}
+                >
+                  <span className="flex items-center gap-2">
+                    <group.icon size={11} className={groupActive ? "text-primary" : ""} />
+                    {group.title}
+                  </span>
+                  <ChevronDown size={11} className={`transition-transform opacity-60 group-hover:opacity-100 ${isOpen ? "" : "-rotate-90"}`} />
+                </button>
+              )}
+              <AnimatePresence initial={false}>
+                {(isOpen || (collapsed && !isMobile)) && (
+                  <motion.div
+                    initial={(collapsed && !isMobile) ? false : { height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    className="overflow-hidden space-y-0.5 mt-0.5"
+                  >
+                    {group.items.map((item) => {
+                      const active = isItemActive(item.href);
+                      return (
+                        <Link key={item.href} to={item.href} title={(collapsed && !isMobile) ? item.label : undefined}>
+                          <motion.div
+                            whileHover={{ x: (collapsed && !isMobile) ? 0 : 2 }}
+                            transition={{ type: "spring", stiffness: 400, damping: 28 }}
+                            className={`relative flex items-center gap-3 px-2.5 py-2 rounded-lg text-[13px] font-medium transition-all duration-200 ${
+                              active
+                                ? "bg-gradient-to-r from-primary/25 via-primary/10 to-transparent text-foreground"
+                                : "text-muted-foreground hover:text-foreground hover:bg-foreground/[0.04]"
+                            }`}
+                          >
+                            {active && (
+                              <motion.span
+                                layoutId="activeNav"
+                                className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-gradient-to-b from-primary to-accent rounded-r-full shadow-[0_0_10px_hsl(var(--primary)/0.9)]"
+                              />
+                            )}
+                            <span className={`flex-shrink-0 w-7 h-7 rounded-md flex items-center justify-center transition-colors ${
+                              active
+                                ? "bg-gradient-to-br from-primary/30 to-accent/20 text-primary shadow-[inset_0_1px_0_hsl(var(--primary)/0.3)]"
+                                : "text-muted-foreground/80 group-hover:text-foreground"
+                            }`}>
+                              <item.icon size={15} />
+                            </span>
+                            <AnimatePresence mode="wait">
+                              {(!collapsed || isMobile) && (
+                                <motion.span
+                                  initial={{ opacity: 0 }}
+                                  animate={{ opacity: 1 }}
+                                  exit={{ opacity: 0 }}
+                                  className="truncate flex-1"
+                                >
+                                  {item.label}
+                                </motion.span>
+                              )}
+                            </AnimatePresence>
+                            {(!collapsed || isMobile) && item.badge && (
+                              <span className={`text-[8.5px] font-bold px-1.5 py-0.5 rounded-md tracking-wider ${
+                                item.badge === "AI"
+                                  ? "bg-gradient-to-r from-accent/30 to-primary/30 text-accent border border-accent/40"
+                                  : "bg-primary/15 text-primary border border-primary/30"
+                              }`}>
+                                {item.badge}
+                              </span>
+                            )}
+                          </motion.div>
+                        </Link>
+                      );
+                    })}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          );
+        })}
+        {filteredGroups.length === 0 && (
+          <p className="text-xs text-muted-foreground text-center py-6">No matching items</p>
+        )}
+      </nav>
+
+      {/* User card */}
+      <div className="p-3 mt-1">
+        <div className={`relative rounded-xl border border-primary/15 bg-gradient-to-br from-card/60 to-background/30 backdrop-blur-xl p-2.5 flex items-center gap-3 ${(collapsed && !isMobile) ? "justify-center" : ""}`}>
+          <Avatar className="w-9 h-9 flex-shrink-0 ring-2 ring-primary/40">
+            <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-primary-foreground text-xs font-bold">
+              {user?.email?.[0]?.toUpperCase() ?? "A"}
+            </AvatarFallback>
+          </Avatar>
+          {(!collapsed || isMobile) && (
+            <>
+              <div className="flex-1 min-w-0">
+                <p className="text-foreground text-xs font-semibold truncate">{user?.email}</p>
+                <p className="text-[10px] capitalize flex items-center gap-1 text-primary/90 font-medium">
+                  <Crown size={9} className="text-accent" /> {role ?? "admin"}
+                </p>
+              </div>
+              <Button variant="ghost" size="icon" onClick={handleSignOut} className="text-muted-foreground hover:text-rose-400 h-8 w-8 flex-shrink-0 rounded-lg" title="Sign out">
+                <LogOut size={14} />
+              </Button>
+            </>
+          )}
+        </div>
+      </div>
+    </>
+  );
 
   return (
-    <div className="relative h-screen overflow-hidden font-inter text-foreground">
-      {/* Static background orbs — matches public site (Index.tsx) */}
+    <div className="relative h-screen overflow-hidden font-inter text-foreground bg-background">
+      {/* Ambient background */}
       <div
         className="fixed inset-0 pointer-events-none overflow-hidden z-0"
         style={{ contain: "strict", transform: "translateZ(0)" }}
       >
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,hsl(var(--primary)/0.18),transparent_60%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_100%_100%,hsl(var(--accent)/0.12),transparent_60%)]" />
         <div
-          className="orb orb-primary absolute"
-          style={{ width: 600, height: 600, top: "-150px", left: "-150px", opacity: 0.12, willChange: "transform" }}
-        />
-        <div
-          className="orb orb-accent absolute"
-          style={{ width: 500, height: 500, top: "-100px", right: "-150px", opacity: 0.1, willChange: "transform" }}
-        />
-        <div
-          className="orb orb-primary absolute"
-          style={{ width: 500, height: 500, bottom: "10%", left: "-100px", opacity: 0.09, willChange: "transform" }}
+          className="absolute inset-0 opacity-[0.025]"
+          style={{
+            backgroundImage:
+              "linear-gradient(hsl(var(--foreground)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)",
+            backgroundSize: "44px 44px",
+          }}
         />
       </div>
 
       <div className="relative z-10 flex h-full overflow-hidden">
-      {/* Sidebar */}
-      <motion.aside
-        animate={{ width: collapsed ? 76 : 270 }}
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className="flex-shrink-0 flex flex-col overflow-hidden border-r border-primary/15"
-        style={{
-          background:
-            "linear-gradient(180deg, hsl(var(--card) / 0.65) 0%, hsl(var(--background) / 0.55) 100%)",
-          backdropFilter: "blur(24px)",
-        }}
-      >
-        {/* Logo */}
-        <div className="px-4 py-4 flex items-center justify-between border-b border-primary/15 h-16">
-          <AnimatePresence mode="wait">
-            {!collapsed && (
-              <motion.div
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -10 }}
-                className="flex items-center gap-2.5"
-              >
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-accent p-0.5 shadow-[0_4px_18px_-4px_hsl(var(--primary)/0.7)]">
-                  <div className="w-full h-full rounded-[10px] bg-background flex items-center justify-center">
-                    <img src={logoImg} alt="Shahed IT" className="w-6 h-6 object-contain" />
-                  </div>
-                </div>
-                <div>
-                  <p className="text-foreground font-bold text-sm font-syne leading-none">Shahed IT</p>
-                  <p className="text-primary/80 text-[10px] mt-0.5 flex items-center gap-1">
-                    <Crown size={9} /> Admin Suite
-                  </p>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-          <button
-            onClick={() => setCollapsed(!collapsed)}
-            className="text-primary/80 hover:text-primary p-1.5 rounded-lg hover:bg-primary/10 transition-colors ml-auto"
-          >
-            {collapsed ? <Menu size={16} /> : <ChevronLeft size={16} />}
-          </button>
-        </div>
-
-        {/* Nav Groups */}
-        <nav className="flex-1 overflow-y-auto py-3 px-2 space-y-1 scrollbar-thin scrollbar-thumb-primary/20">
-          {loading ? (
-            <div className="space-y-2 px-2 pt-2">
-              {Array.from({ length: 10 }).map((_, i) => (
-                <div key={i} className="h-7 rounded-md bg-primary/5 animate-pulse" />
-              ))}
-            </div>
-          ) : visibleGroups.map((group) => {
-            const isOpen = collapsed ? false : (openGroups[group.title] ?? false);
-            return (
-              <div key={group.title} className="mb-1">
-                {!collapsed && (
-                  <button
-                    onClick={() => setOpenGroups({ ...openGroups, [group.title]: !isOpen })}
-                    className="w-full flex items-center justify-between px-3 py-1.5 text-[10px] uppercase tracking-wider font-semibold text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    <span>{group.title}</span>
-                    <ChevronDown size={12} className={`transition-transform ${isOpen ? "" : "-rotate-90"}`} />
-                  </button>
-                )}
-                <AnimatePresence initial={false}>
-                  {(isOpen || collapsed) && (
-                    <motion.div
-                      initial={collapsed ? false : { height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      className="overflow-hidden space-y-0.5"
-                    >
-                      {group.items.map((item) => {
-                        const active = isItemActive(item.href);
-                        return (
-                          <Link key={item.href} to={item.href}>
-                            <motion.div
-                              whileHover={{ x: 3 }}
-                              transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                              className={`relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
-                                active
-                                  ? "bg-gradient-to-r from-primary/30 via-accent/15 to-transparent text-foreground border border-primary/40 shadow-[0_6px_24px_-10px_hsl(var(--primary)/0.75),inset_0_1px_0_hsl(var(--primary)/0.2)]"
-                                  : "text-muted-foreground hover:text-foreground hover:bg-primary/10 border border-transparent hover:border-primary/15"
-                              }`}
-                            >
-                              {active && (
-                                <motion.span
-                                  layoutId="activeNav"
-                                  className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-gradient-to-b from-primary to-accent rounded-r-full shadow-[0_0_12px_hsl(var(--primary)/0.9)]"
-                                />
-                              )}
-                              <item.icon size={16} className={active ? "text-primary drop-shadow-[0_0_6px_hsl(var(--primary)/0.7)]" : ""} />
-                              <AnimatePresence mode="wait">
-                                {!collapsed && (
-                                  <motion.span
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0 }}
-                                    className="truncate flex-1"
-                                  >
-                                    {item.label}
-                                  </motion.span>
-                                )}
-                              </AnimatePresence>
-                              {!collapsed && item.badge && (
-                                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-gradient-to-r from-accent/30 to-primary/20 text-accent border border-accent/40 shadow-[0_0_8px_hsl(var(--accent)/0.4)]">
-                                  {item.badge}
-                                </span>
-                              )}
-                            </motion.div>
-                          </Link>
-                        );
-                      })}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            );
-          })}
-        </nav>
-
-        {/* User */}
-        <div className="p-3 border-t border-primary/15">
-          <div className={`flex items-center gap-3 ${collapsed ? "justify-center" : ""}`}>
-            <Avatar className="w-9 h-9 flex-shrink-0 ring-2 ring-primary/40">
-              <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-primary-foreground text-xs font-bold">
-                {user?.email?.[0]?.toUpperCase() ?? "A"}
-              </AvatarFallback>
-            </Avatar>
-            <AnimatePresence mode="wait">
-              {!collapsed && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex-1 min-w-0">
-                  <p className="text-foreground text-xs font-medium truncate">{user?.email}</p>
-                  <p className="text-primary/80 text-[10px] capitalize flex items-center gap-1">
-                    <Crown size={9} /> {role ?? "admin"}
-                  </p>
-                </motion.div>
-              )}
-            </AnimatePresence>
-            {!collapsed && (
-              <Button variant="ghost" size="icon" onClick={handleSignOut} className="text-muted-foreground hover:text-rose-400 h-7 w-7 flex-shrink-0">
-                <LogOut size={14} />
-              </Button>
-            )}
-          </div>
-        </div>
-      </motion.aside>
-
-      {/* Main */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Top bar */}
-        <header
-          className="h-16 border-b border-primary/15 flex items-center justify-between px-6 flex-shrink-0"
-          style={{ background: "hsl(var(--background) / 0.6)", backdropFilter: "blur(16px)" }}
+        {/* Desktop sidebar */}
+        <motion.aside
+          animate={{ width: collapsed ? 80 : 280 }}
+          transition={{ type: "spring", stiffness: 280, damping: 32 }}
+          className="hidden md:flex flex-shrink-0 flex-col overflow-hidden border-r border-primary/10"
+          style={{
+            background:
+              "linear-gradient(180deg, hsl(var(--card) / 0.55) 0%, hsl(var(--background) / 0.4) 100%)",
+            backdropFilter: "blur(28px)",
+          }}
         >
-          <div>
-            <h2 className="text-foreground font-semibold text-sm font-syne">{currentTitle}</h2>
-            <p className="text-muted-foreground text-xs">Shahed IT — Admin Suite</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <Link
-              to="/"
-              target="_blank"
-              className="hidden md:inline-flex items-center gap-1.5 text-foreground/90 hover:text-foreground text-xs bg-primary/10 hover:bg-primary/20 border border-primary/25 px-3 py-1.5 rounded-lg transition-colors"
-            >
-              View Site <ExternalLink size={12} />
-            </Link>
+          <SidebarInner />
+        </motion.aside>
 
-            <Popover>
-              <PopoverTrigger asChild>
-                <button className="relative text-primary/90 hover:text-primary p-2 rounded-lg hover:bg-primary/10 transition-colors">
-                  <Bell size={18} />
-                  {unreadCount > 0 && (
-                    <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-accent text-accent-foreground text-[9px] font-bold flex items-center justify-center">
-                      {unreadCount}
-                    </span>
-                  )}
-                </button>
-              </PopoverTrigger>
-              <PopoverContent
-                align="end"
-                className="w-80 p-0 bg-card/95 backdrop-blur-xl border-primary/25"
+        {/* Mobile drawer */}
+        <AnimatePresence>
+          {mobileOpen && (
+            <>
+              <motion.div
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                className="md:hidden fixed inset-0 bg-background/70 backdrop-blur-sm z-40"
+                onClick={() => setMobileOpen(false)}
+              />
+              <motion.aside
+                initial={{ x: -300 }} animate={{ x: 0 }} exit={{ x: -300 }}
+                transition={{ type: "spring", stiffness: 280, damping: 32 }}
+                className="md:hidden fixed top-0 left-0 bottom-0 w-[280px] z-50 flex flex-col border-r border-primary/15"
+                style={{
+                  background:
+                    "linear-gradient(180deg, hsl(var(--card) / 0.95) 0%, hsl(var(--background) / 0.92) 100%)",
+                  backdropFilter: "blur(28px)",
+                }}
               >
-                <div className="p-3 border-b border-primary/15 flex items-center justify-between">
-                  <h3 className="text-sm font-semibold text-foreground font-syne">Notifications</h3>
-                  <Badge variant="outline" className="text-[10px] border-primary/30 text-primary">
-                    {unreadCount} new
-                  </Badge>
-                </div>
-                <div className="max-h-80 overflow-y-auto">
-                  {notifications.length === 0 ? (
-                    <p className="text-xs text-muted-foreground text-center py-8">No new activity</p>
-                  ) : (
-                    notifications.map((n, i) => (
-                      <Link key={i} to={n.link}>
-                        <div className="px-3 py-2.5 hover:bg-primary/5 border-b border-primary/10 cursor-pointer">
-                          <p className="text-xs text-foreground">{n.title}</p>
-                          <p className="text-[10px] text-muted-foreground mt-0.5">
-                            {new Date(n.time).toLocaleString()}
-                          </p>
-                        </div>
-                      </Link>
-                    ))
+                <SidebarInner isMobile />
+              </motion.aside>
+            </>
+          )}
+        </AnimatePresence>
+
+        {/* Main */}
+        <div className="flex-1 flex flex-col overflow-hidden">
+          {/* Top bar */}
+          <header
+            className="h-[68px] border-b border-primary/10 flex items-center justify-between gap-3 px-4 md:px-7 flex-shrink-0"
+            style={{ background: "hsl(var(--background) / 0.55)", backdropFilter: "blur(18px)" }}
+          >
+            <div className="flex items-center gap-3 min-w-0">
+              <button
+                onClick={() => setMobileOpen(true)}
+                className="md:hidden text-foreground p-2 -ml-2 rounded-lg hover:bg-primary/10"
+                aria-label="Open menu"
+              >
+                <Menu size={20} />
+              </button>
+
+              <div className="min-w-0">
+                {/* Breadcrumb */}
+                <div className="hidden sm:flex items-center gap-1.5 text-[11px] text-muted-foreground/80 font-medium">
+                  <Link to="/admin" className="hover:text-primary transition-colors">Admin</Link>
+                  {currentGroup && (
+                    <>
+                      <ChevronRight size={11} className="opacity-50" />
+                      <span className="opacity-90">{currentGroup.title}</span>
+                    </>
+                  )}
+                  {currentItem && (
+                    <>
+                      <ChevronRight size={11} className="opacity-50" />
+                      <span className="text-primary">{currentItem.label}</span>
+                    </>
                   )}
                 </div>
-              </PopoverContent>
-            </Popover>
-          </div>
-        </header>
+                <h2 className="text-foreground font-semibold text-[15px] md:text-base font-syne leading-tight truncate">
+                  {currentTitle}
+                </h2>
+              </div>
+            </div>
 
-        {/* Content */}
-        <main className="flex-1 overflow-y-auto p-6">
-          <motion.div key={location.pathname} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2 }}>
-            {children}
-          </motion.div>
-        </main>
-      </div>
+            <div className="flex items-center gap-2">
+              {/* Quick search hint (visual only) */}
+              <button
+                onClick={() => {
+                  const el = document.querySelector<HTMLInputElement>('input[placeholder="Search menu…"]');
+                  el?.focus();
+                }}
+                className="hidden lg:inline-flex items-center gap-2 text-muted-foreground hover:text-foreground text-xs bg-card/40 hover:bg-card/60 border border-primary/15 hover:border-primary/30 pl-3 pr-2 py-1.5 rounded-lg transition-colors"
+              >
+                <Search size={13} />
+                <span>Quick search</span>
+                <kbd className="ml-2 text-[9px] font-semibold bg-background/60 border border-primary/20 px-1.5 py-0.5 rounded">
+                  <Command size={9} className="inline -mt-0.5" /> K
+                </kbd>
+              </button>
+
+              <Link
+                to="/"
+                target="_blank"
+                className="hidden md:inline-flex items-center gap-1.5 text-foreground/90 hover:text-primary text-xs bg-card/40 hover:bg-primary/10 border border-primary/15 hover:border-primary/30 px-3 py-1.5 rounded-lg transition-colors"
+              >
+                View Site <ExternalLink size={11} />
+              </Link>
+
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button className="relative text-foreground/80 hover:text-primary p-2 rounded-lg hover:bg-primary/10 border border-transparent hover:border-primary/20 transition-colors">
+                    <Bell size={17} />
+                    {unreadCount > 0 && (
+                      <span className="absolute top-0.5 right-0.5 min-w-[16px] h-4 px-1 rounded-full bg-gradient-to-br from-accent to-primary text-primary-foreground text-[9px] font-bold flex items-center justify-center shadow-[0_0_10px_hsl(var(--accent)/0.6)]">
+                        {unreadCount}
+                      </span>
+                    )}
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent
+                  align="end"
+                  className="w-80 p-0 bg-card/95 backdrop-blur-xl border-primary/25 rounded-xl overflow-hidden"
+                >
+                  <div className="p-3 border-b border-primary/15 flex items-center justify-between bg-gradient-to-r from-primary/10 to-transparent">
+                    <h3 className="text-sm font-semibold text-foreground font-syne">Notifications</h3>
+                    <Badge variant="outline" className="text-[10px] border-primary/30 text-primary">
+                      {unreadCount} new
+                    </Badge>
+                  </div>
+                  <div className="max-h-80 overflow-y-auto">
+                    {notifications.length === 0 ? (
+                      <div className="text-center py-10 px-4">
+                        <Bell size={20} className="mx-auto text-muted-foreground/50 mb-2" />
+                        <p className="text-xs text-muted-foreground">No new activity</p>
+                      </div>
+                    ) : (
+                      notifications.map((n, i) => (
+                        <Link key={i} to={n.link}>
+                          <div className="px-3 py-2.5 hover:bg-primary/5 border-b border-primary/10 cursor-pointer transition-colors">
+                            <p className="text-xs text-foreground leading-snug">{n.title}</p>
+                            <p className="text-[10px] text-muted-foreground mt-0.5">
+                              {new Date(n.time).toLocaleString()}
+                            </p>
+                          </div>
+                        </Link>
+                      ))
+                    )}
+                  </div>
+                </PopoverContent>
+              </Popover>
+
+              {/* Compact user chip on top bar */}
+              <div className="hidden md:flex items-center gap-2 pl-2 ml-1 border-l border-primary/15">
+                <Avatar className="w-8 h-8 ring-2 ring-primary/30">
+                  <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-primary-foreground text-[11px] font-bold">
+                    {user?.email?.[0]?.toUpperCase() ?? "A"}
+                  </AvatarFallback>
+                </Avatar>
+              </div>
+            </div>
+          </header>
+
+          {/* Content */}
+          <main className="flex-1 overflow-y-auto">
+            <div className="p-4 md:p-7 max-w-[1600px] mx-auto">
+              <motion.div
+                key={location.pathname}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.25, ease: "easeOut" }}
+              >
+                {children}
+              </motion.div>
+            </div>
+          </main>
+        </div>
       </div>
     </div>
   );
