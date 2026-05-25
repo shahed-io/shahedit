@@ -2676,6 +2676,51 @@ export type Database = {
           },
         ]
       }
+      public_team_members: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          department: string | null
+          designation: string | null
+          id: string | null
+          is_active: boolean | null
+          is_published: boolean | null
+          linkedin_url: string | null
+          name: string | null
+          role: string | null
+          sort_order: number | null
+          twitter_url: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          department?: string | null
+          designation?: string | null
+          id?: string | null
+          is_active?: boolean | null
+          is_published?: boolean | null
+          linkedin_url?: string | null
+          name?: string | null
+          role?: string | null
+          sort_order?: number | null
+          twitter_url?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          department?: string | null
+          designation?: string | null
+          id?: string | null
+          is_active?: boolean | null
+          is_published?: boolean | null
+          linkedin_url?: string | null
+          name?: string | null
+          role?: string | null
+          sort_order?: number | null
+          twitter_url?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       has_role: {
