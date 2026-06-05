@@ -380,16 +380,44 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   );
 
   return (
-    <div className="relative h-screen overflow-hidden font-inter text-foreground bg-background">
-      {/* Ambient background */}
+    <div
+      className="admin-soft-dark relative h-screen overflow-hidden font-inter text-foreground bg-background"
+      style={{
+        // Soft Dark Slate palette — high readability for admin panel
+        ["--background" as any]: "217 33% 17%",
+        ["--foreground" as any]: "210 40% 98%",
+        ["--card" as any]: "215 28% 22%",
+        ["--card-foreground" as any]: "210 40% 98%",
+        ["--popover" as any]: "215 28% 22%",
+        ["--popover-foreground" as any]: "210 40% 98%",
+        ["--muted" as any]: "215 25% 27%",
+        ["--muted-foreground" as any]: "215 20% 78%",
+        ["--border" as any]: "215 19% 35%",
+        ["--input" as any]: "215 19% 35%",
+        ["--primary" as any]: "258 90% 76%",
+        ["--primary-foreground" as any]: "222 47% 11%",
+        ["--accent" as any]: "258 90% 76%",
+        ["--accent-foreground" as any]: "222 47% 11%",
+        ["--secondary" as any]: "215 25% 27%",
+        ["--secondary-foreground" as any]: "210 40% 98%",
+        ["--ring" as any]: "258 90% 76%",
+      }}
+    >
+      {/* Soft slate ambient background — subtle, clear, readable */}
       <div
         className="fixed inset-0 pointer-events-none overflow-hidden z-0"
         style={{ contain: "strict", transform: "translateZ(0)" }}
       >
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,hsl(var(--primary)/0.18),transparent_60%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_100%_100%,hsl(var(--accent)/0.12),transparent_60%)]" />
         <div
-          className="absolute inset-0 opacity-[0.025]"
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, hsl(217 33% 17%) 0%, hsl(215 28% 20%) 100%)",
+          }}
+        />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_-10%,hsl(var(--primary)/0.10),transparent_65%)]" />
+        <div
+          className="absolute inset-0 opacity-[0.04]"
           style={{
             backgroundImage:
               "linear-gradient(hsl(var(--foreground)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)",
