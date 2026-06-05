@@ -252,9 +252,13 @@ const AppWithAnalytics = () => {
         <Route path="/search" element={<SearchResultsPage />} />
         <Route path="/tech/:slug" element={<TechDetailPage />} />
 
-        {/* Admin Routes */}
+        {/* Admin Routes (mounted at /ceo) */}
         <Route path="/ceo/login" element={<AdminLogin />} />
         <Route path="/ceo/*" element={<AdminRoutes />} />
+        {/* Legacy /admin → redirect to /ceo */}
+        <Route path="/admin" element={<Navigate to="/ceo" replace />} />
+        <Route path="/admin/login" element={<Navigate to="/ceo/login" replace />} />
+        <Route path="/admin/*" element={<Navigate to="/ceo" replace />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <ThemeAppearanceProvider />
