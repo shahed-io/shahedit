@@ -77,14 +77,49 @@ const FALLBACK: HeroSlide = {
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
+// Generate a random countdown target between 1–7 days from now
+const randomFutureTime = () => {
+  const days = Math.floor(Math.random() * 7) + 1;
+  const hours = Math.floor(Math.random() * 24);
+  const mins = Math.floor(Math.random() * 60);
+  const secs = Math.floor(Math.random() * 60);
+  return Date.now() + days * 86400000 + hours * 3600000 + mins * 60000 + secs * 1000;
+};
+
 const useCountdown = (endsAt: string | null | undefined) => {
+  const [target, setTarget] = useState<number>(() => {
+    if (endsAt) {
+      const t = new Date(endsAt).getTime();
+      if (t > Date.now()) return t;
+    }
+    return randomFutureTime();
+  });
   const [now, setNow] = useState(Date.now());
+
   useEffect(() => {
-    const i = setInterval(() => setNow(Date.now()), 1000);
+    if (endsAt) {
+      const t = new Date(endsAt).getTime();
+      if (t > Date.now()) {
+        setTarget(t);
+        return;
+      }
+    }
+    setTarget(randomFutureTime());
+  }, [endsAt]);
+
+  useEffect(() => {
+    const i = setInterval(() => {
+      const n = Date.now();
+      setNow(n);
+      if (n >= target) {
+        // Auto-reset to a new random countdown when it expires
+        setTarget(randomFutureTime());
+      }
+    }, 1000);
     return () => clearInterval(i);
-  }, []);
-  if (!endsAt) return { days: 0, hours: 0, mins: 0, secs: 0 };
-  const diff = Math.max(0, new Date(endsAt).getTime() - now);
+  }, [target]);
+
+  const diff = Math.max(0, target - now);
   return {
     days: Math.floor(diff / 86400000),
     hours: Math.floor((diff / 3600000) % 24),
@@ -204,7 +239,7 @@ const SlideContent = ({ slide }: { slide: HeroSlide }) => {
 
       {/* RIGHT */}
       <div className="relative flex flex-col gap-5">
-        {slide.show_countdown && slide.countdown_end_at && (
+        {slide.show_countdown && (
           <motion.div
             initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, type: "spring", stiffness: 80 }}
             className="bg-white/[0.04] border border-white/10 backdrop-blur-2xl p-6 rounded-3xl shadow-2xl relative overflow-hidden"
