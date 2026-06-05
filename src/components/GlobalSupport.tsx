@@ -8,7 +8,7 @@ export default function GlobalSupport() {
   const { pathname } = useLocation();
 
   // Hide on admin routes
-  if (pathname.startsWith("/admin")) return null;
+  if (pathname.startsWith("/ceo")) return null;
 
   return (
     <>

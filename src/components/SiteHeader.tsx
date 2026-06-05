@@ -967,7 +967,7 @@ const SiteHeader = () => {
 
                   {user?.email === "info.shahedit@gmail.com" && (
                     <motion.div variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}>
-                      <Link to="/admin" onClick={() => setMobileOpen(false)}>
+                      <Link to="/ceo" onClick={() => setMobileOpen(false)}>
                         <div
                           className="flex items-center justify-center gap-1.5 py-2.5 rounded-2xl text-sm font-extrabold text-white"
                           style={{

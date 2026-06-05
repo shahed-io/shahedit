@@ -128,7 +128,7 @@ const AdminPageFallback = () => (
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading, isAdmin } = useAuth();
   if (loading) return <PageFallback />;
-  if (!user || !isAdmin) return <Navigate to="/admin/login" replace />;
+  if (!user || !isAdmin) return <Navigate to="/ceo/login" replace />;
   return <>{children}</>;
 };
 
@@ -144,7 +144,7 @@ const RoleRoute = ({ section, children }: { section: AdminSection; children: Rea
         <p className="text-slate-400 text-sm max-w-md">
           এই সেকশনটি দেখার অনুমতি আপনার role-এ নেই। আপনার ভূমিকা: <span className="text-purple-400 font-semibold">{role ?? "—"}</span>
         </p>
-        <a href="/admin" className="mt-5 px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-sm font-semibold">
+        <a href="/ceo" className="mt-5 px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-sm font-semibold">
           Dashboard-এ ফিরে যান
         </a>
       </div>
@@ -252,9 +252,13 @@ const AppWithAnalytics = () => {
         <Route path="/search" element={<SearchResultsPage />} />
         <Route path="/tech/:slug" element={<TechDetailPage />} />
 
-        {/* Admin Routes */}
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin/*" element={<AdminRoutes />} />
+        {/* Admin Routes (mounted at /ceo) */}
+        <Route path="/ceo/login" element={<AdminLogin />} />
+        <Route path="/ceo/*" element={<AdminRoutes />} />
+        {/* Legacy /admin → redirect to /ceo */}
+        <Route path="/admin" element={<Navigate to="/ceo" replace />} />
+        <Route path="/admin/login" element={<Navigate to="/ceo/login" replace />} />
+        <Route path="/admin/*" element={<Navigate to="/ceo" replace />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <ThemeAppearanceProvider />
