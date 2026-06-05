@@ -25,7 +25,7 @@ const AdminLogin = () => {
     if (authLoading) return;
     if (!user) return;
     if (isAdmin) {
-      navigate("/admin", { replace: true });
+      navigate("/ceo", { replace: true });
     } else {
       toast.error("এই অ্যাকাউন্টে admin panel access নেই।");
       navigate("/", { replace: true });

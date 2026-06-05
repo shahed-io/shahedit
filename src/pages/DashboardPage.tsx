@@ -329,7 +329,7 @@ export default function DashboardPage() {
         <Zap size={16} className="text-amber-400" /> Services
       </Link>
       {isAdmin && (
-        <Link to="/admin" onClick={onPick}
+        <Link to="/ceo" onClick={onPick}
           className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-card/60 transition-all">
           <Shield size={16} className="text-emerald-400" /> Admin Panel
         </Link>

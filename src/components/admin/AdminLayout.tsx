@@ -30,86 +30,86 @@ const navGroups: NavGroup[] = [
     title: "Overview",
     icon: LayoutDashboard,
     items: [
-      { label: "Dashboard", icon: LayoutDashboard, href: "/admin", section: "dashboard" },
-      { label: "Analytics", icon: BarChart3, href: "/admin/analytics", badge: "NEW", section: "analytics" },
-      { label: "Activity Log", icon: History, href: "/admin/activity", section: "activity" },
+      { label: "Dashboard", icon: LayoutDashboard, href: "/ceo", section: "dashboard" },
+      { label: "Analytics", icon: BarChart3, href: "/ceo/analytics", badge: "NEW", section: "analytics" },
+      { label: "Activity Log", icon: History, href: "/ceo/activity", section: "activity" },
     ],
   },
   {
     title: "Sales & CRM",
     icon: Inbox,
     items: [
-      { label: "Leads", icon: Inbox, href: "/admin/leads", section: "leads" },
-      { label: "Refund Requests", icon: RefreshCcw, href: "/admin/refunds", badge: "NEW", section: "refunds" },
-      { label: "Payments", icon: CreditCard, href: "/admin/payments", section: "payments" },
-      { label: "bKash PGW", icon: Zap, href: "/admin/bkash-pgw", badge: "NEW", section: "payments" },
-      { label: "Orders & Delivery", icon: Package, href: "/admin/orders", section: "orders" },
-      { label: "Custom Order", icon: ClipboardList, href: "/admin/custom-order", badge: "NEW", section: "custom-order" },
-      { label: "Quotations", icon: FileText, href: "/admin/quotations", badge: "NEW", section: "quotations" },
-      { label: "Invoices", icon: Receipt, href: "/admin/invoices", badge: "NEW", section: "invoices" },
-      { label: "Coupons", icon: Tag, href: "/admin/coupons", badge: "NEW", section: "coupons" },
+      { label: "Leads", icon: Inbox, href: "/ceo/leads", section: "leads" },
+      { label: "Refund Requests", icon: RefreshCcw, href: "/ceo/refunds", badge: "NEW", section: "refunds" },
+      { label: "Payments", icon: CreditCard, href: "/ceo/payments", section: "payments" },
+      { label: "bKash PGW", icon: Zap, href: "/ceo/bkash-pgw", badge: "NEW", section: "payments" },
+      { label: "Orders & Delivery", icon: Package, href: "/ceo/orders", section: "orders" },
+      { label: "Custom Order", icon: ClipboardList, href: "/ceo/custom-order", badge: "NEW", section: "custom-order" },
+      { label: "Quotations", icon: FileText, href: "/ceo/quotations", badge: "NEW", section: "quotations" },
+      { label: "Invoices", icon: Receipt, href: "/ceo/invoices", badge: "NEW", section: "invoices" },
+      { label: "Coupons", icon: Tag, href: "/ceo/coupons", badge: "NEW", section: "coupons" },
     ],
   },
   {
     title: "Operations",
     icon: ListChecks,
     items: [
-      { label: "Projects & Tasks", icon: Briefcase, href: "/admin/projects", badge: "NEW", section: "projects" },
-      { label: "Expenses", icon: TrendingDown, href: "/admin/expenses", badge: "NEW", section: "expenses" },
-      { label: "Knowledge Base", icon: BookOpen, href: "/admin/knowledge-base", badge: "NEW", section: "knowledge-base" },
-      { label: "Newsletter", icon: Mail, href: "/admin/newsletter", badge: "NEW", section: "newsletter" },
+      { label: "Projects & Tasks", icon: Briefcase, href: "/ceo/projects", badge: "NEW", section: "projects" },
+      { label: "Expenses", icon: TrendingDown, href: "/ceo/expenses", badge: "NEW", section: "expenses" },
+      { label: "Knowledge Base", icon: BookOpen, href: "/ceo/knowledge-base", badge: "NEW", section: "knowledge-base" },
+      { label: "Newsletter", icon: Mail, href: "/ceo/newsletter", badge: "NEW", section: "newsletter" },
     ],
   },
   {
     title: "Catalog",
     icon: Briefcase,
     items: [
-      { label: "Services", icon: Briefcase, href: "/admin/services", section: "services" },
-      { label: "Service Packages", icon: Package, href: "/admin/service-packages", section: "service-packages" },
-      { label: "Pricing", icon: DollarSign, href: "/admin/pricing", section: "pricing" },
-      { label: "Portfolio", icon: FolderOpen, href: "/admin/portfolio", section: "portfolio" },
-      { label: "Products", icon: Package, href: "/admin/products", badge: "NEW", section: "products" },
+      { label: "Services", icon: Briefcase, href: "/ceo/services", section: "services" },
+      { label: "Service Packages", icon: Package, href: "/ceo/service-packages", section: "service-packages" },
+      { label: "Pricing", icon: DollarSign, href: "/ceo/pricing", section: "pricing" },
+      { label: "Portfolio", icon: FolderOpen, href: "/ceo/portfolio", section: "portfolio" },
+      { label: "Products", icon: Package, href: "/ceo/products", badge: "NEW", section: "products" },
     ],
   },
   {
     title: "Content & Marketing",
     icon: FileText,
     items: [
-      { label: "Blog Posts", icon: FileText, href: "/admin/blog", section: "blog" },
-      { label: "Blog Categories", icon: FolderTree, href: "/admin/blog-categories", badge: "NEW", section: "blog-categories" },
-      { label: "Media Library", icon: ImageIcon, href: "/admin/media", badge: "NEW", section: "media" },
-      { label: "AI Writer", icon: Sparkles, href: "/admin/ai-writer", badge: "AI", section: "ai-writer" },
-      { label: "Email Campaigns", icon: Mail, href: "/admin/campaigns", badge: "NEW", section: "campaigns" },
-      { label: "Testimonials", icon: Star, href: "/admin/testimonials", section: "testimonials" },
-      { label: "Clients", icon: Building2, href: "/admin/clients", section: "clients" },
-      { label: "Team", icon: UserCheck, href: "/admin/team", section: "team" },
-      { label: "Careers", icon: Users, href: "/admin/careers", section: "careers" },
-      { label: "FAQ", icon: HelpCircle, href: "/admin/faq", section: "faq" },
-      { label: "Tech Stack", icon: Sparkles, href: "/admin/tech-details", badge: "NEW", section: "tech-details" },
+      { label: "Blog Posts", icon: FileText, href: "/ceo/blog", section: "blog" },
+      { label: "Blog Categories", icon: FolderTree, href: "/ceo/blog-categories", badge: "NEW", section: "blog-categories" },
+      { label: "Media Library", icon: ImageIcon, href: "/ceo/media", badge: "NEW", section: "media" },
+      { label: "AI Writer", icon: Sparkles, href: "/ceo/ai-writer", badge: "AI", section: "ai-writer" },
+      { label: "Email Campaigns", icon: Mail, href: "/ceo/campaigns", badge: "NEW", section: "campaigns" },
+      { label: "Testimonials", icon: Star, href: "/ceo/testimonials", section: "testimonials" },
+      { label: "Clients", icon: Building2, href: "/ceo/clients", section: "clients" },
+      { label: "Team", icon: UserCheck, href: "/ceo/team", section: "team" },
+      { label: "Careers", icon: Users, href: "/ceo/careers", section: "careers" },
+      { label: "FAQ", icon: HelpCircle, href: "/ceo/faq", section: "faq" },
+      { label: "Tech Stack", icon: Sparkles, href: "/ceo/tech-details", badge: "NEW", section: "tech-details" },
     ],
   },
   {
     title: "SEO & Ranking",
     icon: Globe,
     items: [
-      { label: "Ranking Setup (All Google)", icon: Globe, href: "/admin/ranking-setup", badge: "NEW", section: "ranking-setup" },
-      { label: "SEO Manager", icon: Search, href: "/admin/seo", section: "seo" },
-      { label: "SEO Tools & Reports", icon: BarChart3, href: "/admin/seo-tools", badge: "NEW", section: "seo-tools" },
-      { label: "Sitemap & Robots", icon: Globe, href: "/admin/sitemap", badge: "NEW", section: "sitemap" },
-      { label: "Schema Builder", icon: Zap, href: "/admin/schema", badge: "NEW", section: "schema" },
-      { label: "Redirects (301)", icon: ArrowLeftRight, href: "/admin/redirects", badge: "NEW", section: "redirects" },
-      { label: "Popular Searches", icon: TrendingUp, href: "/admin/popular-searches", section: "popular-searches" },
+      { label: "Ranking Setup (All Google)", icon: Globe, href: "/ceo/ranking-setup", badge: "NEW", section: "ranking-setup" },
+      { label: "SEO Manager", icon: Search, href: "/ceo/seo", section: "seo" },
+      { label: "SEO Tools & Reports", icon: BarChart3, href: "/ceo/seo-tools", badge: "NEW", section: "seo-tools" },
+      { label: "Sitemap & Robots", icon: Globe, href: "/ceo/sitemap", badge: "NEW", section: "sitemap" },
+      { label: "Schema Builder", icon: Zap, href: "/ceo/schema", badge: "NEW", section: "schema" },
+      { label: "Redirects (301)", icon: ArrowLeftRight, href: "/ceo/redirects", badge: "NEW", section: "redirects" },
+      { label: "Popular Searches", icon: TrendingUp, href: "/ceo/popular-searches", section: "popular-searches" },
     ],
   },
   {
     title: "System",
     icon: Settings,
     items: [
-      { label: "AI Support", icon: MessageSquare, href: "/admin/ai-support", section: "ai-support" },
-      { label: "Admin Users", icon: Shield, href: "/admin/users", section: "users" },
-      { label: "Footer Editor", icon: LayoutTemplate, href: "/admin/footer", section: "footer" },
-      { label: "Hero Banners", icon: LayoutTemplate, href: "/admin/banners", badge: "NEW", section: "banners" },
-      { label: "Site Settings", icon: Settings, href: "/admin/settings", section: "settings" },
+      { label: "AI Support", icon: MessageSquare, href: "/ceo/ai-support", section: "ai-support" },
+      { label: "Admin Users", icon: Shield, href: "/ceo/users", section: "users" },
+      { label: "Footer Editor", icon: LayoutTemplate, href: "/ceo/footer", section: "footer" },
+      { label: "Hero Banners", icon: LayoutTemplate, href: "/ceo/banners", badge: "NEW", section: "banners" },
+      { label: "Site Settings", icon: Settings, href: "/ceo/settings", section: "settings" },
     ],
   },
 ];
@@ -166,9 +166,9 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           supabase.from("orders").select("id,order_number,status,created_at").gte("created_at", since).order("created_at", { ascending: false }).limit(5),
         ]);
         const items: any[] = [];
-        leads.data?.forEach((l) => items.push({ type: "lead", title: `নতুন lead: ${l.name}`, link: "/admin/leads", time: l.created_at }));
-        pays.data?.forEach((p) => items.push({ type: "payment", title: `Pending payment: ${p.name} (৳${p.amount})`, link: "/admin/payments", time: p.created_at }));
-        orders.data?.forEach((o) => items.push({ type: "order", title: `Order ${o.order_number} — ${o.status}`, link: "/admin/orders", time: o.created_at }));
+        leads.data?.forEach((l) => items.push({ type: "lead", title: `নতুন lead: ${l.name}`, link: "/ceo/leads", time: l.created_at }));
+        pays.data?.forEach((p) => items.push({ type: "payment", title: `Pending payment: ${p.name} (৳${p.amount})`, link: "/ceo/payments", time: p.created_at }));
+        orders.data?.forEach((o) => items.push({ type: "order", title: `Order ${o.order_number} — ${o.status}`, link: "/ceo/orders", time: o.created_at }));
         items.sort((a, b) => +new Date(b.time) - +new Date(a.time));
         setNotifications(items.slice(0, 10));
         setUnreadCount(items.length);
@@ -182,11 +182,11 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   const handleSignOut = async () => {
     await signOut();
     toast.success("Signed out");
-    navigate("/admin/login");
+    navigate("/ceo/login");
   };
 
   const isItemActive = (href: string) =>
-    location.pathname === href || (href !== "/admin" && location.pathname.startsWith(href));
+    location.pathname === href || (href !== "/ceo" && location.pathname.startsWith(href));
 
   const currentItem = visibleGroups.flatMap((g) => g.items).find((i) => isItemActive(i.href));
   const currentGroup = visibleGroups.find((g) => g.items.some((i) => isItemActive(i.href)));
@@ -457,7 +457,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
               <div className="min-w-0">
                 {/* Breadcrumb */}
                 <div className="hidden sm:flex items-center gap-1.5 text-[11px] text-muted-foreground/80 font-medium">
-                  <Link to="/admin" className="hover:text-primary transition-colors">Admin</Link>
+                  <Link to="/ceo" className="hover:text-primary transition-colors">Admin</Link>
                   {currentGroup && (
                     <>
                       <ChevronRight size={11} className="opacity-50" />

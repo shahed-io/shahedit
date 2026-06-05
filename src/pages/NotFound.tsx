@@ -51,7 +51,7 @@ const NotFound = () => {
   }
 
   const isAdmin = role === "super_admin" || role === "admin";
-  const dashboardHref = isAdmin ? "/admin" : "/dashboard";
+  const dashboardHref = isAdmin ? "/ceo" : "/dashboard";
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background px-4 py-12 font-inter">
