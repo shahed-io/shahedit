@@ -17,11 +17,11 @@ export interface PaymentMethod {
 
 // Fallback in case DB is empty / offline
 const FALLBACK: PaymentMethod[] = [
-  { id: "f1", method_id: "bkash_send", label: "বিকাশ", sublabel: "Send Money", number: "01820060046", color: "#E2136E", short_code: "bK", instructions: null, sort_order: 1, is_active: true },
-  { id: "f2", method_id: "nagad_send", label: "নগদ", sublabel: "Send Money", number: "01820060046", color: "#F6821F", short_code: "NG", instructions: null, sort_order: 2, is_active: true },
-  { id: "f3", method_id: "rocket_send", label: "রকেট", sublabel: "Send Money", number: "01820060046", color: "#8B1FA8", short_code: "RK", instructions: null, sort_order: 3, is_active: true },
-  { id: "f4", method_id: "upay_send", label: "উপায়", sublabel: "Send Money", number: "01820060046", color: "#00A651", short_code: "UP", instructions: null, sort_order: 4, is_active: true },
-  { id: "f5", method_id: "bkash_merchant", label: "বিকাশ মার্চেন্ট", sublabel: "Merchant", number: "01820060046", color: "#E2136E", short_code: "bM", instructions: null, sort_order: 5, is_active: true },
+  { id: "f1", method_id: "bkash_send", label: "বিকাশ", sublabel: "Send Money", number: "01820060046", color: "#E2136E", short_code: "bK", logo_url: null, instructions: null, sort_order: 1, is_active: true },
+  { id: "f2", method_id: "nagad_send", label: "নগদ", sublabel: "Send Money", number: "01820060046", color: "#F6821F", short_code: "NG", logo_url: null, instructions: null, sort_order: 2, is_active: true },
+  { id: "f3", method_id: "rocket_send", label: "রকেট", sublabel: "Send Money", number: "01820060046", color: "#8B1FA8", short_code: "RK", logo_url: null, instructions: null, sort_order: 3, is_active: true },
+  { id: "f4", method_id: "upay_send", label: "উপায়", sublabel: "Send Money", number: "01820060046", color: "#00A651", short_code: "UP", logo_url: null, instructions: null, sort_order: 4, is_active: true },
+  { id: "f5", method_id: "bkash_merchant", label: "বিকাশ মার্চেন্ট", sublabel: "Merchant", number: "01820060046", color: "#E2136E", short_code: "bM", logo_url: null, instructions: null, sort_order: 5, is_active: true },
 ];
 
 export const usePaymentMethods = () => {
