@@ -172,6 +172,37 @@ export const PaymentMethodsManager = () => {
             <Input value={form.instructions ?? ""} onChange={e => setForm(f => ({ ...f, instructions: e.target.value }))}
               placeholder="যেমন: Send Money অপশনে পাঠান" className="bg-slate-800 border-slate-700 text-white text-sm" />
           </div>
+          <div>
+            <Label className="text-xs text-slate-400 mb-1 block flex items-center gap-1.5">
+              <ImageIcon size={12} /> লোগো (যেমন: বিকাশ লোগো) — PNG/JPG/SVG, max 2MB
+            </Label>
+            <div className="flex items-center gap-3">
+              <div className="w-14 h-14 rounded-xl border border-slate-700 bg-slate-800 flex items-center justify-center overflow-hidden shrink-0"
+                style={{ background: form.logo_url ? "#fff" : form.color }}>
+                {form.logo_url ? (
+                  <img src={form.logo_url} alt="logo" className="w-full h-full object-contain" />
+                ) : (
+                  <span className="text-white text-xs font-bold">{form.short_code || "?"}</span>
+                )}
+              </div>
+              <label className="cursor-pointer">
+                <input type="file" accept="image/*" className="hidden"
+                  onChange={e => { const f = e.target.files?.[0]; if (f) uploadLogo(f); e.target.value = ""; }} />
+                <span className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-slate-200 text-xs hover:bg-slate-700">
+                  <Upload size={12} /> {uploading ? "আপলোড হচ্ছে..." : (form.logo_url ? "পরিবর্তন করুন" : "লোগো আপলোড")}
+                </span>
+              </label>
+              {form.logo_url && (
+                <Button size="sm" variant="ghost" onClick={() => setForm(f => ({ ...f, logo_url: null }))}
+                  className="text-red-400 hover:bg-red-500/10 text-xs gap-1 h-8">
+                  <X size={12} /> Remove
+                </Button>
+              )}
+              <Input value={form.logo_url ?? ""} onChange={e => setForm(f => ({ ...f, logo_url: e.target.value }))}
+                placeholder="বা সরাসরি image URL পেস্ট করুন"
+                className="bg-slate-800 border-slate-700 text-white text-xs flex-1" />
+            </div>
+          </div>
           <div className="flex gap-2">
             <Button size="sm" onClick={save} disabled={saving} className="bg-green-600 hover:bg-green-700 text-white gap-1.5">
               <Save size={14} /> {saving ? "সেভ হচ্ছে..." : "সেভ করুন"}
