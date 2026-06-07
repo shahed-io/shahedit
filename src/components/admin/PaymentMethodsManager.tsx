@@ -5,12 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Plus, Pencil, Trash2, Save, X, Smartphone, GripVertical } from "lucide-react";
+import { Plus, Pencil, Trash2, Save, X, Smartphone, GripVertical, Upload, ImageIcon } from "lucide-react";
 import type { PaymentMethod } from "@/hooks/usePaymentMethods";
 
 const empty: Partial<PaymentMethod> = {
   method_id: "", label: "", sublabel: "", number: "", color: "#E2136E",
-  short_code: "", instructions: "", sort_order: 99, is_active: true,
+  short_code: "", logo_url: null, instructions: "", sort_order: 99, is_active: true,
 };
 
 export const PaymentMethodsManager = () => {
