@@ -19,6 +19,23 @@ export const PaymentMethodsManager = () => {
   const [editing, setEditing] = useState<string | null>(null); // id or "new"
   const [form, setForm] = useState<Partial<PaymentMethod>>(empty);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+
+  const uploadLogo = async (file: File) => {
+    if (!file.type.startsWith("image/")) { toast.error("শুধু image ফাইল আপলোড করুন"); return; }
+    if (file.size > 2 * 1024 * 1024) { toast.error("ফাইল 2MB এর কম হতে হবে"); return; }
+    setUploading(true);
+    const ext = file.name.split(".").pop() || "png";
+    const path = `payment-logos/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+    const { error } = await supabase.storage.from("cms-media").upload(path, file, {
+      cacheControl: "3600", upsert: false, contentType: file.type,
+    });
+    if (error) { setUploading(false); toast.error("আপলোড ব্যর্থ: " + error.message); return; }
+    const { data } = supabase.storage.from("cms-media").getPublicUrl(path);
+    setForm(f => ({ ...f, logo_url: data.publicUrl }));
+    setUploading(false);
+    toast.success("✅ লোগো আপলোড হয়েছে");
+  };
 
   const load = async () => {
     setLoading(true);
