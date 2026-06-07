@@ -140,9 +140,9 @@ const badgeColorMap: Record<string, string> = {
 const SlideContent = ({ slide }: { slide: HeroSlide }) => {
   const cd = useCountdown(slide.countdown_end_at);
   return (
-    <div className="container mx-auto px-4 md:px-6 relative z-10 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center py-16 lg:py-20">
+    <div className="container mx-auto px-4 sm:px-5 md:px-6 relative z-10 grid lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-16 items-center py-10 sm:py-14 lg:py-20">
       {/* LEFT */}
-      <div className="space-y-8 lg:space-y-10">
+      <div className="space-y-6 sm:space-y-8 lg:space-y-10 min-w-0">
         {slide.badge_text && (
           <motion.div
             initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
