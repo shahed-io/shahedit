@@ -48,7 +48,8 @@ export type AdminSection =
   | "quotations"
   | "newsletter"
   | "knowledge-base"
-  | "tech-details";
+  | "tech-details"
+  | "wallets";
 
 /**
  * Permission matrix: which roles can access each admin section.
