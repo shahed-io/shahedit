@@ -305,8 +305,8 @@ const SlideContent = ({ slide }: { slide: HeroSlide }) => {
                     <div>
                       <span className="text-[10px] uppercase tracking-widest text-white/40 block">Starting from</span>
                       <div className="flex items-center gap-2 font-bold mt-1">
-                        {card.price && <span className="text-xl md:text-2xl" style={{ color: accent }}>{card.price}</span>}
-                        {card.original_price && <span className="text-sm line-through text-white/30">{card.original_price}</span>}
+                        {card.price && <span className="text-lg sm:text-xl md:text-2xl" style={{ color: accent }}>{card.price}</span>}
+                        {card.original_price && <span className="text-xs sm:text-sm line-through text-white/30">{card.original_price}</span>}
                       </div>
                     </div>
                     <motion.span whileHover={{ x: 3 }} className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest" style={{ color: accent }}>
