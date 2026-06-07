@@ -205,6 +205,7 @@ const AdminRoutes = () => (
         <Route path="newsletter" element={<RoleRoute section="newsletter"><AdminNewsletter /></RoleRoute>} />
         <Route path="knowledge-base" element={<RoleRoute section="knowledge-base"><AdminKnowledgeBase /></RoleRoute>} />
         <Route path="custom-order" element={<RoleRoute section="custom-order"><AdminCustomOrder /></RoleRoute>} />
+        <Route path="wallets" element={<RoleRoute section="wallets"><AdminWallets /></RoleRoute>} />
       </Routes>
       </Suspense>
     </AdminLayout>
