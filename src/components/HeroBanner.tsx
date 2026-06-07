@@ -238,7 +238,7 @@ const SlideContent = ({ slide }: { slide: HeroSlide }) => {
       </div>
 
       {/* RIGHT */}
-      <div className="relative flex flex-col gap-5">
+      <div className="relative flex flex-col gap-4 sm:gap-5 min-w-0">
         {slide.show_countdown && (
           <motion.div
             initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, type: "spring", stiffness: 80 }}
