@@ -161,7 +161,7 @@ const SlideContent = ({ slide }: { slide: HeroSlide }) => {
         <div className="space-y-6">
           <motion.h1
             initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-5xl sm:text-6xl lg:text-7xl xl:text-[88px] font-extrabold leading-[0.95] tracking-tight text-white"
+            className="text-[2.25rem] xs:text-5xl sm:text-6xl lg:text-7xl xl:text-[88px] font-extrabold leading-[1.02] sm:leading-[0.95] tracking-tight text-white break-words"
             style={{ fontFamily: "'Syne', sans-serif" }}
           >
             {slide.headline}
