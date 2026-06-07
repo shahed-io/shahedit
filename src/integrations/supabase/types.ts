@@ -2658,6 +2658,95 @@ export type Database = {
         }
         Relationships: []
       }
+      wallet_transactions: {
+        Row: {
+          amount: number
+          balance_after: number
+          created_at: string
+          description: string | null
+          direction: string
+          id: string
+          metadata: Json
+          payment_method: string | null
+          performed_by: string | null
+          product_title: string | null
+          reference_id: string | null
+          reference_type: string | null
+          type: string
+          user_id: string
+          wallet_id: string
+        }
+        Insert: {
+          amount: number
+          balance_after: number
+          created_at?: string
+          description?: string | null
+          direction: string
+          id?: string
+          metadata?: Json
+          payment_method?: string | null
+          performed_by?: string | null
+          product_title?: string | null
+          reference_id?: string | null
+          reference_type?: string | null
+          type: string
+          user_id: string
+          wallet_id: string
+        }
+        Update: {
+          amount?: number
+          balance_after?: number
+          created_at?: string
+          description?: string | null
+          direction?: string
+          id?: string
+          metadata?: Json
+          payment_method?: string | null
+          performed_by?: string | null
+          product_title?: string | null
+          reference_id?: string | null
+          reference_type?: string | null
+          type?: string
+          user_id?: string
+          wallet_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wallet_transactions_wallet_id_fkey"
+            columns: ["wallet_id"]
+            isOneToOne: false
+            referencedRelation: "wallets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      wallets: {
+        Row: {
+          balance: number
+          created_at: string
+          currency: string
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          balance?: number
+          created_at?: string
+          currency?: string
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          balance?: number
+          created_at?: string
+          currency?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       product_review_stats: {
@@ -2736,6 +2825,42 @@ export type Database = {
         Returns: number
       }
       slugify: { Args: { input: string }; Returns: string }
+      wallet_apply_transaction: {
+        Args: {
+          _amount: number
+          _description?: string
+          _metadata?: Json
+          _payment_method?: string
+          _product_title?: string
+          _reference_id?: string
+          _reference_type?: string
+          _type: string
+          _user_id: string
+        }
+        Returns: {
+          amount: number
+          balance_after: number
+          created_at: string
+          description: string | null
+          direction: string
+          id: string
+          metadata: Json
+          payment_method: string | null
+          performed_by: string | null
+          product_title: string | null
+          reference_id: string | null
+          reference_type: string | null
+          type: string
+          user_id: string
+          wallet_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "wallet_transactions"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
     }
     Enums: {
       app_role: "super_admin" | "admin" | "editor" | "manager"

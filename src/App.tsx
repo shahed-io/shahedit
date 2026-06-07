@@ -35,6 +35,7 @@ const AdminAISupport = lazy(() => import("./pages/admin/AdminAISupport"));
 const AdminServicePackages = lazy(() => import("./pages/admin/AdminServicePackages"));
 const AdminPayments = lazy(() => import("./pages/admin/AdminPayments"));
 const AdminBkashPGW = lazy(() => import("./pages/admin/AdminBkashPGW"));
+const AdminWallets = lazy(() => import("./pages/admin/AdminWallets"));
 const AdminOrders = lazy(() => import("./pages/admin/AdminOrders"));
 const AdminUsers = lazy(() => import("./pages/admin/AdminUsers"));
 const AdminFooterEditor = lazy(() => import("./pages/admin/AdminFooterEditor"));
@@ -204,6 +205,7 @@ const AdminRoutes = () => (
         <Route path="newsletter" element={<RoleRoute section="newsletter"><AdminNewsletter /></RoleRoute>} />
         <Route path="knowledge-base" element={<RoleRoute section="knowledge-base"><AdminKnowledgeBase /></RoleRoute>} />
         <Route path="custom-order" element={<RoleRoute section="custom-order"><AdminCustomOrder /></RoleRoute>} />
+        <Route path="wallets" element={<RoleRoute section="wallets"><AdminWallets /></RoleRoute>} />
       </Routes>
       </Suspense>
     </AdminLayout>
