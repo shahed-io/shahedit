@@ -224,8 +224,10 @@ export const PaymentMethodsManager = () => {
             <div key={m.id}
               className={`flex items-center gap-3 p-3 rounded-lg border transition ${m.is_active ? "bg-slate-800/50 border-slate-700" : "bg-slate-800/20 border-slate-800 opacity-60"}`}>
               <GripVertical size={14} className="text-slate-600 shrink-0" />
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center text-white text-xs font-bold shrink-0"
-                style={{ background: m.color }}>{m.short_code}</div>
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center text-white text-xs font-bold shrink-0 overflow-hidden"
+                style={{ background: m.logo_url ? "#fff" : m.color }}>
+                {m.logo_url ? <img src={m.logo_url} alt={m.label} className="w-full h-full object-contain" /> : m.short_code}
+              </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="text-white font-semibold text-sm">{m.label}</span>
