@@ -368,7 +368,7 @@ const HeroBanner = () => {
 
   return (
     <section
-      className="relative overflow-hidden min-h-[760px] lg:min-h-[820px] flex items-center bg-[#0a0514]"
+      className="relative overflow-hidden min-h-[600px] sm:min-h-[720px] lg:min-h-[820px] flex items-center bg-[#0a0514]"
       style={bgStyle}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
