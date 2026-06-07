@@ -242,23 +242,23 @@ const SlideContent = ({ slide }: { slide: HeroSlide }) => {
         {slide.show_countdown && (
           <motion.div
             initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, type: "spring", stiffness: 80 }}
-            className="bg-white/[0.04] border border-white/10 backdrop-blur-2xl p-6 rounded-3xl shadow-2xl relative overflow-hidden"
+            className="bg-white/[0.04] border border-white/10 backdrop-blur-2xl p-4 sm:p-6 rounded-2xl sm:rounded-3xl shadow-2xl relative overflow-hidden"
           >
             <div className="absolute -top-20 -right-20 w-48 h-48 rounded-full bg-[hsl(270,92%,65%)]/15 blur-3xl pointer-events-none" />
-            <div className="flex items-center gap-3 mb-5 relative">
+            <div className="flex items-center gap-3 mb-4 sm:mb-5 relative">
               <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_10px_#34d399]" />
-              <span className="text-[10px] uppercase tracking-[0.22em] font-bold text-white/60">
+              <span className="text-[10px] uppercase tracking-[0.22em] font-bold text-white/60 truncate">
                 {slide.countdown_label || "Offer Ends In"}
               </span>
             </div>
-            <div className="grid grid-cols-4 gap-2.5 md:gap-3 relative">
+            <div className="grid grid-cols-4 gap-1.5 sm:gap-2.5 md:gap-3 relative">
               {[
                 { v: cd.days, l: "Days" }, { v: cd.hours, l: "Hours" },
                 { v: cd.mins, l: "Mins" }, { v: cd.secs, l: "Secs" },
               ].map((u) => (
-                <div key={u.l} className="text-center py-3.5 bg-white/5 rounded-2xl border border-white/5">
-                  <div className="text-2xl md:text-3xl font-black text-white leading-none">{pad(u.v)}</div>
-                  <div className="text-[9px] uppercase tracking-widest text-white/40 mt-1">{u.l}</div>
+                <div key={u.l} className="text-center py-2.5 sm:py-3.5 bg-white/5 rounded-xl sm:rounded-2xl border border-white/5">
+                  <div className="text-lg sm:text-2xl md:text-3xl font-black text-white leading-none">{pad(u.v)}</div>
+                  <div className="text-[8px] sm:text-[9px] uppercase tracking-widest text-white/40 mt-1">{u.l}</div>
                 </div>
               ))}
             </div>
