@@ -9,6 +9,7 @@ export interface PaymentMethod {
   number: string;
   color: string;
   short_code: string;
+  logo_url: string | null;
   instructions: string | null;
   sort_order: number;
   is_active: boolean;
