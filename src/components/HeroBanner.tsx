@@ -219,18 +219,18 @@ const SlideContent = ({ slide }: { slide: HeroSlide }) => {
         {slide.stats && slide.stats.length > 0 && (
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
-            className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-6 border-t border-white/10"
+            className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 pt-5 sm:pt-6 border-t border-white/10"
           >
             {slide.stats.map((s, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55 + i * 0.06 }}
-                className="space-y-1"
+                className="space-y-1 min-w-0"
               >
-                <div className="text-2xl md:text-3xl font-extrabold text-white" style={{ fontFamily: "'Syne', sans-serif" }}>
+                <div className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white truncate" style={{ fontFamily: "'Syne', sans-serif" }}>
                   {s.value}
                 </div>
-                <div className="text-[10px] md:text-xs uppercase tracking-wider text-white/40 font-medium">{s.label}</div>
+                <div className="text-[10px] md:text-xs uppercase tracking-wider text-white/40 font-medium truncate">{s.label}</div>
               </motion.div>
             ))}
           </motion.div>
