@@ -72,6 +72,7 @@ export const PaymentMethodsManager = () => {
       number: form.number!.trim(),
       color: form.color || "#E2136E",
       short_code: form.short_code?.trim() || form.label!.trim().slice(0, 2).toUpperCase(),
+      logo_url: form.logo_url || null,
       instructions: form.instructions?.trim() || null,
       sort_order: Number(form.sort_order ?? 99),
       is_active: form.is_active ?? true,
