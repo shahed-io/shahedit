@@ -275,7 +275,7 @@ const SlideContent = ({ slide }: { slide: HeroSlide }) => {
               initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.45 + i * 0.12, type: "spring", stiffness: 80 }}
               whileHover={{ y: -6 }}
-              className="group bg-white/[0.04] hover:bg-white/[0.07] border border-white/10 backdrop-blur-2xl p-5 md:p-6 rounded-3xl transition-all duration-500"
+              className="group bg-white/[0.04] hover:bg-white/[0.07] border border-white/10 backdrop-blur-2xl p-4 sm:p-5 md:p-6 rounded-2xl sm:rounded-3xl transition-all duration-500"
               style={{ borderColor: undefined }}
             >
               <Link to={card.link || "/"} className="block">
