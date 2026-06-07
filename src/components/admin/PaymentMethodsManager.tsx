@@ -5,12 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Plus, Pencil, Trash2, Save, X, Smartphone, GripVertical } from "lucide-react";
+import { Plus, Pencil, Trash2, Save, X, Smartphone, GripVertical, Upload, ImageIcon } from "lucide-react";
 import type { PaymentMethod } from "@/hooks/usePaymentMethods";
 
 const empty: Partial<PaymentMethod> = {
   method_id: "", label: "", sublabel: "", number: "", color: "#E2136E",
-  short_code: "", instructions: "", sort_order: 99, is_active: true,
+  short_code: "", logo_url: null, instructions: "", sort_order: 99, is_active: true,
 };
 
 export const PaymentMethodsManager = () => {
@@ -19,6 +19,23 @@ export const PaymentMethodsManager = () => {
   const [editing, setEditing] = useState<string | null>(null); // id or "new"
   const [form, setForm] = useState<Partial<PaymentMethod>>(empty);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+
+  const uploadLogo = async (file: File) => {
+    if (!file.type.startsWith("image/")) { toast.error("শুধু image ফাইল আপলোড করুন"); return; }
+    if (file.size > 2 * 1024 * 1024) { toast.error("ফাইল 2MB এর কম হতে হবে"); return; }
+    setUploading(true);
+    const ext = file.name.split(".").pop() || "png";
+    const path = `payment-logos/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+    const { error } = await supabase.storage.from("cms-media").upload(path, file, {
+      cacheControl: "3600", upsert: false, contentType: file.type,
+    });
+    if (error) { setUploading(false); toast.error("আপলোড ব্যর্থ: " + error.message); return; }
+    const { data } = supabase.storage.from("cms-media").getPublicUrl(path);
+    setForm(f => ({ ...f, logo_url: data.publicUrl }));
+    setUploading(false);
+    toast.success("✅ লোগো আপলোড হয়েছে");
+  };
 
   const load = async () => {
     setLoading(true);
@@ -55,6 +72,7 @@ export const PaymentMethodsManager = () => {
       number: form.number!.trim(),
       color: form.color || "#E2136E",
       short_code: form.short_code?.trim() || form.label!.trim().slice(0, 2).toUpperCase(),
+      logo_url: form.logo_url || null,
       instructions: form.instructions?.trim() || null,
       sort_order: Number(form.sort_order ?? 99),
       is_active: form.is_active ?? true,
@@ -154,6 +172,37 @@ export const PaymentMethodsManager = () => {
             <Input value={form.instructions ?? ""} onChange={e => setForm(f => ({ ...f, instructions: e.target.value }))}
               placeholder="যেমন: Send Money অপশনে পাঠান" className="bg-slate-800 border-slate-700 text-white text-sm" />
           </div>
+          <div>
+            <Label className="text-xs text-slate-400 mb-1 block flex items-center gap-1.5">
+              <ImageIcon size={12} /> লোগো (যেমন: বিকাশ লোগো) — PNG/JPG/SVG, max 2MB
+            </Label>
+            <div className="flex items-center gap-3">
+              <div className="w-14 h-14 rounded-xl border border-slate-700 bg-slate-800 flex items-center justify-center overflow-hidden shrink-0"
+                style={{ background: form.logo_url ? "#fff" : form.color }}>
+                {form.logo_url ? (
+                  <img src={form.logo_url} alt="logo" className="w-full h-full object-contain" />
+                ) : (
+                  <span className="text-white text-xs font-bold">{form.short_code || "?"}</span>
+                )}
+              </div>
+              <label className="cursor-pointer">
+                <input type="file" accept="image/*" className="hidden"
+                  onChange={e => { const f = e.target.files?.[0]; if (f) uploadLogo(f); e.target.value = ""; }} />
+                <span className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-slate-200 text-xs hover:bg-slate-700">
+                  <Upload size={12} /> {uploading ? "আপলোড হচ্ছে..." : (form.logo_url ? "পরিবর্তন করুন" : "লোগো আপলোড")}
+                </span>
+              </label>
+              {form.logo_url && (
+                <Button size="sm" variant="ghost" onClick={() => setForm(f => ({ ...f, logo_url: null }))}
+                  className="text-red-400 hover:bg-red-500/10 text-xs gap-1 h-8">
+                  <X size={12} /> Remove
+                </Button>
+              )}
+              <Input value={form.logo_url ?? ""} onChange={e => setForm(f => ({ ...f, logo_url: e.target.value }))}
+                placeholder="বা সরাসরি image URL পেস্ট করুন"
+                className="bg-slate-800 border-slate-700 text-white text-xs flex-1" />
+            </div>
+          </div>
           <div className="flex gap-2">
             <Button size="sm" onClick={save} disabled={saving} className="bg-green-600 hover:bg-green-700 text-white gap-1.5">
               <Save size={14} /> {saving ? "সেভ হচ্ছে..." : "সেভ করুন"}
@@ -175,8 +224,10 @@ export const PaymentMethodsManager = () => {
             <div key={m.id}
               className={`flex items-center gap-3 p-3 rounded-lg border transition ${m.is_active ? "bg-slate-800/50 border-slate-700" : "bg-slate-800/20 border-slate-800 opacity-60"}`}>
               <GripVertical size={14} className="text-slate-600 shrink-0" />
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center text-white text-xs font-bold shrink-0"
-                style={{ background: m.color }}>{m.short_code}</div>
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center text-white text-xs font-bold shrink-0 overflow-hidden"
+                style={{ background: m.logo_url ? "#fff" : m.color }}>
+                {m.logo_url ? <img src={m.logo_url} alt={m.label} className="w-full h-full object-contain" /> : m.short_code}
+              </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="text-white font-semibold text-sm">{m.label}</span>

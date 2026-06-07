@@ -31,9 +31,11 @@ const PaymentSection = () => {
             transition={{ delay: i * 0.08 }}
             className="glossy-card rounded-2xl border border-border p-5 text-center hover:border-primary/40 transition-all duration-300"
           >
-            <div className="w-12 h-12 rounded-xl mx-auto mb-3 flex items-center justify-center text-white font-bold text-sm"
-              style={{ background: m.color }}>
-              {m.short_code}
+            <div className="w-14 h-14 rounded-xl mx-auto mb-3 flex items-center justify-center text-white font-bold text-sm overflow-hidden"
+              style={{ background: m.logo_url ? "#fff" : m.color }}>
+              {m.logo_url
+                ? <img src={m.logo_url} alt={m.label} className="w-full h-full object-contain p-1.5" />
+                : m.short_code}
             </div>
             <p className="font-bold text-foreground text-sm">{m.label}</p>
             <p className="text-xs text-muted-foreground mb-2">{m.sublabel}</p>

@@ -1493,6 +1493,7 @@ export type Database = {
           instructions: string | null
           is_active: boolean
           label: string
+          logo_url: string | null
           method_id: string
           number: string
           short_code: string
@@ -1507,6 +1508,7 @@ export type Database = {
           instructions?: string | null
           is_active?: boolean
           label: string
+          logo_url?: string | null
           method_id: string
           number: string
           short_code?: string
@@ -1521,6 +1523,7 @@ export type Database = {
           instructions?: string | null
           is_active?: boolean
           label?: string
+          logo_url?: string | null
           method_id?: string
           number?: string
           short_code?: string
