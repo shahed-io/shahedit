@@ -282,10 +282,10 @@ const SlideContent = ({ slide }: { slide: HeroSlide }) => {
                 <div className="flex items-start justify-between mb-4 gap-3">
                   <div className="flex items-center gap-3 min-w-0">
                     <div
-                      className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg shrink-0"
+                      className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center shadow-lg shrink-0"
                       style={{ background: `linear-gradient(135deg, ${accent}, hsl(265,50%,15%))`, boxShadow: `0 10px 24px -8px ${accent}` }}
                     >
-                      <Icon className="w-7 h-7 text-white" strokeWidth={2.2} />
+                      <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" strokeWidth={2.2} />
                     </div>
                     <div className="min-w-0">
                       <h3 className="font-bold text-base md:text-lg text-white leading-tight truncate" style={{ fontFamily: "'Syne', sans-serif" }}>
