@@ -42,6 +42,7 @@ const navGroups: NavGroup[] = [
       { label: "Leads", icon: Inbox, href: "/ceo/leads", section: "leads" },
       { label: "Refund Requests", icon: RefreshCcw, href: "/ceo/refunds", badge: "NEW", section: "refunds" },
       { label: "Payments", icon: CreditCard, href: "/ceo/payments", section: "payments" },
+      { label: "Wallets", icon: Wallet, href: "/ceo/wallets", badge: "NEW", section: "wallets" },
       { label: "bKash PGW", icon: Zap, href: "/ceo/bkash-pgw", badge: "NEW", section: "payments" },
       { label: "Orders & Delivery", icon: Package, href: "/ceo/orders", section: "orders" },
       { label: "Custom Order", icon: ClipboardList, href: "/ceo/custom-order", badge: "NEW", section: "custom-order" },
