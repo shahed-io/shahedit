@@ -288,7 +288,7 @@ const SlideContent = ({ slide }: { slide: HeroSlide }) => {
                       <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" strokeWidth={2.2} />
                     </div>
                     <div className="min-w-0">
-                      <h3 className="font-bold text-base md:text-lg text-white leading-tight truncate" style={{ fontFamily: "'Syne', sans-serif" }}>
+                      <h3 className="font-bold text-sm sm:text-base md:text-lg text-white leading-tight truncate" style={{ fontFamily: "'Syne', sans-serif" }}>
                         {card.title}
                       </h3>
                       {card.subtitle && <p className="text-[11px] text-white/40 mt-0.5">{card.subtitle}</p>}
