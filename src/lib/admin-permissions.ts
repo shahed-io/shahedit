@@ -102,6 +102,7 @@ const PERMISSIONS: Record<AdminSection, AppRole[]> = {
   newsletter:         ["super_admin", "admin", "manager"],
   "knowledge-base":   ["super_admin", "admin", "editor"],
   "tech-details":     ["super_admin", "admin", "editor"],
+  wallets:            ["super_admin", "admin", "manager"],
 };
 
 export function canAccess(role: AppRole | null, section: AdminSection): boolean {
