@@ -245,16 +245,66 @@ const SiteHeader = () => {
             to="/"
             className="shrink-0 min-w-0 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:static md:translate-x-0 md:translate-y-0 pointer-events-auto"
           >
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} className="flex items-center group min-w-0">
-              <img
-                src={logoUrl}
-                alt="Shahed IT — Smart IT Solutions"
-                className="h-10 sm:h-12 md:h-14 lg:h-16 w-auto object-contain"
-                style={{
-                  filter:
-                    "hue-rotate(35deg) saturate(1.15) brightness(1.08) drop-shadow(0 2px 14px rgba(168,85,247,0.55)) drop-shadow(0 0 22px rgba(236,72,153,0.25))",
-                }}
-              />
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} className="flex items-center gap-1.5 sm:gap-2 md:gap-2.5 group min-w-0">
+              <div className="relative shrink-0">
+                <motion.div
+                  className="absolute -inset-1.5 rounded-2xl opacity-60 blur-lg"
+                  style={{ background: "conic-gradient(from 0deg, #6366f1, #a855f7, #ec4899, #6366f1)" }}
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                />
+                <div
+                  className="relative w-8 h-8 sm:w-9 sm:h-9 md:w-11 md:h-11 rounded-xl flex items-center justify-center"
+                  style={{
+                    background: "linear-gradient(135deg, #1a1233 0%, #251847 100%)",
+                    border: "1px solid rgba(168, 85, 247, 0.45)",
+                    boxShadow:
+                      "0 8px 24px rgba(168, 85, 247, 0.45), inset 0 1px 0 rgba(255,255,255,0.10)",
+                  }}
+                >
+                  <span
+                    className="absolute inset-0 opacity-30 pointer-events-none rounded-xl overflow-hidden"
+                    style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.5) 0%, transparent 50%)" }}
+                  />
+                  <img src={logoUrl} alt="Shahed IT" className="w-11 h-11 sm:w-12 sm:h-12 md:w-14 md:h-14 object-contain relative drop-shadow-[0_2px_8px_rgba(168,85,247,0.55)]" />
+                </div>
+              </div>
+              <div className="flex flex-col leading-[1.0] min-w-0 gap-0.5">
+                <span
+                  className="text-[14px] sm:text-[17px] md:text-[21px] font-extrabold tracking-tight whitespace-nowrap"
+                  style={{
+                    fontFamily: "'Syne', sans-serif",
+                    background: "linear-gradient(135deg, #ffffff 0%, #e9d5ff 35%, #c4b5fd 60%, #f0abfc 100%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    filter: "drop-shadow(0 0 12px rgba(192,132,252,0.45))",
+                  }}
+                >
+                  Shahed{" "}
+                  <span style={{ background: "linear-gradient(135deg, #a78bfa 0%, #f0abfc 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                    IT
+                  </span>
+                </span>
+                <span
+                  className="hidden xs:flex items-center font-semibold whitespace-nowrap"
+                  style={{
+                    fontFamily: "'Syne', sans-serif",
+                    fontSize: "clamp(7px, 0.9vw, 9px)",
+                    letterSpacing: "0.14em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  <span
+                    style={{
+                      background: "linear-gradient(90deg, #c4b5fd 0%, #f0abfc 100%)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                    }}
+                  >
+                    Smart IT Solutions
+                  </span>
+                </span>
+              </div>
             </motion.div>
           </Link>
 
