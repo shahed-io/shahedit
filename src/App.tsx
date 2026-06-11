@@ -13,6 +13,7 @@ import { AutoStructuredData } from "@/components/AutoStructuredData";
 
 import GlobalSupport from "@/components/GlobalSupport";
 import ThemeAppearanceProvider from "@/components/ThemeAppearanceProvider";
+import SiteBackground from "@/components/SiteBackground";
 import { lazy, Suspense } from "react";
 
 // Eagerly loaded (most-visited / lightweight)
