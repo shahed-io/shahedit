@@ -10,6 +10,31 @@ serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
 
   try {
+    // --- AuthN/AuthZ: admin only ---
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader) {
+      return new Response(JSON.stringify({ success: false, error: "Unauthorized" }),
+        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+    const adminClient = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
+    );
+    const { data: { user }, error: authErr } = await adminClient.auth.getUser(
+      authHeader.replace("Bearer ", "")
+    );
+    if (authErr || !user) {
+      return new Response(JSON.stringify({ success: false, error: "Unauthorized" }),
+        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+    const { data: roles } = await adminClient
+      .from("user_roles").select("role").eq("user_id", user.id);
+    const isAdmin = roles?.some((r: any) => r.role === "admin" || r.role === "super_admin");
+    if (!isAdmin) {
+      return new Response(JSON.stringify({ success: false, error: "Forbidden" }),
+        { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+
     const { transaction_id, payment_method } = await req.json();
 
     if (!transaction_id) {
