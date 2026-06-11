@@ -1,0 +1,1 @@
+INSERT INTO public.site_settings (key, value) VALUES ('logo_url', 'https://tqesyvmpdlbfmxfhdshb.supabase.co/storage/v1/object/public/cms-media/site-logo%2Fshahed-it-main-logo.png') ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value, updated_at = now();
