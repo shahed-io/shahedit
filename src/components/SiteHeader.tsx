@@ -249,7 +249,11 @@ const SiteHeader = () => {
               <img
                 src={logoUrl}
                 alt="Shahed IT — Smart IT Solutions"
-                className="h-10 sm:h-12 md:h-14 lg:h-16 w-auto object-contain drop-shadow-[0_2px_10px_rgba(168,85,247,0.55)]"
+                className="h-10 sm:h-12 md:h-14 lg:h-16 w-auto object-contain"
+                style={{
+                  filter:
+                    "hue-rotate(35deg) saturate(1.15) brightness(1.08) drop-shadow(0 2px 14px rgba(168,85,247,0.55)) drop-shadow(0 0 22px rgba(236,72,153,0.25))",
+                }}
               />
             </motion.div>
           </Link>
