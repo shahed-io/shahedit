@@ -265,7 +265,7 @@ const SiteHeader = () => {
                     className="absolute inset-0 opacity-30 pointer-events-none rounded-xl overflow-hidden"
                     style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.5) 0%, transparent 50%)" }}
                   />
-                  <img src={logoImg} alt="Shahed IT" className="w-11 h-11 sm:w-12 sm:h-12 md:w-14 md:h-14 object-contain relative drop-shadow-[0_2px_8px_rgba(168,85,247,0.55)]" />
+                  <img src={logoUrl} alt="Shahed IT" className="w-11 h-11 sm:w-12 sm:h-12 md:w-14 md:h-14 object-contain relative drop-shadow-[0_2px_8px_rgba(168,85,247,0.55)]" />
                 </div>
               </div>
               <div className="flex flex-col leading-[1.0] min-w-0 gap-0.5">
@@ -744,7 +744,7 @@ const SiteHeader = () => {
                         border: "1px solid rgba(168, 85, 247, 0.45)",
                       }}
                     >
-                      <img src={logoImg} alt="Shahed IT" className="w-7 h-7 object-contain" />
+                      <img src={logoUrl} alt="Shahed IT" className="w-7 h-7 object-contain" />
                     </div>
                   </div>
                   <div className="leading-tight">
