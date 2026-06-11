@@ -159,7 +159,6 @@ const AdminRoutes = () => (
   <ProtectedRoute>
     <AdminLayout>
       <Suspense fallback={<AdminPageFallback />}>
-      <div className="relative z-10">
       <Routes>
         <Route path="" element={<RoleRoute section="dashboard"><AdminDashboard /></RoleRoute>} />
         <Route path="leads" element={<RoleRoute section="leads"><AdminLeads /></RoleRoute>} />
@@ -223,6 +222,7 @@ const AppWithAnalytics = () => {
       <SEO />
       <AutoStructuredData />
       <SiteBackground />
+      <div className="relative z-10">
       <Routes>
 
         {/* Auth Routes */}
