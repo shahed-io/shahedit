@@ -5,7 +5,8 @@ import {
   FileText, Receipt, FolderOpen, User as UserIcon, Flame, MessageCircle,
   Briefcase, Phone, Shield, BadgeCheck,
 } from "lucide-react";
-import logoImg from "@/assets/logo-glossy.png";
+import logoFallback from "@/assets/logo-glossy.png";
+import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
