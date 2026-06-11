@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { toast } from "sonner";
 import type { SiteSetting } from "@/lib/supabase-types";
+import SiteLogoManager from "@/components/admin/SiteLogoManager";
 
 const groups = ["general", "social", "branding", "seo", "appearance", "analytics"];
 
