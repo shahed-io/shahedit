@@ -221,6 +221,7 @@ const AppWithAnalytics = () => {
     <Suspense fallback={<PageFallback />}>
       <SEO />
       <AutoStructuredData />
+      <SiteBackground />
       <Routes>
 
         {/* Auth Routes */}
