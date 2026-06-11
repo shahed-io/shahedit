@@ -15,7 +15,7 @@ const SiteBackground = () => {
   return (
     <div
       aria-hidden
-      className="fixed inset-0 -z-10 overflow-hidden pointer-events-none bg-[#0a0514]"
+      className="fixed inset-0 z-0 overflow-hidden pointer-events-none bg-[#0a0514]"
       style={{ contain: "strict", transform: "translateZ(0)" }}
     >
       <div className="absolute inset-0 opacity-50">
