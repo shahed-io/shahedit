@@ -2768,6 +2768,42 @@ export type Database = {
           },
         ]
       }
+      public_coupons: {
+        Row: {
+          applies_id: string | null
+          applies_to: string | null
+          code: string | null
+          description: string | null
+          discount_type: string | null
+          discount_value: number | null
+          id: string | null
+          min_order_amount: number | null
+          valid_until: string | null
+        }
+        Insert: {
+          applies_id?: string | null
+          applies_to?: string | null
+          code?: string | null
+          description?: string | null
+          discount_type?: string | null
+          discount_value?: number | null
+          id?: string | null
+          min_order_amount?: number | null
+          valid_until?: string | null
+        }
+        Update: {
+          applies_id?: string | null
+          applies_to?: string | null
+          code?: string | null
+          description?: string | null
+          discount_type?: string | null
+          discount_value?: number | null
+          id?: string | null
+          min_order_amount?: number | null
+          valid_until?: string | null
+        }
+        Relationships: []
+      }
       public_team_members: {
         Row: {
           avatar_url: string | null
