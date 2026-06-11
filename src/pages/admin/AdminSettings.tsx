@@ -382,18 +382,28 @@ const AdminSettings = () => {
           {loading ? (
             <div className="space-y-4">{[...Array(5)].map((_, i) => <div key={i} className="h-12 bg-slate-800 rounded-xl animate-pulse" />)}</div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              {groupSettings.map(s => (
-                <div key={s.key}>
-                  <Label className="text-slate-300 text-xs mb-1.5 block">{s.label ?? s.key}</Label>
-                  <Input
-                    value={values[s.key] ?? ""}
-                    onChange={e => setValues(p => ({ ...p, [s.key]: e.target.value }))}
-                    className="bg-slate-800 border-slate-700 text-white h-10"
-                    placeholder={`Enter ${s.label ?? s.key}...`}
-                  />
-                </div>
-              ))}
+            <div className="space-y-6">
+              {activeGroup === "branding" && (
+                <SiteLogoManager
+                  value={values["logo_url"] ?? ""}
+                  onChange={(url) => setValues((p) => ({ ...p, logo_url: url }))}
+                />
+              )}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {groupSettings
+                  .filter(s => !(activeGroup === "branding" && s.key === "logo_url"))
+                  .map(s => (
+                  <div key={s.key}>
+                    <Label className="text-slate-300 text-xs mb-1.5 block">{s.label ?? s.key}</Label>
+                    <Input
+                      value={values[s.key] ?? ""}
+                      onChange={e => setValues(p => ({ ...p, [s.key]: e.target.value }))}
+                      className="bg-slate-800 border-slate-700 text-white h-10"
+                      placeholder={`Enter ${s.label ?? s.key}...`}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </motion.div>
