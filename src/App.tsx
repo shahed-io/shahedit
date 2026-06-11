@@ -159,6 +159,7 @@ const AdminRoutes = () => (
   <ProtectedRoute>
     <AdminLayout>
       <Suspense fallback={<AdminPageFallback />}>
+      <div className="relative z-10">
       <Routes>
         <Route path="" element={<RoleRoute section="dashboard"><AdminDashboard /></RoleRoute>} />
         <Route path="leads" element={<RoleRoute section="leads"><AdminLeads /></RoleRoute>} />
@@ -265,6 +266,7 @@ const AppWithAnalytics = () => {
         <Route path="/admin/*" element={<Navigate to="/ceo" replace />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      </div>
       <ThemeAppearanceProvider />
       <GlobalSupport />
     </Suspense>

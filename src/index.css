@@ -215,7 +215,7 @@
     position: relative;
   }
 
-  body:not(:has([data-admin-layout])) .bg-background {
+  body:not(:has([data-admin-layout])) .min-h-screen.bg-background {
     background-color: transparent;
   }
 
