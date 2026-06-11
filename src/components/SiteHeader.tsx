@@ -259,43 +259,6 @@ const SiteHeader = () => {
               />
             </motion.div>
 
-              <div className="flex flex-col leading-[1.0] min-w-0 gap-0.5">
-                <span
-                  className="text-[14px] sm:text-[17px] md:text-[21px] font-extrabold tracking-tight whitespace-nowrap"
-                  style={{
-                    fontFamily: "'Syne', sans-serif",
-                    background: "linear-gradient(135deg, #ffffff 0%, #e9d5ff 35%, #c4b5fd 60%, #f0abfc 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    filter: "drop-shadow(0 0 12px rgba(192,132,252,0.45))",
-                  }}
-                >
-                  Shahed{" "}
-                  <span style={{ background: "linear-gradient(135deg, #a78bfa 0%, #f0abfc 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                    IT
-                  </span>
-                </span>
-                <span
-                  className="hidden xs:flex items-center font-semibold whitespace-nowrap"
-                  style={{
-                    fontFamily: "'Syne', sans-serif",
-                    fontSize: "clamp(7px, 0.9vw, 9px)",
-                    letterSpacing: "0.14em",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  <span
-                    style={{
-                      background: "linear-gradient(90deg, #c4b5fd 0%, #f0abfc 100%)",
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                    }}
-                  >
-                    Smart IT Solutions
-                  </span>
-                </span>
-              </div>
-            </motion.div>
           </Link>
 
           {/* ── Smart Search ── */}
