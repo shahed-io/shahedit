@@ -5,7 +5,8 @@ import {
   FileText, Receipt, FolderOpen, User as UserIcon, Flame, MessageCircle,
   Briefcase, Phone, Shield, BadgeCheck,
 } from "lucide-react";
-import logoFallback from "@/assets/logo-glossy.png";
+import logoAsset from "@/assets/shahed-it-logo.png.asset.json";
+const logoFallback = logoAsset.url;
 import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
