@@ -42,6 +42,17 @@ const SiteHeader = () => {
   const location = useLocation();
 
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [logoUrl, setLogoUrl] = useState<string>(logoFallback);
+
+  useEffect(() => {
+    let active = true;
+    supabase.from("site_settings").select("value").eq("key", "logo_url").maybeSingle()
+      .then(({ data }) => {
+        if (active && data?.value && data.value.trim()) setLogoUrl(data.value);
+      });
+    return () => { active = false; };
+  }, []);
+
   const [searchOpen, setSearchOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
