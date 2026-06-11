@@ -215,6 +215,10 @@
     position: relative;
   }
 
+  body:not(:has([data-admin-layout])) .bg-background {
+    background-color: transparent;
+  }
+
   /* Perf: move the 5 layered gradients onto a single fixed pseudo-element so
      scrolling never repaints them. Promoted to its own GPU layer via
      translateZ(0) + will-change so the compositor can reuse the rasterised
