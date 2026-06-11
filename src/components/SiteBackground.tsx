@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { useLocation } from "react-router-dom";
 
@@ -10,12 +11,19 @@ import { useLocation } from "react-router-dom";
  */
 const SiteBackground = () => {
   const { pathname } = useLocation();
-  if (pathname.startsWith("/ceo") || pathname.startsWith("/admin")) return null;
+  const isAdminRoute = pathname.startsWith("/ceo") || pathname.startsWith("/admin");
+
+  useEffect(() => {
+    document.body.classList.toggle("site-cinematic-bg", !isAdminRoute);
+    return () => document.body.classList.remove("site-cinematic-bg");
+  }, [isAdminRoute]);
+
+  if (isAdminRoute) return null;
 
   return (
     <div
       aria-hidden
-      className="fixed inset-0 -z-10 overflow-hidden pointer-events-none bg-[#0a0514]"
+      className="fixed inset-0 z-0 overflow-hidden pointer-events-none bg-[#0a0514]"
       style={{ contain: "strict", transform: "translateZ(0)" }}
     >
       <div className="absolute inset-0 opacity-50">

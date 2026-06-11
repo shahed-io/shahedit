@@ -222,6 +222,7 @@ const AppWithAnalytics = () => {
       <SEO />
       <AutoStructuredData />
       <SiteBackground />
+      <div className="relative z-10">
       <Routes>
 
         {/* Auth Routes */}
@@ -265,6 +266,7 @@ const AppWithAnalytics = () => {
         <Route path="/admin/*" element={<Navigate to="/ceo" replace />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      </div>
       <ThemeAppearanceProvider />
       <GlobalSupport />
     </Suspense>

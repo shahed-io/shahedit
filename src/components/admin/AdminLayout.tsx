@@ -381,7 +381,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   );
 
   return (
-    <div className="relative h-screen overflow-hidden font-inter text-foreground bg-background">
+    <div data-admin-layout className="relative h-screen overflow-hidden font-inter text-foreground bg-background">
       {/* Ambient background */}
       <div
         className="fixed inset-0 pointer-events-none overflow-hidden z-0"
