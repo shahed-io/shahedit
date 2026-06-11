@@ -215,7 +215,7 @@
     position: relative;
   }
 
-  body:not(:has([data-admin-layout])) .min-h-screen.bg-background {
+  body.site-cinematic-bg .min-h-screen.bg-background {
     background-color: transparent;
   }
 

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { useLocation } from "react-router-dom";
 
@@ -10,7 +11,14 @@ import { useLocation } from "react-router-dom";
  */
 const SiteBackground = () => {
   const { pathname } = useLocation();
-  if (pathname.startsWith("/ceo") || pathname.startsWith("/admin")) return null;
+  const isAdminRoute = pathname.startsWith("/ceo") || pathname.startsWith("/admin");
+
+  useEffect(() => {
+    document.body.classList.toggle("site-cinematic-bg", !isAdminRoute);
+    return () => document.body.classList.remove("site-cinematic-bg");
+  }, [isAdminRoute]);
+
+  if (isAdminRoute) return null;
 
   return (
     <div
