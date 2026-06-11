@@ -1,1 +1,0 @@
-UPDATE public.site_settings SET value='https://tqesyvmpdlbfmxfhdshb.supabase.co/storage/v1/object/public/cms-media/site-logo%2Fshahed-it-website-logo.png' WHERE key='logo_url';
