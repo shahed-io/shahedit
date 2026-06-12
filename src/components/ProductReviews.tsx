@@ -70,33 +70,32 @@ export function ProductReviews({
 
   const load = async () => {
     setLoading(true);
-    const { data } = await supabase
-      .from("product_reviews" as any)
-      .select("id, user_id, rating, comment, created_at")
-      .eq("package_id", packageId)
-      .order("created_at", { ascending: false });
-    const rows = (data as unknown as Review[] | null) ?? [];
-    setReviews(rows);
+    // Public-safe list (no user_id exposed) via SECURITY DEFINER RPC
+    const { data: publicRows } = await supabase
+      .rpc("get_package_reviews" as any, { _package_id: packageId });
+    const list: Review[] = ((publicRows as any[]) ?? []).map((r) => ({
+      id: r.id,
+      user_id: "",
+      rating: r.rating,
+      comment: r.comment,
+      created_at: r.created_at,
+      profiles: r.reviewer_name || r.reviewer_avatar
+        ? { full_name: r.reviewer_name, avatar_url: r.reviewer_avatar }
+        : null,
+    }));
+    setReviews(list);
 
-    // Try fetch profile names (RLS only allows own profile, others may be null)
-    const ids = Array.from(new Set(rows.map((r) => r.user_id)));
-    if (ids.length) {
-      const { data: profs } = await supabase
-        .from("profiles")
-        .select("user_id, full_name, avatar_url")
-        .in("user_id", ids);
-      if (profs) {
-        const m = new Map(profs.map((p: any) => [p.user_id, p]));
-        setReviews(
-          rows.map((r) => ({
-            ...r,
-            profiles: m.get(r.user_id) ?? null,
-          }))
-        );
-      }
+    // Logged-in users can fetch their own review (RLS allows owner read)
+    let mine: Review | null = null;
+    if (user) {
+      const { data: own } = await supabase
+        .from("product_reviews" as any)
+        .select("id, user_id, rating, comment, created_at")
+        .eq("package_id", packageId)
+        .eq("user_id", user.id)
+        .maybeSingle();
+      mine = (own as unknown as Review) ?? null;
     }
-
-    const mine = user ? rows.find((r) => r.user_id === user.id) ?? null : null;
     setMyReview(mine);
     if (mine) {
       setRating(mine.rating);

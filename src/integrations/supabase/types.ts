@@ -2768,6 +2768,26 @@ export type Database = {
           },
         ]
       }
+      product_reviews_public: {
+        Row: {
+          comment: string | null
+          created_at: string | null
+          id: string | null
+          package_id: string | null
+          rating: number | null
+          reviewer_avatar: string | null
+          reviewer_name: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_reviews_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "service_packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       public_coupons: {
         Row: {
           applies_id: string | null
@@ -2851,6 +2871,18 @@ export type Database = {
       }
     }
     Functions: {
+      get_package_reviews: {
+        Args: { _package_id: string }
+        Returns: {
+          comment: string
+          created_at: string
+          id: string
+          package_id: string
+          rating: number
+          reviewer_avatar: string
+          reviewer_name: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
