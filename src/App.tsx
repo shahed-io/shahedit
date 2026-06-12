@@ -105,6 +105,7 @@ const MyRefundsPage = lazy(() => import("./pages/MyRefundsPage"));
 const ProductDetailsPage = lazy(() => import("./pages/ProductDetailsPage"));
 const SearchResultsPage = lazy(() => import("./pages/SearchResultsPage"));
 const TechDetailPage = lazy(() => import("./pages/TechDetailPage"));
+const UnsubscribePage = lazy(() => import("./pages/UnsubscribePage"));
 
 
 const queryClient = new QueryClient();
@@ -256,6 +257,7 @@ const AppWithAnalytics = () => {
         <Route path="/product/:id" element={<ProductDetailsPage />} />
         <Route path="/search" element={<SearchResultsPage />} />
         <Route path="/tech/:slug" element={<TechDetailPage />} />
+        <Route path="/unsubscribe" element={<UnsubscribePage />} />
 
         {/* Admin Routes (mounted at /ceo) */}
         <Route path="/ceo/login" element={<AdminLogin />} />
