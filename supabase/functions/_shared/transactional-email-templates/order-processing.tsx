@@ -1,0 +1,26 @@
+/// <reference types="npm:@types/react@18.3.1" />
+import * as React from 'npm:react@18.3.1'
+import { Layout } from './_layout.tsx'
+import type { TemplateEntry } from './registry.ts'
+
+interface Props { name?: string; orderNumber?: string }
+
+const Email = (p: Props) => (
+  <Layout
+    preview={'অর্ডার প্রসেসিং শুরু হয়েছে'}
+    title={'অর্ডার প্রসেসিং শুরু 🚀'}
+    intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, আমরা আপনার অর্ডার নিয়ে কাজ শুরু করেছি।`}
+    paragraphs={['আপডেট পেতে dashboard এ চোখ রাখুন।']}
+    rows={[['Order #', p.orderNumber]]}
+    ctaLabel={'Order দেখুন'}
+    ctaUrl={'https://shahedit.com/dashboard'}
+    accent="purple"
+  />
+)
+
+export const template = {
+  component: Email,
+  subject: (d) => `অর্ডার প্রসেসিং — ${d.orderNumber ?? ''}`,
+  displayName: 'Order Processing',
+  previewData: {"name":"Karim","orderNumber":"SI-1024"},
+} satisfies TemplateEntry
