@@ -1,0 +1,80 @@
+/// <reference types="npm:@types/react@18.3.1" />
+import * as React from 'npm:react@18.3.1'
+import {
+  Body, Container, Head, Heading, Html, Preview, Section, Text, Button, Hr,
+} from 'npm:@react-email/components@0.0.22'
+
+export interface LayoutProps {
+  preview: string
+  title: string
+  intro?: string
+  paragraphs?: string[]
+  rows?: Array<[string, string | number | undefined]>
+  ctaLabel?: string
+  ctaUrl?: string
+  accent?: 'purple' | 'green' | 'red' | 'amber' | 'blue'
+}
+
+const ACCENTS = {
+  purple: '#7c3aed',
+  green: '#16a34a',
+  red: '#dc2626',
+  amber: '#d97706',
+  blue: '#2563eb',
+}
+
+export const Layout = ({
+  preview, title, intro, paragraphs = [], rows, ctaLabel, ctaUrl, accent = 'purple',
+}: LayoutProps) => {
+  const color = ACCENTS[accent]
+  return (
+    <Html lang="bn" dir="ltr">
+      <Head />
+      <Preview>{preview}</Preview>
+      <Body style={main}>
+        <Container style={container}>
+          <Section style={header}>
+            <Heading style={{ ...brand, color }}>Shahed IT</Heading>
+          </Section>
+          <Section style={{ ...card, borderColor: color + '33' }}>
+            <Heading style={h1}>{title}</Heading>
+            {intro ? <Text style={text}>{intro}</Text> : null}
+            {paragraphs.map((p, i) => (
+              <Text key={i} style={text}>{p}</Text>
+            ))}
+            {rows && rows.length > 0 ? (
+              <Section style={box}>
+                {rows.map(([k, v], i) => (
+                  <Text key={i} style={rowStyle}>
+                    <span style={lbl}>{k}</span>
+                    <span style={val}>{v ?? '—'}</span>
+                  </Text>
+                ))}
+              </Section>
+            ) : null}
+            {ctaLabel && ctaUrl ? (
+              <Button href={ctaUrl} style={{ ...button, backgroundColor: color }}>{ctaLabel}</Button>
+            ) : null}
+          </Section>
+          <Hr style={hr} />
+          <Text style={footer}>Shahed IT · Sopura, Rajshahi · 01820-060046</Text>
+        </Container>
+      </Body>
+    </Html>
+  )
+}
+
+const main = { backgroundColor: '#ffffff', fontFamily: 'Inter, Arial, sans-serif', margin: 0, padding: 0 }
+const container = { maxWidth: '560px', margin: '0 auto', padding: '24px 16px' }
+const header = { padding: '12px 0 18px', textAlign: 'center' as const }
+const brand = { fontSize: '22px', fontWeight: 700, margin: 0, letterSpacing: '0.5px' }
+const card = { backgroundColor: '#faf7ff', border: '1px solid', borderRadius: '14px', padding: '26px 22px' }
+const h1 = { fontSize: '20px', color: '#1a1325', margin: '0 0 12px', fontWeight: 700 }
+const text = { fontSize: '15px', lineHeight: '24px', color: '#444', margin: '0 0 12px' }
+const box = { backgroundColor: '#ffffff', borderRadius: '10px', padding: '10px 14px', margin: '12px 0' }
+const rowStyle = { fontSize: '14px', margin: '6px 0', color: '#1a1325', display: 'block' }
+const lbl = { color: '#888', display: 'inline-block', width: '42%' }
+const val = { color: '#1a1325', fontWeight: 600 }
+const button = { color: '#ffffff', padding: '12px 22px', borderRadius: '10px', textDecoration: 'none', fontWeight: 600, fontSize: '14px', display: 'inline-block', marginTop: '8px' }
+const hr = { borderColor: '#eee', margin: '22px 0 12px' }
+const footer = { fontSize: '12px', color: '#888', textAlign: 'center' as const, margin: 0 }
