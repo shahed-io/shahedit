@@ -248,7 +248,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
     >
       <form onSubmit={submit} className="relative z-10 w-full">
         <div
-          className="group relative w-full flex items-center gap-2 pl-4 pr-1.5 py-1.5 rounded-2xl transition-all focus-within:scale-[1.005]"
+          className="group relative w-full flex items-center gap-2 pl-3 pr-1 py-1 rounded-full transition-all focus-within:scale-[1.005]"
           style={{
             background: "rgba(255,255,255,0.04)",
             border: `1.5px solid ${open ? "rgba(168,85,247,0.45)" : "rgba(168,85,247,0.22)"}`,
