@@ -283,9 +283,9 @@ const SiteHeader = () => {
               </div>
               <div className="flex flex-col leading-[1.0] min-w-0 gap-0.5">
                 <span
-                  className="text-[14px] sm:text-[17px] md:text-[21px] font-extrabold tracking-tight whitespace-nowrap"
+                  className="text-[14px] sm:text-[17px] md:text-[21px] font-extrabold tracking-[0.04em] whitespace-nowrap uppercase"
                   style={{
-                    fontFamily: "'Syne', sans-serif",
+                    fontFamily: "'Orbitron', 'Syne', sans-serif",
                     background: "linear-gradient(135deg, #ffffff 0%, #e9d5ff 35%, #c4b5fd 60%, #f0abfc 100%)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
@@ -293,7 +293,7 @@ const SiteHeader = () => {
                   }}
                 >
                   Shahed{" "}
-                  <span style={{ background: "linear-gradient(135deg, #a78bfa 0%, #f0abfc 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                  <span style={{ fontFamily: "'Orbitron', sans-serif", background: "linear-gradient(135deg, #a78bfa 0%, #f0abfc 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                     IT
                   </span>
                 </span>
