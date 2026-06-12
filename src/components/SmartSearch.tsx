@@ -287,11 +287,11 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
           )}
           <button
             type="submit"
-            className="shrink-0 w-8 h-8 rounded-xl flex items-center justify-center transition-transform hover:scale-105"
-            style={{ background: "linear-gradient(135deg, #6366f1, #a855f7, #ec4899)", boxShadow: "0 4px 14px rgba(168,85,247,0.45)" }}
+            className="shrink-0 w-7 h-7 rounded-full flex items-center justify-center transition-transform hover:scale-105"
+            style={{ background: "linear-gradient(135deg, #6366f1, #a855f7, #ec4899)", boxShadow: "0 3px 10px rgba(168,85,247,0.40)" }}
             aria-label="Search"
           >
-            <Search size={14} className="text-white" />
+            <Search size={12} className="text-white" />
           </button>
         </div>
       </form>
