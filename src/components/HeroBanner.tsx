@@ -7,6 +7,7 @@ import {
   Megaphone, Cloud, Shield, Briefcase, Heart,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Icon registry — admin picks by name string
 const ICONS: Record<string, any> = {
@@ -86,7 +87,7 @@ const randomFutureTime = () => {
   return Date.now() + days * 86400000 + hours * 3600000 + mins * 60000 + secs * 1000;
 };
 
-const useCountdown = (endsAt: string | null | undefined) => {
+const useCountdown = (endsAt: string | null | undefined, active = true) => {
   const [target, setTarget] = useState<number>(() => {
     if (endsAt) {
       const t = new Date(endsAt).getTime();
@@ -108,6 +109,7 @@ const useCountdown = (endsAt: string | null | undefined) => {
   }, [endsAt]);
 
   useEffect(() => {
+    if (!active) return;
     const i = setInterval(() => {
       const n = Date.now();
       setNow(n);
@@ -117,7 +119,7 @@ const useCountdown = (endsAt: string | null | undefined) => {
       }
     }, 1000);
     return () => clearInterval(i);
-  }, [target]);
+  }, [active, target]);
 
   const diff = Math.max(0, target - now);
   return {
@@ -138,7 +140,8 @@ const badgeColorMap: Record<string, string> = {
 };
 
 const SlideContent = ({ slide }: { slide: HeroSlide }) => {
-  const cd = useCountdown(slide.countdown_end_at);
+  const isMobile = useIsMobile();
+  const cd = useCountdown(slide.countdown_end_at, !isMobile);
   return (
     <div className="container mx-auto px-4 sm:px-5 md:px-6 relative z-10 grid lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-16 items-center py-10 sm:py-14 lg:py-20">
       {/* LEFT */}
