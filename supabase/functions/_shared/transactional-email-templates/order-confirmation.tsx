@@ -15,8 +15,13 @@ interface Props {
 
 const Email = ({ name, orderNumber, productTitle, amount, paymentMethod }: Props) => (
   <Html lang="bn" dir="ltr">
-    <Head />
-    <Preview>অর্ডার নিশ্চিত হয়েছে — {orderNumber ?? ''}</Preview>
+    <Head>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+      />
+    </Head>
+    <Preview>আপনার অর্ডার নিশ্চিত হয়েছে — {orderNumber ?? ''}</Preview>
     <Body style={main}>
       <Container style={container}>
         <Section style={header}>
@@ -24,18 +29,24 @@ const Email = ({ name, orderNumber, productTitle, amount, paymentMethod }: Props
         </Section>
         <Section style={card}>
           <Heading style={h1}>অর্ডার নিশ্চিত হয়েছে 🎉</Heading>
-          <Text style={text}>প্রিয় {name ?? 'গ্রাহক'}, আপনার অর্ডার সফলভাবে গ্রহণ করা হয়েছে।</Text>
+          <Text style={text}>
+            প্রিয় {name ?? 'গ্রাহক'}, আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে। নিচে আপনার
+            অর্ডারের সংক্ষিপ্ত বিবরণ দেওয়া হলো।
+          </Text>
           <Section style={box}>
-            <Row><Column style={lbl}>Order #</Column><Column style={val}>{orderNumber ?? '—'}</Column></Row>
-            <Row><Column style={lbl}>Service</Column><Column style={val}>{productTitle ?? '—'}</Column></Row>
-            <Row><Column style={lbl}>Amount</Column><Column style={val}>৳ {amount ?? '—'}</Column></Row>
-            <Row><Column style={lbl}>Payment</Column><Column style={val}>{paymentMethod ?? '—'}</Column></Row>
+            <Row><Column style={lbl}>অর্ডার নম্বর</Column><Column style={val}>{orderNumber ?? '—'}</Column></Row>
+            <Row><Column style={lbl}>সার্ভিস</Column><Column style={val}>{productTitle ?? '—'}</Column></Row>
+            <Row><Column style={lbl}>মোট মূল্য</Column><Column style={val}>৳ {amount ?? '—'}</Column></Row>
+            <Row><Column style={lbl}>পেমেন্ট মাধ্যম</Column><Column style={val}>{paymentMethod ?? '—'}</Column></Row>
           </Section>
-          <Text style={text}>পেমেন্ট ভেরিফাই হওয়ার পর আমাদের টিম কাজ শুরু করবে। আপডেট দেখুন ড্যাশবোর্ডে।</Text>
-          <Button href="https://shahedit.com/dashboard" style={button}>Dashboard দেখুন</Button>
+          <Text style={text}>
+            পেমেন্ট যাচাই সম্পন্ন হলে আমাদের টিম দ্রুততম সময়ে কাজ শুরু করবে। আপনি যেকোনো সময়
+            ড্যাশবোর্ড থেকে অর্ডারের সর্বশেষ আপডেট দেখতে পারবেন।
+          </Text>
+          <Button href="https://shahedit.com/dashboard" style={button}>ড্যাশবোর্ড দেখুন</Button>
         </Section>
         <Hr style={hr} />
-        <Text style={footer}>সাহায্য দরকার? কল: 01820-060046</Text>
+        <Text style={footer}>সাহায্য প্রয়োজন? কল করুন <strong>01820-060046</strong></Text>
       </Container>
     </Body>
   </Html>
@@ -45,19 +56,19 @@ export const template = {
   component: Email,
   subject: (d: Record<string, any>) => `অর্ডার নিশ্চিত — ${d.orderNumber ?? 'Shahed IT'}`,
   displayName: 'Order Confirmation',
-  previewData: { name: 'Karim', orderNumber: 'SI-1024', productTitle: 'Business Website', amount: 15000, paymentMethod: 'bKash' },
+  previewData: { name: 'করিম', orderNumber: 'SI-1024', productTitle: 'বিজনেস ওয়েবসাইট', amount: 15000, paymentMethod: 'bKash' },
 } satisfies TemplateEntry
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Inter, Arial, sans-serif', margin: 0, padding: 0 }
+const main = { backgroundColor: '#ffffff', fontFamily: "'Hind Siliguri','Noto Sans Bengali',Inter,Arial,sans-serif", margin: 0, padding: 0 }
 const container = { maxWidth: '560px', margin: '0 auto', padding: '24px 16px' }
 const header = { padding: '12px 0 20px', textAlign: 'center' as const }
-const brand = { fontSize: '22px', fontWeight: 700, color: '#7c3aed', margin: 0 }
+const brand = { fontSize: '24px', fontWeight: 700, color: '#7c3aed', margin: 0, letterSpacing: '0.5px' }
 const card = { backgroundColor: '#faf7ff', border: '1px solid #ece5ff', borderRadius: '14px', padding: '28px 24px' }
-const h1 = { fontSize: '22px', color: '#1a1325', margin: '0 0 12px', fontWeight: 700 }
-const text = { fontSize: '15px', lineHeight: '24px', color: '#444', margin: '0 0 14px' }
-const box = { backgroundColor: '#ffffff', borderRadius: '10px', padding: '14px 16px', margin: '12px 0' }
-const lbl = { fontSize: '13px', color: '#888', padding: '6px 0', width: '40%' }
-const val = { fontSize: '14px', color: '#1a1325', fontWeight: 600, padding: '6px 0' }
-const button = { backgroundColor: '#7c3aed', color: '#ffffff', padding: '12px 22px', borderRadius: '10px', textDecoration: 'none', fontWeight: 600, fontSize: '14px', display: 'inline-block', marginTop: '8px' }
+const h1 = { fontSize: '22px', color: '#1a1325', margin: '0 0 14px', fontWeight: 700, lineHeight: '32px' }
+const text = { fontSize: '15px', lineHeight: '26px', color: '#3f3a47', margin: '0 0 14px' }
+const box = { backgroundColor: '#ffffff', borderRadius: '10px', padding: '14px 16px', margin: '14px 0' }
+const lbl = { fontSize: '13px', color: '#888', padding: '8px 0', width: '40%' }
+const val = { fontSize: '14px', color: '#1a1325', fontWeight: 600, padding: '8px 0' }
+const button = { backgroundColor: '#7c3aed', color: '#ffffff', padding: '12px 24px', borderRadius: '10px', textDecoration: 'none', fontWeight: 600, fontSize: '14px', display: 'inline-block', marginTop: '8px' }
 const hr = { borderColor: '#eee', margin: '24px 0 12px' }
-const footer = { fontSize: '12px', color: '#888', textAlign: 'center' as const, margin: 0 }
+const footer = { fontSize: '12px', color: '#888', textAlign: 'center' as const, margin: 0, lineHeight: '20px' }
