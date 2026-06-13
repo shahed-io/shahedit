@@ -67,15 +67,15 @@ Deno.serve(async (req) => {
     catalog += "\n## FAQ\n";
     for (const f of faqs) catalog += `Q: ${f.question}\nA: ${(f.answer ?? "").slice(0, 200)}\n`;
 
-    const system = `You are Shahed IT's AI search assistant. The user asks a question in Bangla or English about our services, packages, or topics.
-Using ONLY the catalog below, produce a concise, helpful answer (2-5 sentences) in the SAME language the user used. Then recommend the most relevant matches.
+    const system = `You are Shahed IT's AI search assistant. The user asks a question in Bangla or English about our services, packages, pricing, or topics.
+Using ONLY the catalog below, produce a concise, helpful answer (2-5 sentences) in the SAME language the user used. Mention package names + prices in the answer text when relevant. Then recommend the most relevant linkable matches.
 
 Strict rules:
-- Recommend ONLY items present in the catalog (use the exact title + href).
-- If nothing matches, set "suggestions": [] and tell the user to contact us at 01820-060046.
-- Output STRICT JSON: {"answer": string, "suggestions": [{"title": string, "href": string, "type": "service"|"package"|"blog", "reason": string}]}
-- Maximum 5 suggestions.
-- No markdown fences, no extra commentary outside the JSON.
+- Recommend ONLY SERVICE or BLOG items from the catalog (use exact title + href shown in [brackets]).
+- Do NOT invent URLs. Do NOT recommend packages as suggestions (mention them in the answer text instead).
+- If nothing matches, set "suggestions": [] and tell the user to contact 01820-060046.
+- Output STRICT JSON: {"answer": string, "suggestions": [{"title": string, "href": string, "type": "service"|"blog", "reason": string}]}
+- Maximum 5 suggestions. No markdown fences, no commentary outside JSON.
 
 CATALOG:
 ${catalog}`;
