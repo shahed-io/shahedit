@@ -623,7 +623,7 @@ const SiteHeader = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="md:hidden fixed inset-0 z-[60] bg-black/70 backdrop-blur-md"
+              className="lg:hidden fixed inset-0 z-[60] bg-black/70 backdrop-blur-md"
               onClick={() => setSearchOpen(false)}
             />
             <motion.div
@@ -637,7 +637,7 @@ const SiteHeader = () => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -16, scale: 0.98 }}
               transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
-              className="md:hidden fixed left-3 right-3 top-4 z-[61] rounded-3xl overflow-hidden focus:outline-none"
+              className="lg:hidden fixed left-3 right-3 top-4 z-[61] rounded-3xl overflow-hidden focus:outline-none"
               style={{
                 background: "linear-gradient(180deg, rgba(16, 11, 38, 0.98), rgba(22, 14, 52, 0.98))",
                 backdropFilter: "blur(24px) saturate(180%)",
@@ -678,7 +678,7 @@ const SiteHeader = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.25 }}
-              className="md:hidden fixed inset-0 z-40"
+              className="lg:hidden fixed inset-0 z-40"
               style={{
                 background: "radial-gradient(ellipse at top right, rgba(168,85,247,0.25), rgba(0,0,0,0.78) 60%)",
                 backdropFilter: "blur(10px) saturate(150%)",
@@ -699,7 +699,7 @@ const SiteHeader = () => {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: "100%", opacity: 0.4 }}
               transition={{ type: "spring", stiffness: 320, damping: 36 }}
-              className="md:hidden fixed top-0 right-0 bottom-0 z-50 w-[88%] max-w-[400px] flex flex-col overflow-hidden focus:outline-none"
+              className="lg:hidden fixed top-0 right-0 bottom-0 z-50 w-[88%] max-w-[400px] flex flex-col overflow-hidden focus:outline-none"
               style={{
                 background:
                   "linear-gradient(180deg, rgba(14, 9, 32, 0.97) 0%, rgba(20, 12, 48, 0.97) 50%, rgba(14, 9, 32, 0.98) 100%)",
