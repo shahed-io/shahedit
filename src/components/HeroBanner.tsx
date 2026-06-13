@@ -327,6 +327,7 @@ const SlideContent = ({ slide }: { slide: HeroSlide }) => {
 };
 
 const HeroBanner = () => {
+  const isMobile = useIsMobile();
   const [slides, setSlides] = useState<HeroSlide[]>([FALLBACK]);
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -357,10 +358,10 @@ const HeroBanner = () => {
   const autoplayMs = Math.max(3, current.autoplay_seconds || 7) * 1000;
 
   useEffect(() => {
-    if (paused || slides.length < 2) return;
+    if (isMobile || paused || slides.length < 2) return;
     const t = setTimeout(() => setIndex((i) => (i + 1) % slides.length), autoplayMs);
     return () => clearTimeout(t);
-  }, [index, paused, slides.length, autoplayMs]);
+  }, [index, isMobile, paused, slides.length, autoplayMs]);
 
   const bgStyle = useMemo(
     () => current.background_image_url
@@ -396,10 +397,10 @@ const HeroBanner = () => {
       <AnimatePresence mode="wait">
         <motion.div
           key={current.id}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          initial={isMobile ? false : { opacity: 0, y: 20 }}
+          animate={isMobile ? undefined : { opacity: 1, y: 0 }}
+          exit={isMobile ? undefined : { opacity: 0, y: -20 }}
+          transition={isMobile ? undefined : { duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="w-full"
         >
           <SlideContent slide={current} />
