@@ -5,9 +5,8 @@ import {
   FileText, Receipt, FolderOpen, User as UserIcon, Flame, MessageCircle,
   Briefcase, Phone, Shield, BadgeCheck,
 } from "lucide-react";
-import logoAsset from "@/assets/shahed-it-logo-transparent.png.asset.json";
+import logoAsset from "@/assets/shahed-it-logo-v3.png.asset.json";
 const logoFallback = logoAsset.url;
-
 import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
@@ -200,10 +199,10 @@ const SiteHeader = () => {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ type: "spring", stiffness: 90, damping: 18 }}
-      className="sticky top-0 z-50 lg:px-0 px-3 lg:pt-0 pt-2"
+      className="sticky top-0 z-50 md:px-0 px-3 md:pt-0 pt-2"
     >
       <div
-        className="relative transition-all duration-300 lg:rounded-none rounded-full lg:border-x-0"
+        className="relative transition-all duration-300 md:rounded-none rounded-full md:border-x-0"
         style={{
           background: scrolled
             ? "linear-gradient(180deg, rgba(10, 8, 26, 0.92) 0%, rgba(16, 12, 40, 0.88) 100%)"
@@ -215,8 +214,6 @@ const SiteHeader = () => {
             ? "0 12px 40px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(168,85,247,0.10), inset 0 1px 0 rgba(255,255,255,0.05)"
             : "0 8px 28px rgba(99, 39, 178, 0.30), inset 0 1px 0 rgba(255,255,255,0.05)",
         }}
-
-
       >
         {/* Aurora top edge */}
         <div
@@ -246,15 +243,80 @@ const SiteHeader = () => {
           {/* ── Logo ── */}
           <Link
             to="/"
-            className="shrink-0 min-w-0 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:static lg:translate-x-0 lg:translate-y-0 pointer-events-auto"
+            className="shrink-0 min-w-0 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:static md:translate-x-0 md:translate-y-0 pointer-events-auto"
           >
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} className="flex items-center min-w-0">
-              <img
-                src={logoUrl}
-                alt="Shahed IT — Smart IT Solution"
-                className="h-9 sm:h-10 md:h-12 w-auto object-contain select-none"
-                draggable={false}
-              />
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} className="flex items-center gap-1.5 sm:gap-2 md:gap-2.5 group min-w-0">
+              <div className="relative shrink-0 w-10 h-10 sm:w-11 sm:h-11 md:w-14 md:h-14 flex items-center justify-center">
+                {/* Rotating conic aura */}
+                <motion.div
+                  className="absolute -inset-2 rounded-2xl opacity-50 blur-xl pointer-events-none"
+                  style={{ background: "conic-gradient(from 0deg, #6366f1, #a855f7, #ec4899, #f0abfc, #6366f1)" }}
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+                />
+                {/* Pulsing glow */}
+                <motion.div
+                  className="absolute inset-0 rounded-2xl pointer-events-none"
+                  style={{ boxShadow: "0 0 28px 4px rgba(192,132,252,0.55)" }}
+                  animate={{ opacity: [0.45, 0.9, 0.45], scale: [1, 1.08, 1] }}
+                  transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
+                />
+                {/* Shine sweep overlay */}
+                <motion.div
+                  aria-hidden
+                  className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none"
+                >
+                  <motion.span
+                    className="absolute top-0 -left-1/2 w-1/2 h-full"
+                    style={{ background: "linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.45) 50%, transparent 70%)", filter: "blur(2px)" }}
+                    animate={{ x: ["0%", "320%"] }}
+                    transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut", repeatDelay: 1.2 }}
+                  />
+                </motion.div>
+                <motion.img
+                  src={logoUrl}
+                  alt="Shahed IT"
+                  className="relative w-full h-full object-contain drop-shadow-[0_4px_16px_rgba(192,132,252,0.7)]"
+                  animate={{ y: [0, -2, 0] }}
+                  transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+                />
+              </div>
+              <div className="flex flex-col leading-[1.0] min-w-0 gap-0.5">
+                <span
+                  className="text-[14px] sm:text-[17px] md:text-[21px] font-extrabold tracking-tight whitespace-nowrap"
+                  style={{
+                    fontFamily: "'Syne', sans-serif",
+                    background: "linear-gradient(135deg, #ffffff 0%, #e9d5ff 35%, #c4b5fd 60%, #f0abfc 100%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    filter: "drop-shadow(0 0 12px rgba(192,132,252,0.45))",
+                  }}
+                >
+                  Shahed{" "}
+                  <span style={{ background: "linear-gradient(135deg, #a78bfa 0%, #f0abfc 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                    IT
+                  </span>
+                </span>
+                <span
+                  className="hidden xs:flex items-center font-semibold whitespace-nowrap"
+                  style={{
+                    fontFamily: "'Syne', sans-serif",
+                    fontSize: "clamp(7px, 0.9vw, 9px)",
+                    letterSpacing: "0.14em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  <span
+                    style={{
+                      background: "linear-gradient(90deg, #c4b5fd 0%, #f0abfc 100%)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                    }}
+                  >
+                    Smart IT Solutions
+                  </span>
+                </span>
+              </div>
             </motion.div>
           </Link>
 
@@ -271,8 +333,6 @@ const SiteHeader = () => {
                 boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
                 backdropFilter: "blur(8px)",
               }}
-
-
             >
               {navLinks.map((link) => {
                 const active = isActive(link.href) || (link.hasDropdown && servicesOpen);
@@ -297,8 +357,6 @@ const SiteHeader = () => {
                     {link.hasDropdown && (
                       <ChevronDown size={12} className={`relative transition-transform duration-300 ${servicesOpen ? "rotate-180" : ""}`} style={{ color: active ? "#f0abfc" : "rgba(226, 218, 245, 0.6)" }} />
                     )}
-
-
                   </span>
                 );
 
@@ -386,7 +444,7 @@ const SiteHeader = () => {
           </LayoutGroup>
 
           {/* ── Right cluster ── */}
-          <div className="hidden lg:flex items-center gap-2 shrink-0 ml-auto xl:ml-0">
+          <div className="hidden md:flex items-center gap-2 shrink-0 ml-auto lg:ml-0">
             {authLoading ? (
               <div className="h-9 w-32 rounded-full bg-white/5 animate-pulse" />
             ) : user ? (
@@ -512,7 +570,7 @@ const SiteHeader = () => {
           `}</style>
 
           {/* Mobile actions */}
-          <div className="lg:hidden ml-auto flex items-center gap-1.5 sm:gap-2 shrink-0">
+          <div className="md:hidden ml-auto flex items-center gap-1.5 sm:gap-2 shrink-0">
             <motion.button
               ref={searchTriggerRef as any}
               whileTap={{ scale: 0.92 }}
@@ -565,7 +623,7 @@ const SiteHeader = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="lg:hidden fixed inset-0 z-[60] bg-black/70 backdrop-blur-md"
+              className="md:hidden fixed inset-0 z-[60] bg-black/70 backdrop-blur-md"
               onClick={() => setSearchOpen(false)}
             />
             <motion.div
@@ -579,7 +637,7 @@ const SiteHeader = () => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -16, scale: 0.98 }}
               transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
-              className="lg:hidden fixed left-3 right-3 top-4 z-[61] rounded-3xl overflow-hidden focus:outline-none"
+              className="md:hidden fixed left-3 right-3 top-4 z-[61] rounded-3xl overflow-hidden focus:outline-none"
               style={{
                 background: "linear-gradient(180deg, rgba(16, 11, 38, 0.98), rgba(22, 14, 52, 0.98))",
                 backdropFilter: "blur(24px) saturate(180%)",
@@ -620,7 +678,7 @@ const SiteHeader = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.25 }}
-              className="lg:hidden fixed inset-0 z-40"
+              className="md:hidden fixed inset-0 z-40"
               style={{
                 background: "radial-gradient(ellipse at top right, rgba(168,85,247,0.25), rgba(0,0,0,0.78) 60%)",
                 backdropFilter: "blur(10px) saturate(150%)",
@@ -641,7 +699,7 @@ const SiteHeader = () => {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: "100%", opacity: 0.4 }}
               transition={{ type: "spring", stiffness: 320, damping: 36 }}
-              className="lg:hidden fixed top-0 right-0 bottom-0 z-50 w-[88%] max-w-[400px] flex flex-col overflow-hidden focus:outline-none"
+              className="md:hidden fixed top-0 right-0 bottom-0 z-50 w-[88%] max-w-[400px] flex flex-col overflow-hidden focus:outline-none"
               style={{
                 background:
                   "linear-gradient(180deg, rgba(14, 9, 32, 0.97) 0%, rgba(20, 12, 48, 0.97) 50%, rgba(14, 9, 32, 0.98) 100%)",

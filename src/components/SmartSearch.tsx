@@ -241,8 +241,8 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
       className={
         variant === "desktop"
           ? open
-            ? "hidden lg:flex flex-col fixed top-24 left-0 right-0 z-[90] mx-auto w-[min(92vw,720px)] max-w-[720px]"
-            : "hidden lg:flex relative flex-1 max-w-md mx-auto"
+            ? "hidden md:flex flex-col fixed top-24 left-0 right-0 z-[90] mx-auto w-[min(92vw,720px)] max-w-[720px]"
+            : "hidden md:flex relative flex-1 max-w-md mx-auto"
           : "relative w-full"
       }
     >
@@ -306,7 +306,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.18 }}
               onClick={() => setOpen(false)}
-              className="hidden lg:block fixed inset-0 z-0 cursor-default"
+              className="hidden md:block fixed inset-0 z-0 cursor-default"
               style={{
                 background: "rgba(6, 3, 16, 0.72)",
                 backdropFilter: "blur(14px) saturate(120%)",
