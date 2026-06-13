@@ -18,7 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import logoImg from "@/assets/logo-glossy.png";
+import BrandMark from "@/components/BrandMark";
 
 import { canAccess, type AdminSection } from "@/lib/admin-permissions";
 
@@ -206,9 +206,9 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
               exit={{ opacity: 0, x: -8 }}
               className="flex items-center gap-3"
             >
-              <div className="relative w-11 h-11 rounded-2xl bg-gradient-to-br from-primary via-primary/90 to-accent p-[2px] shadow-[0_8px_28px_-8px_hsl(var(--primary)/0.85)]">
-                <div className="w-full h-full rounded-[14px] bg-background/95 flex items-center justify-center">
-                  <img src={logoImg} alt="Shahed IT" className="w-6 h-6 object-contain" />
+              <div className="relative w-11 h-11 rounded-2xl bg-gradient-to-br from-primary/80 via-primary/60 to-accent/70 p-[2px] shadow-[0_8px_28px_-8px_hsl(var(--primary)/0.85)]">
+                <div className="w-full h-full rounded-[14px] bg-background/80 backdrop-blur-sm flex items-center justify-center">
+                  <BrandMark size={28} glow="soft" />
                 </div>
                 <span className="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-accent ring-2 ring-background animate-pulse" />
               </div>

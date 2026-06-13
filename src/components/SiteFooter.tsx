@@ -1,5 +1,5 @@
 import { Phone, Mail, MapPin, Package, Info, FileText, Facebook, MessageCircle, Instagram, Send, ShieldCheck, BadgeCheck, ArrowUpRight, Sparkles } from "lucide-react";
-import logoImg from "@/assets/logo-glossy.png";
+import BrandMark from "@/components/BrandMark";
 import deeplIdLogo from "@/assets/deepl-id-logo.png";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -177,8 +177,8 @@ const SiteFooter = () => {
           <div className="relative">
             {/* Logo + brand */}
             <Link to="/" className="inline-flex items-center gap-4 mb-5">
-              <div className="w-16 h-16 rounded-2xl flex items-center justify-center bg-gradient-to-br from-primary/20 to-accent/20 border border-white/15 shadow-[0_0_24px_-4px_hsla(258,90%,66%,0.5)] shrink-0">
-                <img src={logoImg} alt="Shahed IT" className="w-12 h-12 object-contain drop-shadow-[0_2px_8px_hsla(185,100%,48%,0.6)]" />
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center bg-gradient-to-br from-primary/15 to-accent/15 border border-white/10 shadow-[0_0_24px_-4px_hsla(258,90%,66%,0.45)] shrink-0 backdrop-blur-sm">
+                <BrandMark size={52} glow="soft" />
               </div>
               <div className="flex flex-col items-start">
                 <div className="flex items-baseline gap-2 text-3xl sm:text-4xl font-black tracking-tight" style={{ fontFamily: "'Syne', sans-serif" }}>

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Mail, Lock, Eye, EyeOff, Zap, ArrowRight } from "lucide-react";
-import logoGlossy from "@/assets/logo-glossy.png";
+import BrandMark from "@/components/BrandMark";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { toast } from "sonner";
@@ -87,7 +87,7 @@ export default function LoginPage() {
             <div className="flex justify-center mb-6">
               <Link to="/">
                 <div className="flex items-center gap-2.5">
-                  <img src={logoGlossy} alt="Shahed IT logo" className="w-10 h-10 object-contain" />
+                  <BrandMark size={44} glow="strong" />
                   <span className="text-2xl font-black" style={{ fontFamily: "'Syne', sans-serif" }}>
                     <span className="gradient-text">Shahed</span>
                     <span className="text-foreground"> IT</span>
