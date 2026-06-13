@@ -6,6 +6,7 @@ import {
   Briefcase, Phone, Shield, BadgeCheck,
 } from "lucide-react";
 import logoAsset from "@/assets/shahed-it-logo-v3.png.asset.json";
+import wordmarkAsset from "@/assets/shahed-it-wordmark.png.asset.json";
 const logoFallback = logoAsset.url;
 import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
@@ -255,22 +256,14 @@ const SiteHeader = () => {
               </div>
 
               <div className="flex flex-col leading-[1.0] min-w-0 gap-0.5">
-                <span
-                  className="text-[14px] sm:text-[17px] md:text-[21px] font-extrabold whitespace-nowrap uppercase"
-                  style={{
-                    fontFamily: "'Nasalization', 'Orbitron', sans-serif",
-                    fontWeight: 800,
-                    letterSpacing: "0.04em",
-                    background: "linear-gradient(135deg, #ffffff 0%, #e9d5ff 35%, #c4b5fd 60%, #f0abfc 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    filter: "drop-shadow(0 0 12px rgba(192,132,252,0.45))",
-                  }}
-                >
-                  SHAHED{"\u00a0"}
-                  <span style={{ background: "linear-gradient(135deg, #a78bfa 0%, #f0abfc 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                    IT
-                  </span>
+                <span aria-label="SHAHED IT" className="block">
+                  <img
+                    src={wordmarkAsset.url}
+                    alt="SHAHED IT"
+                    className="h-[18px] sm:h-[22px] md:h-[28px] w-auto object-contain select-none"
+                    style={{ filter: "drop-shadow(0 0 12px rgba(192,132,252,0.45))" }}
+                    draggable={false}
+                  />
                 </span>
                 <span
                   className="hidden xs:flex items-center font-semibold whitespace-nowrap"
