@@ -212,9 +212,9 @@ const SiteHeader = () => {
 
   return (
     <motion.header
-      initial={{ y: -80, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ type: "spring", stiffness: 90, damping: 18 }}
+      initial={isMobile ? false : { y: -80, opacity: 0 }}
+      animate={isMobile ? undefined : { y: 0, opacity: 1 }}
+      transition={isMobile ? undefined : { type: "spring", stiffness: 90, damping: 18 }}
       className="sticky top-0 z-50 lg:px-0 px-3 lg:pt-0 pt-2"
     >
       <div
@@ -223,12 +223,12 @@ const SiteHeader = () => {
           background: scrolled
             ? "linear-gradient(180deg, rgba(10, 8, 26, 0.92) 0%, rgba(16, 12, 40, 0.88) 100%)"
             : "linear-gradient(180deg, rgba(14, 10, 32, 0.85) 0%, rgba(20, 15, 48, 0.78) 100%)",
-          backdropFilter: "blur(28px) saturate(180%)",
-          WebkitBackdropFilter: "blur(28px) saturate(180%)",
+          backdropFilter: isMobile ? "none" : "blur(28px) saturate(180%)",
+          WebkitBackdropFilter: isMobile ? "none" : "blur(28px) saturate(180%)",
           border: "1px solid rgba(168, 85, 247, 0.22)",
           boxShadow: scrolled
-            ? "0 12px 40px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(168,85,247,0.10), inset 0 1px 0 rgba(255,255,255,0.05)"
-            : "0 8px 28px rgba(99, 39, 178, 0.30), inset 0 1px 0 rgba(255,255,255,0.05)",
+            ? isMobile ? "0 6px 18px rgba(0, 0, 0, 0.35)" : "0 12px 40px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(168,85,247,0.10), inset 0 1px 0 rgba(255,255,255,0.05)"
+            : isMobile ? "0 4px 14px rgba(99, 39, 178, 0.22)" : "0 8px 28px rgba(99, 39, 178, 0.30), inset 0 1px 0 rgba(255,255,255,0.05)",
         }}
       >
         {/* Aurora top edge */}
@@ -240,7 +240,7 @@ const SiteHeader = () => {
           }}
         />
         {/* Floating glow blobs */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none hidden lg:block">
           <motion.div
             className="absolute -top-20 left-1/4 w-80 h-32 rounded-full opacity-30 blur-3xl"
             style={{ background: "radial-gradient(ellipse, #a855f7, transparent 70%)" }}
@@ -261,24 +261,24 @@ const SiteHeader = () => {
             to="/"
             className="shrink-0 min-w-0 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:static lg:translate-x-0 lg:translate-y-0 pointer-events-auto"
           >
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} className="flex items-center gap-1.5 sm:gap-2 md:gap-2.5 group min-w-0">
+            <motion.div whileHover={isMobile ? undefined : { scale: 1.02 }} whileTap={{ scale: 0.97 }} className="flex items-center gap-1.5 sm:gap-2 md:gap-2.5 group min-w-0">
               <div className="relative shrink-0 w-10 h-10 sm:w-11 sm:h-11 md:w-14 md:h-14 flex items-center justify-center">
                 {/* Soft glow halo behind the logo */}
                 <div
                   aria-hidden
-                  className="absolute inset-0 rounded-full pointer-events-none animate-[pulse_3.5s_ease-in-out_infinite]"
+                  className={`absolute inset-0 rounded-full pointer-events-none ${isMobile ? "" : "animate-[pulse_3.5s_ease-in-out_infinite]"}`}
                   style={{
                     background:
-                      "radial-gradient(circle at 50% 50%, rgba(192,132,252,0.55) 0%, rgba(168,85,247,0.35) 35%, rgba(236,72,153,0.18) 60%, rgba(0,0,0,0) 75%)",
-                    filter: "blur(10px)",
-                    transform: "scale(1.35)",
+                      `radial-gradient(circle at 50% 50%, rgba(192,132,252,${isMobile ? 0.34 : 0.55}) 0%, rgba(168,85,247,${isMobile ? 0.20 : 0.35}) 35%, rgba(236,72,153,${isMobile ? 0.10 : 0.18}) 60%, rgba(0,0,0,0) 75%)`,
+                    filter: isMobile ? "blur(5px)" : "blur(10px)",
+                    transform: isMobile ? "scale(1.18)" : "scale(1.35)",
                   }}
                 />
                 <img
                   src={logoUrl}
                   alt="Shahed IT"
                   className="relative w-full h-full object-contain"
-                  style={{ filter: "drop-shadow(0 0 8px rgba(192,132,252,0.5))" }}
+                  style={{ filter: isMobile ? "drop-shadow(0 0 4px rgba(192,132,252,0.35))" : "drop-shadow(0 0 8px rgba(192,132,252,0.5))" }}
                 />
               </div>
 
