@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import markAsset from "@/assets/shahed-it-mark.png.asset.json";
+import markSm from "@/assets/shahed-it-mark-sm.webp";
 
-const FALLBACK = markAsset.url;
+const FALLBACK = markSm;
 
 // Module-level cache + in-flight promise so multiple instances share one fetch
 let cachedLogo: string | null = null;
