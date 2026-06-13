@@ -1,0 +1,1 @@
+UPDATE public.site_settings SET value='/__l5e/assets-v1/b38c030a-23c0-4588-ba88-7da8b24166ec/shahed-it-full-logo.webp' WHERE key='logo_url';
