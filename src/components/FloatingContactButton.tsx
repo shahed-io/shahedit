@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, Bot, X, Headphones } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface FloatingContactProps {
   onOpenAI: () => void;
 }
 
 export default function FloatingContactButton({ onOpenAI }: FloatingContactProps) {
+  const isMobile = useIsMobile();
   const [open, setOpen] = useState(false);
   const [tooltipDismissed, setTooltipDismissed] = useState(
     () => typeof window !== "undefined" && sessionStorage.getItem("help_tooltip_dismissed") === "1"
@@ -91,10 +93,10 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
       <AnimatePresence>
         {!open && !tooltipDismissed && (
           <motion.div
-            initial={{ opacity: 0, x: 10, scale: 0.9 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            exit={{ opacity: 0, x: 10, scale: 0.9 }}
-            transition={{ delay: 1.6, type: "spring", stiffness: 280 }}
+            initial={isMobile ? false : { opacity: 0, x: 10, scale: 0.9 }}
+            animate={isMobile ? undefined : { opacity: 1, x: 0, scale: 1 }}
+            exit={isMobile ? undefined : { opacity: 0, x: 10, scale: 0.9 }}
+            transition={isMobile ? undefined : { delay: 1.6, type: "spring", stiffness: 280 }}
             className="absolute right-[5.25rem] bottom-3 select-none"
           >
             <div
@@ -121,7 +123,7 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
 
               <div className="flex items-center gap-2">
                 <span className="relative flex w-2 h-2">
-                  <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
+                  <span className={`absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 ${isMobile ? "" : "animate-ping"}`} />
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
                 </span>
                 <span className="text-white text-[12px] font-bold leading-none">সাহায্য চাই?</span>
@@ -144,11 +146,11 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
       {/* Main Toggle Button - Round Support Orb */}
       <motion.button
         onClick={() => setOpen(v => !v)}
-        whileHover={{ scale: 1.08 }}
+        whileHover={isMobile ? undefined : { scale: 1.08 }}
         whileTap={{ scale: 0.92 }}
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ delay: 1.2, type: "spring", stiffness: 200 }}
+        initial={isMobile ? false : { scale: 0, opacity: 0 }}
+        animate={isMobile ? undefined : { scale: 1, opacity: 1 }}
+        transition={isMobile ? undefined : { delay: 1.2, type: "spring", stiffness: 200 }}
         aria-label="Support"
         className="relative w-16 h-16 rounded-full flex items-center justify-center"
         style={{
@@ -162,7 +164,7 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
         }}
       >
         {/* Rotating conic glow ring (closed only) */}
-        {!open && (
+        {!open && !isMobile && (
           <motion.span
             aria-hidden
             animate={{ rotate: 360 }}
@@ -179,7 +181,7 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
         )}
 
         {/* Soft pulse halo */}
-        {!open && (
+        {!open && !isMobile && (
           <span
             className="absolute inset-0 rounded-full animate-ping pointer-events-none"
             style={{ background: "rgba(168,85,247,0.25)" }}
@@ -233,7 +235,7 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
             }}
           >
             <span className="relative flex w-2.5 h-2.5">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
+              <span className={`absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 ${isMobile ? "" : "animate-ping"}`} />
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400" />
             </span>
           </span>
