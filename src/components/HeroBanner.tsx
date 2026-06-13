@@ -373,23 +373,22 @@ const HeroBanner = () => {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      {/* Animated mesh background */}
-      <div className="absolute inset-0 opacity-50 pointer-events-none">
-        <motion.div
-          className="absolute -top-[15%] -left-[10%] w-[55%] h-[60%] rounded-full bg-[hsl(270,92%,65%)] blur-[140px]"
-          animate={{ scale: [1, 1.15, 1], opacity: [0.45, 0.7, 0.45] }}
-          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute -bottom-[15%] -right-[10%] w-[55%] h-[60%] rounded-full bg-[hsl(320,90%,55%)] blur-[140px]"
-          animate={{ scale: [1, 1.2, 1], opacity: [0.35, 0.6, 0.35] }}
-          transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        />
-        <div className="absolute inset-0" style={{
-          backgroundImage: "radial-gradient(circle at 2px 2px, rgba(255,255,255,0.06) 1px, transparent 0)",
+      {/* Static mesh background — animations are CPU/GPU heavy on mobile */}
+      <div
+        className="absolute inset-0 opacity-60 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(at 15% 10%, hsla(270,92%,55%,0.45) 0px, transparent 50%), radial-gradient(at 85% 90%, hsla(320,90%,55%,0.40) 0px, transparent 55%)",
+        }}
+      />
+      <div
+        className="absolute inset-0 opacity-30 pointer-events-none hidden md:block"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 2px 2px, rgba(255,255,255,0.06) 1px, transparent 0)",
           backgroundSize: "40px 40px",
-        }} />
-      </div>
+        }}
+      />
 
       <AnimatePresence mode="wait">
         <motion.div
