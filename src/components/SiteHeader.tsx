@@ -199,7 +199,7 @@ const SiteHeader = () => {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ type: "spring", stiffness: 90, damping: 18 }}
-      className="sticky top-0 z-50 md:px-0 px-3 md:pt-0 pt-2"
+      className="sticky top-0 z-50 lg:px-0 px-3 lg:pt-0 pt-2"
     >
       <div
         className="relative transition-all duration-300 md:rounded-none rounded-full md:border-x-0"
