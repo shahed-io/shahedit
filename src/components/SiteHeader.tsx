@@ -245,27 +245,13 @@ const SiteHeader = () => {
             to="/"
             className="shrink-0 min-w-0 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:static lg:translate-x-0 lg:translate-y-0 pointer-events-auto"
           >
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} className="flex items-center gap-2.5 sm:gap-3 md:gap-3.5 min-w-0">
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} className="flex items-center min-w-0">
               <img
                 src={logoUrl}
                 alt="Shahed IT — Smart IT Solution"
                 className="h-9 sm:h-10 md:h-12 w-auto object-contain select-none"
                 draggable={false}
               />
-              <div className="flex flex-col leading-tight min-w-0">
-                <span
-                  className="font-extrabold tracking-tight text-[15px] sm:text-base md:text-lg whitespace-nowrap"
-                  style={{ color: "#ffffff", letterSpacing: "0.02em", filter: "drop-shadow(0 0 12px rgba(255,255,255,0.35))" }}
-                >
-                  SHAHED IT
-                </span>
-                <span
-                  className="text-[10px] sm:text-[11px] md:text-xs font-medium whitespace-nowrap"
-                  style={{ color: "#ffffff", opacity: 0.85 }}
-                >
-                  Smart IT Solution
-                </span>
-              </div>
             </motion.div>
           </Link>
 
