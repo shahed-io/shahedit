@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import markSm from "@/assets/shahed-it-mark-sm.webp";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const FALLBACK = markSm;
 
@@ -64,13 +65,18 @@ const BrandMark = ({
   alt = "Shahed IT",
 }: BrandMarkProps) => {
   const url = useSiteLogo();
+  const isMobile = useIsMobile();
 
-  const haloOpacity = glow === "strong" ? 0.7 : glow === "soft" ? 0.45 : 0;
+  const haloOpacity = (glow === "strong" ? 0.7 : glow === "soft" ? 0.45 : 0) * (isMobile ? 0.58 : 1);
   const dropShadow =
     glow === "strong"
-      ? "drop-shadow(0 0 12px rgba(192,132,252,0.65)) drop-shadow(0 4px 16px rgba(168,85,247,0.45))"
+      ? isMobile
+        ? "drop-shadow(0 0 5px rgba(192,132,252,0.42))"
+        : "drop-shadow(0 0 12px rgba(192,132,252,0.65)) drop-shadow(0 4px 16px rgba(168,85,247,0.45))"
       : glow === "soft"
-      ? "drop-shadow(0 0 8px rgba(192,132,252,0.45))"
+      ? isMobile
+        ? "drop-shadow(0 0 4px rgba(192,132,252,0.30))"
+        : "drop-shadow(0 0 8px rgba(192,132,252,0.45))"
       : "none";
 
   return (
@@ -81,13 +87,13 @@ const BrandMark = ({
       {glow !== "none" && (
         <span
           aria-hidden
-          className="absolute inset-0 pointer-events-none animate-[pulse_3.5s_ease-in-out_infinite]"
+          className={`absolute inset-0 pointer-events-none ${isMobile ? "" : "animate-[pulse_3.5s_ease-in-out_infinite]"}`}
           style={{
             background: `radial-gradient(circle at 50% 50%, rgba(192,132,252,${haloOpacity}) 0%, rgba(168,85,247,${
               haloOpacity * 0.6
             }) 35%, rgba(236,72,153,${haloOpacity * 0.3}) 60%, rgba(0,0,0,0) 75%)`,
-            filter: "blur(10px)",
-            transform: "scale(1.4)",
+            filter: isMobile ? "blur(5px)" : "blur(10px)",
+            transform: isMobile ? "scale(1.16)" : "scale(1.4)",
             borderRadius: "9999px",
           }}
         />
