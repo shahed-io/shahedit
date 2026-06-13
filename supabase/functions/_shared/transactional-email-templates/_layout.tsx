@@ -29,7 +29,12 @@ export const Layout = ({
   const color = ACCENTS[accent]
   return (
     <Html lang="bn" dir="ltr">
-      <Head />
+      <Head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+      </Head>
       <Preview>{preview}</Preview>
       <Body style={main}>
         <Container style={container}>
@@ -64,7 +69,7 @@ export const Layout = ({
   )
 }
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Inter, Arial, sans-serif', margin: 0, padding: 0 }
+const main = { backgroundColor: '#ffffff', fontFamily: "'Hind Siliguri','Noto Sans Bengali',Inter,Arial,sans-serif", margin: 0, padding: 0 }
 const container = { maxWidth: '560px', margin: '0 auto', padding: '24px 16px' }
 const header = { padding: '12px 0 18px', textAlign: 'center' as const }
 const brand = { fontSize: '22px', fontWeight: 700, margin: 0, letterSpacing: '0.5px' }
