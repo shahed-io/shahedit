@@ -570,7 +570,7 @@ const SiteHeader = () => {
           `}</style>
 
           {/* Mobile actions */}
-          <div className="md:hidden ml-auto flex items-center gap-1.5 sm:gap-2 shrink-0">
+          <div className="lg:hidden ml-auto flex items-center gap-1.5 sm:gap-2 shrink-0">
             <motion.button
               ref={searchTriggerRef as any}
               whileTap={{ scale: 0.92 }}
