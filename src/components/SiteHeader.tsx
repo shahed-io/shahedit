@@ -290,12 +290,13 @@ const SiteHeader = () => {
                         transition={{ type: "spring", stiffness: 380, damping: 32 }}
                       />
                     )}
-                    <span className="relative" style={{ color: active ? "#fff" : "rgba(30, 20, 60, 0.85)" }}>
+                    <span className="relative" style={{ color: active ? "#fff" : "rgba(226, 218, 245, 0.78)" }}>
                       {link.label}
                     </span>
                     {link.hasDropdown && (
-                      <ChevronDown size={12} className={`relative transition-transform duration-300 ${servicesOpen ? "rotate-180" : ""}`} style={{ color: active ? "#f0abfc" : "rgba(30, 20, 60, 0.6)" }} />
+                      <ChevronDown size={12} className={`relative transition-transform duration-300 ${servicesOpen ? "rotate-180" : ""}`} style={{ color: active ? "#f0abfc" : "rgba(226, 218, 245, 0.6)" }} />
                     )}
+
 
                   </span>
                 );
