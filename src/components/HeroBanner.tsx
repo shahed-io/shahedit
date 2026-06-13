@@ -244,7 +244,7 @@ const SlideContent = ({ slide }: { slide: HeroSlide }) => {
       <div className="relative flex flex-col gap-4 sm:gap-5 min-w-0">
         {slide.show_countdown && (
           <motion.div
-            initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, type: "spring", stiffness: 80 }}
+            initial={isMobile ? false : { opacity: 0, x: 40 }} animate={isMobile ? undefined : { opacity: 1, x: 0 }} transition={isMobile ? undefined : { delay: 0.3, type: "spring", stiffness: 80 }}
             className="bg-white/[0.04] border border-white/10 backdrop-blur-2xl p-4 sm:p-6 rounded-2xl sm:rounded-3xl shadow-2xl relative overflow-hidden"
           >
             <div className="absolute -top-20 -right-20 w-48 h-48 rounded-full bg-[hsl(270,92%,65%)]/15 blur-3xl pointer-events-none" />
@@ -275,9 +275,9 @@ const SlideContent = ({ slide }: { slide: HeroSlide }) => {
           return (
             <motion.div
               key={i}
-              initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.45 + i * 0.12, type: "spring", stiffness: 80 }}
-              whileHover={{ y: -6 }}
+              initial={isMobile ? false : { opacity: 0, x: 40 }} animate={isMobile ? undefined : { opacity: 1, x: 0 }}
+              transition={isMobile ? undefined : { delay: 0.45 + i * 0.12, type: "spring", stiffness: 80 }}
+              whileHover={isMobile ? undefined : { y: -6 }}
               className="group bg-white/[0.04] hover:bg-white/[0.07] border border-white/10 backdrop-blur-2xl p-4 sm:p-5 md:p-6 rounded-2xl sm:rounded-3xl transition-all duration-500"
               style={{ borderColor: undefined }}
             >
@@ -312,7 +312,7 @@ const SlideContent = ({ slide }: { slide: HeroSlide }) => {
                         {card.original_price && <span className="text-xs sm:text-sm line-through text-white/30">{card.original_price}</span>}
                       </div>
                     </div>
-                    <motion.span whileHover={{ x: 3 }} className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest" style={{ color: accent }}>
+                    <motion.span whileHover={isMobile ? undefined : { x: 3 }} className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest" style={{ color: accent }}>
                       Order Now <ArrowRight size={14} />
                     </motion.span>
                   </div>
