@@ -10,15 +10,6 @@ interface FloatingContactProps {
 export default function FloatingContactButton({ onOpenAI }: FloatingContactProps) {
   const isMobile = useIsMobile();
   const [open, setOpen] = useState(false);
-  const [tooltipDismissed, setTooltipDismissed] = useState(
-    () => typeof window !== "undefined" && sessionStorage.getItem("help_tooltip_dismissed") === "1"
-  );
-
-  const dismissTooltip = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    sessionStorage.setItem("help_tooltip_dismissed", "1");
-    setTooltipDismissed(true);
-  };
 
   const options = [
     {
