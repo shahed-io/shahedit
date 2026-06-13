@@ -10,6 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { useIsMobile } from "@/hooks/use-mobile";
 import SmartSearch from "@/components/SmartSearch";
 
 import catWebDev from "@/assets/cat-web-dev.jpg";
@@ -40,6 +41,7 @@ const navLinks = [
 const SiteHeader = () => {
   const { user, loading: authLoading, signOut } = useAuth();
   const location = useLocation();
+  const isMobile = useIsMobile();
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [logoUrl, setLogoUrl] = useState<string>(logoFallback);
@@ -58,6 +60,7 @@ const SiteHeader = () => {
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const servicesTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const scrolledRef = useRef(false);
   const drawerRef = useRef<HTMLElement | null>(null);
   const searchModalRef = useRef<HTMLDivElement | null>(null);
   const menuTriggerRef = useRef<HTMLButtonElement | null>(null);
@@ -67,8 +70,22 @@ const SiteHeader = () => {
   const activeKey = navLinks.find(l => isActive(l.href))?.label || (servicesOpen ? "Services" : null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
+    let ticking = false;
+    const update = () => {
+      const next = window.scrollY > 8;
+      if (scrolledRef.current !== next) {
+        scrolledRef.current = next;
+        setScrolled(next);
+      }
+      ticking = false;
+    };
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(update);
+      }
+    };
+    update();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
