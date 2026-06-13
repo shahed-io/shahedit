@@ -1,16 +1,16 @@
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { useLocation } from "react-router-dom";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 /**
- * Global cinematic background matching the HeroBanner aesthetic.
- * - Deep #0a0514 base
- * - Two animated purple/magenta glow orbs (pulse)
- * - Subtle dot-grid mesh
- * Hidden on admin routes (/ceo, /admin).
+ * Global cinematic background.
+ * On mobile we render static gradients (no animation, smaller blur)
+ * to avoid heavy repaints / "buffering" on low-end devices.
  */
 const SiteBackground = () => {
   const { pathname } = useLocation();
+  const isMobile = useIsMobile();
   const isAdminRoute = pathname.startsWith("/ceo") || pathname.startsWith("/admin");
 
   useEffect(() => {
@@ -19,6 +19,24 @@ const SiteBackground = () => {
   }, [isAdminRoute]);
 
   if (isAdminRoute) return null;
+
+  if (isMobile) {
+    return (
+      <div
+        aria-hidden
+        className="fixed inset-0 z-0 overflow-hidden pointer-events-none bg-[#0a0514]"
+        style={{ contain: "strict" }}
+      >
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(at 20% 10%, hsla(270,92%,55%,0.28) 0px, transparent 45%), radial-gradient(at 85% 85%, hsla(320,90%,55%,0.22) 0px, transparent 50%)",
+          }}
+        />
+      </div>
+    );
+  }
 
   return (
     <div
