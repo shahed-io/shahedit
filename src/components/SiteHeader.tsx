@@ -5,7 +5,7 @@ import {
   FileText, Receipt, FolderOpen, User as UserIcon, Flame, MessageCircle,
   Briefcase, Phone, Shield, BadgeCheck,
 } from "lucide-react";
-import logoAsset from "@/assets/shahed-si-mark.png.asset.json";
+import logoAsset from "@/assets/shahed-it-full-logo.webp.asset.json";
 const logoFallback = logoAsset.url;
 import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
@@ -245,74 +245,13 @@ const SiteHeader = () => {
             to="/"
             className="shrink-0 min-w-0 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:static lg:translate-x-0 lg:translate-y-0 pointer-events-auto"
           >
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} className="flex items-center gap-1.5 sm:gap-2 md:gap-2.5 group min-w-0">
-              <div className="relative shrink-0 w-10 h-10 sm:w-11 sm:h-11 md:w-14 md:h-14">
-                {/* Outer glow halo matching the gradient border */}
-                <motion.div
-                  aria-hidden
-                  className="absolute -inset-1.5 rounded-[18px] opacity-70 blur-lg pointer-events-none"
-                  style={{ background: "linear-gradient(135deg, #fb923c 0%, #ec4899 50%, #a855f7 100%)" }}
-                  animate={{ opacity: [0.5, 0.85, 0.5] }}
-                  transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
-                />
-                {/* Gradient border frame (orange → pink → purple) */}
-                <div
-                  className="relative w-full h-full rounded-[14px] p-[2px] overflow-hidden"
-                  style={{ background: "linear-gradient(135deg, #fb923c 0%, #f43f5e 45%, #a855f7 100%)" }}
-                >
-                  {/* Inner deep-navy tile */}
-                  <div
-                    className="relative w-full h-full rounded-[12px] flex items-center justify-center overflow-hidden"
-                    style={{ background: "linear-gradient(135deg, #0a0a1a 0%, #141432 100%)" }}
-                  >
-                    {/* Shine sweep */}
-                    <motion.span
-                      aria-hidden
-                      className="absolute top-0 -left-1/2 w-1/2 h-full pointer-events-none"
-                      style={{ background: "linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.35) 50%, transparent 70%)", filter: "blur(2px)" }}
-                      animate={{ x: ["0%", "320%"] }}
-                      transition={{ duration: 3.6, repeat: Infinity, ease: "easeInOut", repeatDelay: 1.4 }}
-                    />
-                    <motion.img
-                      src={logoUrl}
-                      alt="Shahed IT"
-                      className="relative w-[95%] h-[95%] object-contain drop-shadow-[0_2px_8px_rgba(236,72,153,0.45)]"
-                      animate={{ y: [0, -1.5, 0] }}
-                      transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-col leading-[1.0] min-w-0 gap-0.5">
-                <span
-                  className="text-[14px] sm:text-[17px] md:text-[21px] font-bold tracking-tight whitespace-nowrap uppercase"
-                  style={{
-                    fontFamily: "'Saira', sans-serif",
-                    fontWeight: 900,
-                    letterSpacing: "0.02em",
-                    color: "#ffffff",
-                    filter: "drop-shadow(0 0 12px rgba(255,255,255,0.35))",
-                  }}
-                >
-                  SHAHED{"\u00a0"}
-                  <span style={{ color: "#ffffff" }}>
-                    IT
-                  </span>
-                </span>
-                <span
-                  className="hidden xs:flex items-center font-semibold whitespace-nowrap"
-                  style={{
-                    fontFamily: "'Saira', sans-serif",
-                    fontSize: "clamp(7px, 0.9vw, 9px)",
-                    letterSpacing: "0.18em",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  <span style={{ color: "#ffffff", opacity: 0.85 }}>
-                    Smart IT Solution
-                  </span>
-                </span>
-              </div>
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} className="flex items-center min-w-0">
+              <img
+                src={logoUrl}
+                alt="Shahed IT — Smart IT Solution"
+                className="h-9 sm:h-10 md:h-12 w-auto object-contain select-none"
+                draggable={false}
+              />
             </motion.div>
           </Link>
 
