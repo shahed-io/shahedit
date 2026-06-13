@@ -247,40 +247,13 @@ const SiteHeader = () => {
           >
             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} className="flex items-center gap-1.5 sm:gap-2 md:gap-2.5 group min-w-0">
               <div className="relative shrink-0 w-10 h-10 sm:w-11 sm:h-11 md:w-14 md:h-14 flex items-center justify-center">
-                {/* Rotating conic aura */}
-                <motion.div
-                  className="absolute -inset-2 rounded-2xl opacity-50 blur-xl pointer-events-none"
-                  style={{ background: "conic-gradient(from 0deg, #6366f1, #a855f7, #ec4899, #f0abfc, #6366f1)" }}
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-                />
-                {/* Pulsing glow */}
-                <motion.div
-                  className="absolute inset-0 rounded-2xl pointer-events-none"
-                  style={{ boxShadow: "0 0 28px 4px rgba(192,132,252,0.55)" }}
-                  animate={{ opacity: [0.45, 0.9, 0.45], scale: [1, 1.08, 1] }}
-                  transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
-                />
-                {/* Shine sweep overlay */}
-                <motion.div
-                  aria-hidden
-                  className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none"
-                >
-                  <motion.span
-                    className="absolute top-0 -left-1/2 w-1/2 h-full"
-                    style={{ background: "linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.45) 50%, transparent 70%)", filter: "blur(2px)" }}
-                    animate={{ x: ["0%", "320%"] }}
-                    transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut", repeatDelay: 1.2 }}
-                  />
-                </motion.div>
-                <motion.img
+                <img
                   src={logoUrl}
                   alt="Shahed IT"
-                  className="relative w-full h-full object-contain drop-shadow-[0_4px_16px_rgba(192,132,252,0.7)]"
-                  animate={{ y: [0, -2, 0] }}
-                  transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+                  className="relative w-full h-full object-contain"
                 />
               </div>
+
               <div className="flex flex-col leading-[1.0] min-w-0 gap-0.5">
                 <span
                   className="text-[14px] sm:text-[17px] md:text-[21px] font-extrabold tracking-tight whitespace-nowrap uppercase"
