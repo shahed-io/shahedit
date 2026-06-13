@@ -148,11 +148,11 @@ const SlideContent = ({ slide }: { slide: HeroSlide }) => {
       <div className="space-y-6 sm:space-y-8 lg:space-y-10 min-w-0">
         {slide.badge_text && (
           <motion.div
-            initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
+            initial={isMobile ? false : { opacity: 0, y: 14 }} animate={isMobile ? undefined : { opacity: 1, y: 0 }} transition={isMobile ? undefined : { duration: 0.5 }}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md"
           >
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-[hsl(270,92%,65%)] opacity-75 animate-ping" />
+              <span className={`absolute inline-flex h-full w-full rounded-full bg-[hsl(270,92%,65%)] opacity-75 ${isMobile ? "" : "animate-ping"}`} />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-[hsl(320,90%,55%)]" />
             </span>
             <span className="text-[11px] md:text-xs font-semibold tracking-[0.18em] uppercase text-white/80">
@@ -163,7 +163,7 @@ const SlideContent = ({ slide }: { slide: HeroSlide }) => {
 
         <div className="space-y-6">
           <motion.h1
-            initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}
+            initial={isMobile ? false : { opacity: 0, y: 24 }} animate={isMobile ? undefined : { opacity: 1, y: 0 }} transition={isMobile ? undefined : { duration: 0.6, delay: 0.1 }}
             className="text-[2.25rem] xs:text-5xl sm:text-6xl lg:text-7xl xl:text-[88px] font-extrabold leading-[1.02] sm:leading-[0.95] tracking-tight text-white break-words"
             style={{ fontFamily: "'Syne', sans-serif" }}
           >
@@ -179,7 +179,7 @@ const SlideContent = ({ slide }: { slide: HeroSlide }) => {
           </motion.h1>
           {slide.description && (
             <motion.p
-              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.25 }}
+              initial={isMobile ? false : { opacity: 0, y: 16 }} animate={isMobile ? undefined : { opacity: 1, y: 0 }} transition={isMobile ? undefined : { duration: 0.5, delay: 0.25 }}
               className="text-sm sm:text-base md:text-lg text-white/60 max-w-xl leading-relaxed"
             >
               {slide.description}
