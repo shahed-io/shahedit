@@ -573,27 +573,8 @@ const SiteHeader = () => {
             }
           `}</style>
 
-          {/* Mobile actions */}
-          <div className="lg:hidden ml-auto flex items-center gap-1.5 sm:gap-2 shrink-0">
-            <motion.button
-              ref={searchTriggerRef as any}
-              whileTap={{ scale: 0.92 }}
-              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shrink-0"
-              style={{
-                background: "linear-gradient(135deg, rgba(124,58,237,0.18), rgba(236,72,153,0.14))",
-                border: "1px solid rgba(168, 85, 247, 0.40)",
-                color: "#f0abfc",
-                boxShadow: "0 4px 14px rgba(168, 85, 247, 0.30), inset 0 1px 0 rgba(255,255,255,0.08)",
-              }}
-              onClick={() => setSearchOpen(true)}
-              aria-label={searchOpen ? "Close search" : "Open search"}
-              aria-haspopup="dialog"
-              aria-expanded={searchOpen}
-              aria-controls="mobile-search-dialog"
-            >
-              <Search size={16} className="sm:hidden" />
-              <Search size={17} className="hidden sm:block" />
-            </motion.button>
+          {/* Mobile menu trigger — left side */}
+          <div className="lg:hidden mr-auto flex items-center shrink-0 order-first">
             <motion.button
               ref={menuTriggerRef as any}
               whileTap={{ scale: 0.92 }}
@@ -614,6 +595,29 @@ const SiteHeader = () => {
               aria-controls="mobile-nav-drawer"
             >
               {mobileOpen ? <X size={17} /> : <Menu size={17} />}
+            </motion.button>
+          </div>
+
+          {/* Mobile search — right side */}
+          <div className="lg:hidden ml-auto flex items-center shrink-0">
+            <motion.button
+              ref={searchTriggerRef as any}
+              whileTap={{ scale: 0.92 }}
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shrink-0"
+              style={{
+                background: "linear-gradient(135deg, rgba(124,58,237,0.18), rgba(236,72,153,0.14))",
+                border: "1px solid rgba(168, 85, 247, 0.40)",
+                color: "#f0abfc",
+                boxShadow: "0 4px 14px rgba(168, 85, 247, 0.30), inset 0 1px 0 rgba(255,255,255,0.08)",
+              }}
+              onClick={() => setSearchOpen(true)}
+              aria-label={searchOpen ? "Close search" : "Open search"}
+              aria-haspopup="dialog"
+              aria-expanded={searchOpen}
+              aria-controls="mobile-search-dialog"
+            >
+              <Search size={16} className="sm:hidden" />
+              <Search size={17} className="hidden sm:block" />
             </motion.button>
           </div>
         </div>
