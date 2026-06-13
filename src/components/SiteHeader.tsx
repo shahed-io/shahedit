@@ -285,7 +285,7 @@ const SiteHeader = () => {
                 <span
                   className="text-[14px] sm:text-[17px] md:text-[21px] font-bold tracking-tight whitespace-nowrap uppercase"
                   style={{
-                    fontFamily: "'Chakra Petch', sans-serif",
+                    fontFamily: "'Saira', sans-serif",
                     fontWeight: 700,
                     letterSpacing: "0.02em",
                     background: "linear-gradient(135deg, #ffffff 0%, #e9d5ff 35%, #c4b5fd 60%, #f0abfc 100%)",
@@ -302,7 +302,7 @@ const SiteHeader = () => {
                 <span
                   className="hidden xs:flex items-center font-semibold whitespace-nowrap"
                   style={{
-                    fontFamily: "'Chakra Petch', sans-serif",
+                    fontFamily: "'Saira', sans-serif",
                     fontSize: "clamp(7px, 0.9vw, 9px)",
                     letterSpacing: "0.18em",
                     textTransform: "uppercase",
