@@ -205,15 +205,16 @@ const SiteHeader = () => {
         className="relative transition-all duration-300 lg:rounded-none rounded-full lg:border-x-0"
         style={{
           background: scrolled
-            ? "linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(250, 250, 252, 0.94) 100%)"
-            : "linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(248, 248, 252, 0.88) 100%)",
+            ? "linear-gradient(180deg, rgba(10, 8, 26, 0.92) 0%, rgba(16, 12, 40, 0.88) 100%)"
+            : "linear-gradient(180deg, rgba(14, 10, 32, 0.85) 0%, rgba(20, 15, 48, 0.78) 100%)",
           backdropFilter: "blur(28px) saturate(180%)",
           WebkitBackdropFilter: "blur(28px) saturate(180%)",
-          border: "1px solid rgba(0, 0, 0, 0.08)",
+          border: "1px solid rgba(168, 85, 247, 0.22)",
           boxShadow: scrolled
-            ? "0 12px 40px rgba(0, 0, 0, 0.10), 0 0 0 1px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.6)"
-            : "0 8px 28px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255,255,255,0.6)",
+            ? "0 12px 40px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(168,85,247,0.10), inset 0 1px 0 rgba(255,255,255,0.05)"
+            : "0 8px 28px rgba(99, 39, 178, 0.30), inset 0 1px 0 rgba(255,255,255,0.05)",
         }}
+
 
       >
         {/* Aurora top edge */}
@@ -264,11 +265,12 @@ const SiteHeader = () => {
             <nav
               className="hidden lg:flex items-center gap-1 p-1 rounded-full shrink-0 relative"
               style={{
-                background: "rgba(0, 0, 0, 0.04)",
-                border: "1px solid rgba(0, 0, 0, 0.08)",
-                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.6)",
+                background: "rgba(255, 255, 255, 0.04)",
+                border: "1px solid rgba(255, 255, 255, 0.08)",
+                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
                 backdropFilter: "blur(8px)",
               }}
+
 
             >
               {navLinks.map((link) => {
@@ -288,12 +290,13 @@ const SiteHeader = () => {
                         transition={{ type: "spring", stiffness: 380, damping: 32 }}
                       />
                     )}
-                    <span className="relative" style={{ color: active ? "#fff" : "rgba(30, 20, 60, 0.85)" }}>
+                    <span className="relative" style={{ color: active ? "#fff" : "rgba(226, 218, 245, 0.78)" }}>
                       {link.label}
                     </span>
                     {link.hasDropdown && (
-                      <ChevronDown size={12} className={`relative transition-transform duration-300 ${servicesOpen ? "rotate-180" : ""}`} style={{ color: active ? "#f0abfc" : "rgba(30, 20, 60, 0.6)" }} />
+                      <ChevronDown size={12} className={`relative transition-transform duration-300 ${servicesOpen ? "rotate-180" : ""}`} style={{ color: active ? "#f0abfc" : "rgba(226, 218, 245, 0.6)" }} />
                     )}
+
 
                   </span>
                 );
