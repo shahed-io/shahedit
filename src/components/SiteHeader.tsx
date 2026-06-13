@@ -5,7 +5,7 @@ import {
   FileText, Receipt, FolderOpen, User as UserIcon, Flame, MessageCircle,
   Briefcase, Phone, Shield, BadgeCheck,
 } from "lucide-react";
-import logoAsset from "@/assets/shahed-it-logo-v3.png.asset.json";
+import logoAsset from "@/assets/shahed-si-mark.png.asset.json";
 const logoFallback = logoAsset.url;
 import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
@@ -290,14 +290,12 @@ const SiteHeader = () => {
                     fontFamily: "'Saira', sans-serif",
                     fontWeight: 900,
                     letterSpacing: "0.02em",
-                    background: "linear-gradient(135deg, #ffffff 0%, #e9d5ff 35%, #c4b5fd 60%, #f0abfc 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    filter: "drop-shadow(0 0 12px rgba(192,132,252,0.45))",
+                    color: "#ffffff",
+                    filter: "drop-shadow(0 0 12px rgba(255,255,255,0.35))",
                   }}
                 >
                   SHAHED{"\u00a0"}
-                  <span style={{ background: "linear-gradient(135deg, #a78bfa 0%, #f0abfc 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                  <span style={{ color: "#ffffff" }}>
                     IT
                   </span>
                 </span>
@@ -310,13 +308,7 @@ const SiteHeader = () => {
                     textTransform: "uppercase",
                   }}
                 >
-                  <span
-                    style={{
-                      background: "linear-gradient(90deg, #c4b5fd 0%, #f0abfc 100%)",
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                    }}
-                  >
+                  <span style={{ color: "#ffffff", opacity: 0.85 }}>
                     Smart IT Solution
                   </span>
                 </span>
