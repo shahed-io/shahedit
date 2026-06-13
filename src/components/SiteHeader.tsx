@@ -283,9 +283,11 @@ const SiteHeader = () => {
               </div>
               <div className="flex flex-col leading-[1.0] min-w-0 gap-0.5">
                 <span
-                  className="text-[14px] sm:text-[17px] md:text-[21px] font-extrabold tracking-tight whitespace-nowrap uppercase"
+                  className="text-[14px] sm:text-[17px] md:text-[21px] font-bold tracking-tight whitespace-nowrap uppercase"
                   style={{
-                    fontFamily: "'Syne', sans-serif",
+                    fontFamily: "'Chakra Petch', sans-serif",
+                    fontWeight: 700,
+                    letterSpacing: "0.02em",
                     background: "linear-gradient(135deg, #ffffff 0%, #e9d5ff 35%, #c4b5fd 60%, #f0abfc 100%)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
@@ -300,9 +302,9 @@ const SiteHeader = () => {
                 <span
                   className="hidden xs:flex items-center font-semibold whitespace-nowrap"
                   style={{
-                    fontFamily: "'Syne', sans-serif",
+                    fontFamily: "'Chakra Petch', sans-serif",
                     fontSize: "clamp(7px, 0.9vw, 9px)",
-                    letterSpacing: "0.14em",
+                    letterSpacing: "0.18em",
                     textTransform: "uppercase",
                   }}
                 >
@@ -313,7 +315,7 @@ const SiteHeader = () => {
                       WebkitTextFillColor: "transparent",
                     }}
                   >
-                    Smart IT Solutions
+                    Smart IT Solution
                   </span>
                 </span>
               </div>
