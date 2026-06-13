@@ -258,7 +258,7 @@ const SiteHeader = () => {
                 <span
                   className="text-[14px] sm:text-[17px] md:text-[21px] font-extrabold whitespace-nowrap uppercase"
                   style={{
-                    fontFamily: "'Orbitron', sans-serif",
+                    fontFamily: "'Nasalization', 'Orbitron', sans-serif",
                     fontWeight: 800,
                     letterSpacing: "0.04em",
                     background: "linear-gradient(135deg, #ffffff 0%, #e9d5ff 35%, #c4b5fd 60%, #f0abfc 100%)",
@@ -275,7 +275,7 @@ const SiteHeader = () => {
                 <span
                   className="hidden xs:flex items-center font-semibold whitespace-nowrap"
                   style={{
-                    fontFamily: "'Orbitron', sans-serif",
+                    fontFamily: "'Nasalization', 'Orbitron', sans-serif",
                     fontSize: "clamp(7px, 0.9vw, 9px)",
                     letterSpacing: "0.22em",
                     textTransform: "uppercase",
