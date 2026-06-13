@@ -260,8 +260,8 @@ const SiteHeader = () => {
                   <img
                     src={wordmarkAsset.url}
                     alt="SHAHED IT"
-                    className="h-[18px] sm:h-[22px] md:h-[28px] w-auto object-contain select-none"
-                    style={{ filter: "drop-shadow(0 0 12px rgba(192,132,252,0.45))" }}
+                    className="h-[13px] sm:h-[15px] md:h-[18px] w-auto object-contain select-none"
+                    style={{ filter: "drop-shadow(0 0 8px rgba(192,132,252,0.45))" }}
                     draggable={false}
                   />
                 </span>
