@@ -40,20 +40,24 @@ Deno.serve(async (req) => {
     const blogs = blogRes.data ?? [];
     const faqs = faqRes.data ?? [];
 
-    // Build catalog text + index of citable items
-    type Cite = { kind: "service" | "package" | "blog"; title: string; href: string };
+    // Build catalog text + index of citable items (services + blog only — packages live under /services/:slug)
+    type Cite = { kind: "service" | "blog"; title: string; href: string };
     const cites: Cite[] = [];
-    let catalog = "## SERVICES\n";
+    let catalog = "## SERVICES (link these)\n";
     for (const s of services) {
       cites.push({ kind: "service", title: s.title, href: `/services/${s.slug}` });
       catalog += `- ${s.title}${s.short_description ? " — " + s.short_description : ""} [/services/${s.slug}]\n`;
     }
-    catalog += "\n## PACKAGES\n";
+    catalog += "\n## PACKAGES & PRICING (for context only — DO NOT link, mention in answer text)\n";
     for (const p of packages) {
-      cites.push({ kind: "package", title: p.title, href: `/packages/${p.slug}` });
       const price = p.price ? `${p.currency ?? "BDT"} ${p.price}` : "—";
       const feats = (p.features ?? []).slice(0, 3).join(", ");
-      catalog += `- ${p.title} (${price})${p.badge ? " [" + p.badge + "]" : ""}${p.description ? " — " + p.description.slice(0, 100) : ""}${feats ? " | " + feats : ""} [/packages/${p.slug}]\n`;
+      catalog += `- ${p.title} (${price})${p.badge ? " [" + p.badge + "]" : ""}${p.description ? " — " + p.description.slice(0, 100) : ""}${feats ? " | " + feats : ""}\n`;
+    }
+    catalog += "\n## BLOG (link these)\n";
+    for (const b of blogs) {
+      cites.push({ kind: "blog", title: b.title, href: `/blog/${b.slug}` });
+      catalog += `- ${b.title}${b.excerpt ? " — " + b.excerpt.slice(0, 120) : ""} [/blog/${b.slug}]\n`;
     }
     catalog += "\n## BLOG\n";
     for (const b of blogs) {
