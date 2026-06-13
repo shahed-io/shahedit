@@ -256,6 +256,7 @@ const AppWithAnalytics = () => {
         <Route path="/my-refunds" element={<MyRefundsPage />} />
         <Route path="/product/:id" element={<ProductDetailsPage />} />
         <Route path="/search" element={<SearchResultsPage />} />
+        <Route path="/ai-search" element={<AiSearchPage />} />
         <Route path="/tech/:slug" element={<TechDetailPage />} />
         <Route path="/unsubscribe" element={<UnsubscribePage />} />
 
