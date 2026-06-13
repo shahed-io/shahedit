@@ -260,20 +260,23 @@ const SiteHeader = () => {
                   className="relative w-full h-full rounded-[14px] p-[2px] overflow-hidden"
                   style={{ background: "linear-gradient(135deg, #fb923c 0%, #f43f5e 45%, #a855f7 100%)" }}
                 >
-                  {/* Inner white tile */}
-                  <div className="relative w-full h-full rounded-[12px] bg-white flex items-center justify-center overflow-hidden">
+                  {/* Inner deep-navy tile */}
+                  <div
+                    className="relative w-full h-full rounded-[12px] flex items-center justify-center overflow-hidden"
+                    style={{ background: "linear-gradient(135deg, #0a0a1a 0%, #141432 100%)" }}
+                  >
                     {/* Shine sweep */}
                     <motion.span
                       aria-hidden
                       className="absolute top-0 -left-1/2 w-1/2 h-full pointer-events-none"
-                      style={{ background: "linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.7) 50%, transparent 70%)", filter: "blur(2px)" }}
+                      style={{ background: "linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.35) 50%, transparent 70%)", filter: "blur(2px)" }}
                       animate={{ x: ["0%", "320%"] }}
                       transition={{ duration: 3.6, repeat: Infinity, ease: "easeInOut", repeatDelay: 1.4 }}
                     />
                     <motion.img
                       src={logoUrl}
                       alt="Shahed IT"
-                      className="relative w-[78%] h-[78%] object-contain"
+                      className="relative w-[95%] h-[95%] object-contain drop-shadow-[0_2px_8px_rgba(236,72,153,0.45)]"
                       animate={{ y: [0, -1.5, 0] }}
                       transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
                     />
