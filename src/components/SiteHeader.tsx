@@ -265,11 +265,12 @@ const SiteHeader = () => {
             <nav
               className="hidden lg:flex items-center gap-1 p-1 rounded-full shrink-0 relative"
               style={{
-                background: "rgba(0, 0, 0, 0.04)",
-                border: "1px solid rgba(0, 0, 0, 0.08)",
-                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.6)",
+                background: "rgba(255, 255, 255, 0.04)",
+                border: "1px solid rgba(255, 255, 255, 0.08)",
+                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
                 backdropFilter: "blur(8px)",
               }}
+
 
             >
               {navLinks.map((link) => {
