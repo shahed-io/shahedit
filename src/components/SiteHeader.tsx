@@ -247,12 +247,25 @@ const SiteHeader = () => {
           >
             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} className="flex items-center gap-1.5 sm:gap-2 md:gap-2.5 group min-w-0">
               <div className="relative shrink-0 w-10 h-10 sm:w-11 sm:h-11 md:w-14 md:h-14 flex items-center justify-center">
+                {/* Soft glow halo behind the logo */}
+                <div
+                  aria-hidden
+                  className="absolute inset-0 rounded-full pointer-events-none animate-[pulse_3.5s_ease-in-out_infinite]"
+                  style={{
+                    background:
+                      "radial-gradient(circle at 50% 50%, rgba(192,132,252,0.55) 0%, rgba(168,85,247,0.35) 35%, rgba(236,72,153,0.18) 60%, rgba(0,0,0,0) 75%)",
+                    filter: "blur(10px)",
+                    transform: "scale(1.35)",
+                  }}
+                />
                 <img
                   src={logoUrl}
                   alt="Shahed IT"
                   className="relative w-full h-full object-contain"
+                  style={{ filter: "drop-shadow(0 0 8px rgba(192,132,252,0.5))" }}
                 />
               </div>
+
 
               <div className="flex flex-col leading-[1.0] min-w-0 gap-0.5">
                 <span
