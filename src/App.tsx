@@ -103,6 +103,7 @@ const RefundRequestPage = lazy(() => import("./pages/RefundRequestPage"));
 const MyRefundsPage = lazy(() => import("./pages/MyRefundsPage"));
 const ProductDetailsPage = lazy(() => import("./pages/ProductDetailsPage"));
 const SearchResultsPage = lazy(() => import("./pages/SearchResultsPage"));
+const AiSearchPage = lazy(() => import("./pages/AiSearchPage"));
 const TechDetailPage = lazy(() => import("./pages/TechDetailPage"));
 const UnsubscribePage = lazy(() => import("./pages/UnsubscribePage"));
 
