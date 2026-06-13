@@ -715,17 +715,13 @@ const SiteHeader = () => {
             >
               {/* Aurora ambient blobs */}
               <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                <motion.div
+                <div
                   className="absolute -top-24 -right-16 w-72 h-72 rounded-full blur-3xl opacity-40"
                   style={{ background: "radial-gradient(circle, #a855f7, transparent 70%)" }}
-                  animate={{ scale: [1, 1.15, 1], rotate: [0, 30, 0] }}
-                  transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
                 />
-                <motion.div
+                <div
                   className="absolute -bottom-20 -left-12 w-64 h-64 rounded-full blur-3xl opacity-30"
                   style={{ background: "radial-gradient(circle, #ec4899, transparent 70%)" }}
-                  animate={{ scale: [1, 1.2, 1] }}
-                  transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
                 />
               </div>
 
@@ -748,11 +744,9 @@ const SiteHeader = () => {
               >
                 <div className="flex items-center gap-2.5">
                   <div className="relative">
-                    <motion.div
+                    <div
                       className="absolute -inset-1 rounded-xl opacity-70 blur-md"
                       style={{ background: "conic-gradient(from 0deg, #6366f1, #a855f7, #ec4899, #6366f1)" }}
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
                     />
                     <div
                       className="relative w-9 h-9 rounded-lg flex items-center justify-center overflow-hidden"
