@@ -627,7 +627,7 @@ const SiteHeader = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="lg:hidden fixed inset-0 z-[60] bg-black/70 backdrop-blur-md"
+              className="lg:hidden fixed inset-0 z-[60] bg-black/70"
               onClick={() => setSearchOpen(false)}
             />
             <motion.div
@@ -644,8 +644,8 @@ const SiteHeader = () => {
               className="lg:hidden fixed left-3 right-3 top-4 z-[61] rounded-3xl overflow-hidden focus:outline-none"
               style={{
                 background: "linear-gradient(180deg, rgba(16, 11, 38, 0.98), rgba(22, 14, 52, 0.98))",
-                backdropFilter: "blur(24px) saturate(180%)",
-                WebkitBackdropFilter: "blur(24px) saturate(180%)",
+                backdropFilter: isMobile ? "none" : "blur(24px) saturate(180%)",
+                WebkitBackdropFilter: isMobile ? "none" : "blur(24px) saturate(180%)",
                 border: "1px solid rgba(168, 85, 247, 0.30)",
                 boxShadow: "0 24px 60px rgba(0,0,0,0.60), 0 0 0 1px rgba(168,85,247,0.12), inset 0 1px 0 rgba(255,255,255,0.05)",
               }}
@@ -685,8 +685,8 @@ const SiteHeader = () => {
               className="lg:hidden fixed inset-0 z-40"
               style={{
                 background: "radial-gradient(ellipse at top right, rgba(168,85,247,0.25), rgba(0,0,0,0.78) 60%)",
-                backdropFilter: "blur(10px) saturate(150%)",
-                WebkitBackdropFilter: "blur(10px) saturate(150%)",
+                backdropFilter: isMobile ? "none" : "blur(10px) saturate(150%)",
+                WebkitBackdropFilter: isMobile ? "none" : "blur(10px) saturate(150%)",
               }}
               onClick={() => setMobileOpen(false)}
             />
@@ -707,8 +707,8 @@ const SiteHeader = () => {
               style={{
                 background:
                   "linear-gradient(180deg, rgba(14, 9, 32, 0.97) 0%, rgba(20, 12, 48, 0.97) 50%, rgba(14, 9, 32, 0.98) 100%)",
-                backdropFilter: "blur(28px) saturate(180%)",
-                WebkitBackdropFilter: "blur(28px) saturate(180%)",
+                backdropFilter: isMobile ? "none" : "blur(28px) saturate(180%)",
+                WebkitBackdropFilter: isMobile ? "none" : "blur(28px) saturate(180%)",
                 borderLeft: "1px solid rgba(168, 85, 247, 0.35)",
                 boxShadow: "-24px 0 60px rgba(0,0,0,0.65), inset 1px 0 0 rgba(255,255,255,0.06)",
               }}
