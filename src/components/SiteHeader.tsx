@@ -283,7 +283,7 @@ const SiteHeader = () => {
               </div>
               <div className="flex flex-col leading-[1.0] min-w-0 gap-0.5">
                 <span
-                  className="text-[14px] sm:text-[17px] md:text-[21px] font-extrabold tracking-tight whitespace-nowrap"
+                  className="text-[14px] sm:text-[17px] md:text-[21px] font-extrabold tracking-tight whitespace-nowrap uppercase"
                   style={{
                     fontFamily: "'Syne', sans-serif",
                     background: "linear-gradient(135deg, #ffffff 0%, #e9d5ff 35%, #c4b5fd 60%, #f0abfc 100%)",
@@ -292,7 +292,7 @@ const SiteHeader = () => {
                     filter: "drop-shadow(0 0 12px rgba(192,132,252,0.45))",
                   }}
                 >
-                  Shahed{" "}
+                  SHAHED{"\u00a0"}
                   <span style={{ background: "linear-gradient(135deg, #a78bfa 0%, #f0abfc 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                     IT
                   </span>
