@@ -11,22 +11,23 @@ let inflight: Promise<string> | null = null;
 const fetchLogo = (): Promise<string> => {
   if (cachedLogo) return Promise.resolve(cachedLogo);
   if (inflight) return inflight;
-  inflight = supabase
-    .from("site_settings")
-    .select("value")
-    .eq("key", "logo_url")
-    .maybeSingle()
-    .then(({ data }) => {
+  inflight = (async () => {
+    try {
+      const { data } = await supabase
+        .from("site_settings")
+        .select("value")
+        .eq("key", "logo_url")
+        .maybeSingle();
       const v = data?.value?.trim();
       cachedLogo = v && v.length > 0 ? v : FALLBACK;
-      return cachedLogo;
-    })
-    .catch(() => {
+    } catch {
       cachedLogo = FALLBACK;
-      return FALLBACK;
-    });
+    }
+    return cachedLogo!;
+  })();
   return inflight;
 };
+
 
 export const useSiteLogo = () => {
   const [url, setUrl] = useState<string>(cachedLogo ?? FALLBACK);
