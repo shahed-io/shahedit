@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { motion } from "framer-motion";
 import { Lock, Mail, Eye, EyeOff } from "lucide-react";
-import logoImg from "@/assets/logo-glossy.png";
+import BrandMark from "@/components/BrandMark";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -91,11 +91,7 @@ const AdminLogin = () => {
               transition={{ type: "spring", stiffness: 180, delay: 0.2 }}
               className="relative mb-5"
             >
-              <img
-                src={logoImg}
-                alt="Shahed IT Logo"
-                className="relative w-24 h-24 object-contain drop-shadow-[0_8px_24px_rgba(20,184,166,0.55)]"
-              />
+              <BrandMark size={96} glow="strong" />
             </motion.div>
             <h1 className="text-2xl font-bold text-white mb-1 tracking-tight">Admin Panel</h1>
             <p className="text-white/60 text-sm">Shahed IT — Secure Login</p>
