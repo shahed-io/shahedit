@@ -202,7 +202,7 @@ const SiteHeader = () => {
       className="sticky top-0 z-50 lg:px-0 px-3 lg:pt-0 pt-2"
     >
       <div
-        className="relative transition-all duration-300 md:rounded-none rounded-full md:border-x-0"
+        className="relative transition-all duration-300 lg:rounded-none rounded-full lg:border-x-0"
         style={{
           background: scrolled
             ? "linear-gradient(180deg, rgba(10, 8, 26, 0.92) 0%, rgba(16, 12, 40, 0.88) 100%)"
