@@ -10,6 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { useIsMobile } from "@/hooks/use-mobile";
 import SmartSearch from "@/components/SmartSearch";
 
 import catWebDev from "@/assets/cat-web-dev.jpg";
@@ -40,6 +41,7 @@ const navLinks = [
 const SiteHeader = () => {
   const { user, loading: authLoading, signOut } = useAuth();
   const location = useLocation();
+  const isMobile = useIsMobile();
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [logoUrl, setLogoUrl] = useState<string>(logoFallback);
@@ -58,6 +60,7 @@ const SiteHeader = () => {
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const servicesTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const scrolledRef = useRef(false);
   const drawerRef = useRef<HTMLElement | null>(null);
   const searchModalRef = useRef<HTMLDivElement | null>(null);
   const menuTriggerRef = useRef<HTMLButtonElement | null>(null);
@@ -67,8 +70,22 @@ const SiteHeader = () => {
   const activeKey = navLinks.find(l => isActive(l.href))?.label || (servicesOpen ? "Services" : null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
+    let ticking = false;
+    const update = () => {
+      const next = window.scrollY > 8;
+      if (scrolledRef.current !== next) {
+        scrolledRef.current = next;
+        setScrolled(next);
+      }
+      ticking = false;
+    };
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(update);
+      }
+    };
+    update();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -195,9 +212,9 @@ const SiteHeader = () => {
 
   return (
     <motion.header
-      initial={{ y: -80, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ type: "spring", stiffness: 90, damping: 18 }}
+      initial={isMobile ? false : { y: -80, opacity: 0 }}
+      animate={isMobile ? undefined : { y: 0, opacity: 1 }}
+      transition={isMobile ? undefined : { type: "spring", stiffness: 90, damping: 18 }}
       className="sticky top-0 z-50 lg:px-0 px-3 lg:pt-0 pt-2"
     >
       <div
@@ -206,12 +223,12 @@ const SiteHeader = () => {
           background: scrolled
             ? "linear-gradient(180deg, rgba(10, 8, 26, 0.92) 0%, rgba(16, 12, 40, 0.88) 100%)"
             : "linear-gradient(180deg, rgba(14, 10, 32, 0.85) 0%, rgba(20, 15, 48, 0.78) 100%)",
-          backdropFilter: "blur(28px) saturate(180%)",
-          WebkitBackdropFilter: "blur(28px) saturate(180%)",
+          backdropFilter: isMobile ? "none" : "blur(28px) saturate(180%)",
+          WebkitBackdropFilter: isMobile ? "none" : "blur(28px) saturate(180%)",
           border: "1px solid rgba(168, 85, 247, 0.22)",
           boxShadow: scrolled
-            ? "0 12px 40px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(168,85,247,0.10), inset 0 1px 0 rgba(255,255,255,0.05)"
-            : "0 8px 28px rgba(99, 39, 178, 0.30), inset 0 1px 0 rgba(255,255,255,0.05)",
+            ? isMobile ? "0 6px 18px rgba(0, 0, 0, 0.35)" : "0 12px 40px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(168,85,247,0.10), inset 0 1px 0 rgba(255,255,255,0.05)"
+            : isMobile ? "0 4px 14px rgba(99, 39, 178, 0.22)" : "0 8px 28px rgba(99, 39, 178, 0.30), inset 0 1px 0 rgba(255,255,255,0.05)",
         }}
       >
         {/* Aurora top edge */}
@@ -223,7 +240,7 @@ const SiteHeader = () => {
           }}
         />
         {/* Floating glow blobs */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none hidden lg:block">
           <motion.div
             className="absolute -top-20 left-1/4 w-80 h-32 rounded-full opacity-30 blur-3xl"
             style={{ background: "radial-gradient(ellipse, #a855f7, transparent 70%)" }}
@@ -244,24 +261,24 @@ const SiteHeader = () => {
             to="/"
             className="shrink-0 min-w-0 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:static lg:translate-x-0 lg:translate-y-0 pointer-events-auto"
           >
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} className="flex items-center gap-1.5 sm:gap-2 md:gap-2.5 group min-w-0">
+            <motion.div whileHover={isMobile ? undefined : { scale: 1.02 }} whileTap={{ scale: 0.97 }} className="flex items-center gap-1.5 sm:gap-2 md:gap-2.5 group min-w-0">
               <div className="relative shrink-0 w-10 h-10 sm:w-11 sm:h-11 md:w-14 md:h-14 flex items-center justify-center">
                 {/* Soft glow halo behind the logo */}
                 <div
                   aria-hidden
-                  className="absolute inset-0 rounded-full pointer-events-none animate-[pulse_3.5s_ease-in-out_infinite]"
+                  className={`absolute inset-0 rounded-full pointer-events-none ${isMobile ? "" : "animate-[pulse_3.5s_ease-in-out_infinite]"}`}
                   style={{
                     background:
-                      "radial-gradient(circle at 50% 50%, rgba(192,132,252,0.55) 0%, rgba(168,85,247,0.35) 35%, rgba(236,72,153,0.18) 60%, rgba(0,0,0,0) 75%)",
-                    filter: "blur(10px)",
-                    transform: "scale(1.35)",
+                      `radial-gradient(circle at 50% 50%, rgba(192,132,252,${isMobile ? 0.34 : 0.55}) 0%, rgba(168,85,247,${isMobile ? 0.20 : 0.35}) 35%, rgba(236,72,153,${isMobile ? 0.10 : 0.18}) 60%, rgba(0,0,0,0) 75%)`,
+                    filter: isMobile ? "blur(5px)" : "blur(10px)",
+                    transform: isMobile ? "scale(1.18)" : "scale(1.35)",
                   }}
                 />
                 <img
                   src={logoUrl}
                   alt="Shahed IT"
                   className="relative w-full h-full object-contain"
-                  style={{ filter: "drop-shadow(0 0 8px rgba(192,132,252,0.5))" }}
+                  style={{ filter: isMobile ? "drop-shadow(0 0 4px rgba(192,132,252,0.35))" : "drop-shadow(0 0 8px rgba(192,132,252,0.5))" }}
                 />
               </div>
 
@@ -610,7 +627,7 @@ const SiteHeader = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="lg:hidden fixed inset-0 z-[60] bg-black/70 backdrop-blur-md"
+              className="lg:hidden fixed inset-0 z-[60] bg-black/70"
               onClick={() => setSearchOpen(false)}
             />
             <motion.div
@@ -627,8 +644,8 @@ const SiteHeader = () => {
               className="lg:hidden fixed left-3 right-3 top-4 z-[61] rounded-3xl overflow-hidden focus:outline-none"
               style={{
                 background: "linear-gradient(180deg, rgba(16, 11, 38, 0.98), rgba(22, 14, 52, 0.98))",
-                backdropFilter: "blur(24px) saturate(180%)",
-                WebkitBackdropFilter: "blur(24px) saturate(180%)",
+                backdropFilter: isMobile ? "none" : "blur(24px) saturate(180%)",
+                WebkitBackdropFilter: isMobile ? "none" : "blur(24px) saturate(180%)",
                 border: "1px solid rgba(168, 85, 247, 0.30)",
                 boxShadow: "0 24px 60px rgba(0,0,0,0.60), 0 0 0 1px rgba(168,85,247,0.12), inset 0 1px 0 rgba(255,255,255,0.05)",
               }}
@@ -668,8 +685,8 @@ const SiteHeader = () => {
               className="lg:hidden fixed inset-0 z-40"
               style={{
                 background: "radial-gradient(ellipse at top right, rgba(168,85,247,0.25), rgba(0,0,0,0.78) 60%)",
-                backdropFilter: "blur(10px) saturate(150%)",
-                WebkitBackdropFilter: "blur(10px) saturate(150%)",
+                backdropFilter: isMobile ? "none" : "blur(10px) saturate(150%)",
+                WebkitBackdropFilter: isMobile ? "none" : "blur(10px) saturate(150%)",
               }}
               onClick={() => setMobileOpen(false)}
             />
@@ -690,25 +707,21 @@ const SiteHeader = () => {
               style={{
                 background:
                   "linear-gradient(180deg, rgba(14, 9, 32, 0.97) 0%, rgba(20, 12, 48, 0.97) 50%, rgba(14, 9, 32, 0.98) 100%)",
-                backdropFilter: "blur(28px) saturate(180%)",
-                WebkitBackdropFilter: "blur(28px) saturate(180%)",
+                backdropFilter: isMobile ? "none" : "blur(28px) saturate(180%)",
+                WebkitBackdropFilter: isMobile ? "none" : "blur(28px) saturate(180%)",
                 borderLeft: "1px solid rgba(168, 85, 247, 0.35)",
                 boxShadow: "-24px 0 60px rgba(0,0,0,0.65), inset 1px 0 0 rgba(255,255,255,0.06)",
               }}
             >
               {/* Aurora ambient blobs */}
               <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                <motion.div
+                <div
                   className="absolute -top-24 -right-16 w-72 h-72 rounded-full blur-3xl opacity-40"
                   style={{ background: "radial-gradient(circle, #a855f7, transparent 70%)" }}
-                  animate={{ scale: [1, 1.15, 1], rotate: [0, 30, 0] }}
-                  transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
                 />
-                <motion.div
+                <div
                   className="absolute -bottom-20 -left-12 w-64 h-64 rounded-full blur-3xl opacity-30"
                   style={{ background: "radial-gradient(circle, #ec4899, transparent 70%)" }}
-                  animate={{ scale: [1, 1.2, 1] }}
-                  transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
                 />
               </div>
 
@@ -731,11 +744,9 @@ const SiteHeader = () => {
               >
                 <div className="flex items-center gap-2.5">
                   <div className="relative">
-                    <motion.div
+                    <div
                       className="absolute -inset-1 rounded-xl opacity-70 blur-md"
                       style={{ background: "conic-gradient(from 0deg, #6366f1, #a855f7, #ec4899, #6366f1)" }}
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
                     />
                     <div
                       className="relative w-9 h-9 rounded-lg flex items-center justify-center overflow-hidden"

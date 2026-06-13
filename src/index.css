@@ -637,3 +637,29 @@
 .nav-pill-link:hover span[style*="rgba(226, 218, 245"] {
   color: #fff !important;
 }
+
+@media (max-width: 767px) {
+  html { scroll-behavior: auto; }
+
+  .shimmer::after,
+  .animate-ping {
+    animation: none !important;
+  }
+
+  .dot-grid,
+  .tech-grid-bg {
+    background-image: none !important;
+  }
+
+  .backdrop-blur,
+  .backdrop-blur-sm,
+  .backdrop-blur-md,
+  .backdrop-blur-lg,
+  .backdrop-blur-xl,
+  .backdrop-blur-2xl,
+  .backdrop-blur-3xl {
+    --tw-backdrop-blur: blur(0) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}

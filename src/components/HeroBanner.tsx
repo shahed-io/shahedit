@@ -7,6 +7,7 @@ import {
   Megaphone, Cloud, Shield, Briefcase, Heart,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Icon registry — admin picks by name string
 const ICONS: Record<string, any> = {
@@ -86,7 +87,7 @@ const randomFutureTime = () => {
   return Date.now() + days * 86400000 + hours * 3600000 + mins * 60000 + secs * 1000;
 };
 
-const useCountdown = (endsAt: string | null | undefined) => {
+const useCountdown = (endsAt: string | null | undefined, active = true) => {
   const [target, setTarget] = useState<number>(() => {
     if (endsAt) {
       const t = new Date(endsAt).getTime();
@@ -108,6 +109,7 @@ const useCountdown = (endsAt: string | null | undefined) => {
   }, [endsAt]);
 
   useEffect(() => {
+    if (!active) return;
     const i = setInterval(() => {
       const n = Date.now();
       setNow(n);
@@ -117,7 +119,7 @@ const useCountdown = (endsAt: string | null | undefined) => {
       }
     }, 1000);
     return () => clearInterval(i);
-  }, [target]);
+  }, [active, target]);
 
   const diff = Math.max(0, target - now);
   return {
@@ -138,18 +140,19 @@ const badgeColorMap: Record<string, string> = {
 };
 
 const SlideContent = ({ slide }: { slide: HeroSlide }) => {
-  const cd = useCountdown(slide.countdown_end_at);
+  const isMobile = useIsMobile();
+  const cd = useCountdown(slide.countdown_end_at, !isMobile);
   return (
     <div className="container mx-auto px-4 sm:px-5 md:px-6 relative z-10 grid lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-16 items-center py-10 sm:py-14 lg:py-20">
       {/* LEFT */}
       <div className="space-y-6 sm:space-y-8 lg:space-y-10 min-w-0">
         {slide.badge_text && (
           <motion.div
-            initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
+            initial={isMobile ? false : { opacity: 0, y: 14 }} animate={isMobile ? undefined : { opacity: 1, y: 0 }} transition={isMobile ? undefined : { duration: 0.5 }}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md"
           >
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-[hsl(270,92%,65%)] opacity-75 animate-ping" />
+              <span className={`absolute inline-flex h-full w-full rounded-full bg-[hsl(270,92%,65%)] opacity-75 ${isMobile ? "" : "animate-ping"}`} />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-[hsl(320,90%,55%)]" />
             </span>
             <span className="text-[11px] md:text-xs font-semibold tracking-[0.18em] uppercase text-white/80">
@@ -160,7 +163,7 @@ const SlideContent = ({ slide }: { slide: HeroSlide }) => {
 
         <div className="space-y-6">
           <motion.h1
-            initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}
+            initial={isMobile ? false : { opacity: 0, y: 24 }} animate={isMobile ? undefined : { opacity: 1, y: 0 }} transition={isMobile ? undefined : { duration: 0.6, delay: 0.1 }}
             className="text-[2.25rem] xs:text-5xl sm:text-6xl lg:text-7xl xl:text-[88px] font-extrabold leading-[1.02] sm:leading-[0.95] tracking-tight text-white break-words"
             style={{ fontFamily: "'Syne', sans-serif" }}
           >
@@ -176,7 +179,7 @@ const SlideContent = ({ slide }: { slide: HeroSlide }) => {
           </motion.h1>
           {slide.description && (
             <motion.p
-              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.25 }}
+              initial={isMobile ? false : { opacity: 0, y: 16 }} animate={isMobile ? undefined : { opacity: 1, y: 0 }} transition={isMobile ? undefined : { duration: 0.5, delay: 0.25 }}
               className="text-sm sm:text-base md:text-lg text-white/60 max-w-xl leading-relaxed"
             >
               {slide.description}
@@ -186,13 +189,13 @@ const SlideContent = ({ slide }: { slide: HeroSlide }) => {
 
         {(slide.primary_cta_label || slide.secondary_cta_label) && (
           <motion.div
-            initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.35 }}
+            initial={isMobile ? false : { opacity: 0, y: 14 }} animate={isMobile ? undefined : { opacity: 1, y: 0 }} transition={isMobile ? undefined : { duration: 0.5, delay: 0.35 }}
             className="flex flex-wrap gap-3 sm:gap-4"
           >
             {slide.primary_cta_label && (
               <Link to={slide.primary_cta_link || "/"} className="flex-1 sm:flex-none min-w-[160px]">
                 <motion.button
-                  whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.96 }}
+                  whileHover={isMobile ? undefined : { scale: 1.04, y: -2 }} whileTap={{ scale: 0.96 }}
                   className="group relative w-full sm:w-auto px-5 sm:px-7 py-3 sm:py-3.5 rounded-xl font-bold text-white shadow-[0_10px_40px_-8px_rgba(217,70,239,0.45)] overflow-hidden"
                   style={{ background: "linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,55%))" }}
                 >
@@ -206,7 +209,7 @@ const SlideContent = ({ slide }: { slide: HeroSlide }) => {
             {slide.secondary_cta_label && (
               <Link to={slide.secondary_cta_link || "/"} className="flex-1 sm:flex-none min-w-[140px]">
                 <motion.button
-                  whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.96 }}
+                  whileHover={isMobile ? undefined : { scale: 1.04, y: -2 }} whileTap={{ scale: 0.96 }}
                   className="w-full sm:w-auto px-5 sm:px-7 py-3 sm:py-3.5 rounded-xl font-semibold border border-white/15 bg-white/[0.04] backdrop-blur-md text-white/90 hover:bg-white/10 transition-colors flex items-center justify-center gap-2 text-sm sm:text-base"
                 >
                   <Play size={16} /> {slide.secondary_cta_label}
@@ -218,13 +221,13 @@ const SlideContent = ({ slide }: { slide: HeroSlide }) => {
 
         {slide.stats && slide.stats.length > 0 && (
           <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
+            initial={isMobile ? false : { opacity: 0 }} animate={isMobile ? undefined : { opacity: 1 }} transition={isMobile ? undefined : { delay: 0.5 }}
             className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 pt-5 sm:pt-6 border-t border-white/10"
           >
             {slide.stats.map((s, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55 + i * 0.06 }}
+                initial={isMobile ? false : { opacity: 0, y: 10 }} animate={isMobile ? undefined : { opacity: 1, y: 0 }} transition={isMobile ? undefined : { delay: 0.55 + i * 0.06 }}
                 className="space-y-1 min-w-0"
               >
                 <div className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white truncate" style={{ fontFamily: "'Syne', sans-serif" }}>
@@ -241,7 +244,7 @@ const SlideContent = ({ slide }: { slide: HeroSlide }) => {
       <div className="relative flex flex-col gap-4 sm:gap-5 min-w-0">
         {slide.show_countdown && (
           <motion.div
-            initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, type: "spring", stiffness: 80 }}
+            initial={isMobile ? false : { opacity: 0, x: 40 }} animate={isMobile ? undefined : { opacity: 1, x: 0 }} transition={isMobile ? undefined : { delay: 0.3, type: "spring", stiffness: 80 }}
             className="bg-white/[0.04] border border-white/10 backdrop-blur-2xl p-4 sm:p-6 rounded-2xl sm:rounded-3xl shadow-2xl relative overflow-hidden"
           >
             <div className="absolute -top-20 -right-20 w-48 h-48 rounded-full bg-[hsl(270,92%,65%)]/15 blur-3xl pointer-events-none" />
@@ -272,9 +275,9 @@ const SlideContent = ({ slide }: { slide: HeroSlide }) => {
           return (
             <motion.div
               key={i}
-              initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.45 + i * 0.12, type: "spring", stiffness: 80 }}
-              whileHover={{ y: -6 }}
+              initial={isMobile ? false : { opacity: 0, x: 40 }} animate={isMobile ? undefined : { opacity: 1, x: 0 }}
+              transition={isMobile ? undefined : { delay: 0.45 + i * 0.12, type: "spring", stiffness: 80 }}
+              whileHover={isMobile ? undefined : { y: -6 }}
               className="group bg-white/[0.04] hover:bg-white/[0.07] border border-white/10 backdrop-blur-2xl p-4 sm:p-5 md:p-6 rounded-2xl sm:rounded-3xl transition-all duration-500"
               style={{ borderColor: undefined }}
             >
@@ -309,7 +312,7 @@ const SlideContent = ({ slide }: { slide: HeroSlide }) => {
                         {card.original_price && <span className="text-xs sm:text-sm line-through text-white/30">{card.original_price}</span>}
                       </div>
                     </div>
-                    <motion.span whileHover={{ x: 3 }} className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest" style={{ color: accent }}>
+                    <motion.span whileHover={isMobile ? undefined : { x: 3 }} className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest" style={{ color: accent }}>
                       Order Now <ArrowRight size={14} />
                     </motion.span>
                   </div>
@@ -324,6 +327,7 @@ const SlideContent = ({ slide }: { slide: HeroSlide }) => {
 };
 
 const HeroBanner = () => {
+  const isMobile = useIsMobile();
   const [slides, setSlides] = useState<HeroSlide[]>([FALLBACK]);
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -354,10 +358,10 @@ const HeroBanner = () => {
   const autoplayMs = Math.max(3, current.autoplay_seconds || 7) * 1000;
 
   useEffect(() => {
-    if (paused || slides.length < 2) return;
+    if (isMobile || paused || slides.length < 2) return;
     const t = setTimeout(() => setIndex((i) => (i + 1) % slides.length), autoplayMs);
     return () => clearTimeout(t);
-  }, [index, paused, slides.length, autoplayMs]);
+  }, [index, isMobile, paused, slides.length, autoplayMs]);
 
   const bgStyle = useMemo(
     () => current.background_image_url
@@ -393,10 +397,10 @@ const HeroBanner = () => {
       <AnimatePresence mode="wait">
         <motion.div
           key={current.id}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          initial={isMobile ? false : { opacity: 0, y: 20 }}
+          animate={isMobile ? undefined : { opacity: 1, y: 0 }}
+          exit={isMobile ? undefined : { opacity: 0, y: -20 }}
+          transition={isMobile ? undefined : { duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="w-full"
         >
           <SlideContent slide={current} />
