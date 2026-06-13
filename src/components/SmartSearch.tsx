@@ -538,6 +538,22 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
                     <li>
                       <button
                         type="button"
+                        onClick={() => { close(); navigate(`/ai-search?q=${encodeURIComponent(query.trim())}`); }}
+                        className="w-full flex items-center gap-3 px-5 py-2.5 text-left border-t hover:bg-[rgba(168,85,247,0.10)] transition-colors"
+                        style={{ borderColor: "rgba(168,85,247,0.18)" }}
+                      >
+                        <span className="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style={{ background: "linear-gradient(135deg, #a855f7, #ec4899)", boxShadow: "0 4px 12px rgba(236,72,153,0.40)" }}>
+                          <Sparkles size={14} className="text-white" />
+                        </span>
+                        <span className="text-sm font-semibold flex-1" style={{ color: "rgba(255,255,255,0.95)" }}>
+                          AI দিয়ে উত্তর পান — "<span style={{ color: "#f0abfc" }}>{query}</span>"
+                        </span>
+                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ background: "rgba(236,72,153,0.20)", color: "#fbcfe8", border: "1px solid rgba(236,72,153,0.30)" }}>NEW</span>
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        type="button"
                         onClick={submit as any}
                         className="w-full flex items-center gap-3 px-5 py-2.5 text-left border-t hover:bg-[rgba(168,85,247,0.10)] transition-colors"
                         style={{ borderColor: "rgba(168,85,247,0.18)" }}

@@ -3,6 +3,8 @@ project_id = "tqesyvmpdlbfmxfhdshb"
 [functions]
   [functions.ai-support]
     verify_jwt = false
+  [functions.ai-search]
+    verify_jwt = false
   [functions.auth-email-hook]
     verify_jwt = false
   [functions.bkash-create-payment]
