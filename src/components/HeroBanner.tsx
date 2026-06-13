@@ -189,13 +189,13 @@ const SlideContent = ({ slide }: { slide: HeroSlide }) => {
 
         {(slide.primary_cta_label || slide.secondary_cta_label) && (
           <motion.div
-            initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.35 }}
+            initial={isMobile ? false : { opacity: 0, y: 14 }} animate={isMobile ? undefined : { opacity: 1, y: 0 }} transition={isMobile ? undefined : { duration: 0.5, delay: 0.35 }}
             className="flex flex-wrap gap-3 sm:gap-4"
           >
             {slide.primary_cta_label && (
               <Link to={slide.primary_cta_link || "/"} className="flex-1 sm:flex-none min-w-[160px]">
                 <motion.button
-                  whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.96 }}
+                  whileHover={isMobile ? undefined : { scale: 1.04, y: -2 }} whileTap={{ scale: 0.96 }}
                   className="group relative w-full sm:w-auto px-5 sm:px-7 py-3 sm:py-3.5 rounded-xl font-bold text-white shadow-[0_10px_40px_-8px_rgba(217,70,239,0.45)] overflow-hidden"
                   style={{ background: "linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,55%))" }}
                 >
@@ -209,7 +209,7 @@ const SlideContent = ({ slide }: { slide: HeroSlide }) => {
             {slide.secondary_cta_label && (
               <Link to={slide.secondary_cta_link || "/"} className="flex-1 sm:flex-none min-w-[140px]">
                 <motion.button
-                  whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.96 }}
+                  whileHover={isMobile ? undefined : { scale: 1.04, y: -2 }} whileTap={{ scale: 0.96 }}
                   className="w-full sm:w-auto px-5 sm:px-7 py-3 sm:py-3.5 rounded-xl font-semibold border border-white/15 bg-white/[0.04] backdrop-blur-md text-white/90 hover:bg-white/10 transition-colors flex items-center justify-center gap-2 text-sm sm:text-base"
                 >
                   <Play size={16} /> {slide.secondary_cta_label}
@@ -221,13 +221,13 @@ const SlideContent = ({ slide }: { slide: HeroSlide }) => {
 
         {slide.stats && slide.stats.length > 0 && (
           <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
+            initial={isMobile ? false : { opacity: 0 }} animate={isMobile ? undefined : { opacity: 1 }} transition={isMobile ? undefined : { delay: 0.5 }}
             className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 pt-5 sm:pt-6 border-t border-white/10"
           >
             {slide.stats.map((s, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55 + i * 0.06 }}
+                initial={isMobile ? false : { opacity: 0, y: 10 }} animate={isMobile ? undefined : { opacity: 1, y: 0 }} transition={isMobile ? undefined : { delay: 0.55 + i * 0.06 }}
                 className="space-y-1 min-w-0"
               >
                 <div className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white truncate" style={{ fontFamily: "'Syne', sans-serif" }}>
