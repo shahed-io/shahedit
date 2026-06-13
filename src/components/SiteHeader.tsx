@@ -286,7 +286,7 @@ const SiteHeader = () => {
                   className="text-[14px] sm:text-[17px] md:text-[21px] font-bold tracking-tight whitespace-nowrap uppercase"
                   style={{
                     fontFamily: "'Saira', sans-serif",
-                    fontWeight: 700,
+                    fontWeight: 900,
                     letterSpacing: "0.02em",
                     background: "linear-gradient(135deg, #ffffff 0%, #e9d5ff 35%, #c4b5fd 60%, #f0abfc 100%)",
                     WebkitBackgroundClip: "text",
