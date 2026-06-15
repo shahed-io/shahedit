@@ -175,22 +175,9 @@ const SiteFooter = () => {
             style={{ background: "radial-gradient(ellipse 60% 50% at 50% 0%, hsla(285,95%,65%,0.18), transparent 70%)" }} />
 
           <div className="relative">
-            {/* Logo + brand */}
-            <Link to="/" className="inline-flex items-center gap-4 mb-5">
-              <div className="w-16 h-16 rounded-2xl flex items-center justify-center bg-gradient-to-br from-primary/15 to-accent/15 border border-white/10 shadow-[0_0_24px_-4px_hsla(258,90%,66%,0.45)] shrink-0 backdrop-blur-sm">
-                <BrandMark size={52} glow="soft" />
-              </div>
-              <div className="flex flex-col items-start">
-                <div className="flex items-baseline gap-2 text-3xl sm:text-4xl font-black tracking-tight" style={{ fontFamily: "'Syne', sans-serif" }}>
-                  <span className="bg-gradient-to-r from-primary via-fuchsia-400 to-accent bg-clip-text text-transparent">Shahed</span>
-                  <span className="bg-gradient-to-r from-accent to-cyan-300 bg-clip-text text-transparent">IT</span>
-                </div>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className="h-px w-6 bg-gradient-to-r from-transparent to-primary" />
-                  <span className="text-[11px] font-bold tracking-[0.25em] text-muted-foreground">SHAHEDIT.COM</span>
-                  <span className="h-px w-6 bg-gradient-to-l from-transparent to-accent" />
-                </div>
-              </div>
+            {/* Logo — full badge image from DB (site_settings.logo_url) */}
+            <Link to="/" className="inline-flex items-center justify-center mb-5">
+              <BrandMark size={72} glow="soft" />
             </Link>
 
             {/* Tagline */}
