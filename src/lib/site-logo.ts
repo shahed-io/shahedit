@@ -4,4 +4,4 @@
 // is what the user sees, so it must be the real brand logo the owner uploaded.
 // To change: upload via Admin → Site Logo, then update this URL to match.
 export const SITE_LOGO_FALLBACK =
-  "/__l5e/assets-v1/574660b3-29b8-44eb-b606-d649b33c7b5f/shahed-it-header-logo.png";
+  "/__l5e/assets-v1/5f67fda6-e991-4614-9cde-ca3a8db00ce3/shahed-it-wordmark-transparent.png";

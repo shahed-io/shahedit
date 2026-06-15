@@ -91,10 +91,10 @@ const AdminLogin = () => {
               transition={{ type: "spring", stiffness: 180, delay: 0.2 }}
               className="relative mb-5"
             >
-              <BrandMark size={96} glow="strong" />
+              <BrandMark size={82} glow="strong" />
             </motion.div>
             <h1 className="text-2xl font-bold text-white mb-1 tracking-tight">Admin Panel</h1>
-            <p className="text-white/60 text-sm">Shahed IT — Secure Login</p>
+            <p className="text-white/60 text-sm">Secure Login</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">

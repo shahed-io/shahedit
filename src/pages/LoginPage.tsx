@@ -86,13 +86,7 @@ export default function LoginPage() {
             {/* Logo */}
             <div className="flex justify-center mb-6">
               <Link to="/">
-                <div className="flex items-center gap-2.5">
-                  <BrandMark size={44} glow="strong" />
-                  <span className="text-2xl font-black" style={{ fontFamily: "'Syne', sans-serif" }}>
-                    <span className="gradient-text">Shahed</span>
-                    <span className="text-foreground"> IT</span>
-                  </span>
-                </div>
+                <BrandMark size={54} glow="strong" />
               </Link>
             </div>
 
