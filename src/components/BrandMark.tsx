@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { SITE_LOGO_FALLBACK } from "@/lib/site-logo";
+import markSm from "@/assets/shahed-it-mark-sm.webp";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-const FALLBACK = SITE_LOGO_FALLBACK;
+const FALLBACK = markSm;
 
 // Module-level cache + in-flight promise so multiple instances share one fetch
 let cachedLogo: string | null = null;
@@ -48,19 +48,20 @@ type BrandMarkProps = {
   size?: number;            // px
   className?: string;
   glow?: "soft" | "strong" | "none";
-  rounded?: boolean;        // optional clipping for special surfaces
+  rounded?: boolean;        // clip to circle (default true)
   alt?: string;
 };
 
 /**
- * Transparent Shahed IT logo that always pulls logo_url from site_settings
- * with only a matching transparent CDN fallback while the DB request loads.
+ * Premium, transparent-blending Shahed IT mark.
+ * Soft purple halo behind a transparent PNG that adapts to any background
+ * (dark, light, glass). Pulls logo_url from site_settings with a CDN fallback.
  */
 const BrandMark = ({
   size = 44,
   className = "",
   glow = "soft",
-  rounded = false,
+  rounded = true,
   alt = "Shahed IT",
 }: BrandMarkProps) => {
   const url = useSiteLogo();
@@ -78,23 +79,21 @@ const BrandMark = ({
         : "drop-shadow(0 0 8px rgba(192,132,252,0.45))"
       : "none";
 
-  // The DB logo is a transparent wide wordmark. Render at the given `size` as
-  // HEIGHT and let width follow the natural aspect ratio — never crop it square.
   return (
     <span
       className={`relative inline-flex items-center justify-center shrink-0 ${className}`}
-      style={{ height: size }}
+      style={{ width: size, height: size }}
     >
       {glow !== "none" && (
         <span
           aria-hidden
           className={`absolute inset-0 pointer-events-none ${isMobile ? "" : "animate-[pulse_3.5s_ease-in-out_infinite]"}`}
           style={{
-            background: `radial-gradient(ellipse at 50% 50%, rgba(192,132,252,${haloOpacity}) 0%, rgba(168,85,247,${
+            background: `radial-gradient(circle at 50% 50%, rgba(192,132,252,${haloOpacity}) 0%, rgba(168,85,247,${
               haloOpacity * 0.6
             }) 35%, rgba(236,72,153,${haloOpacity * 0.3}) 60%, rgba(0,0,0,0) 75%)`,
-            filter: isMobile ? "blur(6px)" : "blur(12px)",
-            transform: isMobile ? "scale(1.10)" : "scale(1.20)",
+            filter: isMobile ? "blur(5px)" : "blur(10px)",
+            transform: isMobile ? "scale(1.16)" : "scale(1.4)",
             borderRadius: "9999px",
           }}
         />
@@ -104,8 +103,8 @@ const BrandMark = ({
         alt={alt}
         loading="eager"
         decoding="async"
-        className={`relative h-full w-auto object-contain ${rounded ? "rounded-xl" : ""}`}
-        style={{ filter: dropShadow, maxWidth: "none" }}
+        className={`relative w-full h-full object-contain ${rounded ? "rounded-full" : ""}`}
+        style={{ filter: dropShadow }}
       />
     </span>
   );

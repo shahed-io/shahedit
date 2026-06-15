@@ -206,10 +206,18 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
               exit={{ opacity: 0, x: -8 }}
               className="flex items-center gap-3"
             >
-              <BrandMark size={34} glow="soft" />
-              <p className="text-[10px] text-primary/90 mt-0.5 flex items-center gap-1 font-medium uppercase tracking-[0.12em]">
-                <Crown size={9} className="text-accent" /> Admin Suite
-              </p>
+              <div className="relative w-11 h-11 rounded-2xl bg-gradient-to-br from-primary/80 via-primary/60 to-accent/70 p-[2px] shadow-[0_8px_28px_-8px_hsl(var(--primary)/0.85)]">
+                <div className="w-full h-full rounded-[14px] bg-background/80 backdrop-blur-sm flex items-center justify-center">
+                  <BrandMark size={28} glow="soft" />
+                </div>
+                <span className="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-accent ring-2 ring-background animate-pulse" />
+              </div>
+              <div className="leading-tight">
+                <p className="text-foreground font-bold text-[15px] font-syne tracking-tight">Shahed IT</p>
+                <p className="text-[10px] text-primary/90 mt-0.5 flex items-center gap-1 font-medium uppercase tracking-[0.12em]">
+                  <Crown size={9} className="text-accent" /> Admin Suite
+                </p>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
