@@ -625,7 +625,7 @@ const DetailsModal = ({ pkg, onClose, onPay, c }: {
         style={{ background: 'hsl(265,45%,6%)', border: `1px solid ${c.border}` }}
       >
         {/* Hero image or gradient */}
-        <div className="relative h-44 flex items-center justify-center overflow-hidden"
+        <div className="relative aspect-square w-full flex items-center justify-center overflow-hidden"
           style={{ background: `linear-gradient(135deg, ${c.color}20, ${c.color}08)` }}>
           {pkg.image_url ? (
             <img src={pkg.image_url} alt={pkg.title} className="w-full h-full object-cover" />
@@ -877,7 +877,7 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
         />
 
         {/* Top visual area */}
-        <div className="relative h-40 flex items-center justify-center overflow-hidden"
+        <div className="relative aspect-square w-full flex items-center justify-center overflow-hidden"
           style={{ background: `radial-gradient(120% 100% at 50% 0%, ${c.color}28 0%, ${c.color}08 45%, transparent 80%)` }}>
           {/* Shine sweep on hover */}
           <div className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-[1400ms] ease-out"

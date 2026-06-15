@@ -236,7 +236,7 @@ const AdminProducts = () => {
               animate={{ opacity: 1, y: 0 }}
               className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-slate-700 transition"
             >
-              <div className="aspect-video bg-slate-800 relative overflow-hidden">
+              <div className="aspect-square bg-slate-800 relative overflow-hidden">
                 {p.image_url ? (
                   <img src={p.image_url} alt={p.title} className="w-full h-full object-cover" />
                 ) : (
