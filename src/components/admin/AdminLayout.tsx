@@ -381,19 +381,24 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   );
 
   return (
-    <div data-admin-layout className="relative h-screen overflow-hidden font-inter text-foreground bg-background">
-      {/* Ambient background */}
+    <div data-admin-layout className="relative h-screen overflow-hidden font-inter text-foreground bg-[#0a0514]">
+      {/* Ambient background — matches Hero Banner */}
       <div
         className="fixed inset-0 pointer-events-none overflow-hidden z-0"
         style={{ contain: "strict", transform: "translateZ(0)" }}
       >
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,hsl(var(--primary)/0.18),transparent_60%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_100%_100%,hsl(var(--accent)/0.12),transparent_60%)]" />
         <div
-          className="absolute inset-0 opacity-[0.025]"
+          className="absolute inset-0 opacity-70"
+          style={{
+            background:
+              "radial-gradient(at 15% 10%, hsla(270,92%,55%,0.45) 0px, transparent 50%), radial-gradient(at 85% 90%, hsla(320,90%,55%,0.40) 0px, transparent 55%)",
+          }}
+        />
+        <div
+          className="absolute inset-0 opacity-[0.04] hidden md:block"
           style={{
             backgroundImage:
-              "linear-gradient(hsl(var(--foreground)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)",
+              "linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)",
             backgroundSize: "44px 44px",
           }}
         />
