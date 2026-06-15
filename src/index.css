@@ -203,10 +203,26 @@
 
   html { scroll-behavior: smooth; }
 
+  /* ─── Fluid desktop typography ───
+     On desktop (≥1024px) the root font-size scales smoothly with viewport
+     width so every rem-based size (text, spacing, gaps, rounded corners)
+     adapts to the screen. Mobile/tablet stay at the default 16px so the
+     existing responsive utilities keep behaving as before. */
+  @media (min-width: 1024px) {
+    html {
+      /* 1024px → 15px, 1920px → 19px (linear interpolation via clamp) */
+      font-size: clamp(15px, calc(10.4px + 0.45vw), 19px);
+    }
+  }
+  @media (min-width: 1920px) {
+    html { font-size: clamp(19px, 1vw, 22px); }
+  }
+
   :root {
     --glow-mult: 1;
     --dot-opacity: 0.18;
   }
+
 
   body {
     @apply text-foreground antialiased;
