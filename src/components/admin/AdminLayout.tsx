@@ -382,26 +382,46 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
 
   return (
     <div data-admin-layout className="relative h-screen overflow-hidden font-inter text-foreground bg-[#0a0514]">
-      {/* Ambient background — matches Hero Banner */}
+      {/* Ambient background — matches the public site (SiteBackground) */}
       <div
+        aria-hidden
         className="fixed inset-0 pointer-events-none overflow-hidden z-0"
         style={{ contain: "strict", transform: "translateZ(0)" }}
       >
+        {/* Mobile: lightweight static gradients */}
         <div
-          className="absolute inset-0 opacity-70"
+          className="absolute inset-0 md:hidden"
           style={{
             background:
-              "radial-gradient(at 15% 10%, hsla(270,92%,55%,0.45) 0px, transparent 50%), radial-gradient(at 85% 90%, hsla(320,90%,55%,0.40) 0px, transparent 55%)",
+              "radial-gradient(at 20% 10%, hsla(270,92%,55%,0.28) 0px, transparent 45%), radial-gradient(at 85% 85%, hsla(320,90%,55%,0.22) 0px, transparent 50%)",
           }}
         />
-        <div
-          className="absolute inset-0 opacity-[0.04] hidden md:block"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)",
-            backgroundSize: "44px 44px",
-          }}
-        />
+        {/* Desktop: animated cinematic blobs + dot grid */}
+        <div className="absolute inset-0 opacity-50 hidden md:block">
+          <motion.div
+            className="absolute -top-[15%] -left-[10%] w-[55%] h-[60%] rounded-full bg-[hsl(270,92%,65%)] blur-[140px]"
+            animate={{ scale: [1, 1.15, 1], opacity: [0.45, 0.7, 0.45] }}
+            transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div
+            className="absolute -bottom-[15%] -right-[10%] w-[55%] h-[60%] rounded-full bg-[hsl(320,90%,55%)] blur-[140px]"
+            animate={{ scale: [1, 1.2, 1], opacity: [0.35, 0.6, 0.35] }}
+            transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          />
+          <motion.div
+            className="absolute top-[40%] left-[45%] w-[40%] h-[45%] rounded-full bg-[hsl(290,85%,60%)] blur-[160px]"
+            animate={{ scale: [1, 1.1, 1], opacity: [0.25, 0.45, 0.25] }}
+            transition={{ duration: 13, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle at 2px 2px, rgba(255,255,255,0.06) 1px, transparent 0)",
+              backgroundSize: "40px 40px",
+            }}
+          />
+        </div>
       </div>
 
       <div className="relative z-10 flex h-full overflow-hidden">
