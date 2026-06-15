@@ -710,29 +710,13 @@ const SiteHeader = () => {
                   borderBottom: "1px solid rgba(168,85,247,0.18)",
                 }}
               >
-                <div className="flex items-center gap-2.5">
-                  <div className="relative">
+                <div className="flex items-center min-w-0">
+                  <div className="relative h-11 flex items-center">
                     <div
-                      className="absolute -inset-1 rounded-xl opacity-70 blur-md"
-                      style={{ background: "conic-gradient(from 0deg, #6366f1, #a855f7, #ec4899, #6366f1)" }}
+                      className="absolute inset-0 pointer-events-none opacity-60 blur-md"
+                      style={{ background: "radial-gradient(ellipse at 50% 50%, rgba(168,85,247,0.45), transparent 72%)" }}
                     />
-                    <div
-                      className="relative w-9 h-9 rounded-lg flex items-center justify-center overflow-hidden"
-                      style={{
-                        background: "linear-gradient(135deg, #1a1233, #251847)",
-                        border: "1px solid rgba(168, 85, 247, 0.45)",
-                      }}
-                    >
-                      <img src={logoUrl} alt="Shahed IT" className="h-8 w-auto object-contain" style={{ maxWidth: "none" }} />
-                    </div>
-                  </div>
-                  <div className="leading-tight">
-                    <div className="text-[14px] font-extrabold text-white" style={{ fontFamily: "'Syne', sans-serif" }}>
-                      Shahed <span style={{ background: "linear-gradient(135deg, #818cf8, #f0abfc)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>IT</span>
-                    </div>
-                    <div className="text-[8px] uppercase tracking-[0.22em] font-bold" style={{ color: "#a78bfa" }}>
-                      Premium Menu
-                    </div>
+                    <img src={logoUrl} alt="Shahed IT" className="relative h-full w-auto object-contain" style={{ maxWidth: "none" }} />
                   </div>
                 </div>
                 <motion.button

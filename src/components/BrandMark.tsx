@@ -48,20 +48,19 @@ type BrandMarkProps = {
   size?: number;            // px
   className?: string;
   glow?: "soft" | "strong" | "none";
-  rounded?: boolean;        // clip to circle (default true)
+  rounded?: boolean;        // optional clipping for special surfaces
   alt?: string;
 };
 
 /**
- * Premium, transparent-blending Shahed IT mark.
- * Soft purple halo behind a transparent PNG that adapts to any background
- * (dark, light, glass). Pulls logo_url from site_settings with a CDN fallback.
+ * Transparent Shahed IT logo that always pulls logo_url from site_settings
+ * with only a matching transparent CDN fallback while the DB request loads.
  */
 const BrandMark = ({
   size = 44,
   className = "",
   glow = "soft",
-  rounded = true,
+  rounded = false,
   alt = "Shahed IT",
 }: BrandMarkProps) => {
   const url = useSiteLogo();
@@ -79,9 +78,8 @@ const BrandMark = ({
         : "drop-shadow(0 0 8px rgba(192,132,252,0.45))"
       : "none";
 
-  // The DB logo is a wide badge (contains brand mark + wordmark). Render at the
-  // given `size` as HEIGHT and let width follow the natural aspect ratio so the
-  // full badge is visible — never crop into a tiny square.
+  // The DB logo is a transparent wide wordmark. Render at the given `size` as
+  // HEIGHT and let width follow the natural aspect ratio — never crop it square.
   return (
     <span
       className={`relative inline-flex items-center justify-center shrink-0 ${className}`}
