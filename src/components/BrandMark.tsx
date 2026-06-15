@@ -79,21 +79,24 @@ const BrandMark = ({
         : "drop-shadow(0 0 8px rgba(192,132,252,0.45))"
       : "none";
 
+  // The DB logo is a wide badge (contains brand mark + wordmark). Render at the
+  // given `size` as HEIGHT and let width follow the natural aspect ratio so the
+  // full badge is visible — never crop into a tiny square.
   return (
     <span
       className={`relative inline-flex items-center justify-center shrink-0 ${className}`}
-      style={{ width: size, height: size }}
+      style={{ height: size }}
     >
       {glow !== "none" && (
         <span
           aria-hidden
           className={`absolute inset-0 pointer-events-none ${isMobile ? "" : "animate-[pulse_3.5s_ease-in-out_infinite]"}`}
           style={{
-            background: `radial-gradient(circle at 50% 50%, rgba(192,132,252,${haloOpacity}) 0%, rgba(168,85,247,${
+            background: `radial-gradient(ellipse at 50% 50%, rgba(192,132,252,${haloOpacity}) 0%, rgba(168,85,247,${
               haloOpacity * 0.6
             }) 35%, rgba(236,72,153,${haloOpacity * 0.3}) 60%, rgba(0,0,0,0) 75%)`,
-            filter: isMobile ? "blur(5px)" : "blur(10px)",
-            transform: isMobile ? "scale(1.16)" : "scale(1.4)",
+            filter: isMobile ? "blur(6px)" : "blur(12px)",
+            transform: isMobile ? "scale(1.10)" : "scale(1.20)",
             borderRadius: "9999px",
           }}
         />
@@ -103,8 +106,8 @@ const BrandMark = ({
         alt={alt}
         loading="eager"
         decoding="async"
-        className={`relative w-full h-full object-contain ${rounded ? "rounded-full" : ""}`}
-        style={{ filter: dropShadow }}
+        className={`relative h-full w-auto object-contain ${rounded ? "rounded-xl" : ""}`}
+        style={{ filter: dropShadow, maxWidth: "none" }}
       />
     </span>
   );

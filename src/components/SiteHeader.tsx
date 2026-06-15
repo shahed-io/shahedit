@@ -261,65 +261,29 @@ const SiteHeader = () => {
             to="/"
             className="shrink-0 min-w-0 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:static lg:translate-x-0 lg:translate-y-0 pointer-events-auto"
           >
-            <motion.div whileHover={isMobile ? undefined : { scale: 1.02 }} whileTap={{ scale: 0.97 }} className="flex items-center gap-1.5 sm:gap-2 md:gap-2.5 group min-w-0">
-              <div className="relative shrink-0 w-10 h-10 sm:w-11 sm:h-11 md:w-14 md:h-14 flex items-center justify-center">
+            <motion.div whileHover={isMobile ? undefined : { scale: 1.02 }} whileTap={{ scale: 0.97 }} className="flex items-center group min-w-0">
+              <div className="relative shrink-0 flex items-center justify-center h-10 sm:h-12 md:h-14">
                 {/* Soft glow halo behind the logo */}
                 <div
                   aria-hidden
-                  className={`absolute inset-0 rounded-full pointer-events-none ${isMobile ? "" : "animate-[pulse_3.5s_ease-in-out_infinite]"}`}
+                  className={`absolute inset-0 pointer-events-none ${isMobile ? "" : "animate-[pulse_3.5s_ease-in-out_infinite]"}`}
                   style={{
                     background:
-                      `radial-gradient(circle at 50% 50%, rgba(192,132,252,${isMobile ? 0.34 : 0.55}) 0%, rgba(168,85,247,${isMobile ? 0.20 : 0.35}) 35%, rgba(236,72,153,${isMobile ? 0.10 : 0.18}) 60%, rgba(0,0,0,0) 75%)`,
-                    filter: isMobile ? "blur(5px)" : "blur(10px)",
-                    transform: isMobile ? "scale(1.18)" : "scale(1.35)",
+                      `radial-gradient(ellipse at 50% 50%, rgba(192,132,252,${isMobile ? 0.34 : 0.55}) 0%, rgba(168,85,247,${isMobile ? 0.20 : 0.35}) 35%, rgba(236,72,153,${isMobile ? 0.10 : 0.18}) 60%, rgba(0,0,0,0) 75%)`,
+                    filter: isMobile ? "blur(6px)" : "blur(12px)",
+                    transform: "scale(1.1)",
+                    borderRadius: "9999px",
                   }}
                 />
                 <img
                   src={logoUrl}
-                  alt="Shahed IT"
-                  className="relative w-full h-full object-contain"
-                  style={{ filter: isMobile ? "drop-shadow(0 0 4px rgba(192,132,252,0.35))" : "drop-shadow(0 0 8px rgba(192,132,252,0.5))" }}
+                  alt="Shahed IT — Smart IT Solutions"
+                  className="relative h-full w-auto object-contain"
+                  style={{
+                    maxWidth: "none",
+                    filter: isMobile ? "drop-shadow(0 0 4px rgba(192,132,252,0.35))" : "drop-shadow(0 0 8px rgba(192,132,252,0.5))",
+                  }}
                 />
-              </div>
-
-
-              <div className="flex flex-col leading-[1.0] min-w-0 gap-0.5">
-                <span
-                  className="text-[14px] sm:text-[17px] md:text-[21px] font-extrabold whitespace-nowrap uppercase"
-                  style={{
-                    fontFamily: "'Nasalization', 'Orbitron', sans-serif",
-                    fontWeight: 800,
-                    letterSpacing: "0.04em",
-                    background: "linear-gradient(135deg, #ffffff 0%, #e9d5ff 35%, #c4b5fd 60%, #f0abfc 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    filter: "drop-shadow(0 0 12px rgba(192,132,252,0.45))",
-                  }}
-                >
-                  SHAHED{"\u00a0"}
-                  <span style={{ background: "linear-gradient(135deg, #a78bfa 0%, #f0abfc 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                    IT
-                  </span>
-                </span>
-                <span
-                  className="hidden xs:flex items-center font-semibold whitespace-nowrap"
-                  style={{
-                    fontFamily: "'Nasalization', 'Orbitron', sans-serif",
-                    fontSize: "clamp(7px, 0.9vw, 9px)",
-                    letterSpacing: "0.22em",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  <span
-                    style={{
-                      background: "linear-gradient(90deg, #c4b5fd 0%, #f0abfc 100%)",
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                    }}
-                  >
-                    Smart IT Solutions
-                  </span>
-                </span>
               </div>
             </motion.div>
           </Link>
@@ -759,7 +723,7 @@ const SiteHeader = () => {
                         border: "1px solid rgba(168, 85, 247, 0.45)",
                       }}
                     >
-                      <img src={logoUrl} alt="Shahed IT" className="w-7 h-7 object-contain" />
+                      <img src={logoUrl} alt="Shahed IT" className="h-8 w-auto object-contain" style={{ maxWidth: "none" }} />
                     </div>
                   </div>
                   <div className="leading-tight">
