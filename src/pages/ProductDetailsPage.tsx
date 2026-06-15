@@ -170,7 +170,7 @@ export default function ProductDetailsPage() {
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="relative rounded-3xl overflow-hidden h-[280px] sm:h-[380px] md:h-[460px] flex items-center justify-center"
+            className="relative rounded-3xl overflow-hidden aspect-square w-full flex items-center justify-center"
             style={{ background: `linear-gradient(135deg, ${c.color}25, ${c.color}08)`, border: `1px solid ${c.border}` }}
           >
             {pkg.image_url ? (
@@ -407,7 +407,7 @@ export default function ProductDetailsPage() {
                     style={{ background: rc.bg, border: `1px solid ${rc.border}` }}
                   >
                     <div
-                      className="h-28 flex items-center justify-center overflow-hidden"
+                      className="aspect-square w-full flex items-center justify-center overflow-hidden"
                       style={{ background: `linear-gradient(135deg, ${rc.color}15, ${rc.color}05)` }}
                     >
                       {r.image_url ? (

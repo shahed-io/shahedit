@@ -77,7 +77,7 @@ export default function RecentlyViewedSection({ limit = 4, compact = false }: { 
                   boxShadow: "0 12px 32px -16px rgba(0,0,0,0.6)",
                 }}
               >
-                <div className="aspect-[4/3] overflow-hidden relative bg-gradient-to-br from-primary/15 to-accent/15">
+                <div className="aspect-square overflow-hidden relative bg-gradient-to-br from-primary/15 to-accent/15">
                   {p.image_url ? (
                     <img
                       src={p.image_url}
