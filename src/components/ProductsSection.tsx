@@ -878,7 +878,7 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
 
         {/* Top visual area */}
         <div className="relative aspect-square w-full flex items-center justify-center overflow-hidden"
-          style={{ background: `radial-gradient(120% 100% at 50% 0%, ${c.color}28 0%, ${c.color}08 45%, transparent 80%)` }}>
+          style={{ background: `linear-gradient(180deg, #ffffff 0%, #f4f1fb 100%)` }}>
           {/* Shine sweep on hover */}
           <div className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-[1400ms] ease-out"
             style={{ background: 'linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.12) 50%, transparent 70%)' }} />
@@ -939,10 +939,8 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
             </div>
           </div>
 
-          {/* Bottom fade for legibility */}
-          <div className="absolute inset-x-0 bottom-0 h-16 pointer-events-none"
-            style={{ background: 'linear-gradient(to top, rgba(6,3,16,0.95), transparent)' }} />
         </div>
+
 
         {/* Glass shelf divider — separates image area from content with premium glow */}
         <div className="relative h-[14px] -mt-px pointer-events-none">
@@ -1136,7 +1134,7 @@ const ProductsSection = () => {
   if (loading) return (
     <section className="py-24">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {[...Array(5)].map((_, i) => (
             <div key={i} className="h-72 rounded-2xl animate-pulse" style={{ background: 'rgba(168,85,247,0.06)', border: '1px solid rgba(168,85,247,0.12)' }} />
           ))}
@@ -1222,7 +1220,7 @@ const ProductsSection = () => {
                     <div className="h-px flex-1 rounded-full" style={{ background: `linear-gradient(90deg, ${sc.accent}50, transparent)` }} />
                   </div>
 
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     {group.packages.map((pkg, i) => (
                       <ProductCard key={pkg.id} pkg={pkg} index={i} />
                     ))}
