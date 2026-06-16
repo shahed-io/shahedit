@@ -878,7 +878,7 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
 
         {/* Top visual area */}
         <div className="relative aspect-square w-full flex items-center justify-center overflow-hidden"
-          style={{ background: `radial-gradient(120% 100% at 50% 0%, ${c.color}28 0%, ${c.color}08 45%, transparent 80%)` }}>
+          style={{ background: `linear-gradient(180deg, #ffffff 0%, #f4f1fb 100%)` }}>
           {/* Shine sweep on hover */}
           <div className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-[1400ms] ease-out"
             style={{ background: 'linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.12) 50%, transparent 70%)' }} />
