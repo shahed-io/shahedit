@@ -939,10 +939,8 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
             </div>
           </div>
 
-          {/* Bottom fade for legibility */}
-          <div className="absolute inset-x-0 bottom-0 h-16 pointer-events-none"
-            style={{ background: 'linear-gradient(to top, rgba(6,3,16,0.95), transparent)' }} />
         </div>
+
 
         {/* Glass shelf divider — separates image area from content with premium glow */}
         <div className="relative h-[14px] -mt-px pointer-events-none">
