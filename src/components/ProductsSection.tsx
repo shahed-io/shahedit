@@ -1134,7 +1134,7 @@ const ProductsSection = () => {
   if (loading) return (
     <section className="py-24">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {[...Array(5)].map((_, i) => (
             <div key={i} className="h-72 rounded-2xl animate-pulse" style={{ background: 'rgba(168,85,247,0.06)', border: '1px solid rgba(168,85,247,0.12)' }} />
           ))}
