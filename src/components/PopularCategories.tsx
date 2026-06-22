@@ -124,9 +124,9 @@ const PopularCategories = () => {
         </div>
       </div>
 
-      {/* Smooth fade-out to keep section boundaries harmonious */}
-      <div aria-hidden className="absolute inset-x-0 bottom-0 h-24 pointer-events-none"
-        style={{ background: "linear-gradient(to bottom, transparent, hsl(var(--background)))" }} />
+      {/* Smooth fade-out into next section's dark backdrop */}
+      <div aria-hidden className="absolute inset-x-0 bottom-0 h-32 pointer-events-none"
+        style={{ background: "linear-gradient(to bottom, transparent, #0a0514)" }} />
     </section>
   );
 };
