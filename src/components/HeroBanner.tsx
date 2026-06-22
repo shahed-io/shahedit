@@ -374,7 +374,7 @@ const HeroBanner = () => {
 
   return (
     <section
-      className="relative overflow-hidden min-h-[600px] sm:min-h-[720px] lg:min-h-[820px] flex items-center bg-[#0a0514]"
+      className="relative overflow-hidden min-h-[600px] sm:min-h-[720px] lg:min-h-[820px] flex items-center bg-background"
       style={bgStyle}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
@@ -393,6 +393,15 @@ const HeroBanner = () => {
           backgroundImage:
             "radial-gradient(circle at 2px 2px, rgba(255,255,255,0.06) 1px, transparent 0)",
           backgroundSize: "40px 40px",
+        }}
+      />
+      {/* Smooth fade into next section — kills the visible seam */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 bottom-0 h-32 pointer-events-none z-[5]"
+        style={{
+          background:
+            "linear-gradient(to bottom, transparent 0%, hsl(var(--background) / 0.7) 65%, hsl(var(--background)) 100%)",
         }}
       />
 

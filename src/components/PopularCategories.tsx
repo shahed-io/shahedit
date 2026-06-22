@@ -13,9 +13,9 @@ const categories = [
 
 const PopularCategories = () => {
   return (
-    <section className="py-24 relative overflow-hidden">
-      {/* Section divider top */}
-      <div className="absolute top-0 left-0 right-0 section-divider" />
+    <section className="py-24 relative overflow-hidden bg-background">
+      {/* removed harsh top divider — Hero now fades smoothly into this section */}
+
 
       {/* Background */}
       <div className="absolute inset-0 dot-grid opacity-25 pointer-events-none" />
@@ -113,8 +113,9 @@ const PopularCategories = () => {
         </div>
       </div>
 
-      {/* Section divider bottom */}
-      <div className="absolute bottom-0 left-0 right-0 section-divider" />
+      {/* Smooth fade-out to keep section boundaries harmonious */}
+      <div aria-hidden className="absolute inset-x-0 bottom-0 h-24 pointer-events-none"
+        style={{ background: "linear-gradient(to bottom, transparent, hsl(var(--background)))" }} />
     </section>
   );
 };
