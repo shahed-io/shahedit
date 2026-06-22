@@ -242,7 +242,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
         variant === "desktop"
           ? open
             ? "hidden lg:flex flex-col fixed top-24 left-0 right-0 z-[90] mx-auto w-[min(92vw,720px)] max-w-[720px]"
-            : "hidden lg:flex relative flex-1 max-w-md mx-auto"
+            : "hidden lg:flex relative flex-1 min-w-0 max-w-xs xl:max-w-sm mx-auto"
           : "relative w-full"
       }
     >

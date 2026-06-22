@@ -256,7 +256,7 @@ const SiteHeader = () => {
           />
         </div>
 
-        <div className="container mx-auto px-2.5 sm:px-3 md:px-4 lg:px-6 py-1.5 sm:py-2 md:py-3 flex items-center gap-1.5 sm:gap-2 md:gap-3 lg:gap-5 relative min-w-0">
+        <div className="container mx-auto px-2.5 sm:px-3 md:px-4 lg:px-5 xl:px-6 py-1.5 sm:py-2 md:py-3 flex items-center gap-1.5 sm:gap-2 md:gap-3 lg:gap-3 xl:gap-4 relative min-w-0">
           {/* ── Logo ── */}
           <Link
             to="/"
@@ -343,7 +343,7 @@ const SiteHeader = () => {
                 const active = isActive(link.href) || (link.hasDropdown && servicesOpen);
                 const showIndicator = activeKey === link.label;
                 const content = (
-                  <span className="relative px-3.5 py-1.5 text-sm font-semibold flex items-center gap-1 z-10">
+                  <span className="relative px-2.5 xl:px-3 py-1.5 text-[13px] xl:text-sm font-semibold flex items-center gap-1 z-10 whitespace-nowrap">
                     {showIndicator && (
                       <motion.span
                         layoutId="nav-active-pill"
@@ -449,7 +449,7 @@ const SiteHeader = () => {
           </LayoutGroup>
 
           {/* ── Right cluster ── */}
-          <div className="hidden lg:flex items-center gap-2 shrink-0 ml-auto xl:ml-0">
+          <div className="hidden lg:flex items-center gap-2 shrink-0 ml-auto">
             {authLoading ? (
               <div className="h-9 w-32 rounded-full bg-white/5 animate-pulse" />
             ) : user ? (
