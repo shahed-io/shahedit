@@ -6,17 +6,21 @@ import { Calendar, Clock, ArrowRight } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import type { BlogPost } from "@/lib/supabase-types";
+import { useRealtimeSync } from "@/hooks/useRealtimeSync";
 
 const BlogPage = () => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const load = () => {
     supabase.from("blog_posts").select("*").eq("is_published", true).order("published_at", { ascending: false }).then(({ data }) => {
       setPosts(data ?? []);
       setLoading(false);
     });
-  }, []);
+  };
+  useEffect(() => { load(); }, []);
+  useRealtimeSync("blog_posts", load);
+
 
   return (
     <div className="min-h-screen bg-background">

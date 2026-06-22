@@ -4,6 +4,8 @@ import { ChevronDown, HelpCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
 import type { FAQ } from "@/lib/supabase-types";
+import { useRealtimeSync } from "@/hooks/useRealtimeSync";
+
 
 const fallbackFaqs = [
   { id: "1", question: "আপনাদের সার্ভিস কত দিনের মধ্যে ডেলিভারি পাওয়া যায়?", answer: "সার্ভিস অনুযায়ী ৫ মিনিট থেকে ২৪ ঘন্টার মধ্যে ডেলিভারি দেওয়া হয়।" },
@@ -27,7 +29,7 @@ const FaqSection = () => {
   const [visible, setVisible] = useState(true);
   const [open, setOpen] = useState<string | null>(null);
 
-  useEffect(() => {
+  const loadFaqs = () => {
     supabase.from("faqs").select("id, question, answer").eq("is_published", true).order("sort_order").limit(6).then(({ data }) => {
       if (data && data.length > 0) setFaqs(data);
     });
@@ -37,7 +39,10 @@ const FaqSection = () => {
         if (data.content) setContent({ ...defaultContent, ...(data.content as any) });
       }
     });
-  }, []);
+  };
+  useEffect(() => { loadFaqs(); }, []);
+  useRealtimeSync(["faqs", "page_sections"], loadFaqs);
+
 
   if (!visible) return null;
 

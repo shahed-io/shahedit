@@ -8,6 +8,8 @@ import {
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useRealtimeSync } from "@/hooks/useRealtimeSync";
+
 
 // Icon registry — admin picks by name string
 const ICONS: Record<string, any> = {
@@ -332,15 +334,13 @@ const HeroBanner = () => {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
 
-  useEffect(() => {
-    let mounted = true;
+  const loadSlides = () => {
     supabase
       .from("hero_slides")
       .select("*")
       .eq("is_active", true)
       .order("sort_order", { ascending: true })
       .then(({ data }) => {
-        if (!mounted) return;
         if (data && data.length > 0) {
           setSlides(
             data.map((r: any) => ({
@@ -351,8 +351,10 @@ const HeroBanner = () => {
           );
         }
       });
-    return () => { mounted = false; };
-  }, []);
+  };
+  useEffect(() => { loadSlides(); }, []);
+  useRealtimeSync("hero_slides", loadSlides);
+
 
   const current = slides[index] || FALLBACK;
   const autoplayMs = Math.max(3, current.autoplay_seconds || 7) * 1000;

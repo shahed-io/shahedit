@@ -5,17 +5,16 @@ import { Clock, X, ArrowRight, Star } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useRecentlyViewedIds } from "@/hooks/useRecentlyViewed";
 import { formatPrice, type ServicePackageRow } from "@/components/ProductsSection";
+import { useRealtimeSync } from "@/hooks/useRealtimeSync";
+
 
 export default function RecentlyViewedSection({ limit = 4, compact = false }: { limit?: number; compact?: boolean }) {
   const { ids, clear } = useRecentlyViewedIds();
   const [items, setItems] = useState<ServicePackageRow[]>([]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (ids.length === 0) {
-      setItems([]);
-      return;
-    }
+  const load = () => {
+    if (ids.length === 0) { setItems([]); return; }
     setLoading(true);
     supabase
       .from("service_packages")
@@ -24,12 +23,14 @@ export default function RecentlyViewedSection({ limit = 4, compact = false }: { 
       .eq("is_published", true)
       .then(({ data }) => {
         const map = new Map((data ?? []).map((p: any) => [p.id, p as ServicePackageRow]));
-        // Preserve recency order
         const ordered = ids.map((id) => map.get(id)).filter(Boolean) as ServicePackageRow[];
         setItems(ordered.slice(0, limit));
         setLoading(false);
       });
-  }, [ids, limit]);
+  };
+  useEffect(() => { load(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [ids, limit]);
+  useRealtimeSync("service_packages", load);
+
 
   if (ids.length === 0 || (items.length === 0 && !loading)) return null;
 

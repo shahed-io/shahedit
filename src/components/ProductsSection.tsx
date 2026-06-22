@@ -10,6 +10,8 @@ import { toast } from "sonner";
 import { sanitizeHtml } from "@/lib/sanitize";
 import { StarRating } from "@/components/StarRating";
 import { useProductRating } from "@/hooks/useProductRatings";
+import { useRealtimeSync } from "@/hooks/useRealtimeSync";
+
 
 export interface ServicePackageRow {
   id: string;
@@ -1093,7 +1095,7 @@ const ProductsSection = () => {
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("all");
 
-  useEffect(() => {
+  const loadPackages = () => {
     supabase
       .from("service_packages")
       .select("*, services(title)")
@@ -1112,7 +1114,11 @@ const ProductsSection = () => {
         }
         setLoading(false);
       });
-  }, []);
+  };
+
+  useEffect(() => { loadPackages(); }, []);
+  useRealtimeSync(["service_packages", "services"], loadPackages);
+
 
   const filteredGroups = useMemo(() => {
     const q = search.trim().toLowerCase();
