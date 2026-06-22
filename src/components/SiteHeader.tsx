@@ -256,7 +256,7 @@ const SiteHeader = () => {
           />
         </div>
 
-        <div className="container mx-auto px-2.5 sm:px-3 md:px-4 lg:px-6 py-1.5 sm:py-2 md:py-3 flex items-center gap-1.5 sm:gap-2 md:gap-3 lg:gap-5 relative min-w-0">
+        <div className="container mx-auto px-2.5 sm:px-3 md:px-4 lg:px-5 xl:px-6 py-1.5 sm:py-2 md:py-3 flex items-center gap-1.5 sm:gap-2 md:gap-3 lg:gap-3 xl:gap-4 relative min-w-0">
           {/* ── Logo ── */}
           <Link
             to="/"
