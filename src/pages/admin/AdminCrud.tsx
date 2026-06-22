@@ -844,17 +844,23 @@ export const AdminTestimonials = createWooCrudPage({
 });
 
 export const AdminTeam = createWooCrudPage({
-  table: "team_members", displayName: "Team Member",
+  table: "team_members", displayName: "Team Member / Owner Profile",
   hasPublish: true, hasSort: true,
   fields: [
-    { key: "name", label: "Full Name", placeholder: "Name" },
-    { key: "role", label: "Role / Position", placeholder: "e.g. Lead Developer" },
-    { key: "avatar_url", label: "Photo URL", placeholder: "https://..." },
+    { key: "name", label: "পুরো নাম / Full Name", placeholder: "Name" },
+    { key: "role", label: "Role / Position", placeholder: "e.g. CEO, Lead Developer" },
+    { key: "designation", label: "Designation (পদবি)", placeholder: "e.g. Founder & CEO" },
+    { key: "department", label: "Department (বিভাগ)", placeholder: "e.g. Engineering, Marketing" },
+    { key: "avatar_url", label: "Photo URL (1:1 ছবি)", placeholder: "https://..." },
     { key: "email", label: "Email", type: "email" },
+    { key: "phone", label: "Phone (ফোন)", placeholder: "01XXXXXXXXX" },
     { key: "linkedin_url", label: "LinkedIn URL", type: "url" },
     { key: "twitter_url", label: "Twitter / X URL", type: "url" },
-    { key: "bio", label: "Bio", type: "textarea" },
-    { key: "is_published", label: "Published", type: "checkbox" },
+    { key: "joining_date", label: "Joining Date (যোগদানের তারিখ)", type: "date" as any },
+    { key: "bio", label: "Bio / কাজের পরিচয়", type: "textarea" },
+    { key: "is_owner", label: "⭐ Company Owner / মালিক", type: "checkbox" },
+    { key: "is_active", label: "Active (কর্মরত)", type: "checkbox" },
+    { key: "is_published", label: "Published (ওয়েবসাইটে দেখাও)", type: "checkbox" },
   ],
 });
 
