@@ -449,7 +449,7 @@ const SiteHeader = () => {
           </LayoutGroup>
 
           {/* ── Right cluster ── */}
-          <div className="hidden lg:flex items-center gap-2 shrink-0 ml-auto xl:ml-0">
+          <div className="hidden lg:flex items-center gap-2 shrink-0 ml-auto">
             {authLoading ? (
               <div className="h-9 w-32 rounded-full bg-white/5 animate-pulse" />
             ) : user ? (
