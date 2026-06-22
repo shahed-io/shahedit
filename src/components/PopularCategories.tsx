@@ -13,14 +13,25 @@ const categories = [
 
 const PopularCategories = () => {
   return (
-    <section className="py-24 relative overflow-hidden bg-background">
-      {/* removed harsh top divider — Hero now fades smoothly into this section */}
+    <section className="py-24 relative overflow-hidden">
+      {/* Seamless blend with Hero — same deep purple-black base */}
+      <div aria-hidden className="absolute inset-0 -z-10 bg-[#0a0514]" />
 
+      {/* Top fade-in from Hero so the seam disappears */}
+      <div aria-hidden className="absolute inset-x-0 top-0 h-40 pointer-events-none"
+        style={{ background: "linear-gradient(to bottom, #0a0514 0%, rgba(10,5,20,0.65) 55%, transparent 100%)" }} />
 
-      {/* Background */}
-      <div className="absolute inset-0 dot-grid opacity-25 pointer-events-none" />
+      {/* Ambient color wash matching the global cinematic background */}
+      <div aria-hidden className="absolute inset-0 pointer-events-none opacity-80"
+        style={{
+          background:
+            "radial-gradient(at 15% 20%, hsla(270,92%,55%,0.22) 0px, transparent 50%), radial-gradient(at 85% 80%, hsla(320,90%,55%,0.18) 0px, transparent 55%)",
+        }} />
+
+      {/* Subtle dot grid */}
+      <div className="absolute inset-0 dot-grid opacity-20 pointer-events-none" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse, hsl(270,92%,65%) 0%, transparent 70%)', opacity: 0.07 }} />
+        style={{ background: 'radial-gradient(ellipse, hsl(270,92%,65%) 0%, transparent 70%)', opacity: 0.10 }} />
 
       <div className="container mx-auto px-4 relative">
         <motion.div
