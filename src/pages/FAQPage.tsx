@@ -5,6 +5,8 @@ import { ChevronDown } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import type { FAQ } from "@/lib/supabase-types";
+import { useRealtimeSync } from "@/hooks/useRealtimeSync";
+
 
 const fallbackFaqs: FAQ[] = [
   { id: "1", question: "আপনাদের সার্ভিস কত দিনের মধ্যে ডেলিভারি পাওয়া যায়?", answer: "সার্ভিস অনুযায়ী ৫ মিনিট থেকে ২৪ ঘন্টার মধ্যে ডেলিভারি দেওয়া হয়। জরুরি ডেলিভারির জন্য আলাদাভাবে যোগাযোগ করুন।", category: null, sort_order: 1, is_published: true, created_at: "", updated_at: "" },
