@@ -106,6 +106,7 @@ const SearchResultsPage = lazy(() => import("./pages/SearchResultsPage"));
 const AiSearchPage = lazy(() => import("./pages/AiSearchPage"));
 const TechDetailPage = lazy(() => import("./pages/TechDetailPage"));
 const UnsubscribePage = lazy(() => import("./pages/UnsubscribePage"));
+const TeamPage = lazy(() => import("./pages/TeamPage"));
 
 
 const queryClient = new QueryClient();
@@ -240,6 +241,7 @@ const AppWithAnalytics = () => {
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/blog/:slug" element={<BlogPostPage />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/team" element={<TeamPage />}/>
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/faq" element={<FAQPage />} />
         <Route path="/pricing" element={<PricingPage />} />

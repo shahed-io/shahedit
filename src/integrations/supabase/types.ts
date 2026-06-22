@@ -2530,6 +2530,7 @@ export type Database = {
           email: string | null
           id: string
           is_active: boolean
+          is_owner: boolean
           is_published: boolean | null
           joining_date: string | null
           linkedin_url: string | null
@@ -2549,6 +2550,7 @@ export type Database = {
           email?: string | null
           id?: string
           is_active?: boolean
+          is_owner?: boolean
           is_published?: boolean | null
           joining_date?: string | null
           linkedin_url?: string | null
@@ -2568,6 +2570,7 @@ export type Database = {
           email?: string | null
           id?: string
           is_active?: boolean
+          is_owner?: boolean
           is_published?: boolean | null
           joining_date?: string | null
           linkedin_url?: string | null
