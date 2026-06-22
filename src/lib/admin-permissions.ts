@@ -49,7 +49,12 @@ export type AdminSection =
   | "newsletter"
   | "knowledge-base"
   | "tech-details"
-  | "wallets";
+  | "wallets"
+  | "notifications"
+  | "kpi"
+  | "task-board"
+  | "backup";
+
 
 /**
  * Permission matrix: which roles can access each admin section.
