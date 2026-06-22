@@ -120,20 +120,21 @@ export default function TeamPage() {
   const [members, setMembers] = useState<TeamMember[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    (async () => {
-      const { data } = await supabase
-        .from("team_members")
-        .select("*")
-        .eq("is_published", true)
-        .eq("is_active", true)
-        .order("is_owner", { ascending: false })
-        .order("sort_order", { ascending: true })
-        .order("created_at", { ascending: true });
-      setMembers((data ?? []) as TeamMember[]);
-      setLoading(false);
-    })();
-  }, []);
+  const load = async () => {
+    const { data } = await supabase
+      .from("team_members")
+      .select("*")
+      .eq("is_published", true)
+      .eq("is_active", true)
+      .order("is_owner", { ascending: false })
+      .order("sort_order", { ascending: true })
+      .order("created_at", { ascending: true });
+    setMembers((data ?? []) as TeamMember[]);
+    setLoading(false);
+  };
+  useEffect(() => { load(); }, []);
+  useRealtimeSync("team_members", load);
+
 
   const owner = members.find(m => m.is_owner);
   const staff = members.filter(m => !m.is_owner);
