@@ -214,6 +214,11 @@ const AdminRoutes = () => (
         <Route path="knowledge-base" element={<RoleRoute section="knowledge-base"><AdminKnowledgeBase /></RoleRoute>} />
         <Route path="custom-order" element={<RoleRoute section="custom-order"><AdminCustomOrder /></RoleRoute>} />
         <Route path="wallets" element={<RoleRoute section="wallets"><AdminWallets /></RoleRoute>} />
+        <Route path="notifications" element={<RoleRoute section="notifications"><AdminNotificationCenter /></RoleRoute>} />
+        <Route path="kpi" element={<RoleRoute section="kpi"><AdminKpiTracker /></RoleRoute>} />
+        <Route path="task-board" element={<RoleRoute section="task-board"><AdminTaskBoard /></RoleRoute>} />
+        <Route path="backup" element={<RoleRoute section="backup"><AdminBackupCenter /></RoleRoute>} />
+
       </Routes>
       </Suspense>
     </AdminLayout>
