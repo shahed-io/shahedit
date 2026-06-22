@@ -116,6 +116,8 @@ const navGroups: NavGroup[] = [
       { label: "Footer Editor", icon: LayoutTemplate, href: "/ceo/footer", section: "footer" },
       { label: "Hero Banners", icon: LayoutTemplate, href: "/ceo/banners", badge: "NEW", section: "banners" },
       { label: "Site Settings", icon: Settings, href: "/ceo/settings", section: "settings" },
+      { label: "Backup & Export", icon: Database, href: "/ceo/backup", badge: "NEW", section: "backup" },
+
     ],
   },
 ];
