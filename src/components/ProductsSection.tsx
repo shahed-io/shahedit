@@ -10,6 +10,8 @@ import { toast } from "sonner";
 import { sanitizeHtml } from "@/lib/sanitize";
 import { StarRating } from "@/components/StarRating";
 import { useProductRating } from "@/hooks/useProductRatings";
+import { useRealtimeSync } from "@/hooks/useRealtimeSync";
+
 
 export interface ServicePackageRow {
   id: string;
