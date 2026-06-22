@@ -59,9 +59,11 @@ const navGroups: NavGroup[] = [
     icon: ListChecks,
     items: [
       { label: "Projects & Tasks", icon: Briefcase, href: "/ceo/projects", badge: "NEW", section: "projects" },
+      { label: "Task Board (Kanban)", icon: ListChecks, href: "/ceo/task-board", badge: "NEW", section: "task-board" },
       { label: "Expenses", icon: TrendingDown, href: "/ceo/expenses", badge: "NEW", section: "expenses" },
       { label: "Knowledge Base", icon: BookOpen, href: "/ceo/knowledge-base", badge: "NEW", section: "knowledge-base" },
       { label: "Newsletter", icon: Mail, href: "/ceo/newsletter", badge: "NEW", section: "newsletter" },
+
     ],
   },
   {
