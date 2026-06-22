@@ -8,6 +8,8 @@ import {
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useRealtimeSync } from "@/hooks/useRealtimeSync";
+
 
 // Icon registry — admin picks by name string
 const ICONS: Record<string, any> = {
