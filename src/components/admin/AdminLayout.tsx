@@ -326,15 +326,16 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                   >
                     {group.items.map((item) => {
                       const active = isItemActive(item.href);
+                      const grad = tileGradient(item.href);
                       return (
                         <Link key={item.href} to={item.href} title={(collapsed && !isMobile) ? item.label : undefined}>
                           <motion.div
                             whileHover={{ x: (collapsed && !isMobile) ? 0 : 2 }}
                             transition={{ type: "spring", stiffness: 400, damping: 28 }}
-                            className={`relative flex items-center gap-3 px-2.5 py-2 rounded-lg text-[13px] font-medium transition-all duration-200 ${
+                            className={`group/item relative flex items-center gap-3 px-2 py-1.5 rounded-xl text-[13px] font-medium transition-all duration-200 ${
                               active
                                 ? "bg-gradient-to-r from-primary/25 via-primary/10 to-transparent text-foreground"
-                                : "text-muted-foreground hover:text-foreground hover:bg-foreground/[0.04]"
+                                : "text-foreground/85 hover:text-foreground hover:bg-foreground/[0.04]"
                             }`}
                           >
                             {active && (
@@ -343,12 +344,12 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                                 className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-gradient-to-b from-primary to-accent rounded-r-full shadow-[0_0_10px_hsl(var(--primary)/0.9)]"
                               />
                             )}
-                            <span className={`flex-shrink-0 w-7 h-7 rounded-md flex items-center justify-center transition-colors ${
-                              active
-                                ? "bg-gradient-to-br from-primary/30 to-accent/20 text-primary shadow-[inset_0_1px_0_hsl(var(--primary)/0.3)]"
-                                : "text-muted-foreground/80 group-hover:text-foreground"
-                            }`}>
-                              <item.icon size={15} />
+                            <span
+                              className={`flex-shrink-0 w-8 h-8 rounded-xl flex items-center justify-center text-white bg-gradient-to-br ${grad} shadow-[0_4px_12px_-4px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.25)] ring-1 ring-white/10 transition-transform duration-300 ${
+                                active ? "scale-110" : "group-hover/item:scale-110"
+                              }`}
+                            >
+                              <item.icon size={15} strokeWidth={2.2} />
                             </span>
                             <AnimatePresence mode="wait">
                               {(!collapsed || isMobile) && (
@@ -366,7 +367,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                               <span className={`text-[8.5px] font-bold px-1.5 py-0.5 rounded-md tracking-wider ${
                                 item.badge === "AI"
                                   ? "bg-gradient-to-r from-accent/30 to-primary/30 text-accent border border-accent/40"
-                                  : "bg-primary/15 text-primary border border-primary/30"
+                                  : "bg-gradient-to-r from-pink-500/20 to-fuchsia-500/20 text-pink-300 border border-pink-400/40"
                               }`}>
                                 {item.badge}
                               </span>
@@ -375,6 +376,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                         </Link>
                       );
                     })}
+
                   </motion.div>
                 )}
               </AnimatePresence>
