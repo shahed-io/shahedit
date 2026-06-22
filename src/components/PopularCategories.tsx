@@ -13,9 +13,9 @@ const categories = [
 
 const PopularCategories = () => {
   return (
-    <section className="py-24 relative overflow-hidden">
-      {/* Section divider top */}
-      <div className="absolute top-0 left-0 right-0 section-divider" />
+    <section className="py-24 relative overflow-hidden bg-background">
+      {/* removed harsh top divider — Hero now fades smoothly into this section */}
+
 
       {/* Background */}
       <div className="absolute inset-0 dot-grid opacity-25 pointer-events-none" />
