@@ -72,6 +72,11 @@ const AdminQuotations = lazy(() => import("./pages/admin/AdminQuotations"));
 const AdminNewsletter = lazy(() => import("./pages/admin/AdminNewsletter"));
 const AdminKnowledgeBase = lazy(() => import("./pages/admin/AdminKnowledgeBase"));
 const AdminCustomOrder = lazy(() => import("./pages/admin/AdminCustomOrder"));
+const AdminNotificationCenter = lazy(() => import("./pages/admin/AdminNotificationCenter"));
+const AdminKpiTracker = lazy(() => import("./pages/admin/AdminKpiTracker"));
+const AdminTaskBoard = lazy(() => import("./pages/admin/AdminTaskBoard"));
+const AdminBackupCenter = lazy(() => import("./pages/admin/AdminBackupCenter"));
+
 
 // Auth / user pages
 const LoginPage = lazy(() => import("./pages/LoginPage"));
@@ -209,6 +214,11 @@ const AdminRoutes = () => (
         <Route path="knowledge-base" element={<RoleRoute section="knowledge-base"><AdminKnowledgeBase /></RoleRoute>} />
         <Route path="custom-order" element={<RoleRoute section="custom-order"><AdminCustomOrder /></RoleRoute>} />
         <Route path="wallets" element={<RoleRoute section="wallets"><AdminWallets /></RoleRoute>} />
+        <Route path="notifications" element={<RoleRoute section="notifications"><AdminNotificationCenter /></RoleRoute>} />
+        <Route path="kpi" element={<RoleRoute section="kpi"><AdminKpiTracker /></RoleRoute>} />
+        <Route path="task-board" element={<RoleRoute section="task-board"><AdminTaskBoard /></RoleRoute>} />
+        <Route path="backup" element={<RoleRoute section="backup"><AdminBackupCenter /></RoleRoute>} />
+
       </Routes>
       </Suspense>
     </AdminLayout>

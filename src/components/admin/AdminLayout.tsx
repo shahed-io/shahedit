@@ -9,7 +9,7 @@ import {
   LayoutTemplate, Search, TrendingUp, Sparkles, Globe, Tag, Mail,
   History, BarChart3, ArrowLeftRight, ChevronDown, Crown, ExternalLink,
   Zap, RefreshCcw, Image as ImageIcon, FolderTree, BookOpen, ListChecks,
-  Receipt, TrendingDown, ClipboardList, X, ChevronRight, Command, Wallet,
+  Receipt, TrendingDown, ClipboardList, X, ChevronRight, Command, Wallet, Database,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -32,7 +32,10 @@ const navGroups: NavGroup[] = [
     items: [
       { label: "Dashboard", icon: LayoutDashboard, href: "/ceo", section: "dashboard" },
       { label: "Analytics", icon: BarChart3, href: "/ceo/analytics", badge: "NEW", section: "analytics" },
+      { label: "KPI & Goals", icon: TrendingUp, href: "/ceo/kpi", badge: "NEW", section: "kpi" },
+      { label: "Notifications", icon: Bell, href: "/ceo/notifications", badge: "NEW", section: "notifications" },
       { label: "Activity Log", icon: History, href: "/ceo/activity", section: "activity" },
+
     ],
   },
   {
@@ -56,9 +59,11 @@ const navGroups: NavGroup[] = [
     icon: ListChecks,
     items: [
       { label: "Projects & Tasks", icon: Briefcase, href: "/ceo/projects", badge: "NEW", section: "projects" },
+      { label: "Task Board (Kanban)", icon: ListChecks, href: "/ceo/task-board", badge: "NEW", section: "task-board" },
       { label: "Expenses", icon: TrendingDown, href: "/ceo/expenses", badge: "NEW", section: "expenses" },
       { label: "Knowledge Base", icon: BookOpen, href: "/ceo/knowledge-base", badge: "NEW", section: "knowledge-base" },
       { label: "Newsletter", icon: Mail, href: "/ceo/newsletter", badge: "NEW", section: "newsletter" },
+
     ],
   },
   {
@@ -111,6 +116,8 @@ const navGroups: NavGroup[] = [
       { label: "Footer Editor", icon: LayoutTemplate, href: "/ceo/footer", section: "footer" },
       { label: "Hero Banners", icon: LayoutTemplate, href: "/ceo/banners", badge: "NEW", section: "banners" },
       { label: "Site Settings", icon: Settings, href: "/ceo/settings", section: "settings" },
+      { label: "Backup & Export", icon: Database, href: "/ceo/backup", badge: "NEW", section: "backup" },
+
     ],
   },
 ];
