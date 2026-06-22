@@ -24,12 +24,15 @@ const FAQPage = () => {
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState<string | null>(null);
 
-  useEffect(() => {
+  const load = () => {
     supabase.from("faqs").select("*").eq("is_published", true).order("sort_order").then(({ data }) => {
       if (data && data.length > 0) setFaqs(data);
       setLoading(false);
     });
-  }, []);
+  };
+  useEffect(() => { load(); }, []);
+  useRealtimeSync("faqs", load);
+
 
   return (
     <div className="min-h-screen bg-background">
