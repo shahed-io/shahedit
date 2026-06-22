@@ -29,7 +29,7 @@ const FaqSection = () => {
   const [visible, setVisible] = useState(true);
   const [open, setOpen] = useState<string | null>(null);
 
-  useEffect(() => {
+  const loadFaqs = () => {
     supabase.from("faqs").select("id, question, answer").eq("is_published", true).order("sort_order").limit(6).then(({ data }) => {
       if (data && data.length > 0) setFaqs(data);
     });
@@ -39,7 +39,10 @@ const FaqSection = () => {
         if (data.content) setContent({ ...defaultContent, ...(data.content as any) });
       }
     });
-  }, []);
+  };
+  useEffect(() => { loadFaqs(); }, []);
+  useRealtimeSync(["faqs", "page_sections"], loadFaqs);
+
 
   if (!visible) return null;
 
