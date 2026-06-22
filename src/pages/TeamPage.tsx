@@ -3,6 +3,8 @@ import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
 import { Mail, Phone, Linkedin, Twitter, Crown, Calendar, Building2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useRealtimeSync } from "@/hooks/useRealtimeSync";
+
 
 interface TeamMember {
   id: string;
