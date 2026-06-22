@@ -113,8 +113,9 @@ const PopularCategories = () => {
         </div>
       </div>
 
-      {/* Section divider bottom */}
-      <div className="absolute bottom-0 left-0 right-0 section-divider" />
+      {/* Smooth fade-out to keep section boundaries harmonious */}
+      <div aria-hidden className="absolute inset-x-0 bottom-0 h-24 pointer-events-none"
+        style={{ background: "linear-gradient(to bottom, transparent, hsl(var(--background)))" }} />
     </section>
   );
 };
