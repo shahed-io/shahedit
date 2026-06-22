@@ -343,7 +343,7 @@ const SiteHeader = () => {
                 const active = isActive(link.href) || (link.hasDropdown && servicesOpen);
                 const showIndicator = activeKey === link.label;
                 const content = (
-                  <span className="relative px-3.5 py-1.5 text-sm font-semibold flex items-center gap-1 z-10">
+                  <span className="relative px-2.5 xl:px-3 py-1.5 text-[13px] xl:text-sm font-semibold flex items-center gap-1 z-10 whitespace-nowrap">
                     {showIndicator && (
                       <motion.span
                         layoutId="nav-active-pill"
