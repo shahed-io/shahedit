@@ -106,6 +106,7 @@ const SearchResultsPage = lazy(() => import("./pages/SearchResultsPage"));
 const AiSearchPage = lazy(() => import("./pages/AiSearchPage"));
 const TechDetailPage = lazy(() => import("./pages/TechDetailPage"));
 const UnsubscribePage = lazy(() => import("./pages/UnsubscribePage"));
+const TeamPage = lazy(() => import("./pages/TeamPage"));
 
 
 const queryClient = new QueryClient();
