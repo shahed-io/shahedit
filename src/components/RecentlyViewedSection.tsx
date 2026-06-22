@@ -5,6 +5,8 @@ import { Clock, X, ArrowRight, Star } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useRecentlyViewedIds } from "@/hooks/useRecentlyViewed";
 import { formatPrice, type ServicePackageRow } from "@/components/ProductsSection";
+import { useRealtimeSync } from "@/hooks/useRealtimeSync";
+
 
 export default function RecentlyViewedSection({ limit = 4, compact = false }: { limit?: number; compact?: boolean }) {
   const { ids, clear } = useRecentlyViewedIds();
