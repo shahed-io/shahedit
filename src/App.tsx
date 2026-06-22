@@ -72,6 +72,11 @@ const AdminQuotations = lazy(() => import("./pages/admin/AdminQuotations"));
 const AdminNewsletter = lazy(() => import("./pages/admin/AdminNewsletter"));
 const AdminKnowledgeBase = lazy(() => import("./pages/admin/AdminKnowledgeBase"));
 const AdminCustomOrder = lazy(() => import("./pages/admin/AdminCustomOrder"));
+const AdminNotificationCenter = lazy(() => import("./pages/admin/AdminNotificationCenter"));
+const AdminKpiTracker = lazy(() => import("./pages/admin/AdminKpiTracker"));
+const AdminTaskBoard = lazy(() => import("./pages/admin/AdminTaskBoard"));
+const AdminBackupCenter = lazy(() => import("./pages/admin/AdminBackupCenter"));
+
 
 // Auth / user pages
 const LoginPage = lazy(() => import("./pages/LoginPage"));
