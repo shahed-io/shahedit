@@ -241,6 +241,7 @@ const AppWithAnalytics = () => {
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/blog/:slug" element={<BlogPostPage />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/team" element={<TeamPage />}/>
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/faq" element={<FAQPage />} />
         <Route path="/pricing" element={<PricingPage />} />
