@@ -4,6 +4,8 @@ import { ChevronDown, HelpCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
 import type { FAQ } from "@/lib/supabase-types";
+import { useRealtimeSync } from "@/hooks/useRealtimeSync";
+
 
 const fallbackFaqs = [
   { id: "1", question: "আপনাদের সার্ভিস কত দিনের মধ্যে ডেলিভারি পাওয়া যায়?", answer: "সার্ভিস অনুযায়ী ৫ মিনিট থেকে ২৪ ঘন্টার মধ্যে ডেলিভারি দেওয়া হয়।" },
