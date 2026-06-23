@@ -156,6 +156,9 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   const [notifications, setNotifications] = useState<any[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [query, setQuery] = useState("");
+  const [aiResults, setAiResults] = useState<Array<{ href: string; label: string; reason: string }>>([]);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiError, setAiError] = useState<string | null>(null);
   const { user, role, loading, signOut } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
