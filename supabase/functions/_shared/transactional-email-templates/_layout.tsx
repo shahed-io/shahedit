@@ -1,8 +1,16 @@
 /// <reference types="npm:@types/react@18.3.1" />
 import * as React from 'npm:react@18.3.1'
 import {
-  Body, Container, Head, Heading, Html, Preview, Section, Text, Button, Hr,
+  Body, Container, Head, Heading, Html, Img, Preview, Section, Text, Button, Hr,
 } from 'npm:@react-email/components@0.0.22'
+
+const BRAND = {
+  name: 'SHAHED IT',
+  tagline: 'Smart IT Solutions',
+  logoUrl:
+    'https://www.shahedit.com/__l5e/assets-v1/ff0eebd6-2743-4605-9d95-c9984684e8d7/shahed-it-mark.png',
+}
+
 
 export interface LayoutProps {
   preview: string
