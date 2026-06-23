@@ -275,10 +275,7 @@ const AppWithAnalytics = () => {
         {/* Admin Routes (mounted at /ceo) */}
         <Route path="/ceo/login" element={<AdminLogin />} />
         <Route path="/ceo/*" element={<AdminRoutes />} />
-        {/* Legacy /admin → redirect to /ceo */}
-        <Route path="/admin" element={<Navigate to="/ceo" replace />} />
-        <Route path="/admin/login" element={<Navigate to="/ceo/login" replace />} />
-        <Route path="/admin/*" element={<Navigate to="/ceo" replace />} />
+        {/* /admin paths intentionally NOT mapped — show 404 to keep real admin path private */}
         <Route path="*" element={<NotFound />} />
       </Routes>
       </div>
