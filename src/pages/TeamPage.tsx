@@ -121,11 +121,9 @@ export default function TeamPage() {
   const [loading, setLoading] = useState(true);
 
   const load = async () => {
-    const { data } = await supabase
-      .from("team_members")
+    const { data } = await (supabase as any)
+      .from("team_members_public")
       .select("*")
-      .eq("is_published", true)
-      .eq("is_active", true)
       .order("is_owner", { ascending: false })
       .order("sort_order", { ascending: true })
       .order("created_at", { ascending: true });
