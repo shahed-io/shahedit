@@ -46,11 +46,26 @@ export const Layout = ({
       <Preview>{preview}</Preview>
       <Body style={main}>
         <Container style={container}>
-          <Section style={header}>
-            <Img src={BRAND.logoUrl} alt={BRAND.name} width={56} height={56} style={logoImg} />
-            <Heading style={brand}>{BRAND.name}</Heading>
-            <Text style={tagline}>{BRAND.tagline}</Text>
+          <Section style={brandBar}>
+            <table role="presentation" cellPadding={0} cellSpacing={0} style={{ margin: '0 auto', borderCollapse: 'collapse' }}>
+              <tr>
+                <td style={{ verticalAlign: 'middle', paddingRight: '14px' }}>
+                  <div style={logoCircle}>
+                    <Img src={BRAND.logoUrl} alt={BRAND.name} width={36} height={36} style={{ display: 'block' }} />
+                  </div>
+                </td>
+                <td style={{ verticalAlign: 'middle', textAlign: 'left' }}>
+                  <div style={brand}>Shahed IT</div>
+                  <div style={taglineWrap}>
+                    <span style={taglineDash} />
+                    <span style={tagline}>SHAHEDIT.COM</span>
+                    <span style={taglineDash} />
+                  </div>
+                </td>
+              </tr>
+            </table>
           </Section>
+
 
 
           <Section style={{ ...card, borderColor: color + '33' }}>
