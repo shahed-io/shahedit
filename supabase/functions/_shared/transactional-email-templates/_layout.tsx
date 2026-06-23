@@ -48,9 +48,10 @@ export const Layout = ({
         <Container style={container}>
           <Section style={header}>
             <Img src={BRAND.logoUrl} alt={BRAND.name} width={56} height={56} style={logoImg} />
-            <Heading style={{ ...brand, color }}>{BRAND.name}</Heading>
+            <Heading style={brand}>{BRAND.name}</Heading>
             <Text style={tagline}>{BRAND.tagline}</Text>
           </Section>
+
 
           <Section style={{ ...card, borderColor: color + '33' }}>
             <Heading style={h1}>{title}</Heading>
