@@ -46,11 +46,26 @@ export const Layout = ({
       <Preview>{preview}</Preview>
       <Body style={main}>
         <Container style={container}>
-          <Section style={header}>
-            <Img src={BRAND.logoUrl} alt={BRAND.name} width={56} height={56} style={logoImg} />
-            <Heading style={brand}>{BRAND.name}</Heading>
-            <Text style={tagline}>{BRAND.tagline}</Text>
+          <Section style={brandBar}>
+            <table role="presentation" cellPadding={0} cellSpacing={0} style={{ margin: '0 auto', borderCollapse: 'collapse' }}>
+              <tr>
+                <td style={{ verticalAlign: 'middle', paddingRight: '14px' }}>
+                  <div style={logoCircle}>
+                    <Img src={BRAND.logoUrl} alt={BRAND.name} width={36} height={36} style={{ display: 'block' }} />
+                  </div>
+                </td>
+                <td style={{ verticalAlign: 'middle', textAlign: 'left' }}>
+                  <div style={brand}>Shahed IT</div>
+                  <div style={taglineWrap}>
+                    <span style={taglineDash} />
+                    <span style={tagline}>SHAHEDIT.COM</span>
+                    <span style={taglineDash} />
+                  </div>
+                </td>
+              </tr>
+            </table>
           </Section>
+
 
 
           <Section style={{ ...card, borderColor: color + '33' }}>
@@ -84,9 +99,13 @@ export const Layout = ({
 const main = { backgroundColor: '#ffffff', fontFamily: "'Hind Siliguri','Noto Sans Bengali',Inter,Arial,sans-serif", margin: 0, padding: 0 }
 const container = { maxWidth: '560px', margin: '0 auto', padding: '24px 16px' }
 const header = { padding: '12px 0 18px', textAlign: 'center' as const }
-const brand = { fontSize: '22px', fontWeight: 800, margin: '8px 0 2px', letterSpacing: '1.2px', textTransform: 'uppercase' as const, color: '#7c3aed' }
-const tagline = { fontSize: '10px', color: '#7c3aed', letterSpacing: '2px', textTransform: 'uppercase' as const, margin: 0, fontWeight: 600 }
-const logoImg = { display: 'block', margin: '0 auto', borderRadius: '12px' }
+const brandBar = { background: 'linear-gradient(135deg, #1a0b2e 0%, #2d1454 50%, #3d1a6b 100%)', borderRadius: '14px', padding: '18px 22px', textAlign: 'center' as const, margin: '0 0 18px' }
+const logoCircle = { width: '52px', height: '52px', borderRadius: '50%', background: 'radial-gradient(circle at 30% 25%, #a78bfa, #7c3aed 55%, #4c1d95)', padding: '8px', boxShadow: '0 4px 14px rgba(124,58,237,0.5)', display: 'inline-block', boxSizing: 'border-box' as const }
+const brand = { fontSize: '24px', fontWeight: 800, margin: 0, letterSpacing: '0.5px', color: '#f0abfc', lineHeight: 1 }
+const taglineWrap = { display: 'flex', alignItems: 'center', gap: '6px', marginTop: '6px' }
+const taglineDash = { display: 'inline-block', width: '18px', height: '1px', background: 'rgba(196,181,253,0.5)' }
+const tagline = { fontSize: '10px', color: '#c4b5fd', letterSpacing: '3px', fontWeight: 600, whiteSpace: 'nowrap' as const }
+
 
 const card = { backgroundColor: '#faf7ff', border: '1px solid', borderRadius: '14px', padding: '26px 22px' }
 const h1 = { fontSize: '20px', color: '#1a1325', margin: '0 0 12px', fontWeight: 700 }
