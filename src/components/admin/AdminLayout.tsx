@@ -317,15 +317,60 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
             <Input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search menu…"
+              placeholder="Search menu… (AI দিয়ে খুঁজুন)"
               className="h-9 pl-8 pr-8 text-xs bg-card/40 border-primary/15 focus:border-primary/40 placeholder:text-muted-foreground/50 rounded-lg"
             />
-            {query && (
-              <button onClick={() => setQuery("")} className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground/70 hover:text-foreground">
-                <X size={12} />
-              </button>
-            )}
+            <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+              {noLocalMatch && (
+                <Sparkles size={12} className={`text-accent ${aiLoading ? "animate-pulse" : ""}`} />
+              )}
+              {query && (
+                <button onClick={() => setQuery("")} className="text-muted-foreground/70 hover:text-foreground">
+                  <X size={12} />
+                </button>
+              )}
+            </div>
           </div>
+
+          {/* AI search results — only when local filter is empty */}
+          {noLocalMatch && (
+            <div className="mt-2 rounded-lg border border-primary/20 bg-card/60 backdrop-blur-sm overflow-hidden">
+              <div className="px-3 py-1.5 flex items-center gap-1.5 text-[10px] uppercase tracking-[0.14em] font-bold text-primary/90 border-b border-primary/10">
+                <Sparkles size={10} className="text-accent" />
+                AI Suggestions
+                {aiLoading && <span className="ml-auto text-muted-foreground/60 normal-case tracking-normal">খুঁজছি…</span>}
+              </div>
+              {aiLoading && aiResults.length === 0 ? (
+                <div className="px-3 py-3 space-y-1.5">
+                  {[0, 1, 2].map((i) => (
+                    <div key={i} className="h-7 rounded bg-primary/5 animate-pulse" />
+                  ))}
+                </div>
+              ) : aiResults.length > 0 ? (
+                <div className="py-1">
+                  {aiResults.map((r) => (
+                    <button
+                      key={r.href}
+                      onClick={() => { navigate(r.href); setQuery(""); setMobileOpen(false); }}
+                      className="w-full text-left px-3 py-2 hover:bg-primary/10 transition-colors group"
+                    >
+                      <div className="flex items-center gap-2">
+                        <ChevronRight size={11} className="text-primary/60 group-hover:text-primary group-hover:translate-x-0.5 transition-transform" />
+                        <span className="text-xs font-medium text-foreground truncate">{r.label}</span>
+                      </div>
+                      {r.reason && (
+                        <p className="text-[10px] text-muted-foreground/70 mt-0.5 ml-[18px] line-clamp-1">{r.reason}</p>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <div className="px-3 py-3 text-[11px] text-muted-foreground/70 text-center">
+                  {aiError ?? "কোনো মিল পাওয়া যায়নি"}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
 
