@@ -877,17 +877,29 @@ const SiteHeader = () => {
                         <Link key={t.label} to={t.to} onClick={() => setMobileOpen(false)}>
                           <motion.div
                             whileTap={{ scale: 0.94 }}
-                            className="rounded-2xl p-2.5 flex flex-col items-center gap-1.5 h-full"
+                            className="relative rounded-2xl p-2.5 flex flex-col items-center gap-1.5 h-full overflow-hidden"
                             style={{
-                              background: "rgba(255,255,255,0.045)",
-                              border: "1px solid rgba(255,255,255,0.09)",
-                              boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
+                              background: "linear-gradient(160deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))",
+                              border: "1px solid rgba(255,255,255,0.10)",
+                              boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08), 0 4px 14px rgba(0,0,0,0.25)",
+                              backdropFilter: "blur(10px)",
                             }}
                           >
-                            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white" style={{ background: t.grad, boxShadow: "0 6px 14px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.25)" }}>
-                              <t.icon size={16} />
+                            {/* Top accent line */}
+                            <span aria-hidden className="absolute top-0 left-3 right-3 h-px opacity-70" style={{ background: t.grad }} />
+                            <div className="relative w-11 h-11 rounded-2xl flex items-center justify-center text-white"
+                              style={{
+                                background: t.grad,
+                                boxShadow: "0 8px 18px rgba(0,0,0,0.40), inset 0 1px 0 rgba(255,255,255,0.35), inset 0 -2px 6px rgba(0,0,0,0.25)",
+                              }}>
+                              {/* Glossy highlight */}
+                              <span aria-hidden className="absolute inset-[2px] rounded-[14px] pointer-events-none"
+                                style={{ background: "radial-gradient(ellipse at 30% 15%, rgba(255,255,255,0.55), transparent 60%)" }} />
+                              {/* Soft outer glow */}
+                              <span aria-hidden className="absolute -inset-1 rounded-2xl opacity-40 blur-md -z-10" style={{ background: t.grad }} />
+                              <t.icon size={18} strokeWidth={2.4} className="relative drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]" />
                             </div>
-                            <span className="text-[10px] font-bold text-white/85 text-center leading-tight">{t.label}</span>
+                            <span className="text-[10px] font-bold text-white/90 text-center leading-tight tracking-wide">{t.label}</span>
                           </motion.div>
                         </Link>
                       ))}
