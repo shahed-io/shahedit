@@ -1,8 +1,16 @@
 /// <reference types="npm:@types/react@18.3.1" />
 import * as React from 'npm:react@18.3.1'
 import {
-  Body, Container, Head, Heading, Html, Preview, Section, Text, Button, Hr,
+  Body, Container, Head, Heading, Html, Img, Preview, Section, Text, Button, Hr,
 } from 'npm:@react-email/components@0.0.22'
+
+const BRAND = {
+  name: 'SHAHED IT',
+  tagline: 'Smart IT Solutions',
+  logoUrl:
+    'https://www.shahedit.com/__l5e/assets-v1/ff0eebd6-2743-4605-9d95-c9984684e8d7/shahed-it-mark.png',
+}
+
 
 export interface LayoutProps {
   preview: string
@@ -39,8 +47,11 @@ export const Layout = ({
       <Body style={main}>
         <Container style={container}>
           <Section style={header}>
-            <Heading style={{ ...brand, color }}>Shahed IT</Heading>
+            <Img src={BRAND.logoUrl} alt={BRAND.name} width={56} height={56} style={logoImg} />
+            <Heading style={{ ...brand, color }}>{BRAND.name}</Heading>
+            <Text style={tagline}>{BRAND.tagline}</Text>
           </Section>
+
           <Section style={{ ...card, borderColor: color + '33' }}>
             <Heading style={h1}>{title}</Heading>
             {intro ? <Text style={text}>{intro}</Text> : null}
@@ -72,7 +83,10 @@ export const Layout = ({
 const main = { backgroundColor: '#ffffff', fontFamily: "'Hind Siliguri','Noto Sans Bengali',Inter,Arial,sans-serif", margin: 0, padding: 0 }
 const container = { maxWidth: '560px', margin: '0 auto', padding: '24px 16px' }
 const header = { padding: '12px 0 18px', textAlign: 'center' as const }
-const brand = { fontSize: '22px', fontWeight: 700, margin: 0, letterSpacing: '0.5px' }
+const brand = { fontSize: '22px', fontWeight: 800, margin: '8px 0 2px', letterSpacing: '1.2px', textTransform: 'uppercase' as const }
+const tagline = { fontSize: '10px', color: '#7c3aed', letterSpacing: '2px', textTransform: 'uppercase' as const, margin: 0, fontWeight: 600 }
+const logoImg = { display: 'block', margin: '0 auto', borderRadius: '12px' }
+
 const card = { backgroundColor: '#faf7ff', border: '1px solid', borderRadius: '14px', padding: '26px 22px' }
 const h1 = { fontSize: '20px', color: '#1a1325', margin: '0 0 12px', fontWeight: 700 }
 const text = { fontSize: '15px', lineHeight: '24px', color: '#444', margin: '0 0 12px' }
