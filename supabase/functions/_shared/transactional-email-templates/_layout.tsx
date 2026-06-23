@@ -83,7 +83,10 @@ export const Layout = ({
 const main = { backgroundColor: '#ffffff', fontFamily: "'Hind Siliguri','Noto Sans Bengali',Inter,Arial,sans-serif", margin: 0, padding: 0 }
 const container = { maxWidth: '560px', margin: '0 auto', padding: '24px 16px' }
 const header = { padding: '12px 0 18px', textAlign: 'center' as const }
-const brand = { fontSize: '22px', fontWeight: 700, margin: 0, letterSpacing: '0.5px' }
+const brand = { fontSize: '22px', fontWeight: 800, margin: '8px 0 2px', letterSpacing: '1.2px', textTransform: 'uppercase' as const }
+const tagline = { fontSize: '10px', color: '#7c3aed', letterSpacing: '2px', textTransform: 'uppercase' as const, margin: 0, fontWeight: 600 }
+const logoImg = { display: 'block', margin: '0 auto', borderRadius: '12px' }
+
 const card = { backgroundColor: '#faf7ff', border: '1px solid', borderRadius: '14px', padding: '26px 22px' }
 const h1 = { fontSize: '20px', color: '#1a1325', margin: '0 0 12px', fontWeight: 700 }
 const text = { fontSize: '15px', lineHeight: '24px', color: '#444', margin: '0 0 12px' }
