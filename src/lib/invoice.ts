@@ -100,6 +100,7 @@ export function openInvoice(p: InvoiceData) {
           <p style="opacity:.78;font-size:12px;margin-top:6px">${COMPANY.address}</p>
         </div>
       </div>
+      <div class="right">
 
         <div class="label">Invoice / Receipt</div>
         <div class="num">${inv}</div>
