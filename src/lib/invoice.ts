@@ -57,13 +57,17 @@ export function openInvoice(p: InvoiceData) {
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:'Inter',-apple-system,Segoe UI,Roboto,sans-serif;background:#f5f3ff;padding:32px;color:#1a1233;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .sheet{max-width:820px;margin:0 auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 20px 60px rgba(80,50,140,0.12)}
-  .head{padding:32px 36px;background:linear-gradient(135deg,#6366f1 0%,#a855f7 50%,#ec4899 100%);color:#fff;display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
-  .brand h1{font-size:26px;font-weight:800;letter-spacing:-.5px}
-  .brand p{opacity:.85;font-size:13px;margin-top:4px}
+  .head{padding:28px 36px;background:linear-gradient(135deg,#1a0b2e 0%,#2d1454 50%,#3d1a6b 100%);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:16px;border-bottom:1px solid rgba(168,85,247,0.25)}
+  .brand-logo{width:54px;height:54px;border-radius:50%;background:radial-gradient(circle at 30% 25%,#a78bfa,#7c3aed 55%,#4c1d95);display:flex;align-items:center;justify-content:center;padding:8px;box-shadow:0 6px 20px rgba(124,58,237,0.55),inset 0 1px 0 rgba(255,255,255,0.25)}
+  .brand-logo img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.4))}
+  .brand-name{font-size:26px;font-weight:800;letter-spacing:0.5px;background:linear-gradient(135deg,#ffffff 0%,#e9d5ff 35%,#c4b5fd 60%,#f0abfc 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;line-height:1}
+  .brand-tag{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:10px;letter-spacing:3px;font-weight:600;color:#c4b5fd;text-transform:uppercase}
+  .brand-tag::before,.brand-tag::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(196,181,253,0.4),transparent);min-width:14px}
   .head .right{text-align:right}
-  .head .right .label{font-size:11px;opacity:.8;text-transform:uppercase;letter-spacing:1.5px}
-  .head .right .num{font-size:22px;font-weight:800;margin-top:4px}
+  .head .right .label{font-size:11px;opacity:.75;text-transform:uppercase;letter-spacing:1.5px;color:#c4b5fd}
+  .head .right .num{font-size:22px;font-weight:800;margin-top:4px;color:#fff}
   .badge{display:inline-block;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:.5px;margin-top:8px;background:${sb.bg};color:${sb.color}}
+
   .meta{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:28px 36px;border-bottom:1px solid #ece6f8}
   .meta h3{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:#9b8fb5;margin-bottom:8px;font-weight:700}
   .meta p{font-size:14px;line-height:1.55;color:#2a1f4a}
