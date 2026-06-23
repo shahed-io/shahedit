@@ -97,14 +97,14 @@ export function openInvoice(p: InvoiceData) {
   <div class="sheet">
     <div class="head">
       <div class="brand" style="display:flex;align-items:center;gap:14px">
-        <img src="${COMPANY.logoUrl}" alt="${COMPANY.name}" style="width:56px;height:56px;border-radius:12px;background:rgba(255,255,255,0.12);padding:6px;box-shadow:0 4px 14px rgba(0,0,0,0.25)" />
+        <div class="brand-logo"><img src="${COMPANY.logoUrl}" alt="${COMPANY.name}" /></div>
         <div>
-          <h1 style="font-size:24px;font-weight:800;letter-spacing:0.5px;text-transform:uppercase">${COMPANY.name}</h1>
-          <p style="opacity:.92;font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-top:2px">${COMPANY.tagline}</p>
-          <p style="opacity:.78;font-size:12px;margin-top:6px">${COMPANY.address}</p>
+          <div class="brand-name">Shahed IT</div>
+          <div class="brand-tag">SHAHEDIT.COM</div>
         </div>
       </div>
       <div class="right">
+
 
         <div class="label">Invoice / Receipt</div>
         <div class="num">${inv}</div>
