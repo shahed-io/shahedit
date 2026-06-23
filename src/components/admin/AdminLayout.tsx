@@ -181,6 +181,43 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       .filter((g) => g.items.length > 0);
   }, [visibleGroups, query]);
 
+  // AI fallback search — when local filter finds nothing, ask the model
+  const noLocalMatch = query.trim().length >= 2 && filteredGroups.length === 0;
+  useEffect(() => {
+    if (!noLocalMatch) {
+      setAiResults([]);
+      setAiError(null);
+      setAiLoading(false);
+      return;
+    }
+    let cancelled = false;
+    setAiLoading(true);
+    setAiError(null);
+    const handle = setTimeout(async () => {
+      try {
+        const items = visibleGroups.flatMap((g) =>
+          g.items.map((it) => ({ label: it.label, href: it.href, group: g.title }))
+        );
+        const { data, error } = await supabase.functions.invoke("admin-menu-ai-search", {
+          body: { query: query.trim(), items },
+        });
+        if (cancelled) return;
+        if (error) throw error;
+        if (data?.error === "rate_limited") setAiError("একটু পরে আবার চেষ্টা করুন");
+        else if (data?.error === "credits_exhausted") setAiError("AI credit শেষ");
+        setAiResults(Array.isArray(data?.results) ? data.results : []);
+      } catch (e) {
+        if (!cancelled) {
+          setAiError("AI search ব্যর্থ হয়েছে");
+          setAiResults([]);
+        }
+      } finally {
+        if (!cancelled) setAiLoading(false);
+      }
+    }, 450);
+    return () => { cancelled = true; clearTimeout(handle); };
+  }, [query, noLocalMatch, visibleGroups]);
+
   useEffect(() => {
     if (loading || initializedGroups.current) return;
     const next: Record<string, boolean> = {};
