@@ -13,14 +13,18 @@ export interface InvoiceData {
   created_at: string;
 }
 
+import { BRAND } from "./brand";
+
 const COMPANY = {
-  name: "Shahed IT",
-  tagline: "Professional IT Solutions Bangladesh",
-  address: "Sopura, Rajshahi, Bangladesh",
-  phone: "01820-060046",
-  email: "info@shahedit.com",
-  website: "shahedit.com",
+  name: BRAND.fullName,
+  tagline: BRAND.tagline,
+  address: BRAND.address,
+  phone: BRAND.phone,
+  email: BRAND.email,
+  website: BRAND.website,
+  logoUrl: BRAND.logoUrl,
 };
+
 
 const fmtBDT = (n: number) =>
   "৳ " + Number(n || 0).toLocaleString("en-IN", { minimumFractionDigits: 0 });
