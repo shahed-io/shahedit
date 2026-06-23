@@ -84,7 +84,7 @@ export const Layout = ({
 const main = { backgroundColor: '#ffffff', fontFamily: "'Hind Siliguri','Noto Sans Bengali',Inter,Arial,sans-serif", margin: 0, padding: 0 }
 const container = { maxWidth: '560px', margin: '0 auto', padding: '24px 16px' }
 const header = { padding: '12px 0 18px', textAlign: 'center' as const }
-const brand = { fontSize: '22px', fontWeight: 800, margin: '8px 0 2px', letterSpacing: '1.2px', textTransform: 'uppercase' as const }
+const brand = { fontSize: '22px', fontWeight: 800, margin: '8px 0 2px', letterSpacing: '1.2px', textTransform: 'uppercase' as const, color: '#7c3aed' }
 const tagline = { fontSize: '10px', color: '#7c3aed', letterSpacing: '2px', textTransform: 'uppercase' as const, margin: 0, fontWeight: 600 }
 const logoImg = { display: 'block', margin: '0 auto', borderRadius: '12px' }
 
