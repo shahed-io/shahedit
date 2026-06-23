@@ -118,6 +118,22 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
           />
         )}
 
+        {/* Outer breathing aura — soft ambient glow */}
+        {!open && (
+          <motion.span
+            aria-hidden
+            animate={{ scale: [1, 1.35, 1], opacity: [0.55, 0, 0.55] }}
+            transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -inset-3 rounded-full pointer-events-none"
+            style={{
+              background:
+                "radial-gradient(circle, hsla(270,92%,65%,0.45) 0%, hsla(320,90%,55%,0.25) 45%, transparent 75%)",
+              filter: "blur(10px)",
+              zIndex: -1,
+            }}
+          />
+        )}
+
         {/* Soft pulse halo */}
         {!open && !isMobile && (
           <span
@@ -125,6 +141,7 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
             style={{ background: "rgba(168,85,247,0.25)" }}
           />
         )}
+
 
         {/* Glossy top highlight */}
         {!open && (
