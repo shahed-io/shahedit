@@ -92,14 +92,15 @@ const AboutSection = () => {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.12, type: "spring", stiffness: 120 }}
                 whileHover={{ x: 6 }}
-                className="flex items-center gap-4 p-5 rounded-2xl group cursor-pointer transition-all duration-400"
+                className="flex items-center gap-3 sm:gap-4 p-3.5 sm:p-5 rounded-2xl group cursor-pointer transition-all duration-400"
                 style={{ background: 'rgba(168,85,247,0.07)', border: '1px solid rgba(168,85,247,0.15)' }}
               >
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
                   style={{ background: 'linear-gradient(135deg, rgba(168,85,247,0.25), rgba(236,72,153,0.15))' }}>
-                  <CheckCircle2 size={20} style={{ color: 'hsl(320,90%,55%)' }} />
+                  <CheckCircle2 size={18} className="sm:hidden" style={{ color: 'hsl(320,90%,55%)' }} />
+                  <CheckCircle2 size={20} className="hidden sm:block" style={{ color: 'hsl(320,90%,55%)' }} />
                 </div>
-                <span className="font-medium text-foreground/75 group-hover:text-foreground transition-colors">{item}</span>
+                <span className="text-[13.5px] sm:text-base font-medium text-foreground/75 group-hover:text-foreground transition-colors leading-snug min-w-0">{item}</span>
               </motion.div>
             ))}
 
