@@ -50,7 +50,7 @@ export const Layout = ({
                   </div>
                 </td>
                 <td style={{ verticalAlign: 'middle', textAlign: 'left' }}>
-                  <div style={brand}>Shahed IT</div>
+                  <div style={brand}>SHAHED IT</div>
                   <div style={taglineWrap}>
                     <span style={taglineDash} />
                     <span style={tagline}>SHAHEDIT.COM</span>
@@ -84,7 +84,7 @@ export const Layout = ({
             ) : null}
           </Section>
           <Hr style={hr} />
-          <Text style={footer}>Shahed IT · Sopura, Rajshahi · 01820-060046</Text>
+          <Text style={footer}>SHAHED IT · Sopura, Rajshahi · 01820-060046</Text>
         </Container>
       </Body>
     </Html>

@@ -99,7 +99,7 @@ export function openInvoice(p: InvoiceData) {
       <div class="brand" style="display:flex;align-items:center;gap:14px">
         <div class="brand-logo"><img src="${COMPANY.logoUrl}" alt="${COMPANY.name}" /></div>
         <div>
-          <div class="brand-name">Shahed IT</div>
+          <div class="brand-name">${COMPANY.name}</div>
           <div class="brand-tag">SHAHEDIT.COM</div>
         </div>
       </div>
