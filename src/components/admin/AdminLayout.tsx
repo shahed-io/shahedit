@@ -285,7 +285,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                 <span className="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-accent ring-2 ring-background animate-pulse" />
               </div>
               <div className="leading-tight">
-                <p className="text-foreground font-bold text-[15px] font-syne tracking-tight">Shahed IT</p>
+                <p className="text-foreground font-bold text-[15px] font-syne tracking-tight">SHAHED IT</p>
                 <p className="text-[10px] text-primary/90 mt-0.5 flex items-center gap-1 font-medium uppercase tracking-[0.12em]">
                   <Crown size={9} className="text-accent" /> Admin Suite
                 </p>
