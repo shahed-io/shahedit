@@ -55,7 +55,7 @@ export const Layout = ({
                   </div>
                 </td>
                 <td style={{ verticalAlign: 'middle', textAlign: 'left' }}>
-                  <div style={brand}>Shahed IT</div>
+                  <Img src="https://www.shahedit.com/__l5e/assets-v1/fe9be6c5-fc9b-4aac-9df4-27edaaae0312/shahed-it-wordmark.png" alt="Shahed IT" height={26} style={brand} />
                   <div style={taglineWrap}>
                     <span style={taglineDash} />
                     <span style={tagline}>SHAHEDIT.COM</span>
