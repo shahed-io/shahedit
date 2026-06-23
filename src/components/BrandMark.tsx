@@ -104,7 +104,7 @@ const BrandMark = ({
         loading="eager"
         decoding="async"
         className={`relative w-full h-full object-contain ${rounded ? "rounded-full" : ""}`}
-        style={{ filter: dropShadow }}
+        style={{ filter: dropShadow, transform: "scale(1.25)" }}
       />
     </span>
   );
