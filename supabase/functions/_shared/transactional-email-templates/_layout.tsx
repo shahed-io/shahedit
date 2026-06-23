@@ -37,12 +37,7 @@ export const Layout = ({
   const color = ACCENTS[accent]
   return (
     <Html lang="bn" dir="ltr">
-      <Head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </Head>
+      <Head />
       <Preview>{preview}</Preview>
       <Body style={main}>
         <Container style={container}>

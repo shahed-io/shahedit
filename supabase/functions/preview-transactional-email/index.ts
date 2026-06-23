@@ -33,61 +33,55 @@ Deno.serve(async (req) => {
   }
 
   const templateNames = Object.keys(TEMPLATES)
-  const results: Array<{
-    templateName: string
-    displayName: string
-    subject: string
-    html: string
-    status: 'ready' | 'preview_data_required' | 'render_failed'
-    errorMessage?: string
-  }> = []
 
-  for (const name of templateNames) {
-    const entry = TEMPLATES[name]
-    const displayName = entry.displayName || name
+  // Render all templates in PARALLEL (was serial — caused 5+ sec loads)
+  const results = await Promise.all(
+    templateNames.map(async (name) => {
+      const entry = TEMPLATES[name]
+      const displayName = entry.displayName || name
 
-    if (!entry.previewData) {
-      results.push({
-        templateName: name,
-        displayName,
-        subject: '',
-        html: '',
-        status: 'preview_data_required',
-      })
-      continue
-    }
+      if (!entry.previewData) {
+        return {
+          templateName: name,
+          displayName,
+          subject: '',
+          html: '',
+          status: 'preview_data_required' as const,
+        }
+      }
 
-    try {
-      const html = await renderAsync(
-        React.createElement(entry.component, entry.previewData)
-      )
-      const resolvedSubject =
-        typeof entry.subject === 'function'
-          ? entry.subject(entry.previewData)
-          : entry.subject
+      try {
+        const html = await renderAsync(
+          React.createElement(entry.component, entry.previewData)
+        )
+        const resolvedSubject =
+          typeof entry.subject === 'function'
+            ? entry.subject(entry.previewData)
+            : entry.subject
 
-      results.push({
-        templateName: name,
-        displayName,
-        subject: resolvedSubject,
-        html,
-        status: 'ready',
-      })
-    } catch (err) {
-      console.error('Failed to render template for preview', {
-        template: name,
-        error: err,
-      })
-      results.push({
-        templateName: name,
-        displayName,
-        subject: '',
-        html: '',
-        status: 'render_failed',
-        errorMessage: err instanceof Error ? err.message : String(err),
-      })
-    }
-  }
+        return {
+          templateName: name,
+          displayName,
+          subject: resolvedSubject,
+          html,
+          status: 'ready' as const,
+        }
+      } catch (err) {
+        console.error('Failed to render template for preview', {
+          template: name,
+          error: err,
+        })
+        return {
+          templateName: name,
+          displayName,
+          subject: '',
+          html: '',
+          status: 'render_failed' as const,
+          errorMessage: err instanceof Error ? err.message : String(err),
+        }
+      }
+    })
+  )
 
   return new Response(JSON.stringify({ templates: results }), {
     status: 200,
