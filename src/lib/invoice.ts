@@ -99,7 +99,7 @@ export function openInvoice(p: InvoiceData) {
       <div class="brand" style="display:flex;align-items:center;gap:14px">
         <div class="brand-logo"><img src="${COMPANY.logoUrl}" alt="${COMPANY.name}" /></div>
         <div>
-          <div class="brand-name">Shahed IT</div>
+          <img class="brand-name" src="https://www.shahedit.com/__l5e/assets-v1/fe9be6c5-fc9b-4aac-9df4-27edaaae0312/shahed-it-wordmark.png" alt="Shahed IT" style="height:28px;width:auto;display:block;filter:brightness(0) invert(1)" />
           <div class="brand-tag">SHAHEDIT.COM</div>
         </div>
       </div>

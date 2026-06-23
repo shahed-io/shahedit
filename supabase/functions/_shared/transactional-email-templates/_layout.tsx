@@ -55,7 +55,7 @@ export const Layout = ({
                   </div>
                 </td>
                 <td style={{ verticalAlign: 'middle', textAlign: 'left' }}>
-                  <div style={brand}>Shahed IT</div>
+                  <Img src="https://www.shahedit.com/__l5e/assets-v1/fe9be6c5-fc9b-4aac-9df4-27edaaae0312/shahed-it-wordmark.png" alt="Shahed IT" height={26} style={brand} />
                   <div style={taglineWrap}>
                     <span style={taglineDash} />
                     <span style={tagline}>SHAHEDIT.COM</span>
@@ -101,7 +101,7 @@ const container = { maxWidth: '560px', margin: '0 auto', padding: '24px 16px' }
 const header = { padding: '12px 0 18px', textAlign: 'center' as const }
 const brandBar = { background: 'linear-gradient(135deg, #1a0b2e 0%, #2d1454 50%, #3d1a6b 100%)', borderRadius: '14px', padding: '18px 22px', textAlign: 'center' as const, margin: '0 0 18px' }
 const logoCircle = { width: '52px', height: '52px', borderRadius: '50%', background: 'radial-gradient(circle at 30% 25%, #a78bfa, #7c3aed 55%, #4c1d95)', padding: '8px', boxShadow: '0 4px 14px rgba(124,58,237,0.5)', display: 'inline-block', boxSizing: 'border-box' as const }
-const brand = { fontSize: '24px', fontWeight: 800, margin: 0, letterSpacing: '0.5px', color: '#f0abfc', lineHeight: 1 }
+const brand = { height: '26px', width: 'auto', display: 'block', filter: 'brightness(0) invert(1)' }
 const taglineWrap = { display: 'flex', alignItems: 'center', gap: '6px', marginTop: '6px' }
 const taglineDash = { display: 'inline-block', width: '18px', height: '1px', background: 'rgba(196,181,253,0.5)' }
 const tagline = { fontSize: '10px', color: '#c4b5fd', letterSpacing: '3px', fontWeight: 600, whiteSpace: 'nowrap' as const }
