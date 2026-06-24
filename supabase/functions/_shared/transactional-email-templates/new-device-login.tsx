@@ -11,8 +11,8 @@ const Email = (p: Props) => (
     title={'নতুন ডিভাইস থেকে লগইন'}
     intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, আপনার অ্যাকাউন্টে একটি নতুন লগইন সনাক্ত হয়েছে।`}
     paragraphs={['যদি এটা আপনি না হন, এখনই পাসওয়ার্ড পরিবর্তন করুন।']}
-    rows={[['Device', p.device], ['Location', p.location], ['Time', p.when]]}
-    ctaLabel={'Account secure করুন'}
+    rows={[['ডিভাইস', p.device], ['লোকেশন', p.location], ['সময়', p.when]]}
+    ctaLabel={'অ্যাকাউন্ট সুরক্ষিত করুন'}
     ctaUrl={'https://shahedit.com/profile'}
     accent="amber"
   />
@@ -22,5 +22,5 @@ export const template = {
   component: Email,
   subject: 'নতুন ডিভাইস থেকে লগইন — Shahed IT',
   displayName: 'New Device Login Alert',
-  previewData: {"name":"Karim","device":"Chrome on Windows","location":"Rajshahi, BD","when":"আজ ৩:২০ PM"},
+  previewData: {"name":"করিম","device":"Chrome on Windows","location":"রাজশাহী, বাংলাদেশ","when":"আজ বিকাল ৩:২০"},
 } satisfies TemplateEntry

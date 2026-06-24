@@ -22,5 +22,5 @@ export const template = {
   component: Email,
   subject: 'আপনার পোস্টে নতুন কমেন্ট',
   displayName: 'New Comment Notification',
-  previewData: {"name":"Karim","commenter":"Rahim","on":"Blog Post","commentPreview":"দারুণ লেখা!"},
+  previewData: {"name":"করিম","commenter":"রহিম","on":"ব্লগ পোস্টে","commentPreview":"দারুণ লেখা!"},
 } satisfies TemplateEntry

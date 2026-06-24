@@ -11,8 +11,8 @@ const Email = (p: Props) => (
     title={'অর্ডার ডেলিভার হয়েছে ✅'}
     intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, আপনার অর্ডার সফলভাবে ডেলিভার হয়েছে।`}
     paragraphs={['আমাদের সাথে থাকার জন্য ধন্যবাদ। একটি রিভিউ দিতে ভুলবেন না!']}
-    rows={[['Order #', p.orderNumber]]}
-    ctaLabel={'Review দিন'}
+    rows={[['অর্ডার নম্বর', p.orderNumber]]}
+    ctaLabel={'রিভিউ দিন'}
     ctaUrl={'https://shahedit.com/dashboard'}
     accent="green"
   />
@@ -20,7 +20,7 @@ const Email = (p: Props) => (
 
 export const template = {
   component: Email,
-  subject: (d) => `Delivered — ${d.orderNumber ?? ''}`,
+  subject: (d) => `অর্ডার ডেলিভার হয়েছে — ${d.orderNumber ?? ''}`,
   displayName: 'Order Delivered',
-  previewData: {"name":"Karim","orderNumber":"SI-1024"},
+  previewData: {"name":"করিম","orderNumber":"SI-1024"},
 } satisfies TemplateEntry

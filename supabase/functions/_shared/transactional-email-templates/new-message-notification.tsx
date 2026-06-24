@@ -22,5 +22,5 @@ export const template = {
   component: Email,
   subject: (d) => `নতুন বার্তা${d.from ? ` — ${d.from}` : ''}`,
   displayName: 'New Message Notification',
-  previewData: {"name":"Karim","from":"Admin","preview":"আপনার প্রজেক্ট ready।"},
+  previewData: {"name":"করিম","from":"অ্যাডমিন","preview":"আপনার প্রজেক্ট প্রস্তুত।"},
 } satisfies TemplateEntry

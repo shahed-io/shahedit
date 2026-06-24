@@ -7,11 +7,11 @@ interface Props { name?: string; startTime?: string; duration?: string }
 
 const Email = (p: Props) => (
   <Layout
-    preview={'নির্ধারিত maintenance'}
-    title={'Maintenance Notice 🔧'}
-    intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, আমরা সিস্টেম maintenance চালাব।`}
-    paragraphs={['এই সময়ে service সাময়িকভাবে বন্ধ থাকতে পারে। অসুবিধার জন্য দুঃখিত।']}
-    rows={[['Start', p.startTime], ['Duration', p.duration]]}
+    preview={'নির্ধারিত রক্ষণাবেক্ষণ'}
+    title={'রক্ষণাবেক্ষণ নোটিশ'}
+    intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, আমরা সিস্টেম রক্ষণাবেক্ষণের কাজ করব।`}
+    paragraphs={['এই সময়ে সার্ভিস সাময়িকভাবে বন্ধ থাকতে পারে। অসুবিধার জন্য দুঃখিত।']}
+    rows={[['শুরুর সময়', p.startTime], ['সময়কাল', p.duration]]}
     
     
     accent="amber"
@@ -20,7 +20,7 @@ const Email = (p: Props) => (
 
 export const template = {
   component: Email,
-  subject: 'Scheduled Maintenance — Shahed IT',
+  subject: 'নির্ধারিত রক্ষণাবেক্ষণ — Shahed IT',
   displayName: 'Maintenance Notice',
-  previewData: {"name":"Karim","startTime":"২০২৬-০৬-১৫ ২:০০ AM","duration":"১ ঘণ্টা"},
+  previewData: {"name":"করিম","startTime":"২০২৬-০৬-১৫ রাত ২:০০","duration":"১ ঘণ্টা"},
 } satisfies TemplateEntry

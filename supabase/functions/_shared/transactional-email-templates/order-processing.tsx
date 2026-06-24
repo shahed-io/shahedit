@@ -10,9 +10,9 @@ const Email = (p: Props) => (
     preview={'অর্ডার প্রসেসিং শুরু হয়েছে'}
     title={'অর্ডার প্রসেসিং শুরু 🚀'}
     intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, আমরা আপনার অর্ডার নিয়ে কাজ শুরু করেছি।`}
-    paragraphs={['আপডেট পেতে dashboard এ চোখ রাখুন।']}
-    rows={[['Order #', p.orderNumber]]}
-    ctaLabel={'Order দেখুন'}
+    paragraphs={['আপডেট পেতে ড্যাশবোর্ডে চোখ রাখুন।']}
+    rows={[['অর্ডার নম্বর', p.orderNumber]]}
+    ctaLabel={'অর্ডার দেখুন'}
     ctaUrl={'https://shahedit.com/dashboard'}
     accent="purple"
   />
@@ -22,5 +22,5 @@ export const template = {
   component: Email,
   subject: (d) => `অর্ডার প্রসেসিং — ${d.orderNumber ?? ''}`,
   displayName: 'Order Processing',
-  previewData: {"name":"Karim","orderNumber":"SI-1024"},
+  previewData: {"name":"করিম","orderNumber":"SI-1024"},
 } satisfies TemplateEntry
