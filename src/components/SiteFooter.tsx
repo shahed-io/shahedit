@@ -343,70 +343,149 @@ const SiteFooter = () => {
           </div>
         </motion.div>
 
-        {/* Copyright */}
-        <div className="mt-10 flex justify-center px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="group relative inline-flex flex-wrap justify-center items-center gap-x-3 gap-y-1.5 px-6 sm:px-8 py-3 rounded-full text-[11px] sm:text-[12px] tracking-wide max-w-full overflow-hidden"
-            style={{
-              background:
-                "linear-gradient(135deg, hsla(265,55%,10%,0.85), hsla(280,60%,8%,0.80), hsla(255,50%,6%,0.88))",
-              border: "1px solid hsla(280,80%,65%,0.22)",
-              backdropFilter: "blur(14px)",
-              WebkitBackdropFilter: "blur(14px)",
-              boxShadow:
-                "0 8px 32px -10px hsla(270,90%,40%,0.45), inset 0 1px 0 hsla(0,0%,100%,0.06)",
-            }}
+        {/* Premium Copyright Bar */}
+        <div className="mt-12 flex justify-center px-4 relative">
+          {/* Ambient glow halo behind the pill */}
+          <div
+            aria-hidden
+            className="absolute inset-0 flex justify-center items-center pointer-events-none"
           >
-            {/* rotating conic border glow */}
-            <span
-              aria-hidden
-              className="absolute -inset-px rounded-full opacity-50 blur-[2px] animate-spin pointer-events-none"
+            <div
+              className="w-[520px] max-w-full h-16 rounded-full opacity-70 animate-pulse"
               style={{
                 background:
-                  "conic-gradient(from 0deg, transparent 0%, hsla(280,90%,65%,0.6) 25%, transparent 50%, hsla(190,95%,60%,0.5) 75%, transparent 100%)",
-                animationDuration: "8s",
+                  "radial-gradient(ellipse at center, hsla(280,90%,60%,0.35), hsla(190,95%,55%,0.18) 50%, transparent 75%)",
+                filter: "blur(28px)",
+              }}
+            />
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            whileHover={{ y: -2, scale: 1.015 }}
+            transition={{ type: "spring", stiffness: 260, damping: 22 }}
+            className="group relative inline-flex flex-wrap justify-center items-center gap-x-3 gap-y-1.5 px-7 sm:px-9 py-3 rounded-full text-[11px] sm:text-[12px] tracking-wide max-w-full overflow-hidden"
+            style={{
+              background:
+                "linear-gradient(135deg, hsla(265,55%,10%,0.92), hsla(280,60%,8%,0.88), hsla(255,50%,6%,0.94))",
+              border: "1px solid hsla(280,80%,65%,0.30)",
+              backdropFilter: "blur(18px)",
+              WebkitBackdropFilter: "blur(18px)",
+              boxShadow:
+                "0 12px 40px -10px hsla(270,90%,40%,0.55), 0 0 0 1px hsla(280,80%,65%,0.10), inset 0 1px 0 hsla(0,0%,100%,0.08), inset 0 -1px 0 hsla(280,80%,65%,0.10)",
+            }}
+          >
+            {/* Animated conic border ring (sits behind content via -z layering trick) */}
+            <span
+              aria-hidden
+              className="absolute -inset-[1px] rounded-full opacity-60 pointer-events-none"
+              style={{
+                background:
+                  "conic-gradient(from 0deg, hsla(280,95%,65%,0.85), hsla(320,95%,60%,0.55), hsla(190,95%,60%,0.85), hsla(160,90%,55%,0.55), hsla(280,95%,65%,0.85))",
+                animation: "spin 7s linear infinite",
+                WebkitMask:
+                  "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
                 mask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
-                WebkitMask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
                 WebkitMaskComposite: "xor",
                 maskComposite: "exclude",
                 padding: "1px",
               }}
             />
-            {/* shimmer sweep */}
+
+            {/* Top inner highlight */}
             <span
               aria-hidden
-              className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-[1600ms] ease-out pointer-events-none"
+              className="absolute inset-x-6 top-0 h-px pointer-events-none"
               style={{
                 background:
-                  "linear-gradient(110deg, transparent 35%, hsla(0,0%,100%,0.10) 50%, transparent 65%)",
+                  "linear-gradient(90deg, transparent, hsla(0,0%,100%,0.45), transparent)",
               }}
             />
 
-            <Sparkles size={12} className="relative text-amber-300 drop-shadow-[0_0_6px_hsla(45,95%,60%,0.7)]" />
+            {/* Shimmer sweep on hover */}
+            <span
+              aria-hidden
+              className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-[1800ms] ease-out pointer-events-none"
+              style={{
+                background:
+                  "linear-gradient(110deg, transparent 35%, hsla(0,0%,100%,0.14) 50%, transparent 65%)",
+              }}
+            />
+
+            {/* Soft inner color blooms */}
+            <span
+              aria-hidden
+              className="absolute -left-6 top-1/2 -translate-y-1/2 w-20 h-20 rounded-full opacity-50 pointer-events-none"
+              style={{
+                background:
+                  "radial-gradient(circle, hsla(280,95%,60%,0.45), transparent 70%)",
+                filter: "blur(14px)",
+              }}
+            />
+            <span
+              aria-hidden
+              className="absolute -right-6 top-1/2 -translate-y-1/2 w-20 h-20 rounded-full opacity-50 pointer-events-none"
+              style={{
+                background:
+                  "radial-gradient(circle, hsla(190,95%,55%,0.45), transparent 70%)",
+                filter: "blur(14px)",
+              }}
+            />
+
+            <motion.span
+              animate={{ rotate: [0, 12, -8, 0], scale: [1, 1.15, 1] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="relative inline-flex"
+            >
+              <Sparkles size={13} className="text-amber-300 drop-shadow-[0_0_8px_hsla(45,95%,60%,0.9)]" />
+            </motion.span>
+
             <span className="relative font-serif italic bg-gradient-to-r from-amber-200 via-yellow-300 to-amber-400 bg-clip-text text-transparent whitespace-nowrap">
               © {new Date().getFullYear()}
             </span>
-            <span className="relative h-3 w-px bg-gradient-to-b from-transparent via-white/30 to-transparent hidden sm:inline-block" />
-            <span className="relative font-extrabold tracking-tight bg-gradient-to-r from-primary via-fuchsia-300 to-accent bg-clip-text text-transparent whitespace-nowrap" style={{ fontFamily: "'Syne', sans-serif" }}>
+
+            <span aria-hidden className="relative w-1 h-1 rounded-full bg-gradient-to-br from-fuchsia-300 to-primary shadow-[0_0_8px_hsla(290,95%,65%,0.9)] hidden sm:inline-block" />
+
+            <Link
+              to="/"
+              className="relative font-extrabold tracking-tight bg-gradient-to-r from-primary via-fuchsia-300 to-accent bg-clip-text text-transparent whitespace-nowrap hover:brightness-125 transition"
+              style={{ fontFamily: "'Syne', sans-serif" }}
+            >
               Shahed IT
-            </span>
-            <span className="relative h-3 w-px bg-gradient-to-b from-transparent via-white/30 to-transparent hidden sm:inline-block" />
-            <span className="relative uppercase tracking-[0.22em] text-[10px] sm:text-[11px] bg-gradient-to-r from-emerald-200 to-teal-300 bg-clip-text text-transparent font-semibold whitespace-nowrap">
+            </Link>
+
+            <span aria-hidden className="relative w-1 h-1 rounded-full bg-gradient-to-br from-accent to-cyan-300 shadow-[0_0_8px_hsla(190,95%,60%,0.9)] hidden sm:inline-block" />
+
+            <span className="relative uppercase tracking-[0.24em] text-[10px] sm:text-[11px] bg-gradient-to-r from-emerald-200 to-teal-300 bg-clip-text text-transparent font-semibold whitespace-nowrap">
               All Rights Reserved
             </span>
-            <span className="relative h-3 w-px bg-gradient-to-b from-transparent via-white/30 to-transparent hidden sm:inline-block" />
-            <span className="relative text-foreground/70 font-light whitespace-nowrap">
+
+            <span aria-hidden className="relative w-1 h-1 rounded-full bg-gradient-to-br from-pink-300 to-fuchsia-400 shadow-[0_0_8px_hsla(320,95%,65%,0.9)] hidden sm:inline-block" />
+
+            <span className="relative text-foreground/60 font-light italic whitespace-nowrap">
               Crafted by
             </span>
-            <span className="relative font-bold bg-gradient-to-r from-pink-300 via-fuchsia-300 to-accent bg-clip-text text-transparent whitespace-nowrap" style={{ fontFamily: "'Syne', sans-serif" }}>
+
+            <Link
+              to="/"
+              className="relative font-bold bg-gradient-to-r from-pink-300 via-fuchsia-300 to-accent bg-clip-text text-transparent whitespace-nowrap hover:brightness-125 transition"
+              style={{ fontFamily: "'Syne', sans-serif" }}
+            >
               Shahed IT
-            </span>
-            <Sparkles size={12} className="relative text-fuchsia-300 drop-shadow-[0_0_6px_hsla(290,95%,65%,0.7)]" />
+            </Link>
+
+            <motion.span
+              animate={{ rotate: [0, -12, 8, 0], scale: [1, 1.15, 1] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+              className="relative inline-flex"
+            >
+              <Sparkles size={13} className="text-fuchsia-300 drop-shadow-[0_0_8px_hsla(290,95%,65%,0.9)]" />
+            </motion.span>
           </motion.div>
         </div>
+
 
       </div>
     </footer>
