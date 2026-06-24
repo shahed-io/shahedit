@@ -34,7 +34,7 @@ const navLinks: { label: string; href: string; hasDropdown?: boolean }[] = [
   { label: "Category", href: "/services" },
   { label: "Blog", href: "/blog" },
   { label: "Pricing", href: "/pricing" },
-  { label: "Team", href: "/team" },
+  
   { label: "Contact", href: "/contact" },
 ];
 
