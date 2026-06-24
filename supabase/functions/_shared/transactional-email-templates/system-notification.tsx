@@ -8,7 +8,7 @@ interface Props { name?: string; heading?: string; body?: string; ctaLabel?: str
 const Email = (p: Props) => (
   <Layout
     preview={'সিস্টেম নোটিফিকেশন'}
-    title={p.heading ?? 'System Notification'}
+    title={p.heading ?? 'সিস্টেম নোটিফিকেশন'}
     intro={`প্রিয় ${p.name ?? 'গ্রাহক'},`}
     paragraphs={[p.body ?? 'আপনার অ্যাকাউন্ট সম্পর্কিত একটি নোটিফিকেশন আছে।']}
     
@@ -20,7 +20,7 @@ const Email = (p: Props) => (
 
 export const template = {
   component: Email,
-  subject: (d) => d.heading ?? 'System Notification — Shahed IT',
-  displayName: 'System Notification',
-  previewData: {"name":"Karim","heading":"Account update","body":"আপনার profile আপডেট হয়েছে।"},
+    subject: (d) => d.heading ?? 'সিস্টেম নোটিফিকেশন — Shahed IT',
+  displayName: 'সিস্টেম নোটিফিকেশন',
+  previewData: {"name":"করিম","heading":"অ্যাকাউন্ট আপডেট","body":"আপনার প্রোফাইল আপডেট হয়েছে।"},
 } satisfies TemplateEntry

@@ -11,7 +11,7 @@ const Email = (p: Props) => (
     title={'সাবস্ক্রিপশন বাতিল হয়েছে'}
     intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, আপনার সাবস্ক্রিপশন বাতিল করা হয়েছে।`}
     paragraphs={[`সেবা চলবে: ${p.endsAt ?? 'বর্তমান মেয়াদ পর্যন্ত'} পর্যন্ত।`, 'আবার কাজ করতে আপনার সাথে দেখা হবে আশা করি।']}
-    rows={[['Plan', p.planName]]}
+    rows={[['প্ল্যান', p.planName]]}
     ctaLabel={'আবার চালু করুন'}
     ctaUrl={'https://shahedit.com/pricing'}
     accent="amber"
@@ -21,6 +21,6 @@ const Email = (p: Props) => (
 export const template = {
   component: Email,
   subject: 'সাবস্ক্রিপশন বাতিল হয়েছে — Shahed IT',
-  displayName: 'Subscription Cancelled',
-  previewData: {"name":"Karim","planName":"Business Pro","endsAt":"২০২৬-০৭-০১"},
+  displayName: 'সাবস্ক্রিপশন বাতিল',
+  previewData: {"name":"করিম","planName":"Business Pro","endsAt":"২০২৬-০৭-০১"},
 } satisfies TemplateEntry

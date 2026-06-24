@@ -44,7 +44,7 @@ Deno.serve(async (req) => {
       JSON.stringify({ error: 'Server configuration error' }),
       {
         status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: { ...corsHeaders, 'Content-Type': 'application/json; charset=utf-8' },
       }
     )
   }
@@ -69,7 +69,7 @@ Deno.serve(async (req) => {
       JSON.stringify({ error: 'Invalid JSON in request body' }),
       {
         status: 400,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: { ...corsHeaders, 'Content-Type': 'application/json; charset=utf-8' },
       }
     )
   }
@@ -79,7 +79,7 @@ Deno.serve(async (req) => {
       JSON.stringify({ error: 'templateName is required' }),
       {
         status: 400,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: { ...corsHeaders, 'Content-Type': 'application/json; charset=utf-8' },
       }
     )
   }
@@ -95,7 +95,7 @@ Deno.serve(async (req) => {
       }),
       {
         status: 404,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: { ...corsHeaders, 'Content-Type': 'application/json; charset=utf-8' },
       }
     )
   }
@@ -112,7 +112,7 @@ Deno.serve(async (req) => {
       }),
       {
         status: 400,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: { ...corsHeaders, 'Content-Type': 'application/json; charset=utf-8' },
       }
     )
   }
@@ -136,7 +136,7 @@ Deno.serve(async (req) => {
       JSON.stringify({ error: 'Failed to verify suppression status' }),
       {
         status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: { ...corsHeaders, 'Content-Type': 'application/json; charset=utf-8' },
       }
     )
   }
@@ -155,7 +155,7 @@ Deno.serve(async (req) => {
       JSON.stringify({ success: false, reason: 'email_suppressed' }),
       {
         status: 200,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: { ...corsHeaders, 'Content-Type': 'application/json; charset=utf-8' },
       }
     )
   }
@@ -187,7 +187,7 @@ Deno.serve(async (req) => {
       JSON.stringify({ error: 'Failed to prepare email' }),
       {
         status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: { ...corsHeaders, 'Content-Type': 'application/json; charset=utf-8' },
       }
     )
   }
@@ -220,7 +220,7 @@ Deno.serve(async (req) => {
         JSON.stringify({ error: 'Failed to prepare email' }),
         {
           status: 500,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          headers: { ...corsHeaders, 'Content-Type': 'application/json; charset=utf-8' },
         }
       )
     }
@@ -249,7 +249,7 @@ Deno.serve(async (req) => {
         JSON.stringify({ error: 'Failed to prepare email' }),
         {
           status: 500,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          headers: { ...corsHeaders, 'Content-Type': 'application/json; charset=utf-8' },
         }
       )
     }
@@ -272,7 +272,7 @@ Deno.serve(async (req) => {
       JSON.stringify({ success: false, reason: 'email_suppressed' }),
       {
         status: 200,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: { ...corsHeaders, 'Content-Type': 'application/json; charset=utf-8' },
       }
     )
   }
@@ -338,7 +338,7 @@ Deno.serve(async (req) => {
 
     return new Response(JSON.stringify({ error: 'Failed to enqueue email' }), {
       status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      headers: { ...corsHeaders, 'Content-Type': 'application/json; charset=utf-8' },
     })
   }
 
@@ -348,7 +348,7 @@ Deno.serve(async (req) => {
     JSON.stringify({ success: true, queued: true }),
     {
       status: 200,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      headers: { ...corsHeaders, 'Content-Type': 'application/json; charset=utf-8' },
     }
   )
 })

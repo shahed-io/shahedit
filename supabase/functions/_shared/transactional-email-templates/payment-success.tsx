@@ -8,11 +8,11 @@ interface Props { name?: string; amount?: number | string; orderNumber?: string;
 const Email = (p: Props) => (
   <Layout
     preview={'পেমেন্ট সফল হয়েছে'}
-    title={'পেমেন্ট সফল ✅'}
+    title={'পেমেন্ট সফল'}
     intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, আপনার পেমেন্ট সফলভাবে গ্রহণ করা হয়েছে।`}
     paragraphs={[]}
-    rows={[['Order #', p.orderNumber], ['Amount', `৳ ${p.amount ?? '—'}`], ['Method', p.method]]}
-    ctaLabel={'Order দেখুন'}
+    rows={[['অর্ডার নম্বর', p.orderNumber], ['পরিমাণ', `৳ ${p.amount ?? '—'}`], ['পেমেন্ট মাধ্যম', p.method]]}
+    ctaLabel={'অর্ডার দেখুন'}
     ctaUrl={'https://shahedit.com/dashboard'}
     accent="green"
   />
@@ -21,6 +21,6 @@ const Email = (p: Props) => (
 export const template = {
   component: Email,
   subject: (d) => `পেমেন্ট সফল — ৳ ${d.amount ?? ''}`,
-  displayName: 'Payment Success',
-  previewData: {"name":"Karim","amount":15000,"orderNumber":"SI-1024","method":"bKash"},
+  displayName: 'পেমেন্ট সফল',
+  previewData: {"name":"করিম","amount":15000,"orderNumber":"SI-1024","method":"বিকাশ"},
 } satisfies TemplateEntry

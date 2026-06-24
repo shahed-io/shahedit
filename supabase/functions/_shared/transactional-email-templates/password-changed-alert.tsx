@@ -10,7 +10,7 @@ const Email = (p: Props) => (
     preview={'আপনার পাসওয়ার্ড পরিবর্তিত হয়েছে'}
     title={'পাসওয়ার্ড পরিবর্তিত হয়েছে'}
     intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, আপনার Shahed IT অ্যাকাউন্টের পাসওয়ার্ড সফলভাবে পরিবর্তন করা হয়েছে।`}
-    paragraphs={[`সময়: ${p.when ?? new Date().toLocaleString('bn-BD')}`, `যদি আপনি না করে থাকেন, এখনই account secure করুন এবং আমাদের সাথে যোগাযোগ করুন।`]}
+    paragraphs={[`সময়: ${p.when ?? new Date().toLocaleString('bn-BD')}`, `যদি আপনি না করে থাকেন, এখনই অ্যাকাউন্ট সুরক্ষিত করুন এবং আমাদের সাথে যোগাযোগ করুন।`]}
     
     ctaLabel={'নিরাপত্তা চেক করুন'}
     ctaUrl={'https://shahedit.com/profile'}
@@ -22,5 +22,5 @@ export const template = {
   component: Email,
   subject: 'আপনার পাসওয়ার্ড পরিবর্তিত হয়েছে — Shahed IT',
   displayName: 'Password Changed Alert',
-  previewData: {"name":"Karim"},
+  previewData: {"name":"করিম"},
 } satisfies TemplateEntry

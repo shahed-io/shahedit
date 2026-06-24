@@ -6,7 +6,8 @@ import {
 import type { TemplateEntry } from './registry.ts'
 
 const LOGO = 'https://www.shahedit.com/__l5e/assets-v1/4139358d-78cb-41df-a58a-67274b79b3af/shahed-it-compact-logo-transparent.png'
-const BENGALI_FONT_CSS = `@font-face{font-family:'Noto Sans Bengali';font-style:normal;font-weight:400;src:url(https://fonts.gstatic.com/s/notosansbengali/v33/Cn-SJsCGWQxOjaGwMQ6fIiMywrNJIky6nvd8BjzVMvJx2mcSPVFpVEqE-6KmsolLudA.ttf) format('truetype')}@font-face{font-family:'Noto Sans Bengali';font-style:normal;font-weight:600;src:url(https://fonts.gstatic.com/s/notosansbengali/v33/Cn-SJsCGWQxOjaGwMQ6fIiMywrNJIky6nvd8BjzVMvJx2mcSPVFpVEqE-6KmsldMudA.ttf) format('truetype')}@font-face{font-family:'Noto Sans Bengali';font-style:normal;font-weight:700;src:url(https://fonts.gstatic.com/s/notosansbengali/v33/Cn-SJsCGWQxOjaGwMQ6fIiMywrNJIky6nvd8BjzVMvJx2mcSPVFpVEqE-6Kmsm5MudA.ttf) format('truetype')}@font-face{font-family:'Noto Sans Bengali';font-style:normal;font-weight:800;src:url(https://fonts.gstatic.com/s/notosansbengali/v33/Cn-SJsCGWQxOjaGwMQ6fIiMywrNJIky6nvd8BjzVMvJx2mcSPVFpVEqE-6KmsglMudA.ttf) format('truetype')}`
+const BENGALI_FONT_FAMILY = "'Noto Sans Bengali', 'Hind Siliguri', 'SolaimanLipi', 'Nirmala UI', 'Vrinda', 'Bangla MN', 'Bangla Sangam MN', Arial, sans-serif"
+const BENGALI_FONT_CSS = `@font-face{font-family:'Noto Sans Bengali';font-style:normal;font-weight:400;src:url(https://fonts.gstatic.com/s/notosansbengali/v33/Cn-SJsCGWQxOjaGwMQ6fIiMywrNJIky6nvd8BjzVMvJx2mcSPVFpVEqE-6KmsolLudA.ttf) format('truetype')}@font-face{font-family:'Noto Sans Bengali';font-style:normal;font-weight:600;src:url(https://fonts.gstatic.com/s/notosansbengali/v33/Cn-SJsCGWQxOjaGwMQ6fIiMywrNJIky6nvd8BjzVMvJx2mcSPVFpVEqE-6KmsldMudA.ttf) format('truetype')}@font-face{font-family:'Noto Sans Bengali';font-style:normal;font-weight:700;src:url(https://fonts.gstatic.com/s/notosansbengali/v33/Cn-SJsCGWQxOjaGwMQ6fIiMywrNJIky6nvd8BjzVMvJx2mcSPVFpVEqE-6Kmsm5MudA.ttf) format('truetype')}html,body,table,td,p,a,span,div,h1,h2,h3{font-family:${BENGALI_FONT_FAMILY}!important;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}body{word-break:normal;overflow-wrap:break-word}p,span,a,td,h1{unicode-bidi:plaintext}`
 
 interface Props {
   name?: string
@@ -17,7 +18,7 @@ interface Props {
 }
 
 const Email = ({ name, orderNumber, productTitle, amount, paymentMethod }: Props) => (
-  <Html lang="bn" dir="ltr" translate="no">
+  <Html lang="bn-BD" dir="ltr" translate="no">
     <Head>
       <meta charSet="UTF-8" />
       <meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -31,7 +32,7 @@ const Email = ({ name, orderNumber, productTitle, amount, paymentMethod }: Props
           <Img src={LOGO} width="220" alt="Shahed IT" style={{ display: 'block', margin: '0 auto', maxWidth: '100%', height: 'auto' }} />
         </Section>
         <Section style={card}>
-          <Heading style={h1}>অর্ডার নিশ্চিত হয়েছে 🎉</Heading>
+          <Heading style={h1}>অর্ডার নিশ্চিত হয়েছে</Heading>
           <Text style={text}>
             প্রিয় {name ?? 'গ্রাহক'}, আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে। নিচে আপনার
             অর্ডারের সংক্ষিপ্ত বিবরণ দেওয়া হলো।
@@ -58,19 +59,19 @@ const Email = ({ name, orderNumber, productTitle, amount, paymentMethod }: Props
 export const template = {
   component: Email,
   subject: (d: Record<string, any>) => `অর্ডার নিশ্চিত — ${d.orderNumber ?? 'Shahed IT'}`,
-  displayName: 'Order Confirmation',
-  previewData: { name: 'করিম', orderNumber: 'SI-1024', productTitle: 'বিজনেস ওয়েবসাইট', amount: 15000, paymentMethod: 'bKash' },
+  displayName: 'অর্ডার কনফার্মেশন',
+  previewData: { name: 'করিম', orderNumber: 'SI-1024', productTitle: 'বিজনেস ওয়েবসাইট', amount: 15000, paymentMethod: 'বিকাশ' },
 } satisfies TemplateEntry
 
-const main = { backgroundColor: '#ffffff', fontFamily: "'Noto Sans Bengali', 'Hind Siliguri', 'SolaimanLipi', 'Nirmala UI', 'Vrinda', 'Segoe UI', Arial, sans-serif", margin: 0, padding: 0 }
+const main = { backgroundColor: '#ffffff', fontFamily: BENGALI_FONT_FAMILY, margin: 0, padding: 0, wordBreak: 'normal' as const, overflowWrap: 'break-word' as const }
 const container = { maxWidth: '560px', margin: '0 auto', padding: '24px 16px' }
 const header = { padding: '12px 0 20px', textAlign: 'center' as const }
 const card = { backgroundColor: '#faf7ff', border: '1px solid #ece5ff', borderRadius: '14px', padding: '28px 24px' }
-const h1 = { fontSize: '22px', color: '#1a1325', margin: '0 0 14px', fontWeight: 700, lineHeight: '32px' }
-const text = { fontSize: '15px', lineHeight: '26px', color: '#3f3a47', margin: '0 0 14px' }
+const h1 = { fontSize: '22px', color: '#1a1325', margin: '0 0 14px', fontWeight: 700, lineHeight: '32px', fontFamily: BENGALI_FONT_FAMILY }
+const text = { fontSize: '15px', lineHeight: '26px', color: '#3f3a47', margin: '0 0 14px', fontFamily: BENGALI_FONT_FAMILY, wordBreak: 'normal' as const, overflowWrap: 'break-word' as const }
 const box = { backgroundColor: '#ffffff', borderRadius: '10px', padding: '14px 16px', margin: '14px 0' }
-const lbl = { fontSize: '13px', color: '#888', padding: '8px 0', width: '40%' }
-const val = { fontSize: '14px', color: '#1a1325', fontWeight: 600, padding: '8px 0' }
-const button = { backgroundColor: '#7c3aed', color: '#ffffff', padding: '12px 24px', borderRadius: '10px', textDecoration: 'none', fontWeight: 600, fontSize: '14px', display: 'inline-block', marginTop: '8px' }
+const lbl = { fontSize: '13px', color: '#888', padding: '8px 0', width: '40%', fontFamily: BENGALI_FONT_FAMILY }
+const val = { fontSize: '14px', color: '#1a1325', fontWeight: 600, padding: '8px 0', fontFamily: BENGALI_FONT_FAMILY }
+const button = { backgroundColor: '#7c3aed', color: '#ffffff', padding: '12px 24px', borderRadius: '10px', textDecoration: 'none', fontWeight: 600, fontSize: '14px', display: 'inline-block', marginTop: '8px', fontFamily: BENGALI_FONT_FAMILY }
 const hr = { borderColor: '#eee', margin: '24px 0 12px' }
-const footer = { fontSize: '12px', color: '#888', textAlign: 'center' as const, margin: 0, lineHeight: '20px' }
+const footer = { fontSize: '12px', color: '#888', textAlign: 'center' as const, margin: 0, lineHeight: '20px', fontFamily: BENGALI_FONT_FAMILY }

@@ -11,7 +11,7 @@ const Email = (p: Props) => (
     title={'সাপোর্ট টিকেট তৈরি হয়েছে'}
     intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, আপনার টিকেট আমরা পেয়েছি। শীঘ্রই উত্তর দেব।`}
     paragraphs={[]}
-    rows={[['Ticket #', p.ticketNumber], ['Subject', p.subject]]}
+    rows={[['টিকেট নম্বর', p.ticketNumber], ['বিষয়', p.subject]]}
     ctaLabel={'টিকেট দেখুন'}
     ctaUrl={'https://shahedit.com/dashboard'}
     accent="purple"
@@ -21,6 +21,6 @@ const Email = (p: Props) => (
 export const template = {
   component: Email,
   subject: (d) => `টিকেট #${d.ticketNumber ?? ''} তৈরি হয়েছে`,
-  displayName: 'Support Ticket Created',
-  previewData: {"name":"Karim","ticketNumber":"T-1024","subject":"Login সমস্যা"},
+  displayName: 'সাপোর্ট টিকেট তৈরি',
+  previewData: {"name":"করিম","ticketNumber":"T-1024","subject":"লগইন সমস্যা"},
 } satisfies TemplateEntry

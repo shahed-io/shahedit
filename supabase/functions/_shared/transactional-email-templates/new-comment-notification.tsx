@@ -8,7 +8,7 @@ interface Props { name?: string; commenter?: string; on?: string; commentPreview
 const Email = (p: Props) => (
   <Layout
     preview={'নতুন কমেন্ট এসেছে'}
-    title={'নতুন কমেন্ট 💬'}
+    title={'নতুন কমেন্ট'}
     intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, ${p.commenter ?? 'কেউ'} আপনার ${p.on ?? 'পোস্টে'} কমেন্ট করেছে।`}
     paragraphs={[p.commentPreview ? `"${p.commentPreview}"` : '']}
     
@@ -21,6 +21,6 @@ const Email = (p: Props) => (
 export const template = {
   component: Email,
   subject: 'আপনার পোস্টে নতুন কমেন্ট',
-  displayName: 'New Comment Notification',
-  previewData: {"name":"Karim","commenter":"Rahim","on":"Blog Post","commentPreview":"দারুণ লেখা!"},
+  displayName: 'নতুন কমেন্ট নোটিফিকেশন',
+  previewData: {"name":"করিম","commenter":"রহিম","on":"ব্লগ পোস্টে","commentPreview":"দারুণ লেখা!"},
 } satisfies TemplateEntry
