@@ -1,9 +1,11 @@
 /// <reference types="npm:@types/react@18.3.1" />
 import * as React from 'npm:react@18.3.1'
 import {
-  Body, Container, Head, Heading, Html, Preview, Section, Text, Button, Hr,
+  Body, Container, Head, Heading, Html, Img, Preview, Section, Text, Button, Hr,
 } from 'npm:@react-email/components@0.0.22'
 import type { TemplateEntry } from './registry.ts'
+
+const LOGO = 'https://www.shahedit.com/__l5e/assets-v1/35029b9f-76c9-482d-a1a2-afb2c9dffbb1/shahed-it-email-logo-transparent.png'
 
 interface Props {
   name?: string
@@ -13,8 +15,10 @@ interface Props {
 const Email = ({ name, message }: Props) => (
   <Html lang="bn" dir="ltr">
     <Head>
+      <meta charSet="UTF-8" />
+      <meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
       <link
-        href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700;800&display=swap"
         rel="stylesheet"
       />
     </Head>
@@ -22,7 +26,7 @@ const Email = ({ name, message }: Props) => (
     <Body style={main}>
       <Container style={container}>
         <Section style={header}>
-          <Heading style={brand}>Shahed IT</Heading>
+          <Img src={LOGO} width="220" height="70" alt="Shahed IT" style={{ display: 'block', margin: '0 auto', maxWidth: '100%', height: 'auto' }} />
         </Section>
         <Section style={card}>
           <Heading style={h1}>ধন্যবাদ{name ? `, ${name}` : ''}!</Heading>
@@ -43,7 +47,7 @@ const Email = ({ name, message }: Props) => (
           <Button href="https://shahedit.com" style={button}>আমাদের ওয়েবসাইট দেখুন</Button>
         </Section>
         <Hr style={hr} />
-        <Text style={footer}>Shahed IT · সপুরা, রাজশাহী, বাংলাদেশ</Text>
+        <Text style={footer}>01820-060046 · info@shahedit.com · shahedit.com</Text>
       </Container>
     </Body>
   </Html>
@@ -56,10 +60,9 @@ export const template = {
   previewData: { name: 'করিম', message: 'আমি একটি প্রফেশনাল ওয়েবসাইট তৈরি করতে চাই।' },
 } satisfies TemplateEntry
 
-const main = { backgroundColor: '#ffffff', fontFamily: "'Hind Siliguri','Noto Sans Bengali',Inter,Arial,sans-serif", margin: 0, padding: 0 }
+const main = { backgroundColor: '#ffffff', fontFamily: "'Noto Sans Bengali', 'Hind Siliguri', 'SolaimanLipi', 'Nirmala UI', 'Vrinda', 'Segoe UI', Arial, sans-serif", margin: 0, padding: 0 }
 const container = { maxWidth: '560px', margin: '0 auto', padding: '24px 16px' }
 const header = { padding: '12px 0 20px', textAlign: 'center' as const }
-const brand = { fontSize: '24px', fontWeight: 700, color: '#7c3aed', margin: 0, letterSpacing: '0.5px' }
 const card = { backgroundColor: '#faf7ff', border: '1px solid #ece5ff', borderRadius: '14px', padding: '28px 24px' }
 const h1 = { fontSize: '22px', color: '#1a1325', margin: '0 0 14px', fontWeight: 700, lineHeight: '32px' }
 const text = { fontSize: '15px', lineHeight: '26px', color: '#3f3a47', margin: '0 0 14px' }

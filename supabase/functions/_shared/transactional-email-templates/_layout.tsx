@@ -8,7 +8,7 @@ const BRAND = {
   name: 'Shahed IT',
   tagline: 'Smart IT Solutions',
   logoUrl:
-    'https://www.shahedit.com/__l5e/assets-v1/e08d29f8-951f-4ee9-9b0f-a1203964b662/shahed-it-email-logo-original.png',
+    'https://www.shahedit.com/__l5e/assets-v1/35029b9f-76c9-482d-a1a2-afb2c9dffbb1/shahed-it-email-logo-transparent.png',
 }
 
 
@@ -37,7 +37,11 @@ export const Layout = ({
   const color = ACCENTS[accent]
   return (
     <Html lang="bn" dir="ltr">
-      <Head />
+      <Head>
+        <meta charSet="UTF-8" />
+        <meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700;800&display=swap" rel="stylesheet" />
+      </Head>
       <Preview>{preview}</Preview>
       <Body style={main}>
         <Container style={container}>
@@ -75,14 +79,14 @@ export const Layout = ({
             ) : null}
           </Section>
           <Hr style={hr} />
-          <Text style={footer}>SHAHED IT · Sopura, Rajshahi · 01820-060046</Text>
+          <Text style={footer}>01820-060046 · info@shahedit.com · shahedit.com</Text>
         </Container>
       </Body>
     </Html>
   )
 }
 
-const main = { backgroundColor: '#eeeaf7', fontFamily: "'Hind Siliguri','Noto Sans Bengali',Inter,Arial,sans-serif", margin: 0, padding: '24px 0' }
+const main = { backgroundColor: '#eeeaf7', fontFamily: "'Noto Sans Bengali', 'Hind Siliguri', 'SolaimanLipi', 'Nirmala UI', 'Vrinda', 'Segoe UI', Arial, sans-serif", margin: 0, padding: '24px 0' }
 const container = { maxWidth: '560px', margin: '0 auto', padding: '0 16px' }
 const header = { padding: '12px 0 18px', textAlign: 'center' as const }
 const brandBar = { background: '#ffffff', borderRadius: '16px', padding: '20px 16px', textAlign: 'center' as const, margin: '0 0 14px', boxShadow: '0 2px 12px rgba(120,60,200,0.06)' }

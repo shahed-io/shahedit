@@ -8,11 +8,13 @@ import {
 
 interface Props { siteName: string; confirmationUrl: string }
 
-const LOGO = 'https://www.shahedit.com/__l5e/assets-v1/e08d29f8-951f-4ee9-9b0f-a1203964b662/shahed-it-email-logo-original.png'
+const LOGO = 'https://www.shahedit.com/__l5e/assets-v1/35029b9f-76c9-482d-a1a2-afb2c9dffbb1/shahed-it-email-logo-transparent.png'
 
 export const RecoveryEmail = ({ siteName, confirmationUrl }: Props) => (
   <Html lang="bn" dir="ltr">
     <Head>
+      <meta charSet="UTF-8" />
+      <meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
       <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700;800&display=swap" rel="stylesheet" />
     </Head>
     <Preview>{siteName}-এর জন্য পাসওয়ার্ড রিসেট</Preview>
@@ -24,13 +26,13 @@ export const RecoveryEmail = ({ siteName, confirmationUrl }: Props) => (
         <Section style={card}>
           <Heading style={h1}>পাসওয়ার্ড রিসেট করুন</Heading>
           <Text style={text}>
-            আমরা {siteName}-এ আপনার পাসওয়ার্ড রিসেটের request পেয়েছি। নিচের বাটনে ক্লিক করে নতুন পাসওয়ার্ড সেট করুন।
+            আমরা {siteName}-এ আপনার পাসওয়ার্ড রিসেটের অনুরোধ পেয়েছি। নিচের বাটন চাপ দিয়ে নতুন পাসওয়ার্ড সেট করুন।
           </Text>
           <Section style={{ textAlign: 'center', margin: '28px 0' }}>
             <Button style={button} href={confirmationUrl}>পাসওয়ার্ড রিসেট করুন</Button>
           </Section>
           <Text style={muted}>
-            আপনি যদি এই request না করে থাকেন, তাহলে এই ইমেইলটি উপেক্ষা করুন — আপনার পাসওয়ার্ড অপরিবর্তিত থাকবে।
+            আপনি যদি এই অনুরোধ না করে থাকেন, তাহলে এই ইমেইলটি উপেক্ষা করুন — আপনার পাসওয়ার্ড অপরিবর্তিত থাকবে।
           </Text>
           <Hr style={hr} />
           <Text style={footer}>
@@ -44,7 +46,7 @@ export const RecoveryEmail = ({ siteName, confirmationUrl }: Props) => (
 
 export default RecoveryEmail
 
-const main = { backgroundColor: '#eeeaf7', fontFamily: "'Noto Sans Bengali', 'Hind Siliguri', 'SolaimanLipi', 'Segoe UI', Arial, sans-serif", padding: '24px 0' }
+const main = { backgroundColor: '#eeeaf7', fontFamily: "'Noto Sans Bengali', 'Hind Siliguri', 'SolaimanLipi', 'Nirmala UI', 'Vrinda', 'Segoe UI', Arial, sans-serif", padding: '24px 0' }
 const container = { maxWidth: '560px', margin: '0 auto', padding: '0 16px' }
 const brandBar = { background: '#ffffff', borderRadius: '16px', padding: '20px 16px', textAlign: 'center' as const, margin: '0 0 14px', boxShadow: '0 2px 12px rgba(120,60,200,0.06)' }
 const brandText = { fontSize: '18px', fontWeight: 800, color: '#3b1e6e', margin: '0 0 0 10px', letterSpacing: '0.5px' }

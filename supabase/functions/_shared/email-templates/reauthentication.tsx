@@ -8,11 +8,13 @@ import {
 
 interface Props { token: string }
 
-const LOGO = 'https://www.shahedit.com/__l5e/assets-v1/e08d29f8-951f-4ee9-9b0f-a1203964b662/shahed-it-email-logo-original.png'
+const LOGO = 'https://www.shahedit.com/__l5e/assets-v1/35029b9f-76c9-482d-a1a2-afb2c9dffbb1/shahed-it-email-logo-transparent.png'
 
 export const ReauthenticationEmail = ({ token }: Props) => (
   <Html lang="bn" dir="ltr">
     <Head>
+      <meta charSet="UTF-8" />
+      <meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
       <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700;800&display=swap" rel="stylesheet" />
     </Head>
     <Preview>আপনার ভেরিফিকেশন কোড — Shahed IT</Preview>
@@ -27,7 +29,7 @@ export const ReauthenticationEmail = ({ token }: Props) => (
           <Section style={{ textAlign: 'center', margin: '24px 0' }}>
             <Text style={codeStyle}>{token}</Text>
           </Section>
-          <Text style={muted}>এই কোডটি কিছুক্ষণের মধ্যে মেয়াদোত্তীর্ণ হবে। আপনি যদি এই request না করে থাকেন, তাহলে এই ইমেইলটি উপেক্ষা করুন।</Text>
+          <Text style={muted}>এই কোডটি কিছুক্ষণের মধ্যে মেয়াদোত্তীর্ণ হবে। আপনি যদি এই অনুরোধ না করে থাকেন, তাহলে এই ইমেইলটি উপেক্ষা করুন।</Text>
           <Hr style={hr} />
           <Text style={footer}>
                         📞 01820-060046 · ✉ info@shahedit.com · 🌐 shahedit.com
@@ -40,7 +42,7 @@ export const ReauthenticationEmail = ({ token }: Props) => (
 
 export default ReauthenticationEmail
 
-const main = { backgroundColor: '#eeeaf7', fontFamily: "'Noto Sans Bengali', 'Hind Siliguri', 'SolaimanLipi', 'Segoe UI', Arial, sans-serif", padding: '24px 0' }
+const main = { backgroundColor: '#eeeaf7', fontFamily: "'Noto Sans Bengali', 'Hind Siliguri', 'SolaimanLipi', 'Nirmala UI', 'Vrinda', 'Segoe UI', Arial, sans-serif", padding: '24px 0' }
 const container = { maxWidth: '560px', margin: '0 auto', padding: '0 16px' }
 const brandBar = { background: '#ffffff', borderRadius: '16px', padding: '20px 16px', textAlign: 'center' as const, margin: '0 0 14px', boxShadow: '0 2px 12px rgba(120,60,200,0.06)' }
 const brandText = { fontSize: '18px', fontWeight: 800, color: '#3b1e6e', margin: '0 0 0 10px', letterSpacing: '0.5px' }
