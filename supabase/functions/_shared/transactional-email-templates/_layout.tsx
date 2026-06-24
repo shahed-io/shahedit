@@ -42,24 +42,15 @@ export const Layout = ({
       <Body style={main}>
         <Container style={container}>
           <Section style={brandBar}>
-            <table role="presentation" cellPadding={0} cellSpacing={0} style={{ margin: '0 auto', borderCollapse: 'collapse' }}>
-              <tr>
-                <td style={{ verticalAlign: 'middle', paddingRight: '14px' }}>
-                  <div style={logoCircle}>
-                    <Img src={BRAND.logoUrl} alt={BRAND.name} width={36} height={36} style={{ display: 'block' }} />
-                  </div>
-                </td>
-                <td style={{ verticalAlign: 'middle', textAlign: 'left' }}>
-                  <div style={brand}>SHAHED IT</div>
-                  <div style={taglineWrap}>
-                    <span style={taglineDash} />
-                    <span style={tagline}>SHAHEDIT.COM</span>
-                    <span style={taglineDash} />
-                  </div>
-                </td>
-              </tr>
-            </table>
+            <Img
+              src={BRAND.logoUrl}
+              alt={BRAND.name}
+              width={220}
+              height={70}
+              style={{ display: 'block', margin: '0 auto', maxWidth: '100%', height: 'auto' }}
+            />
           </Section>
+
 
 
 
