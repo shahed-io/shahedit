@@ -70,21 +70,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
+    let initialized = false;
+
     supabase.auth.onAuthStateChange((event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
-        setLoading(true);
-        // fetch role BEFORE marking loading=false so admin checks don't race
-        setTimeout(async () => {
-          await fetchRole(session.user.id);
-          setLoading(false);
+        // Refresh role in background — do NOT toggle global loading after first mount,
+        // otherwise ProtectedRoute will unmount the AdminLayout on every token refresh
+        // and the user will see a flash back to the dashboard/loading state.
+        setTimeout(() => {
+          fetchRole(session.user.id);
         }, 0);
         if (event === "SIGNED_IN") {
           setTimeout(() => syncProfileFromOAuth(session.user), 0);
         }
       } else {
         setRole(null);
+      }
+      if (!initialized) {
+        initialized = true;
         setLoading(false);
       }
     });
@@ -93,9 +98,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) await fetchRole(session.user.id);
+      initialized = true;
       setLoading(false);
     });
   }, []);
+
 
   const signIn = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
