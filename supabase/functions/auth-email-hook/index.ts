@@ -18,11 +18,11 @@ const corsHeaders = {
 
 const EMAIL_SUBJECTS: Record<string, string> = {
   signup: 'আপনার ইমেইল নিশ্চিত করুন',
-  invite: 'আপনাকে আমন্ত্রণ জানানো হয়েছে',
+  invite: 'আপনাকে আমন্ত্রণ জানানো হয়েছে',
   magiclink: 'আপনার লগইন লিঙ্ক',
-  recovery: 'পাসওয়ার্ড রিসেট করুন',
+  recovery: 'পাসওয়ার্ড রিসেট করুন',
   email_change: 'ইমেইল পরিবর্তন নিশ্চিত করুন',
-  reauthentication: 'আপনার ভেরিফিকেশন কোড',
+  reauthentication: 'আপনার যাচাই কোড',
 }
 
 // Template mapping

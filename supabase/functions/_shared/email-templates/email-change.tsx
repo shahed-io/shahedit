@@ -37,7 +37,7 @@ export const EmailChangeEmail = ({ siteName, oldEmail, newEmail, confirmationUrl
           <Section style={{ textAlign: 'center', margin: '28px 0' }}>
             <Button style={button} href={confirmationUrl}>ইমেইল পরিবর্তন নিশ্চিত করুন</Button>
           </Section>
-          <Text style={muted}>আপনি যদি এই পরিবর্তন না করে থাকেন, অনুগ্রহ করে দ্রুত আপনার অ্যাকাউন্ট সুরক্ষিত করুন।</Text>
+          <Text style={muted}>আপনি যদি এই পরিবর্তন না করে থাকেন, অনুগ্রহ করে দ্রুত আপনার একাউন্ট সুরক্ষিত করুন।</Text>
           <Hr style={hr} />
           <Text style={footer}>
                         ফোন: 01820-060046 · info@shahedit.com · shahedit.com

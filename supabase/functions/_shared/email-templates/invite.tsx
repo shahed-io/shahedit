@@ -20,16 +20,16 @@ export const InviteEmail = ({ siteName, siteUrl, confirmationUrl }: Props) => (
       <meta name="google" content="notranslate" />
       <style>{BENGALI_FONT_CSS}</style>
     </Head>
-    <Preview>{siteName}-এ আপনাকে আমন্ত্রণ জানানো হয়েছে</Preview>
+    <Preview>{siteName}-এ আপনাকে আমন্ত্রণ জানানো হয়েছে</Preview>
     <Body style={main} className="notranslate">
       <Container style={container}>
         <Section style={brandBar}>
           <Img src={LOGO} width="220" alt="Shahed IT" style={{ display: 'block', margin: '0 auto', maxWidth: '100%', height: 'auto' }} />
         </Section>
         <Section style={card}>
-          <Heading style={h1}>আপনাকে আমন্ত্রণ জানানো হয়েছে</Heading>
+          <Heading style={h1}>আপনাকে আমন্ত্রণ জানানো হয়েছে</Heading>
           <Text style={text}>
-            আপনাকে <Link href={siteUrl} style={link}><strong>{siteName}</strong></Link>-এ যোগ দেওয়ার জন্য আমন্ত্রণ জানানো হয়েছে। নিচের বাটন চাপ দিয়ে আমন্ত্রণ গ্রহণ করুন এবং আপনার অ্যাকাউন্ট তৈরি করুন।
+            আপনাকে <Link href={siteUrl} style={link}><strong>{siteName}</strong></Link>-এ যোগ দেওয়ার জন্য আমন্ত্রণ জানানো হয়েছে। নিচের বাটন চাপ দিয়ে আমন্ত্রণ গ্রহণ করুন এবং আপনার একাউন্ট তৈরি করুন।
           </Text>
           <Section style={{ textAlign: 'center', margin: '28px 0' }}>
             <Button style={button} href={confirmationUrl}>আমন্ত্রণ গ্রহণ করুন</Button>

@@ -29,7 +29,7 @@ export const MagicLinkEmail = ({ siteName, confirmationUrl }: Props) => (
         <Section style={card}>
           <Heading style={h1}>আপনার লগইন লিঙ্ক</Heading>
           <Text style={text}>
-            নিচের বাটন চাপ দিয়ে {siteName}-এ পাসওয়ার্ড ছাড়াই লগইন করুন। এই লিঙ্কটি কিছুক্ষণের মধ্যে মেয়াদোত্তীর্ণ হবে।
+            নিচের বাটন চাপ দিয়ে {siteName}-এ পাসওয়ার্ড ছাড়াই লগইন করুন। এই লিঙ্কটি কিছুক্ষণের মধ্যে মেয়াদ শেষ হবে।
           </Text>
           <Section style={{ textAlign: 'center', margin: '28px 0' }}>
             <Button style={button} href={confirmationUrl}>লগইন করুন</Button>
