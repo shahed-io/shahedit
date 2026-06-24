@@ -418,7 +418,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       )}
 
       {/* Nav Groups */}
-      <nav className="flex-1 overflow-y-auto py-1 px-2.5 space-y-0.5 scrollbar-thin scrollbar-thumb-primary/20">
+      <nav ref={sidebarScrollRef as React.RefObject<HTMLElement>} className="flex-1 overflow-y-auto py-1 px-2.5 space-y-0.5 scrollbar-thin scrollbar-thumb-primary/20">
         {loading ? (
           <div className="space-y-2 px-2 pt-2">
             {Array.from({ length: 10 }).map((_, i) => (
@@ -744,7 +744,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           </header>
 
           {/* Content */}
-          <main className="flex-1 overflow-y-auto">
+          <main ref={mainScrollRef as React.RefObject<HTMLElement>} className="flex-1 overflow-y-auto">
             <div className="p-4 md:p-7 max-w-[1600px] mx-auto">
               {children}
             </div>
