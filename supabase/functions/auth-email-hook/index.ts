@@ -17,12 +17,12 @@ const corsHeaders = {
 }
 
 const EMAIL_SUBJECTS: Record<string, string> = {
-  signup: 'Confirm your email',
-  invite: "You've been invited",
-  magiclink: 'Your login link',
-  recovery: 'Reset your password',
-  email_change: 'Confirm your new email',
-  reauthentication: 'Your verification code',
+  signup: 'আপনার ইমেইল নিশ্চিত করুন',
+  invite: 'আপনাকে আমন্ত্রণ জানানো হয়েছে',
+  magiclink: 'আপনার লগইন লিঙ্ক',
+  recovery: 'পাসওয়ার্ড রিসেট করুন',
+  email_change: 'ইমেইল পরিবর্তন নিশ্চিত করুন',
+  reauthentication: 'আপনার ভেরিফিকেশন কোড',
 }
 
 // Template mapping
@@ -138,7 +138,7 @@ async function handleWebhook(req: Request): Promise<Response> {
     console.error('LOVABLE_API_KEY not configured')
     return new Response(
       JSON.stringify({ error: 'Server configuration error' }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json; charset=utf-8' } }
     )
   }
 
@@ -163,14 +163,14 @@ async function handleWebhook(req: Request): Promise<Response> {
           console.error('Invalid webhook signature', { error: error.message })
           return new Response(JSON.stringify({ error: 'Invalid signature' }), {
             status: 401,
-            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            headers: { ...corsHeaders, 'Content-Type': 'application/json; charset=utf-8' },
           })
         case 'invalid_payload':
         case 'invalid_json':
           console.error('Invalid webhook payload', { error: error.message })
           return new Response(
             JSON.stringify({ error: 'Invalid webhook payload' }),
-            { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+            { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json; charset=utf-8' } }
           )
       }
     }
@@ -178,7 +178,7 @@ async function handleWebhook(req: Request): Promise<Response> {
     console.error('Webhook verification failed', { error })
     return new Response(
       JSON.stringify({ error: 'Invalid webhook payload' }),
-      { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json; charset=utf-8' } }
     )
   }
 
@@ -260,7 +260,7 @@ async function handleWebhook(req: Request): Promise<Response> {
       to: payload.data.email,
       from: `${SITE_NAME} <noreply@${FROM_DOMAIN}>`,
       sender_domain: SENDER_DOMAIN,
-      subject: EMAIL_SUBJECTS[emailType] || 'Notification',
+        subject: EMAIL_SUBJECTS[emailType] || 'Shahed IT নোটিফিকেশন',
       html,
       text,
       purpose: 'transactional',
@@ -280,7 +280,7 @@ async function handleWebhook(req: Request): Promise<Response> {
     })
     return new Response(JSON.stringify({ error: 'Failed to enqueue email' }), {
       status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      headers: { ...corsHeaders, 'Content-Type': 'application/json; charset=utf-8' },
     })
   }
 
@@ -288,7 +288,7 @@ async function handleWebhook(req: Request): Promise<Response> {
 
   return new Response(
     JSON.stringify({ success: true, queued: true }),
-    { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json; charset=utf-8' } }
   )
 }
 
@@ -313,7 +313,7 @@ Deno.serve(async (req) => {
     const message = error instanceof Error ? error.message : 'Unknown error'
     return new Response(JSON.stringify({ error: message }), {
       status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      headers: { ...corsHeaders, 'Content-Type': 'application/json; charset=utf-8' },
     })
   }
 })
