@@ -3,32 +3,36 @@
 import * as React from 'npm:react@18.3.1'
 
 import {
-  Body,
-  Container,
-  Head,
-  Heading,
-  Html,
-  Preview,
-  Text,
+  Body, Container, Head, Heading, Html, Img, Preview, Section, Text, Hr,
 } from 'npm:@react-email/components@0.0.22'
 
-interface ReauthenticationEmailProps {
-  token: string
-}
+interface Props { token: string }
 
-export const ReauthenticationEmail = ({ token }: ReauthenticationEmailProps) => (
-  <Html lang="en" dir="ltr">
+const LOGO = 'https://www.shahedit.com/__l5e/assets-v1/ff0eebd6-2743-4605-9d95-c9984684e8d7/shahed-it-mark.png'
+
+export const ReauthenticationEmail = ({ token }: Props) => (
+  <Html lang="bn" dir="ltr">
     <Head />
-    <Preview>Your verification code</Preview>
+    <Preview>আপনার ভেরিফিকেশন কোড — SHAHED IT</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Confirm reauthentication</Heading>
-        <Text style={text}>Use the code below to confirm your identity:</Text>
-        <Text style={codeStyle}>{token}</Text>
-        <Text style={footer}>
-          This code will expire shortly. If you didn't request this, you can
-          safely ignore this email.
-        </Text>
+        <Section style={brandBar}>
+          <Img src={LOGO} width="44" height="44" alt="SHAHED IT" style={{ borderRadius: 10 }} />
+          <Text style={brandText}>SHAHED IT</Text>
+        </Section>
+        <Section style={card}>
+          <Heading style={h1}>পরিচয় নিশ্চিতকরণ</Heading>
+          <Text style={text}>নিচের কোডটি ব্যবহার করে আপনার পরিচয় নিশ্চিত করুন:</Text>
+          <Section style={{ textAlign: 'center', margin: '24px 0' }}>
+            <Text style={codeStyle}>{token}</Text>
+          </Section>
+          <Text style={muted}>এই কোডটি কিছুক্ষণের মধ্যে মেয়াদোত্তীর্ণ হবে। আপনি যদি এই request না করে থাকেন, তাহলে এই ইমেইলটি উপেক্ষা করুন।</Text>
+          <Hr style={hr} />
+          <Text style={footer}>
+            SHAHED IT · Sopura, Rajshahi, Bangladesh<br />
+            📞 01820-060046 · ✉ info@shahedit.com · 🌐 shahedit.com
+          </Text>
+        </Section>
       </Container>
     </Body>
   </Html>
@@ -36,25 +40,14 @@ export const ReauthenticationEmail = ({ token }: ReauthenticationEmailProps) => 
 
 export default ReauthenticationEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif' }
-const container = { padding: '20px 25px' }
-const h1 = {
-  fontSize: '22px',
-  fontWeight: 'bold' as const,
-  color: '#000000',
-  margin: '0 0 20px',
-}
-const text = {
-  fontSize: '14px',
-  color: '#55575d',
-  lineHeight: '1.5',
-  margin: '0 0 25px',
-}
-const codeStyle = {
-  fontFamily: 'Courier, monospace',
-  fontSize: '22px',
-  fontWeight: 'bold' as const,
-  color: '#000000',
-  margin: '0 0 30px',
-}
-const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
+const main = { backgroundColor: '#f4f1fb', fontFamily: "'Segoe UI', Arial, sans-serif", padding: '24px 0' }
+const container = { maxWidth: '560px', margin: '0 auto', padding: '0 16px' }
+const brandBar = { display: 'flex', alignItems: 'center', gap: '10px', padding: '4px 4px 18px' }
+const brandText = { fontSize: '18px', fontWeight: 800, color: '#3b1e6e', margin: '0 0 0 10px', letterSpacing: '0.5px' }
+const card = { background: '#ffffff', borderRadius: '16px', padding: '32px 28px', boxShadow: '0 4px 24px rgba(120,60,200,0.08)' }
+const h1 = { fontSize: '22px', fontWeight: 800 as const, color: '#1a0f3a', margin: '0 0 14px' }
+const text = { fontSize: '15px', color: '#3f3a52', lineHeight: '1.7', margin: '0 0 8px' }
+const muted = { fontSize: '13px', color: '#7a7390', lineHeight: '1.6', margin: '4px 0 0' }
+const codeStyle = { fontFamily: 'Courier, monospace', fontSize: '32px', fontWeight: 800 as const, color: '#a855f7', letterSpacing: '8px', background: '#f4ecff', borderRadius: '12px', padding: '16px 24px', display: 'inline-block', margin: 0 }
+const hr = { borderColor: '#ece6f5', margin: '28px 0 16px' }
+const footer = { fontSize: '12px', color: '#8a83a0', lineHeight: '1.7', margin: 0, textAlign: 'center' as const }
