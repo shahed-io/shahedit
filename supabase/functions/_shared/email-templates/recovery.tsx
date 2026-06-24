@@ -39,7 +39,7 @@ export const RecoveryEmail = ({ siteName, confirmationUrl }: Props) => (
           </Text>
           <Hr style={hr} />
           <Text style={footer}>
-                        📞 01820-060046 · ✉ info@shahedit.com · 🌐 shahedit.com
+                        ফোন: 01820-060046 · info@shahedit.com · shahedit.com
           </Text>
         </Section>
       </Container>

@@ -40,7 +40,7 @@ export const EmailChangeEmail = ({ siteName, oldEmail, newEmail, confirmationUrl
           <Text style={muted}>আপনি যদি এই পরিবর্তন না করে থাকেন, অনুগ্রহ করে দ্রুত আপনার অ্যাকাউন্ট সুরক্ষিত করুন।</Text>
           <Hr style={hr} />
           <Text style={footer}>
-                        📞 01820-060046 · ✉ info@shahedit.com · 🌐 shahedit.com
+                        ফোন: 01820-060046 · info@shahedit.com · shahedit.com
           </Text>
         </Section>
       </Container>

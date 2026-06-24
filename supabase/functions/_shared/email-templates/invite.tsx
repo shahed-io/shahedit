@@ -37,7 +37,7 @@ export const InviteEmail = ({ siteName, siteUrl, confirmationUrl }: Props) => (
           <Text style={muted}>আপনি যদি এই আমন্ত্রণ আশা না করে থাকেন, তাহলে এই ইমেইলটি উপেক্ষা করুন।</Text>
           <Hr style={hr} />
           <Text style={footer}>
-                        📞 01820-060046 · ✉ info@shahedit.com · 🌐 shahedit.com
+                        ফোন: 01820-060046 · info@shahedit.com · shahedit.com
           </Text>
         </Section>
       </Container>

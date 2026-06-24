@@ -8,7 +8,7 @@ interface Props { name?: string; orderNumber?: string; courier?: string; trackin
 const Email = (p: Props) => (
   <Layout
     preview={'আপনার অর্ডার শিপ হয়েছে'}
-    title={'অর্ডার শিপ হয়েছে 📦'}
+    title={'অর্ডার শিপ হয়েছে'}
     intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, আপনার অর্ডার পথে আছে।`}
     paragraphs={[]}
     rows={[['অর্ডার নম্বর', p.orderNumber], ['কুরিয়ার', p.courier], ['ট্র্যাকিং', p.tracking]]}

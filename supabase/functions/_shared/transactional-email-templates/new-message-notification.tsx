@@ -8,7 +8,7 @@ interface Props { name?: string; from?: string; preview?: string }
 const Email = (p: Props) => (
   <Layout
     preview={'নতুন বার্তা এসেছে'}
-    title={'নতুন বার্তা 💌'}
+    title={'নতুন বার্তা'}
     intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, আপনার জন্য একটি নতুন বার্তা এসেছে${p.from ? ` ${p.from} থেকে` : ''}।`}
     paragraphs={[p.preview ? `"${p.preview}"` : '']}
     
