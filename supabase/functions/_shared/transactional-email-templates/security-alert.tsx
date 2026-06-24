@@ -8,11 +8,11 @@ interface Props { name?: string; alertType?: string; details?: string }
 const Email = (p: Props) => (
   <Layout
     preview={'নিরাপত্তা সতর্কতা'}
-    title={'⚠️ Security Alert'}
+    title={'নিরাপত্তা সতর্কতা'}
     intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, আপনার অ্যাকাউন্টে একটি নিরাপত্তা সংক্রান্ত ঘটনা সনাক্ত হয়েছে।`}
-    paragraphs={[`Type: ${p.alertType ?? 'Suspicious activity'}`, p.details ?? 'অনুগ্রহ করে আপনার পাসওয়ার্ড পরিবর্তন করুন এবং 2FA চালু করুন।']}
+    paragraphs={[`ধরন: ${p.alertType ?? 'সন্দেহজনক কার্যকলাপ'}`, p.details ?? 'অনুগ্রহ করে আপনার পাসওয়ার্ড পরিবর্তন করুন এবং 2FA চালু করুন।']}
     
-    ctaLabel={'এখনই Account secure করুন'}
+    ctaLabel={'এখনই অ্যাকাউন্ট সুরক্ষিত করুন'}
     ctaUrl={'https://shahedit.com/profile'}
     accent="red"
   />
@@ -20,7 +20,7 @@ const Email = (p: Props) => (
 
 export const template = {
   component: Email,
-  subject: '⚠️ Security Alert — Shahed IT',
+  subject: 'নিরাপত্তা সতর্কতা — Shahed IT',
   displayName: 'Security Alert',
-  previewData: {"name":"Karim","alertType":"Unusual login","details":"নতুন country থেকে লগইন চেষ্টা।"},
+  previewData: {"name":"করিম","alertType":"অস্বাভাবিক লগইন","details":"নতুন দেশ থেকে লগইন চেষ্টা।"},
 } satisfies TemplateEntry

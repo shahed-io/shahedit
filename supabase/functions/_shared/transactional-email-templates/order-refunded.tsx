@@ -11,7 +11,7 @@ const Email = (p: Props) => (
     title={'অর্ডার রিফান্ড হয়েছে'}
     intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, আপনার অর্ডারের রিফান্ড প্রসেস করা হয়েছে।`}
     paragraphs={[]}
-    rows={[['Order #', p.orderNumber], ['Refund', `৳ ${p.amount ?? '—'}`]]}
+    rows={[['অর্ডার নম্বর', p.orderNumber], ['রিফান্ড', `৳ ${p.amount ?? '—'}`]]}
     
     
     accent="green"
@@ -22,5 +22,5 @@ export const template = {
   component: Email,
   subject: 'অর্ডার রিফান্ড — Shahed IT',
   displayName: 'Order Refunded',
-  previewData: {"name":"Karim","orderNumber":"SI-1024","amount":15000},
+  previewData: {"name":"করিম","orderNumber":"SI-1024","amount":15000},
 } satisfies TemplateEntry
