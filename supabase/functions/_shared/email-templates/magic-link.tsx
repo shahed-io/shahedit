@@ -8,7 +8,7 @@ import {
 
 interface Props { siteName: string; confirmationUrl: string }
 
-const LOGO = 'https://www.shahedit.com/__l5e/assets-v1/131e2224-97b7-4728-ba14-713874744252/shahed-it-email-logo.png'
+const LOGO = 'https://www.shahedit.com/__l5e/assets-v1/f257ad52-e1ae-4c00-babe-e9ab2c9863bf/shahed-it-email-logo.png'
 
 export const MagicLinkEmail = ({ siteName, confirmationUrl }: Props) => (
   <Html lang="bn" dir="ltr">
