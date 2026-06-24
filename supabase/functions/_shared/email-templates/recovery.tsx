@@ -3,42 +3,40 @@
 import * as React from 'npm:react@18.3.1'
 
 import {
-  Body,
-  Button,
-  Container,
-  Head,
-  Heading,
-  Html,
-  Preview,
-  Text,
+  Body, Button, Container, Head, Heading, Html, Img, Preview, Section, Text, Hr,
 } from 'npm:@react-email/components@0.0.22'
 
-interface RecoveryEmailProps {
-  siteName: string
-  confirmationUrl: string
-}
+interface Props { siteName: string; confirmationUrl: string }
 
-export const RecoveryEmail = ({
-  siteName,
-  confirmationUrl,
-}: RecoveryEmailProps) => (
-  <Html lang="en" dir="ltr">
+const LOGO = 'https://www.shahedit.com/__l5e/assets-v1/ff0eebd6-2743-4605-9d95-c9984684e8d7/shahed-it-mark.png'
+
+export const RecoveryEmail = ({ siteName, confirmationUrl }: Props) => (
+  <Html lang="bn" dir="ltr">
     <Head />
-    <Preview>Reset your password for {siteName}</Preview>
+    <Preview>{siteName}-এর জন্য পাসওয়ার্ড রিসেট</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Reset your password</Heading>
-        <Text style={text}>
-          We received a request to reset your password for {siteName}. Click
-          the button below to choose a new password.
-        </Text>
-        <Button style={button} href={confirmationUrl}>
-          Reset Password
-        </Button>
-        <Text style={footer}>
-          If you didn't request a password reset, you can safely ignore this
-          email. Your password will not be changed.
-        </Text>
+        <Section style={brandBar}>
+          <Img src={LOGO} width="44" height="44" alt="SHAHED IT" style={{ borderRadius: 10 }} />
+          <Text style={brandText}>SHAHED IT</Text>
+        </Section>
+        <Section style={card}>
+          <Heading style={h1}>পাসওয়ার্ড রিসেট করুন</Heading>
+          <Text style={text}>
+            আমরা {siteName}-এ আপনার পাসওয়ার্ড রিসেটের request পেয়েছি। নিচের বাটনে ক্লিক করে নতুন পাসওয়ার্ড সেট করুন।
+          </Text>
+          <Section style={{ textAlign: 'center', margin: '28px 0' }}>
+            <Button style={button} href={confirmationUrl}>পাসওয়ার্ড রিসেট করুন</Button>
+          </Section>
+          <Text style={muted}>
+            আপনি যদি এই request না করে থাকেন, তাহলে এই ইমেইলটি উপেক্ষা করুন — আপনার পাসওয়ার্ড অপরিবর্তিত থাকবে।
+          </Text>
+          <Hr style={hr} />
+          <Text style={footer}>
+            SHAHED IT · Sopura, Rajshahi, Bangladesh<br />
+            📞 01820-060046 · ✉ info@shahedit.com · 🌐 shahedit.com
+          </Text>
+        </Section>
       </Container>
     </Body>
   </Html>
@@ -46,26 +44,14 @@ export const RecoveryEmail = ({
 
 export default RecoveryEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif' }
-const container = { padding: '20px 25px' }
-const h1 = {
-  fontSize: '22px',
-  fontWeight: 'bold' as const,
-  color: '#000000',
-  margin: '0 0 20px',
-}
-const text = {
-  fontSize: '14px',
-  color: '#55575d',
-  lineHeight: '1.5',
-  margin: '0 0 25px',
-}
-const button = {
-  backgroundColor: '#000000',
-  color: '#ffffff',
-  fontSize: '14px',
-  borderRadius: '8px',
-  padding: '12px 20px',
-  textDecoration: 'none',
-}
-const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
+const main = { backgroundColor: '#f4f1fb', fontFamily: "'Segoe UI', Arial, sans-serif", padding: '24px 0' }
+const container = { maxWidth: '560px', margin: '0 auto', padding: '0 16px' }
+const brandBar = { display: 'flex', alignItems: 'center', gap: '10px', padding: '4px 4px 18px' }
+const brandText = { fontSize: '18px', fontWeight: 800, color: '#3b1e6e', margin: '0 0 0 10px', letterSpacing: '0.5px' }
+const card = { background: '#ffffff', borderRadius: '16px', padding: '32px 28px', boxShadow: '0 4px 24px rgba(120,60,200,0.08)' }
+const h1 = { fontSize: '22px', fontWeight: 800 as const, color: '#1a0f3a', margin: '0 0 14px' }
+const text = { fontSize: '15px', color: '#3f3a52', lineHeight: '1.7', margin: '0 0 8px' }
+const muted = { fontSize: '13px', color: '#7a7390', lineHeight: '1.6', margin: '4px 0 0' }
+const button = { background: 'linear-gradient(135deg,#a855f7,#d946ef)', color: '#ffffff', fontSize: '15px', fontWeight: 700, borderRadius: '10px', padding: '14px 28px', textDecoration: 'none', display: 'inline-block' }
+const hr = { borderColor: '#ece6f5', margin: '28px 0 16px' }
+const footer = { fontSize: '12px', color: '#8a83a0', lineHeight: '1.7', margin: 0, textAlign: 'center' as const }
