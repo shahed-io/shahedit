@@ -7,7 +7,7 @@ import {
 const BRAND = {
   name: 'Shahed IT',
   logoUrl:
-    'https://www.shahedit.com/__l5e/assets-v1/4139358d-78cb-41df-a58a-67274b79b3af/shahed-it-compact-logo-transparent.png',
+    'https://www.shahedit.com/__l5e/assets-v1/dc40713e-4534-4663-8291-cbe66f17d60c/shahed-it-mark.png',
 }
 
 const BENGALI_FONT_FAMILY = "'Noto Sans Bengali', 'Hind Siliguri', 'SolaimanLipi', 'Nirmala UI', 'Vrinda', 'Bangla MN', 'Bangla Sangam MN', Arial, sans-serif"
