@@ -188,7 +188,7 @@ async function handleWebhook(req: Request): Promise<Response> {
       JSON.stringify({ error: 'Invalid webhook payload' }),
       {
         status: 400,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: { ...corsHeaders, 'Content-Type': 'application/json; charset=utf-8' },
       }
     )
   }
@@ -199,7 +199,7 @@ async function handleWebhook(req: Request): Promise<Response> {
       JSON.stringify({ error: `Unsupported payload version: ${payload.version}` }),
       {
         status: 400,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: { ...corsHeaders, 'Content-Type': 'application/json; charset=utf-8' },
       }
     )
   }
@@ -214,7 +214,7 @@ async function handleWebhook(req: Request): Promise<Response> {
     console.error('Unknown email type', { emailType, run_id })
     return new Response(
       JSON.stringify({ error: `Unknown email type: ${emailType}` }),
-      { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json; charset=utf-8' } }
     )
   }
 
