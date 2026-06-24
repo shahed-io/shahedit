@@ -29,9 +29,8 @@ const serviceCategories = [
   { label: "Business Solutions", href: "/services/business-solutions", icon: Building2, img: catBusiness, accent: "42 95% 60%" },
 ];
 
-const navLinks = [
+const navLinks: { label: string; href: string; hasDropdown?: boolean }[] = [
   { label: "Home", href: "/" },
-  { label: "Services", href: "/services", hasDropdown: true },
   { label: "Category", href: "/services" },
   { label: "Blog", href: "/blog" },
   { label: "Pricing", href: "/pricing" },
