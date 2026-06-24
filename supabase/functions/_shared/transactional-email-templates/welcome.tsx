@@ -11,14 +11,15 @@ const BENGALI_FONT_CSS = `@font-face{font-family:'Noto Sans Bengali';font-style:
 interface Props { name?: string }
 
 const Email = ({ name }: Props) => (
-  <Html lang="bn" dir="ltr">
+  <Html lang="bn" dir="ltr" translate="no">
     <Head>
       <meta charSet="UTF-8" />
       <meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
+      <meta name="google" content="notranslate" />
       <style>{BENGALI_FONT_CSS}</style>
     </Head>
     <Preview>Shahed IT-তে আপনাকে স্বাগতম!</Preview>
-    <Body style={main}>
+    <Body style={main} className="notranslate">
       <Container style={container}>
         <Section style={header}><Img src={LOGO} width="220" alt="Shahed IT" style={{ display: 'block', margin: '0 auto', maxWidth: '100%', height: 'auto' }} /></Section>
         <Section style={card}>

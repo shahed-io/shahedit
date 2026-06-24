@@ -38,14 +38,15 @@ export const Layout = ({
 }: LayoutProps) => {
   const color = ACCENTS[accent]
   return (
-    <Html lang="bn" dir="ltr">
+    <Html lang="bn" dir="ltr" translate="no">
       <Head>
         <meta charSet="UTF-8" />
         <meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="google" content="notranslate" />
         <style>{BENGALI_FONT_CSS}</style>
       </Head>
       <Preview>{preview}</Preview>
-      <Body style={main}>
+      <Body style={main} className="notranslate">
         <Container style={container}>
           <Section style={brandBar}>
             <Img
