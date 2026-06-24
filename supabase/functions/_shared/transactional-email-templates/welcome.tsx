@@ -5,7 +5,7 @@ import {
 } from 'npm:@react-email/components@0.0.22'
 import type { TemplateEntry } from './registry.ts'
 
-const LOGO = 'https://www.shahedit.com/__l5e/assets-v1/35029b9f-76c9-482d-a1a2-afb2c9dffbb1/shahed-it-email-logo-transparent.png'
+const LOGO = 'https://www.shahedit.com/__l5e/assets-v1/6da40b38-e1e3-4a8b-a91e-4bff75e2051d/shahed-it-existing-logo-transparent.png'
 
 interface Props { name?: string }
 
@@ -22,7 +22,7 @@ const Email = ({ name }: Props) => (
     <Preview>Shahed IT-তে আপনাকে স্বাগতম!</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Section style={header}><Img src={LOGO} width="220" height="70" alt="Shahed IT" style={{ display: 'block', margin: '0 auto', maxWidth: '100%', height: 'auto' }} /></Section>
+        <Section style={header}><Img src={LOGO} width="360" alt="Shahed IT" style={{ display: 'block', margin: '0 auto', maxWidth: '100%', height: 'auto' }} /></Section>
         <Section style={card}>
           <Heading style={h1}>স্বাগতম{name ? `, ${name}` : ''} 👋</Heading>
           <Text style={text}>
