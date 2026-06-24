@@ -8,7 +8,7 @@ import {
 
 interface Props { siteName: string; siteUrl: string; confirmationUrl: string }
 
-const LOGO = 'https://www.shahedit.com/__l5e/assets-v1/6da40b38-e1e3-4a8b-a91e-4bff75e2051d/shahed-it-existing-logo-transparent.png'
+const LOGO = 'https://www.shahedit.com/__l5e/assets-v1/4139358d-78cb-41df-a58a-67274b79b3af/shahed-it-compact-logo-transparent.png'
 
 export const InviteEmail = ({ siteName, siteUrl, confirmationUrl }: Props) => (
   <Html lang="bn" dir="ltr">
@@ -21,7 +21,7 @@ export const InviteEmail = ({ siteName, siteUrl, confirmationUrl }: Props) => (
     <Body style={main}>
       <Container style={container}>
         <Section style={brandBar}>
-          <Img src={LOGO} width="360" alt="Shahed IT" style={{ display: 'block', margin: '0 auto', maxWidth: '100%', height: 'auto' }} />
+          <Img src={LOGO} width="220" alt="Shahed IT" style={{ display: 'block', margin: '0 auto', maxWidth: '100%', height: 'auto' }} />
         </Section>
         <Section style={card}>
           <Heading style={h1}>আপনাকে আমন্ত্রণ জানানো হয়েছে</Heading>

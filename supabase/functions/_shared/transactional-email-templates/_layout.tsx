@@ -8,7 +8,7 @@ const BRAND = {
   name: 'Shahed IT',
   tagline: 'Smart IT Solutions',
   logoUrl:
-    'https://www.shahedit.com/__l5e/assets-v1/6da40b38-e1e3-4a8b-a91e-4bff75e2051d/shahed-it-existing-logo-transparent.png',
+    'https://www.shahedit.com/__l5e/assets-v1/4139358d-78cb-41df-a58a-67274b79b3af/shahed-it-compact-logo-transparent.png',
 }
 
 
@@ -49,7 +49,7 @@ export const Layout = ({
             <Img
               src={BRAND.logoUrl}
               alt={BRAND.name}
-              width={360}
+              width={220}
               style={{ display: 'block', margin: '0 auto', maxWidth: '100%', height: 'auto' }}
             />
           </Section>
