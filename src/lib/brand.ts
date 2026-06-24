@@ -13,5 +13,5 @@ export const BRAND = {
   websiteUrl: "https://www.shahedit.com",
   // Absolute logo URL (CDN-served) — works in emails & PDFs
   logoUrl:
-    "https://www.shahedit.com/__l5e/assets-v1/ff0eebd6-2743-4605-9d95-c9984684e8d7/shahed-it-mark.png",
+    "https://www.shahedit.com/__l5e/assets-v1/dc40713e-4534-4663-8291-cbe66f17d60c/shahed-it-mark.png",
 } as const;
