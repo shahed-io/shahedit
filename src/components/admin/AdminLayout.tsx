@@ -150,9 +150,13 @@ const tileGradient = (href: string) => {
 interface AdminLayoutProps { children: React.ReactNode }
 
 const AdminLayout = ({ children }: AdminLayoutProps) => {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState<boolean>(() => {
+    try { return sessionStorage.getItem("admin:collapsed") === "1"; } catch { return false; }
+  });
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() => {
+    try { return JSON.parse(sessionStorage.getItem("admin:openGroups") || "{}"); } catch { return {}; }
+  });
   const [notifications, setNotifications] = useState<any[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [query, setQuery] = useState("");
@@ -163,6 +167,45 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   const location = useLocation();
   const navigate = useNavigate();
   const initializedGroups = useRef(false);
+  const sidebarScrollRef = useRef<HTMLElement | null>(null);
+  const mainScrollRef = useRef<HTMLElement | null>(null);
+
+  // Persist sidebar UI state
+  useEffect(() => {
+    try { sessionStorage.setItem("admin:collapsed", collapsed ? "1" : "0"); } catch {}
+  }, [collapsed]);
+  useEffect(() => {
+    try { sessionStorage.setItem("admin:openGroups", JSON.stringify(openGroups)); } catch {}
+  }, [openGroups]);
+
+  // Restore sidebar scroll across route changes (only run once on mount)
+  useEffect(() => {
+    const el = sidebarScrollRef.current;
+    if (!el) return;
+    const saved = Number(sessionStorage.getItem("admin:sidebarScroll") || "0");
+    if (saved) el.scrollTop = saved;
+    const onScroll = () => {
+      try { sessionStorage.setItem("admin:sidebarScroll", String(el.scrollTop)); } catch {}
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Save main scroll per route; restore on revisit
+  useEffect(() => {
+    const el = mainScrollRef.current;
+    if (!el) return;
+    const key = `admin:scroll:${location.pathname}`;
+    const saved = Number(sessionStorage.getItem(key) || "0");
+    el.scrollTop = saved;
+    const onScroll = () => {
+      try { sessionStorage.setItem(key, String(el.scrollTop)); } catch {}
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, [location.pathname]);
+
+
 
   const visibleGroups = useMemo(
     () =>
