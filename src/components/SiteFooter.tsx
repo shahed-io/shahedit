@@ -344,22 +344,22 @@ const SiteFooter = () => {
         </motion.div>
 
         {/* Copyright */}
-        <div className="mt-8 flex justify-center">
+        <div className="mt-8 flex justify-center px-4">
           <div
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs text-foreground/80"
+            className="inline-flex flex-wrap justify-center items-center gap-x-2 gap-y-1 px-4 sm:px-5 py-2 rounded-2xl sm:rounded-full text-[11px] sm:text-xs text-foreground/80 text-center max-w-full"
             style={{
               background: "rgba(255,255,255,0.04)",
               border: "1px solid rgba(255,255,255,0.10)",
               backdropFilter: "blur(10px)",
             }}
           >
-            <span className="bg-gradient-to-r from-amber-300 to-yellow-500 bg-clip-text text-transparent font-semibold">© {new Date().getFullYear()}</span>{" "}
-            <span className="font-bold bg-gradient-to-r from-primary via-fuchsia-400 to-accent bg-clip-text text-transparent">Shahed IT</span>
-            <span className="text-foreground/40"> · </span>
-            <span className="bg-gradient-to-r from-emerald-300 to-teal-400 bg-clip-text text-transparent font-medium">All Rights Reserved</span>
-            <span className="text-foreground/40"> · </span>
-            <span className="bg-gradient-to-r from-sky-300 to-indigo-400 bg-clip-text text-transparent font-medium">Designed &amp; Developed by</span>{" "}
-            <span className="font-semibold bg-gradient-to-r from-pink-400 via-fuchsia-400 to-accent bg-clip-text text-transparent">Shahed IT</span>
+            <span className="bg-gradient-to-r from-amber-300 to-yellow-500 bg-clip-text text-transparent font-semibold whitespace-nowrap">© {new Date().getFullYear()}</span>
+            <span className="font-bold bg-gradient-to-r from-primary via-fuchsia-400 to-accent bg-clip-text text-transparent whitespace-nowrap">Shahed IT</span>
+            <span className="text-foreground/40 hidden sm:inline">·</span>
+            <span className="bg-gradient-to-r from-emerald-300 to-teal-400 bg-clip-text text-transparent font-medium whitespace-nowrap">All Rights Reserved</span>
+            <span className="text-foreground/40 hidden sm:inline">·</span>
+            <span className="bg-gradient-to-r from-sky-300 to-indigo-400 bg-clip-text text-transparent font-medium whitespace-nowrap">Designed &amp; Developed by</span>
+            <span className="font-semibold bg-gradient-to-r from-pink-400 via-fuchsia-400 to-accent bg-clip-text text-transparent whitespace-nowrap">Shahed IT</span>
           </div>
         </div>
       </div>
