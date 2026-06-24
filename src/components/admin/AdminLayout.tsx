@@ -146,6 +146,8 @@ const tileGradient = (href: string) => {
   return TILE_GRADIENTS[h % TILE_GRADIENTS.length];
 };
 
+const ADMIN_SIDEBAR_SCROLL_KEY = "admin:sidebarScroll";
+
 
 interface AdminLayoutProps { children: React.ReactNode }
 
@@ -170,6 +172,21 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   const sidebarScrollRef = useRef<HTMLElement | null>(null);
   const mainScrollRef = useRef<HTMLElement | null>(null);
 
+  const persistSidebarScroll = () => {
+    const el = sidebarScrollRef.current;
+    if (!el) return;
+    try { sessionStorage.setItem(ADMIN_SIDEBAR_SCROLL_KEY, String(el.scrollTop)); } catch {}
+  };
+
+  const restoreSidebarScroll = () => {
+    const el = sidebarScrollRef.current;
+    if (!el) return;
+    try {
+      const saved = Number(sessionStorage.getItem(ADMIN_SIDEBAR_SCROLL_KEY) || "0");
+      if (Number.isFinite(saved)) el.scrollTop = saved;
+    } catch {}
+  };
+
   // Persist sidebar UI state
   useEffect(() => {
     try { sessionStorage.setItem("admin:collapsed", collapsed ? "1" : "0"); } catch {}
@@ -182,14 +199,21 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   useEffect(() => {
     const el = sidebarScrollRef.current;
     if (!el) return;
-    const saved = Number(sessionStorage.getItem("admin:sidebarScroll") || "0");
-    if (saved) el.scrollTop = saved;
+    restoreSidebarScroll();
     const onScroll = () => {
-      try { sessionStorage.setItem("admin:sidebarScroll", String(el.scrollTop)); } catch {}
+      try { sessionStorage.setItem(ADMIN_SIDEBAR_SCROLL_KEY, String(el.scrollTop)); } catch {}
     };
     el.addEventListener("scroll", onScroll, { passive: true });
-    return () => el.removeEventListener("scroll", onScroll);
+    return () => {
+      onScroll();
+      el.removeEventListener("scroll", onScroll);
+    };
   }, []);
+
+  useEffect(() => {
+    const frame = requestAnimationFrame(restoreSidebarScroll);
+    return () => cancelAnimationFrame(frame);
+  }, [location.pathname]);
 
   // Save main scroll per route; restore on revisit
   useEffect(() => {
@@ -309,7 +333,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   const currentTitle = currentItem?.label ?? "Dashboard";
 
   // Sidebar markup (shared between desktop + mobile drawer)
-  const SidebarInner = ({ isMobile = false }: { isMobile?: boolean }) => (
+  const renderSidebarInner = (isMobile = false) => (
     <>
       {/* Brand */}
       <div className="px-4 pt-5 pb-4 flex items-center justify-between">
@@ -394,7 +418,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                   {aiResults.map((r) => (
                     <button
                       key={r.href}
-                      onClick={() => { navigate(r.href); setQuery(""); setMobileOpen(false); }}
+                      onClick={() => { persistSidebarScroll(); navigate(r.href); setQuery(""); setMobileOpen(false); }}
                       className="w-full text-left px-3 py-2 hover:bg-primary/10 transition-colors group"
                     >
                       <div className="flex items-center gap-2">
@@ -456,7 +480,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                       const active = isItemActive(item.href);
                       const grad = tileGradient(item.href);
                       return (
-                        <Link key={item.href} to={item.href} title={(collapsed && !isMobile) ? item.label : undefined}>
+                        <Link key={item.href} to={item.href} onClick={persistSidebarScroll} title={(collapsed && !isMobile) ? item.label : undefined}>
                           <motion.div
                             whileHover={{ x: (collapsed && !isMobile) ? 0 : 2 }}
                             transition={{ type: "spring", stiffness: 400, damping: 28 }}
@@ -598,7 +622,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
             backdropFilter: "blur(28px)",
           }}
         >
-          <SidebarInner />
+          {renderSidebarInner()}
         </motion.aside>
 
         {/* Mobile drawer */}
@@ -620,7 +644,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                   backdropFilter: "blur(28px)",
                 }}
               >
-                <SidebarInner isMobile />
+                {renderSidebarInner(true)}
               </motion.aside>
             </>
           )}
