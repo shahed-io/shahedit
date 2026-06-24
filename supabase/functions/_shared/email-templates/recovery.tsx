@@ -12,13 +12,15 @@ const LOGO = 'https://www.shahedit.com/__l5e/assets-v1/ff0eebd6-2743-4605-9d95-c
 
 export const RecoveryEmail = ({ siteName, confirmationUrl }: Props) => (
   <Html lang="bn" dir="ltr">
-    <Head />
+    <Head>
+      <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    </Head>
     <Preview>{siteName}-এর জন্য পাসওয়ার্ড রিসেট</Preview>
     <Body style={main}>
       <Container style={container}>
         <Section style={brandBar}>
-          <Img src={LOGO} width="44" height="44" alt="SHAHED IT" style={{ borderRadius: 10 }} />
-          <Text style={brandText}>SHAHED IT</Text>
+          <Img src={LOGO} width="44" height="44" alt="Shahed IT" style={{ borderRadius: 10 }} />
+          <Text style={brandText}>Shahed IT</Text>
         </Section>
         <Section style={card}>
           <Heading style={h1}>পাসওয়ার্ড রিসেট করুন</Heading>
@@ -33,8 +35,7 @@ export const RecoveryEmail = ({ siteName, confirmationUrl }: Props) => (
           </Text>
           <Hr style={hr} />
           <Text style={footer}>
-            SHAHED IT · Sopura, Rajshahi, Bangladesh<br />
-            📞 01820-060046 · ✉ info@shahedit.com · 🌐 shahedit.com
+                        📞 01820-060046 · ✉ info@shahedit.com · 🌐 shahedit.com
           </Text>
         </Section>
       </Container>
@@ -44,7 +45,7 @@ export const RecoveryEmail = ({ siteName, confirmationUrl }: Props) => (
 
 export default RecoveryEmail
 
-const main = { backgroundColor: '#f4f1fb', fontFamily: "'Segoe UI', Arial, sans-serif", padding: '24px 0' }
+const main = { backgroundColor: '#f4f1fb', fontFamily: "'Noto Sans Bengali', 'Hind Siliguri', 'SolaimanLipi', 'Segoe UI', Arial, sans-serif", padding: '24px 0' }
 const container = { maxWidth: '560px', margin: '0 auto', padding: '0 16px' }
 const brandBar = { display: 'flex', alignItems: 'center', gap: '10px', padding: '4px 4px 18px' }
 const brandText = { fontSize: '18px', fontWeight: 800, color: '#3b1e6e', margin: '0 0 0 10px', letterSpacing: '0.5px' }
