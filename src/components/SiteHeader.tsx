@@ -211,6 +211,7 @@ const SiteHeader = () => {
 
 
   return (
+    <>
     <motion.header
       initial={isMobile ? false : { y: -80, opacity: 0 }}
       animate={isMobile ? undefined : { y: 0, opacity: 1 }}
