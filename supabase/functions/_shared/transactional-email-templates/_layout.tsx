@@ -5,10 +5,10 @@ import {
 } from 'npm:@react-email/components@0.0.22'
 
 const BRAND = {
-  name: 'SHAHED IT',
+  name: 'Shahed IT',
   tagline: 'Smart IT Solutions',
   logoUrl:
-    'https://www.shahedit.com/__l5e/assets-v1/ff0eebd6-2743-4605-9d95-c9984684e8d7/shahed-it-mark.png',
+    'https://www.shahedit.com/__l5e/assets-v1/131e2224-97b7-4728-ba14-713874744252/shahed-it-email-logo.png',
 }
 
 
@@ -42,24 +42,15 @@ export const Layout = ({
       <Body style={main}>
         <Container style={container}>
           <Section style={brandBar}>
-            <table role="presentation" cellPadding={0} cellSpacing={0} style={{ margin: '0 auto', borderCollapse: 'collapse' }}>
-              <tr>
-                <td style={{ verticalAlign: 'middle', paddingRight: '14px' }}>
-                  <div style={logoCircle}>
-                    <Img src={BRAND.logoUrl} alt={BRAND.name} width={36} height={36} style={{ display: 'block' }} />
-                  </div>
-                </td>
-                <td style={{ verticalAlign: 'middle', textAlign: 'left' }}>
-                  <div style={brand}>SHAHED IT</div>
-                  <div style={taglineWrap}>
-                    <span style={taglineDash} />
-                    <span style={tagline}>SHAHEDIT.COM</span>
-                    <span style={taglineDash} />
-                  </div>
-                </td>
-              </tr>
-            </table>
+            <Img
+              src={BRAND.logoUrl}
+              alt={BRAND.name}
+              width={220}
+              height={70}
+              style={{ display: 'block', margin: '0 auto', maxWidth: '100%', height: 'auto' }}
+            />
           </Section>
+
 
 
 
@@ -91,15 +82,10 @@ export const Layout = ({
   )
 }
 
-const main = { backgroundColor: '#ffffff', fontFamily: "'Hind Siliguri','Noto Sans Bengali',Inter,Arial,sans-serif", margin: 0, padding: 0 }
-const container = { maxWidth: '560px', margin: '0 auto', padding: '24px 16px' }
+const main = { backgroundColor: '#eeeaf7', fontFamily: "'Hind Siliguri','Noto Sans Bengali',Inter,Arial,sans-serif", margin: 0, padding: '24px 0' }
+const container = { maxWidth: '560px', margin: '0 auto', padding: '0 16px' }
 const header = { padding: '12px 0 18px', textAlign: 'center' as const }
-const brandBar = { background: 'linear-gradient(135deg, #1a0b2e 0%, #2d1454 50%, #3d1a6b 100%)', borderRadius: '14px', padding: '18px 22px', textAlign: 'center' as const, margin: '0 0 18px' }
-const logoCircle = { width: '52px', height: '52px', borderRadius: '50%', background: 'radial-gradient(circle at 30% 25%, #a78bfa, #7c3aed 55%, #4c1d95)', padding: '8px', boxShadow: '0 4px 14px rgba(124,58,237,0.5)', display: 'inline-block', boxSizing: 'border-box' as const }
-const brand = { fontSize: '26px', fontWeight: 800, color: '#ffffff', letterSpacing: '0.5px', lineHeight: '1', margin: 0, textShadow: '0 2px 8px rgba(167,139,250,0.5)' }
-const taglineWrap = { display: 'flex', alignItems: 'center', gap: '6px', marginTop: '6px' }
-const taglineDash = { display: 'inline-block', width: '18px', height: '1px', background: 'rgba(196,181,253,0.5)' }
-const tagline = { fontSize: '10px', color: '#c4b5fd', letterSpacing: '3px', fontWeight: 600, whiteSpace: 'nowrap' as const }
+const brandBar = { background: '#ffffff', borderRadius: '16px', padding: '20px 16px', textAlign: 'center' as const, margin: '0 0 14px', boxShadow: '0 2px 12px rgba(120,60,200,0.06)' }
 
 
 const card = { backgroundColor: '#faf7ff', border: '1px solid', borderRadius: '14px', padding: '26px 22px' }

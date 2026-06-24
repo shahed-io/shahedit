@@ -8,7 +8,7 @@ import {
 
 interface Props { siteName: string; oldEmail: string; email: string; newEmail: string; confirmationUrl: string }
 
-const LOGO = 'https://www.shahedit.com/__l5e/assets-v1/ff0eebd6-2743-4605-9d95-c9984684e8d7/shahed-it-mark.png'
+const LOGO = 'https://www.shahedit.com/__l5e/assets-v1/131e2224-97b7-4728-ba14-713874744252/shahed-it-email-logo.png'
 
 export const EmailChangeEmail = ({ siteName, oldEmail, newEmail, confirmationUrl }: Props) => (
   <Html lang="bn" dir="ltr">
@@ -19,8 +19,7 @@ export const EmailChangeEmail = ({ siteName, oldEmail, newEmail, confirmationUrl
     <Body style={main}>
       <Container style={container}>
         <Section style={brandBar}>
-          <Img src={LOGO} width="44" height="44" alt="Shahed IT" style={{ borderRadius: 10 }} />
-          <Text style={brandText}>Shahed IT</Text>
+          <Img src={LOGO} width="220" height="70" alt="Shahed IT" style={{ display: 'block', margin: '0 auto', maxWidth: '100%', height: 'auto' }} />
         </Section>
         <Section style={card}>
           <Heading style={h1}>ইমেইল পরিবর্তন নিশ্চিত করুন</Heading>
@@ -46,9 +45,9 @@ export const EmailChangeEmail = ({ siteName, oldEmail, newEmail, confirmationUrl
 
 export default EmailChangeEmail
 
-const main = { backgroundColor: '#f4f1fb', fontFamily: "'Noto Sans Bengali', 'Hind Siliguri', 'SolaimanLipi', 'Segoe UI', Arial, sans-serif", padding: '24px 0' }
+const main = { backgroundColor: '#eeeaf7', fontFamily: "'Noto Sans Bengali', 'Hind Siliguri', 'SolaimanLipi', 'Segoe UI', Arial, sans-serif", padding: '24px 0' }
 const container = { maxWidth: '560px', margin: '0 auto', padding: '0 16px' }
-const brandBar = { display: 'flex', alignItems: 'center', gap: '10px', padding: '4px 4px 18px' }
+const brandBar = { background: '#ffffff', borderRadius: '16px', padding: '20px 16px', textAlign: 'center' as const, margin: '0 0 14px', boxShadow: '0 2px 12px rgba(120,60,200,0.06)' }
 const brandText = { fontSize: '18px', fontWeight: 800, color: '#3b1e6e', margin: '0 0 0 10px', letterSpacing: '0.5px' }
 const card = { background: '#ffffff', borderRadius: '16px', padding: '32px 28px', boxShadow: '0 4px 24px rgba(120,60,200,0.08)' }
 const h1 = { fontSize: '22px', fontWeight: 800 as const, color: '#1a0f3a', margin: '0 0 14px' }
