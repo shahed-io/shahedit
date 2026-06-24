@@ -8,7 +8,7 @@ import {
 
 interface Props { token: string }
 
-const LOGO = 'https://www.shahedit.com/__l5e/assets-v1/f257ad52-e1ae-4c00-babe-e9ab2c9863bf/shahed-it-email-logo.png'
+const LOGO = 'https://www.shahedit.com/__l5e/assets-v1/e08d29f8-951f-4ee9-9b0f-a1203964b662/shahed-it-email-logo-original.png'
 
 export const ReauthenticationEmail = ({ token }: Props) => (
   <Html lang="bn" dir="ltr">
