@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import { SEO } from "@/components/SEO";
 import type { FAQ } from "@/lib/supabase-types";
 import { useRealtimeSync } from "@/hooks/useRealtimeSync";
 
@@ -36,6 +37,19 @@ const FAQPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="FAQ — Common Questions about SHAHED IT"
+        description="Answers to common questions about SHAHED IT services, delivery time, payments, refunds and support."
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faqs.map((f) => ({
+            "@type": "Question",
+            name: f.question,
+            acceptedAnswer: { "@type": "Answer", text: f.answer },
+          })),
+        }}
+      />
       <SiteHeader />
       <section className="py-20">
         <div className="container mx-auto px-4 max-w-3xl">

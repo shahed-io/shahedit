@@ -1,0 +1,24 @@
+# SHAHED IT
+
+> SHAHED IT is a Rajshahi, Bangladesh-based digital agency providing web development, design, digital marketing, and IT services with transparent BDT pricing and 24/7 support.
+
+## Pages
+
+- [Home](/): Overview of SHAHED IT and featured services.
+- [About](/about): Company background, values, and team.
+- [Services](/services): Full list of digital and IT services offered.
+- [Pricing](/pricing): Service plans and transparent BDT pricing.
+- [Portfolio](/portfolio): Selected client projects and case studies.
+- [Blog](/blog): Articles on web, design, marketing, and IT.
+- [FAQ](/faq): Common questions about services, payments, and support.
+- [Careers](/careers): Open roles at SHAHED IT.
+- [Contact](/contact): Phone, email, and office address.
+- [Get a Quote](/get-quote): Request a custom project quote.
+
+## Optional
+
+- [Terms](/terms): Terms of service.
+- [Privacy Policy](/privacy-policy): How we handle user data.
+- [Refund Policy](/refund-policy): Refund eligibility and process.
+- [Delivery Policy](/delivery-policy): Service delivery timelines.
+- [Complaint Policy](/complaint-policy): How to file a complaint.
