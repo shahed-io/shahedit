@@ -344,24 +344,70 @@ const SiteFooter = () => {
         </motion.div>
 
         {/* Copyright */}
-        <div className="mt-8 flex justify-center px-4">
-          <div
-            className="inline-flex flex-wrap justify-center items-center gap-x-2 gap-y-1 px-4 sm:px-5 py-2 rounded-2xl sm:rounded-full text-[11px] sm:text-xs text-foreground/80 text-center max-w-full"
+        <div className="mt-10 flex justify-center px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="group relative inline-flex flex-wrap justify-center items-center gap-x-3 gap-y-1.5 px-6 sm:px-8 py-3 rounded-full text-[11px] sm:text-[12px] tracking-wide max-w-full overflow-hidden"
             style={{
-              background: "rgba(255,255,255,0.04)",
-              border: "1px solid rgba(255,255,255,0.10)",
-              backdropFilter: "blur(10px)",
+              background:
+                "linear-gradient(135deg, hsla(265,55%,10%,0.85), hsla(280,60%,8%,0.80), hsla(255,50%,6%,0.88))",
+              border: "1px solid hsla(280,80%,65%,0.22)",
+              backdropFilter: "blur(14px)",
+              WebkitBackdropFilter: "blur(14px)",
+              boxShadow:
+                "0 8px 32px -10px hsla(270,90%,40%,0.45), inset 0 1px 0 hsla(0,0%,100%,0.06)",
             }}
           >
-            <span className="bg-gradient-to-r from-amber-300 to-yellow-500 bg-clip-text text-transparent font-semibold whitespace-nowrap">© {new Date().getFullYear()}</span>
-            <span className="font-bold bg-gradient-to-r from-primary via-fuchsia-400 to-accent bg-clip-text text-transparent whitespace-nowrap">Shahed IT</span>
-            <span className="text-foreground/40 hidden sm:inline">·</span>
-            <span className="bg-gradient-to-r from-emerald-300 to-teal-400 bg-clip-text text-transparent font-medium whitespace-nowrap">All Rights Reserved</span>
-            <span className="text-foreground/40 hidden sm:inline">·</span>
-            <span className="bg-gradient-to-r from-sky-300 to-indigo-400 bg-clip-text text-transparent font-medium whitespace-nowrap">Designed &amp; Developed by</span>
-            <span className="font-semibold bg-gradient-to-r from-pink-400 via-fuchsia-400 to-accent bg-clip-text text-transparent whitespace-nowrap">Shahed IT</span>
-          </div>
+            {/* rotating conic border glow */}
+            <span
+              aria-hidden
+              className="absolute -inset-px rounded-full opacity-50 blur-[2px] animate-spin pointer-events-none"
+              style={{
+                background:
+                  "conic-gradient(from 0deg, transparent 0%, hsla(280,90%,65%,0.6) 25%, transparent 50%, hsla(190,95%,60%,0.5) 75%, transparent 100%)",
+                animationDuration: "8s",
+                mask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
+                WebkitMask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
+                WebkitMaskComposite: "xor",
+                maskComposite: "exclude",
+                padding: "1px",
+              }}
+            />
+            {/* shimmer sweep */}
+            <span
+              aria-hidden
+              className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-[1600ms] ease-out pointer-events-none"
+              style={{
+                background:
+                  "linear-gradient(110deg, transparent 35%, hsla(0,0%,100%,0.10) 50%, transparent 65%)",
+              }}
+            />
+
+            <Sparkles size={12} className="relative text-amber-300 drop-shadow-[0_0_6px_hsla(45,95%,60%,0.7)]" />
+            <span className="relative font-serif italic bg-gradient-to-r from-amber-200 via-yellow-300 to-amber-400 bg-clip-text text-transparent whitespace-nowrap">
+              © {new Date().getFullYear()}
+            </span>
+            <span className="relative h-3 w-px bg-gradient-to-b from-transparent via-white/30 to-transparent hidden sm:inline-block" />
+            <span className="relative font-extrabold tracking-tight bg-gradient-to-r from-primary via-fuchsia-300 to-accent bg-clip-text text-transparent whitespace-nowrap" style={{ fontFamily: "'Syne', sans-serif" }}>
+              Shahed IT
+            </span>
+            <span className="relative h-3 w-px bg-gradient-to-b from-transparent via-white/30 to-transparent hidden sm:inline-block" />
+            <span className="relative uppercase tracking-[0.22em] text-[10px] sm:text-[11px] bg-gradient-to-r from-emerald-200 to-teal-300 bg-clip-text text-transparent font-semibold whitespace-nowrap">
+              All Rights Reserved
+            </span>
+            <span className="relative h-3 w-px bg-gradient-to-b from-transparent via-white/30 to-transparent hidden sm:inline-block" />
+            <span className="relative text-foreground/70 font-light whitespace-nowrap">
+              Crafted by
+            </span>
+            <span className="relative font-bold bg-gradient-to-r from-pink-300 via-fuchsia-300 to-accent bg-clip-text text-transparent whitespace-nowrap" style={{ fontFamily: "'Syne', sans-serif" }}>
+              Shahed IT
+            </span>
+            <Sparkles size={12} className="relative text-fuchsia-300 drop-shadow-[0_0_6px_hsla(290,95%,65%,0.7)]" />
+          </motion.div>
         </div>
+
       </div>
     </footer>
   );
