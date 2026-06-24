@@ -25,17 +25,17 @@ const Email = ({ name, orderNumber, productTitle, amount, paymentMethod }: Props
       <meta name="google" content="notranslate" />
       <style>{BENGALI_FONT_CSS}</style>
     </Head>
-    <Preview>আপনার অর্ডার নিশ্চিত হয়েছে — {orderNumber ?? ''}</Preview>
+    <Preview>আপনার অর্ডার নিশ্চিত হয়েছে — {orderNumber ?? ''}</Preview>
     <Body style={main} className="notranslate">
       <Container style={container}>
         <Section style={header}>
           <Img src={LOGO} width="220" alt="Shahed IT" style={{ display: 'block', margin: '0 auto', maxWidth: '100%', height: 'auto' }} />
         </Section>
         <Section style={card}>
-          <Heading style={h1}>অর্ডার নিশ্চিত হয়েছে</Heading>
+          <Heading style={h1}>অর্ডার নিশ্চিত হয়েছে</Heading>
           <Text style={text}>
-            প্রিয় {name ?? 'গ্রাহক'}, আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে। নিচে আপনার
-            অর্ডারের সংক্ষিপ্ত বিবরণ দেওয়া হলো।
+            প্রিয় {name ?? 'গ্রাহক'}, আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে। নিচে আপনার
+            অর্ডারের সংক্ষিপ্ত বিবরণ দেওয়া হলো।
           </Text>
           <Section style={box}>
             <Row><Column style={lbl}>অর্ডার নম্বর</Column><Column style={val}>{orderNumber ?? '—'}</Column></Row>
@@ -44,13 +44,13 @@ const Email = ({ name, orderNumber, productTitle, amount, paymentMethod }: Props
             <Row><Column style={lbl}>পেমেন্ট মাধ্যম</Column><Column style={val}>{paymentMethod ?? '—'}</Column></Row>
           </Section>
           <Text style={text}>
-            পেমেন্ট যাচাই সম্পন্ন হলে আমাদের টিম দ্রুততম সময়ে কাজ শুরু করবে। আপনি যেকোনো সময়
+            পেমেন্ট যাচাই সম্পন্ন হলে আমাদের টিম দ্রুততম সময়ে কাজ শুরু করবে। আপনি যেকোনো সময়
             ড্যাশবোর্ড থেকে অর্ডারের সর্বশেষ আপডেট দেখতে পারবেন।
           </Text>
           <Button href="https://shahedit.com/dashboard" style={button}>ড্যাশবোর্ড দেখুন</Button>
         </Section>
         <Hr style={hr} />
-        <Text style={footer}>সাহায্য প্রয়োজন? কল করুন <strong>01820-060046</strong></Text>
+        <Text style={footer}>সাহায্য প্রয়োজন? কল করুন <strong>01820-060046</strong></Text>
       </Container>
     </Body>
   </Html>
@@ -60,7 +60,7 @@ export const template = {
   component: Email,
   subject: (d: Record<string, any>) => `অর্ডার নিশ্চিত — ${d.orderNumber ?? 'Shahed IT'}`,
   displayName: 'অর্ডার কনফার্মেশন',
-  previewData: { name: 'করিম', orderNumber: 'SI-1024', productTitle: 'বিজনেস ওয়েবসাইট', amount: 15000, paymentMethod: 'বিকাশ' },
+  previewData: { name: 'করিম', orderNumber: 'SI-1024', productTitle: 'বিজনেস ওয়েবসাইট', amount: 15000, paymentMethod: 'বিকাশ' },
 } satisfies TemplateEntry
 
 const main = { backgroundColor: '#ffffff', fontFamily: BENGALI_FONT_FAMILY, margin: 0, padding: 0, wordBreak: 'normal' as const, overflowWrap: 'break-word' as const }

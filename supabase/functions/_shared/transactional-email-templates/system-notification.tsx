@@ -9,8 +9,8 @@ const Email = (p: Props) => (
   <Layout
     preview={'সিস্টেম নোটিফিকেশন'}
     title={p.heading ?? 'সিস্টেম নোটিফিকেশন'}
-    intro={`প্রিয় ${p.name ?? 'গ্রাহক'},`}
-    paragraphs={[p.body ?? 'আপনার অ্যাকাউন্ট সম্পর্কিত একটি নোটিফিকেশন আছে।']}
+    intro={`প্রিয় ${p.name ?? 'গ্রাহক'},`}
+    paragraphs={[p.body ?? 'আপনার একাউন্ট সম্পর্কিত একটি নোটিফিকেশন আছে।']}
     
     ctaLabel={p.ctaLabel ?? 'বিস্তারিত দেখুন'}
     ctaUrl={p.ctaUrl ?? 'https://shahedit.com/dashboard'}
@@ -22,5 +22,5 @@ export const template = {
   component: Email,
     subject: (d) => d.heading ?? 'সিস্টেম নোটিফিকেশন — Shahed IT',
   displayName: 'সিস্টেম নোটিফিকেশন',
-  previewData: {"name":"করিম","heading":"অ্যাকাউন্ট আপডেট","body":"আপনার প্রোফাইল আপডেট হয়েছে।"},
+  previewData: {"name":"করিম","heading":"একাউন্ট আপডেট","body":"আপনার প্রোফাইল আপডেট হয়েছে।"},
 } satisfies TemplateEntry

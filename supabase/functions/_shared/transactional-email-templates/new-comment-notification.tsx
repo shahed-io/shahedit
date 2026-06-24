@@ -9,7 +9,7 @@ const Email = (p: Props) => (
   <Layout
     preview={'নতুন কমেন্ট এসেছে'}
     title={'নতুন কমেন্ট'}
-    intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, ${p.commenter ?? 'কেউ'} আপনার ${p.on ?? 'পোস্টে'} কমেন্ট করেছে।`}
+    intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, ${p.commenter ?? 'কেউ'} আপনার ${p.on ?? 'পোস্টে'} কমেন্ট করেছে।`}
     paragraphs={[p.commentPreview ? `"${p.commentPreview}"` : '']}
     
     ctaLabel={'কমেন্ট দেখুন'}

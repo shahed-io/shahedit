@@ -20,22 +20,22 @@ export const RecoveryEmail = ({ siteName, confirmationUrl }: Props) => (
       <meta name="google" content="notranslate" />
       <style>{BENGALI_FONT_CSS}</style>
     </Head>
-    <Preview>{siteName}-এর জন্য পাসওয়ার্ড রিসেট</Preview>
+    <Preview>{siteName}-এর জন্য পাসওয়ার্ড রিসেট</Preview>
     <Body style={main} className="notranslate">
       <Container style={container}>
         <Section style={brandBar}>
           <Img src={LOGO} width="220" alt="Shahed IT" style={{ display: 'block', margin: '0 auto', maxWidth: '100%', height: 'auto' }} />
         </Section>
         <Section style={card}>
-          <Heading style={h1}>পাসওয়ার্ড রিসেট করুন</Heading>
+          <Heading style={h1}>পাসওয়ার্ড রিসেট করুন</Heading>
           <Text style={text}>
-            আমরা {siteName}-এ আপনার পাসওয়ার্ড রিসেটের অনুরোধ পেয়েছি। নিচের বাটন চাপ দিয়ে নতুন পাসওয়ার্ড সেট করুন।
+            আমরা {siteName}-এ আপনার পাসওয়ার্ড রিসেটের অনুরোধ পেয়েছি। নিচের বাটন চাপ দিয়ে নতুন পাসওয়ার্ড সেট করুন।
           </Text>
           <Section style={{ textAlign: 'center', margin: '28px 0' }}>
-            <Button style={button} href={confirmationUrl}>পাসওয়ার্ড রিসেট করুন</Button>
+            <Button style={button} href={confirmationUrl}>পাসওয়ার্ড রিসেট করুন</Button>
           </Section>
           <Text style={muted}>
-            আপনি যদি এই অনুরোধ না করে থাকেন, তাহলে এই ইমেইলটি উপেক্ষা করুন — আপনার পাসওয়ার্ড অপরিবর্তিত থাকবে।
+            আপনি যদি এই অনুরোধ না করে থাকেন, তাহলে এই ইমেইলটি উপেক্ষা করুন — আপনার পাসওয়ার্ড অপরিবর্তিত থাকবে।
           </Text>
           <Hr style={hr} />
           <Text style={footer}>

@@ -7,9 +7,9 @@ interface Props { name?: string; amount?: number | string; orderNumber?: string;
 
 const Email = (p: Props) => (
   <Layout
-    preview={'পেমেন্ট সফল হয়েছে'}
+    preview={'পেমেন্ট সফল হয়েছে'}
     title={'পেমেন্ট সফল'}
-    intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, আপনার পেমেন্ট সফলভাবে গ্রহণ করা হয়েছে।`}
+    intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, আপনার পেমেন্ট সফলভাবে গ্রহণ করা হয়েছে।`}
     paragraphs={[]}
     rows={[['অর্ডার নম্বর', p.orderNumber], ['পরিমাণ', `৳ ${p.amount ?? '—'}`], ['পেমেন্ট মাধ্যম', p.method]]}
     ctaLabel={'অর্ডার দেখুন'}

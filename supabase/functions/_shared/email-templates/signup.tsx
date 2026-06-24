@@ -29,13 +29,13 @@ export const SignupEmail = ({ siteName, confirmationUrl }: Props) => (
         <Section style={card}>
           <Heading style={h1}>স্বাগতম! ইমেইল নিশ্চিত করুন</Heading>
           <Text style={text}>
-            {siteName}-এ অ্যাকাউন্ট খোলার জন্য ধন্যবাদ। নিচের বাটন চাপ দিয়ে আপনার ইমেইল ঠিকানা যাচাই করুন।
+            {siteName}-এ একাউন্ট খোলার জন্য ধন্যবাদ। নিচের বাটন চাপ দিয়ে আপনার ইমেইল ঠিকানা যাচাই করুন।
           </Text>
           <Section style={{ textAlign: 'center', margin: '28px 0' }}>
             <Button style={button} href={confirmationUrl}>ইমেইল নিশ্চিত করুন</Button>
           </Section>
           <Text style={muted}>
-            আপনি যদি এই অ্যাকাউন্ট তৈরি না করে থাকেন, তাহলে এই ইমেইলটি উপেক্ষা করুন।
+            আপনি যদি এই একাউন্ট তৈরি না করে থাকেন, তাহলে এই ইমেইলটি উপেক্ষা করুন।
           </Text>
           <Hr style={hr} />
           <Text style={footer}>

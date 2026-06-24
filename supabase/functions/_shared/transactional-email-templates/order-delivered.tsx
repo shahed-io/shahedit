@@ -7,9 +7,9 @@ interface Props { name?: string; orderNumber?: string }
 
 const Email = (p: Props) => (
   <Layout
-    preview={'অর্ডার ডেলিভার হয়েছে'}
-    title={'অর্ডার ডেলিভার হয়েছে'}
-    intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, আপনার অর্ডার সফলভাবে ডেলিভার হয়েছে।`}
+    preview={'অর্ডার ডেলিভার হয়েছে'}
+    title={'অর্ডার ডেলিভার হয়েছে'}
+    intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, আপনার অর্ডার সফলভাবে ডেলিভার হয়েছে।`}
     paragraphs={['আমাদের সাথে থাকার জন্য ধন্যবাদ। একটি রিভিউ দিতে ভুলবেন না!']}
     rows={[['অর্ডার নম্বর', p.orderNumber]]}
     ctaLabel={'রিভিউ দিন'}
@@ -20,7 +20,7 @@ const Email = (p: Props) => (
 
 export const template = {
   component: Email,
-  subject: (d) => `অর্ডার ডেলিভার হয়েছে — ${d.orderNumber ?? ''}`,
+  subject: (d) => `অর্ডার ডেলিভার হয়েছে — ${d.orderNumber ?? ''}`,
   displayName: 'অর্ডার ডেলিভার',
   previewData: {"name":"করিম","orderNumber":"SI-1024"},
 } satisfies TemplateEntry

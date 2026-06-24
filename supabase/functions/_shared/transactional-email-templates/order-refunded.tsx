@@ -7,9 +7,9 @@ interface Props { name?: string; orderNumber?: string; amount?: number | string 
 
 const Email = (p: Props) => (
   <Layout
-    preview={'অর্ডার রিফান্ড হয়েছে'}
-    title={'অর্ডার রিফান্ড হয়েছে'}
-    intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, আপনার অর্ডারের রিফান্ড প্রসেস করা হয়েছে।`}
+    preview={'অর্ডার রিফান্ড হয়েছে'}
+    title={'অর্ডার রিফান্ড হয়েছে'}
+    intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, আপনার অর্ডারের রিফান্ড প্রসেস করা হয়েছে।`}
     paragraphs={[]}
     rows={[['অর্ডার নম্বর', p.orderNumber], ['রিফান্ড', `৳ ${p.amount ?? '—'}`]]}
     

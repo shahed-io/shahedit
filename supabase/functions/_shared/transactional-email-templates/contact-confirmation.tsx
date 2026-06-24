@@ -22,7 +22,7 @@ const Email = ({ name, message }: Props) => (
       <meta name="google" content="notranslate" />
       <style>{BENGALI_FONT_CSS}</style>
     </Head>
-    <Preview>আপনার বার্তা আমরা পেয়েছি — Shahed IT</Preview>
+    <Preview>আপনার বার্তা আমরা পেয়েছি — Shahed IT</Preview>
     <Body style={main} className="notranslate">
       <Container style={container}>
         <Section style={header}>
@@ -31,7 +31,7 @@ const Email = ({ name, message }: Props) => (
         <Section style={card}>
           <Heading style={h1}>ধন্যবাদ{name ? `, ${name}` : ''}!</Heading>
           <Text style={text}>
-            আপনার পাঠানো বার্তাটি আমরা সফলভাবে পেয়েছি। আমাদের সাপোর্ট টিম যাচাই করে সাধারণত
+            আপনার পাঠানো বার্তাটি আমরা সফলভাবে পেয়েছি। আমাদের সাপোর্ট টিম যাচাই করে সাধারণত
             ২৪ ঘণ্টার মধ্যে আপনার সাথে যোগাযোগ করবে।
           </Text>
           {message ? (
@@ -41,10 +41,10 @@ const Email = ({ name, message }: Props) => (
             </Section>
           ) : null}
           <Text style={text}>
-            জরুরি প্রয়োজনে সরাসরি কল করুন <strong>01820-060046</strong> নম্বরে
+            জরুরি প্রয়োজনে সরাসরি কল করুন <strong>01820-060046</strong> নম্বরে
             (সকাল ১০টা থেকে রাত ১০টা পর্যন্ত)।
           </Text>
-          <Button href="https://shahedit.com" style={button}>আমাদের ওয়েবসাইট দেখুন</Button>
+          <Button href="https://shahedit.com" style={button}>আমাদের ওয়েবসাইট দেখুন</Button>
         </Section>
         <Hr style={hr} />
         <Text style={footer}>01820-060046 · info@shahedit.com · shahedit.com</Text>
@@ -55,9 +55,9 @@ const Email = ({ name, message }: Props) => (
 
 export const template = {
   component: Email,
-  subject: 'আপনার বার্তা আমরা পেয়েছি — Shahed IT',
+  subject: 'আপনার বার্তা আমরা পেয়েছি — Shahed IT',
   displayName: 'যোগাযোগ ফর্ম কনফার্মেশন',
-  previewData: { name: 'করিম', message: 'আমি একটি প্রফেশনাল ওয়েবসাইট তৈরি করতে চাই।' },
+  previewData: { name: 'করিম', message: 'আমি একটি প্রফেশনাল ওয়েবসাইট তৈরি করতে চাই।' },
 } satisfies TemplateEntry
 
 const main = { backgroundColor: '#ffffff', fontFamily: BENGALI_FONT_FAMILY, margin: 0, padding: 0, wordBreak: 'normal' as const, overflowWrap: 'break-word' as const }

@@ -7,11 +7,11 @@ interface Props { name?: string; planName?: string; expiresAt?: string }
 
 const Email = (p: Props) => (
   <Layout
-    preview={'সাবস্ক্রিপশন চালু হয়েছে'}
-    title={'সাবস্ক্রিপশন চালু হয়েছে'}
-    intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, আপনার সাবস্ক্রিপশন সফলভাবে চালু হয়েছে।`}
+    preview={'সাবস্ক্রিপশন চালু হয়েছে'}
+    title={'সাবস্ক্রিপশন চালু হয়েছে'}
+    intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, আপনার সাবস্ক্রিপশন সফলভাবে চালু হয়েছে।`}
     paragraphs={['ধন্যবাদ আমাদের সাথে থাকার জন্য।']}
-    rows={[['প্ল্যান', p.planName], ['মেয়াদ শেষ', p.expiresAt]]}
+    rows={[['প্ল্যান', p.planName], ['মেয়াদ শেষ', p.expiresAt]]}
     ctaLabel={'ড্যাশবোর্ড দেখুন'}
     ctaUrl={'https://shahedit.com/dashboard'}
     accent="green"

@@ -20,19 +20,19 @@ export const ReauthenticationEmail = ({ token }: Props) => (
       <meta name="google" content="notranslate" />
       <style>{BENGALI_FONT_CSS}</style>
     </Head>
-    <Preview>আপনার ভেরিফিকেশন কোড — Shahed IT</Preview>
+    <Preview>আপনার যাচাই কোড — Shahed IT</Preview>
     <Body style={main} className="notranslate">
       <Container style={container}>
         <Section style={brandBar}>
           <Img src={LOGO} width="220" alt="Shahed IT" style={{ display: 'block', margin: '0 auto', maxWidth: '100%', height: 'auto' }} />
         </Section>
         <Section style={card}>
-          <Heading style={h1}>পরিচয় নিশ্চিতকরণ</Heading>
-          <Text style={text}>নিচের কোডটি ব্যবহার করে আপনার পরিচয় নিশ্চিত করুন:</Text>
+          <Heading style={h1}>পরিচয় নিশ্চিতকরণ</Heading>
+          <Text style={text}>নিচের কোডটি ব্যাবহার করে আপনার পরিচয় নিশ্চিত করুন:</Text>
           <Section style={{ textAlign: 'center', margin: '24px 0' }}>
             <Text style={codeStyle}>{token}</Text>
           </Section>
-          <Text style={muted}>এই কোডটি কিছুক্ষণের মধ্যে মেয়াদোত্তীর্ণ হবে। আপনি যদি এই অনুরোধ না করে থাকেন, তাহলে এই ইমেইলটি উপেক্ষা করুন।</Text>
+          <Text style={muted}>এই কোডটি কিছুক্ষণের মধ্যে মেয়াদ শেষ হবে। আপনি যদি এই অনুরোধ না করে থাকেন, তাহলে এই ইমেইলটি উপেক্ষা করুন।</Text>
           <Hr style={hr} />
           <Text style={footer}>
                         ফোন: 01820-060046 · info@shahedit.com · shahedit.com
