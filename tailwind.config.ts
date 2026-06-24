@@ -75,8 +75,9 @@ export default {
         },
       },
       fontFamily: {
-        syne: ["Syne", "sans-serif"],
-        inter: ["Inter", "sans-serif"],
+        syne: ["Syne", "Noto Sans Bengali", "Hind Siliguri", "SolaimanLipi", "sans-serif"],
+        inter: ["Inter", "Hind Siliguri", "Noto Sans Bengali", "SolaimanLipi", "sans-serif"],
+        bengali: ["Hind Siliguri", "Noto Sans Bengali", "SolaimanLipi", "Kalpurush", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
