@@ -79,7 +79,7 @@ export const Layout = ({
             ) : null}
           </Section>
           <Hr style={hr} />
-          <Text style={footer}>SHAHED IT · Sopura, Rajshahi · 01820-060046</Text>
+          <Text style={footer}>01820-060046 · info@shahedit.com · shahedit.com</Text>
         </Container>
       </Body>
     </Html>

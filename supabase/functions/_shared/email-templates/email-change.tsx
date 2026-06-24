@@ -30,7 +30,7 @@ export const EmailChangeEmail = ({ siteName, oldEmail, newEmail, confirmationUrl
             <Link href={`mailto:${oldEmail}`} style={link}>{oldEmail}</Link>{' '}থেকে{' '}
              <Link href={`mailto:${newEmail}`} style={link}>{newEmail}</Link>-এ পরিবর্তনের অনুরোধ করেছেন।
           </Text>
-          <Text style={text}>পরিবর্তনটি নিশ্চিত করতে নিচের বাটনে ক্লিক করুন:</Text>
+          <Text style={text}>পরিবর্তনটি নিশ্চিত করতে নিচের বাটন চাপ দিন:</Text>
           <Section style={{ textAlign: 'center', margin: '28px 0' }}>
             <Button style={button} href={confirmationUrl}>ইমেইল পরিবর্তন নিশ্চিত করুন</Button>
           </Section>
