@@ -248,7 +248,7 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
     >
       <form onSubmit={submit} className="relative z-10 w-full">
         <div
-          className="group relative w-full flex items-center gap-2 pl-3 pr-1 py-1 rounded-full transition-all focus-within:scale-[1.005]"
+          className="group relative w-full flex items-center gap-2 pl-2 pr-1 py-1 rounded-full transition-all focus-within:scale-[1.005]"
           style={{
             background: "rgba(255,255,255,0.04)",
             border: `1.5px solid ${open ? "rgba(168,85,247,0.45)" : "rgba(168,85,247,0.22)"}`,
@@ -257,7 +257,9 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
               : "inset 0 1px 0 rgba(255,255,255,0.05)",
           }}
         >
-          <Search size={16} className="shrink-0 transition-colors" style={{ color: open ? "#c4b5fd" : "rgba(226, 218, 245, 0.6)" }} />
+          <span className="shrink-0 w-7 h-7 flex items-center justify-center">
+            <Search size={16} className="transition-colors" style={{ color: open ? "#c4b5fd" : "rgba(226, 218, 245, 0.6)" }} />
+          </span>
           <input
             ref={inputRef}
             type="text"
@@ -266,18 +268,18 @@ const SmartSearch = ({ variant = "desktop", onNavigate }: Props) => {
             onFocus={() => setOpen(true)}
             onKeyDown={onKeyDown}
             placeholder="প্রোডাক্ট খুঁজুন..."
-            className="flex-1 min-w-0 bg-transparent outline-none text-sm font-medium placeholder:text-[rgba(226,218,245,0.45)]"
+            className="flex-1 min-w-0 bg-transparent outline-none text-sm font-medium placeholder:text-[rgba(226,218,245,0.45)] leading-none"
             style={{ color: "#fff" }}
             autoComplete="off"
           />
           {query && (
-            <button type="button" onClick={() => { setQuery(""); inputRef.current?.focus(); }} className="p-0.5 rounded-full hover:bg-white/10">
+            <button type="button" onClick={() => { setQuery(""); inputRef.current?.focus(); }} className="shrink-0 w-6 h-6 flex items-center justify-center rounded-full hover:bg-white/10">
               <X size={14} style={{ color: "rgba(226, 218, 245, 0.7)" }} />
             </button>
           )}
           {variant === "desktop" && !query && !open && (
             <kbd
-              className="hidden lg:flex items-center gap-0.5 text-[10px] font-mono font-bold px-2 py-0.5 rounded-md mr-1"
+              className="hidden lg:inline-flex shrink-0 items-center justify-center gap-0.5 h-6 text-[10px] font-mono font-bold px-2 rounded-md leading-none"
               style={{
                 background: "rgba(168, 85, 247, 0.15)",
                 border: "1px solid rgba(168, 85, 247, 0.30)",
