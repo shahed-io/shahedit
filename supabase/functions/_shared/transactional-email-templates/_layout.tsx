@@ -82,15 +82,10 @@ export const Layout = ({
   )
 }
 
-const main = { backgroundColor: '#ffffff', fontFamily: "'Hind Siliguri','Noto Sans Bengali',Inter,Arial,sans-serif", margin: 0, padding: 0 }
-const container = { maxWidth: '560px', margin: '0 auto', padding: '24px 16px' }
+const main = { backgroundColor: '#eeeaf7', fontFamily: "'Hind Siliguri','Noto Sans Bengali',Inter,Arial,sans-serif", margin: 0, padding: '24px 0' }
+const container = { maxWidth: '560px', margin: '0 auto', padding: '0 16px' }
 const header = { padding: '12px 0 18px', textAlign: 'center' as const }
-const brandBar = { background: 'linear-gradient(135deg, #1a0b2e 0%, #2d1454 50%, #3d1a6b 100%)', borderRadius: '14px', padding: '18px 22px', textAlign: 'center' as const, margin: '0 0 18px' }
-const logoCircle = { width: '52px', height: '52px', borderRadius: '50%', background: 'radial-gradient(circle at 30% 25%, #a78bfa, #7c3aed 55%, #4c1d95)', padding: '8px', boxShadow: '0 4px 14px rgba(124,58,237,0.5)', display: 'inline-block', boxSizing: 'border-box' as const }
-const brand = { fontSize: '26px', fontWeight: 800, color: '#ffffff', letterSpacing: '0.5px', lineHeight: '1', margin: 0, textShadow: '0 2px 8px rgba(167,139,250,0.5)' }
-const taglineWrap = { display: 'flex', alignItems: 'center', gap: '6px', marginTop: '6px' }
-const taglineDash = { display: 'inline-block', width: '18px', height: '1px', background: 'rgba(196,181,253,0.5)' }
-const tagline = { fontSize: '10px', color: '#c4b5fd', letterSpacing: '3px', fontWeight: 600, whiteSpace: 'nowrap' as const }
+const brandBar = { background: '#ffffff', borderRadius: '16px', padding: '20px 16px', textAlign: 'center' as const, margin: '0 0 14px', boxShadow: '0 2px 12px rgba(120,60,200,0.06)' }
 
 
 const card = { backgroundColor: '#faf7ff', border: '1px solid', borderRadius: '14px', padding: '26px 22px' }
