@@ -1089,6 +1089,8 @@ const SiteHeader = () => {
       </AnimatePresence>
 
     </motion.header>
+    <div aria-hidden className="h-[72px] lg:h-[80px]" />
+    </>
   );
 };
 
