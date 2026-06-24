@@ -215,7 +215,7 @@ const SiteHeader = () => {
       initial={isMobile ? false : { y: -80, opacity: 0 }}
       animate={isMobile ? undefined : { y: 0, opacity: 1 }}
       transition={isMobile ? undefined : { type: "spring", stiffness: 90, damping: 18 }}
-      className="sticky top-0 z-50 lg:px-0 px-3 lg:pt-0 pt-2"
+      className="fixed top-0 left-0 right-0 z-50 lg:px-0 px-3 lg:pt-0 pt-2"
     >
       <div
         className="relative transition-all duration-300 lg:rounded-none rounded-full lg:border-x-0"
