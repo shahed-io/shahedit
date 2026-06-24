@@ -134,13 +134,13 @@ const NotFound = () => {
               হোমপেজে ফিরে যান
             </Link>
 
-            {user && (
+            {user && !isAdmin && (
               <Link
                 to={dashboardHref}
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/5 border border-primary/30 text-foreground font-semibold hover:bg-primary/10 hover:border-primary/50 hover:scale-[1.03] active:scale-95 transition-all backdrop-blur-md"
               >
                 <LayoutDashboard size={16} />
-                {isAdmin ? "Admin Panel" : "Dashboard"}
+                Dashboard
               </Link>
             )}
 
