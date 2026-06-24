@@ -5,10 +5,10 @@ import {
 } from 'npm:@react-email/components@0.0.22'
 
 const BRAND = {
-  name: 'SHAHED IT',
+  name: 'Shahed IT',
   tagline: 'Smart IT Solutions',
   logoUrl:
-    'https://www.shahedit.com/__l5e/assets-v1/ff0eebd6-2743-4605-9d95-c9984684e8d7/shahed-it-mark.png',
+    'https://www.shahedit.com/__l5e/assets-v1/131e2224-97b7-4728-ba14-713874744252/shahed-it-email-logo.png',
 }
 
 
