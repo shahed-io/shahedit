@@ -21,6 +21,6 @@ const Email = (p: Props) => (
 export const template = {
   component: Email,
   subject: 'আপনার পোস্টে নতুন কমেন্ট',
-  displayName: 'New Comment Notification',
+  displayName: 'নতুন কমেন্ট নোটিফিকেশন',
   previewData: {"name":"করিম","commenter":"রহিম","on":"ব্লগ পোস্টে","commentPreview":"দারুণ লেখা!"},
 } satisfies TemplateEntry

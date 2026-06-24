@@ -21,6 +21,6 @@ const Email = (p: Props) => (
 export const template = {
   component: Email,
   subject: (d) => `ইনভয়েস ${d.invoiceNumber ?? ''} — Shahed IT`,
-  displayName: 'Invoice Email',
+  displayName: 'ইনভয়েস ইমেইল',
   previewData: {"name":"করিম","invoiceNumber":"INV-2026-0042","amount":15000,"dueDate":"২০২৬-০৬-২০"},
 } satisfies TemplateEntry

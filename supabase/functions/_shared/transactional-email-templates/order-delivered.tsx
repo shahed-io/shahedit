@@ -21,6 +21,6 @@ const Email = (p: Props) => (
 export const template = {
   component: Email,
   subject: (d) => `অর্ডার ডেলিভার হয়েছে — ${d.orderNumber ?? ''}`,
-  displayName: 'Order Delivered',
+  displayName: 'অর্ডার ডেলিভার',
   previewData: {"name":"করিম","orderNumber":"SI-1024"},
 } satisfies TemplateEntry

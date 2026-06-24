@@ -21,6 +21,6 @@ const Email = (p: Props) => (
 export const template = {
   component: Email,
   subject: 'নির্ধারিত রক্ষণাবেক্ষণ — Shahed IT',
-  displayName: 'Maintenance Notice',
+  displayName: 'রক্ষণাবেক্ষণ নোটিশ',
   previewData: {"name":"করিম","startTime":"২০২৬-০৬-১৫ রাত ২:০০","duration":"১ ঘণ্টা"},
 } satisfies TemplateEntry

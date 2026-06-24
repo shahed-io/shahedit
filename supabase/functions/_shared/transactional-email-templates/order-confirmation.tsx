@@ -59,7 +59,7 @@ const Email = ({ name, orderNumber, productTitle, amount, paymentMethod }: Props
 export const template = {
   component: Email,
   subject: (d: Record<string, any>) => `অর্ডার নিশ্চিত — ${d.orderNumber ?? 'Shahed IT'}`,
-  displayName: 'Order Confirmation',
+  displayName: 'অর্ডার কনফার্মেশন',
   previewData: { name: 'করিম', orderNumber: 'SI-1024', productTitle: 'বিজনেস ওয়েবসাইট', amount: 15000, paymentMethod: 'বিকাশ' },
 } satisfies TemplateEntry
 

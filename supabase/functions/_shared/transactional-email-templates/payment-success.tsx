@@ -21,6 +21,6 @@ const Email = (p: Props) => (
 export const template = {
   component: Email,
   subject: (d) => `পেমেন্ট সফল — ৳ ${d.amount ?? ''}`,
-  displayName: 'Payment Success',
+  displayName: 'পেমেন্ট সফল',
   previewData: {"name":"করিম","amount":15000,"orderNumber":"SI-1024","method":"বিকাশ"},
 } satisfies TemplateEntry

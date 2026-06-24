@@ -46,7 +46,7 @@ const Email = ({ name }: Props) => (
 export const template = {
   component: Email,
   subject: 'Shahed IT-তে আপনাকে স্বাগতম!',
-  displayName: 'Welcome Email',
+  displayName: 'স্বাগতম ইমেইল',
   previewData: { name: 'করিম' },
 } satisfies TemplateEntry
 

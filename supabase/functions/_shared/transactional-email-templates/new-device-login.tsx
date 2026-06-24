@@ -21,6 +21,6 @@ const Email = (p: Props) => (
 export const template = {
   component: Email,
   subject: 'নতুন ডিভাইস থেকে লগইন — Shahed IT',
-  displayName: 'New Device Login Alert',
+  displayName: 'নতুন ডিভাইস লগইন সতর্কতা',
   previewData: {"name":"করিম","device":"Chrome on Windows","location":"রাজশাহী, বাংলাদেশ","when":"আজ বিকাল ৩:২০"},
 } satisfies TemplateEntry

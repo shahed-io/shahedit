@@ -21,6 +21,6 @@ const Email = (p: Props) => (
 export const template = {
   component: Email,
   subject: 'সাবস্ক্রিপশন বাতিল হয়েছে — Shahed IT',
-  displayName: 'Subscription Cancelled',
+  displayName: 'সাবস্ক্রিপশন বাতিল',
   previewData: {"name":"করিম","planName":"Business Pro","endsAt":"২০২৬-০৭-০১"},
 } satisfies TemplateEntry

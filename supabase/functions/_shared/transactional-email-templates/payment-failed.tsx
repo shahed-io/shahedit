@@ -21,6 +21,6 @@ const Email = (p: Props) => (
 export const template = {
   component: Email,
   subject: 'পেমেন্ট ব্যর্থ — Shahed IT',
-  displayName: 'Payment Failed',
+  displayName: 'পেমেন্ট ব্যর্থ',
   previewData: {"name":"করিম","amount":15000,"orderNumber":"SI-1024","reason":"পর্যাপ্ত ব্যালেন্স নেই"},
 } satisfies TemplateEntry

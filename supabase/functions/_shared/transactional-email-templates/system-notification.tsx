@@ -21,6 +21,6 @@ const Email = (p: Props) => (
 export const template = {
   component: Email,
     subject: (d) => d.heading ?? 'সিস্টেম নোটিফিকেশন — Shahed IT',
-  displayName: 'System Notification',
+  displayName: 'সিস্টেম নোটিফিকেশন',
   previewData: {"name":"করিম","heading":"অ্যাকাউন্ট আপডেট","body":"আপনার প্রোফাইল আপডেট হয়েছে।"},
 } satisfies TemplateEntry

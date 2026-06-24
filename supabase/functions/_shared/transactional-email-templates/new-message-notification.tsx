@@ -21,6 +21,6 @@ const Email = (p: Props) => (
 export const template = {
   component: Email,
   subject: (d) => `নতুন বার্তা${d.from ? ` — ${d.from}` : ''}`,
-  displayName: 'New Message Notification',
+  displayName: 'নতুন বার্তা নোটিফিকেশন',
   previewData: {"name":"করিম","from":"অ্যাডমিন","preview":"আপনার প্রজেক্ট প্রস্তুত।"},
 } satisfies TemplateEntry

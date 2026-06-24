@@ -21,6 +21,6 @@ const Email = (p: Props) => (
 export const template = {
   component: Email,
   subject: (d) => `টিকেট #${d.ticketNumber ?? ''} এ নতুন উত্তর`,
-  displayName: 'Support Ticket Replied',
+  displayName: 'সাপোর্ট টিকেট উত্তর',
   previewData: {"name":"করিম","ticketNumber":"T-1024","reply":"আপনার সমস্যাটি সমাধান হয়েছে।"},
 } satisfies TemplateEntry

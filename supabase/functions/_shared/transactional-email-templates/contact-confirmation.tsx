@@ -56,7 +56,7 @@ const Email = ({ name, message }: Props) => (
 export const template = {
   component: Email,
   subject: 'আপনার বার্তা আমরা পেয়েছি — Shahed IT',
-  displayName: 'Contact Form Confirmation',
+  displayName: 'যোগাযোগ ফর্ম কনফার্মেশন',
   previewData: { name: 'করিম', message: 'আমি একটি প্রফেশনাল ওয়েবসাইট তৈরি করতে চাই।' },
 } satisfies TemplateEntry
 

@@ -21,6 +21,6 @@ const Email = (p: Props) => (
 export const template = {
   component: Email,
   subject: 'আপনার সাবস্ক্রিপশন শীঘ্রই শেষ হচ্ছে',
-  displayName: 'Subscription Expiring',
+  displayName: 'সাবস্ক্রিপশন মেয়াদ শেষ হচ্ছে',
   previewData: {"name":"করিম","planName":"Business Pro","expiresAt":"২০২৬-০৬-২০","daysLeft":7},
 } satisfies TemplateEntry

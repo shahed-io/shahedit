@@ -21,6 +21,6 @@ const Email = (p: Props) => (
 export const template = {
   component: Email,
   subject: 'নিরাপত্তা সতর্কতা — Shahed IT',
-  displayName: 'Security Alert',
+  displayName: 'নিরাপত্তা সতর্কতা',
   previewData: {"name":"করিম","alertType":"অস্বাভাবিক লগইন","details":"নতুন দেশ থেকে লগইন চেষ্টা।"},
 } satisfies TemplateEntry
