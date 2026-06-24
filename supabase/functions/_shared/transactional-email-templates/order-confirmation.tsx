@@ -25,17 +25,17 @@ const Email = ({ name, orderNumber, productTitle, amount, paymentMethod }: Props
       <meta name="google" content="notranslate" />
       <style>{BENGALI_FONT_CSS}</style>
     </Head>
-    <Preview>আপনার অর্ডার নিশ্চিত হয়েছে — {orderNumber ?? ''}</Preview>
+    <Preview>আপনার অর্ডার নিশ্চিত হয়েছে — {orderNumber ?? ''}</Preview>
     <Body style={main} className="notranslate">
       <Container style={container}>
         <Section style={header}>
           <Img src={LOGO} width="220" alt="Shahed IT" style={{ display: 'block', margin: '0 auto', maxWidth: '100%', height: 'auto' }} />
         </Section>
         <Section style={card}>
-          <Heading style={h1}>অর্ডার নিশ্চিত হয়েছে</Heading>
+          <Heading style={h1}>অর্ডার নিশ্চিত হয়েছে</Heading>
           <Text style={text}>
-            প্রিয় {name ?? 'গ্রাহক'}, আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে। নিচে আপনার
-            অর্ডারের সংক্ষিপ্ত বিবরণ দেওয়া হলো।
+            প্রিয় {name ?? 'গ্রাহক'}, আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে। নিচে আপনার
+            অর্ডারের সংক্ষিপ্ত বিবরণ দেওয়া হলো।
           </Text>
           <Section style={box}>
             <Row><Column style={lbl}>অর্ডার নম্বর</Column><Column style={val}>{orderNumber ?? '—'}</Column></Row>
@@ -60,7 +60,7 @@ export const template = {
   component: Email,
   subject: (d: Record<string, any>) => `অর্ডার নিশ্চিত — ${d.orderNumber ?? 'Shahed IT'}`,
   displayName: 'অর্ডার কনফার্মেশন',
-  previewData: { name: 'করিম', orderNumber: 'SI-1024', productTitle: 'বিজনেস ওয়েবসাইট', amount: 15000, paymentMethod: 'বিকাশ' },
+  previewData: { name: 'করিম', orderNumber: 'SI-1024', productTitle: 'বিজনেস ওয়েবসাইট', amount: 15000, paymentMethod: 'বিকাশ' },
 } satisfies TemplateEntry
 
 const main = { backgroundColor: '#ffffff', fontFamily: BENGALI_FONT_FAMILY, margin: 0, padding: 0, wordBreak: 'normal' as const, overflowWrap: 'break-word' as const }
