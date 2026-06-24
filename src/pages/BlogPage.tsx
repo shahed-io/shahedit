@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import { SEO } from "@/components/SEO";
 import type { BlogPost } from "@/lib/supabase-types";
 import { useRealtimeSync } from "@/hooks/useRealtimeSync";
 
@@ -24,6 +25,22 @@ const BlogPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="Blog — Insights from SHAHED IT"
+        description="Articles, tutorials and updates from SHAHED IT on web development, design, digital marketing and IT trends in Bangladesh."
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "Blog",
+          name: "SHAHED IT Blog",
+          url: "https://shahedit.com/blog",
+          blogPost: posts.slice(0, 20).map((p) => ({
+            "@type": "BlogPosting",
+            headline: p.title,
+            url: `https://shahedit.com/blog/${p.slug}`,
+            datePublished: p.published_at,
+          })),
+        }}
+      />
       <SiteHeader />
       <section className="py-20">
         <div className="container mx-auto px-4">

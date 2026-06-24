@@ -5,6 +5,7 @@ import { Check, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import { SEO } from "@/components/SEO";
 import type { PricingPlan } from "@/lib/supabase-types";
 
 const PricingPage = () => {
@@ -21,6 +22,10 @@ const PricingPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="Pricing Plans — SHAHED IT"
+        description="Simple, transparent pricing for SHAHED IT services. Pick a plan that fits your business — no hidden fees, BDT pricing."
+      />
       <SiteHeader />
       <section className="py-20">
         <div className="container mx-auto px-4">

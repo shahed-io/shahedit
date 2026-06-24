@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import { SEO } from "@/components/SEO";
 import KineticGlassCard from "@/components/KineticGlassCard";
 import type { Project } from "@/lib/supabase-types";
 
@@ -23,6 +24,23 @@ const PortfolioPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="Portfolio — SHAHED IT Projects & Case Studies"
+        description="Explore SHAHED IT's portfolio of websites, branding, marketing campaigns and IT projects delivered for clients across Bangladesh."
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "SHAHED IT Portfolio",
+          description: "Selected projects and case studies by SHAHED IT.",
+          url: "https://shahedit.com/portfolio",
+          itemListElement: projects.slice(0, 20).map((p, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            name: p.title,
+            url: `https://shahedit.com/portfolio#${p.id}`,
+          })),
+        }}
+      />
       <SiteHeader />
       <section
         className="relative py-24 overflow-hidden"

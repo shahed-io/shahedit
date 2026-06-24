@@ -3,6 +3,7 @@ import { CheckCircle, Users, Award, Clock, Globe } from "lucide-react";
 import { Link } from "react-router-dom";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import { SEO } from "@/components/SEO";
 
 const stats = [
   { icon: Users, label: "সন্তুষ্ট গ্রাহক", value: "500+" },
@@ -22,6 +23,10 @@ const values = [
 
 const AboutPage = () => (
   <div className="min-h-screen bg-background">
+    <SEO
+      title="About SHAHED IT — Smart IT Solutions in Bangladesh"
+      description="Learn about SHAHED IT — a Rajshahi-based digital agency delivering web, design, marketing & IT services with transparent pricing and 24/7 support."
+    />
     <SiteHeader />
     <section className="py-20">
       <div className="container mx-auto px-4">
