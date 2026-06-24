@@ -65,7 +65,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (oauthName && !existing.full_name) patch.full_name = oauthName;
     if (oauthAvatar && !existing.avatar_url) patch.avatar_url = oauthAvatar;
     if (Object.keys(patch).length) {
-      await supabase.from("profiles").update(patch).eq("user_id", u.id);
+      await supabase.from("profiles").update(patch as never).eq("user_id", u.id);
     }
   };
 
