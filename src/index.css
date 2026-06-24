@@ -226,7 +226,7 @@
 
   body {
     @apply text-foreground antialiased;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Hind Siliguri', 'Noto Sans Bengali', 'SolaimanLipi', 'Kalpurush', system-ui, sans-serif;
     background-color: hsl(265, 50%, 5%);
     min-height: 100vh;
     position: relative;
