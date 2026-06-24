@@ -7,10 +7,10 @@ interface Props { name?: string; planName?: string; endsAt?: string }
 
 const Email = (p: Props) => (
   <Layout
-    preview={'সাবস্ক্রিপশন বাতিল হয়েছে'}
-    title={'সাবস্ক্রিপশন বাতিল হয়েছে'}
-    intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, আপনার সাবস্ক্রিপশন বাতিল করা হয়েছে।`}
-    paragraphs={[`সেবা চলবে: ${p.endsAt ?? 'বর্তমান মেয়াদ পর্যন্ত'} পর্যন্ত।`, 'আবার কাজ করতে আপনার সাথে দেখা হবে আশা করি।']}
+    preview={'সাবস্ক্রিপশন বাতিল হয়েছে'}
+    title={'সাবস্ক্রিপশন বাতিল হয়েছে'}
+    intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, আপনার সাবস্ক্রিপশন বাতিল করা হয়েছে।`}
+    paragraphs={[`সেবা চলবে: ${p.endsAt ?? 'বর্তমান মেয়াদ পর্যন্ত'} পর্যন্ত।`, 'আবার কাজ করতে আপনার সাথে দেখা হবে আশা করি।']}
     rows={[['প্ল্যান', p.planName]]}
     ctaLabel={'আবার চালু করুন'}
     ctaUrl={'https://shahedit.com/pricing'}
@@ -20,7 +20,7 @@ const Email = (p: Props) => (
 
 export const template = {
   component: Email,
-  subject: 'সাবস্ক্রিপশন বাতিল হয়েছে — Shahed IT',
+  subject: 'সাবস্ক্রিপশন বাতিল হয়েছে — Shahed IT',
   displayName: 'সাবস্ক্রিপশন বাতিল',
   previewData: {"name":"করিম","planName":"Business Pro","endsAt":"২০২৬-০৭-০১"},
 } satisfies TemplateEntry

@@ -34,7 +34,7 @@ const Email = ({ name, orderNumber, productTitle, amount, paymentMethod }: Props
         <Section style={card}>
           <Heading style={h1}>অর্ডার নিশ্চিত হয়েছে</Heading>
           <Text style={text}>
-            প্রিয় {name ?? 'গ্রাহক'}, আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে। নিচে আপনার
+            প্রিয় {name ?? 'গ্রাহক'}, আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে। নিচে আপনার
             অর্ডারের সংক্ষিপ্ত বিবরণ দেওয়া হলো।
           </Text>
           <Section style={box}>
@@ -44,13 +44,13 @@ const Email = ({ name, orderNumber, productTitle, amount, paymentMethod }: Props
             <Row><Column style={lbl}>পেমেন্ট মাধ্যম</Column><Column style={val}>{paymentMethod ?? '—'}</Column></Row>
           </Section>
           <Text style={text}>
-            পেমেন্ট যাচাই সম্পন্ন হলে আমাদের টিম দ্রুততম সময়ে কাজ শুরু করবে। আপনি যেকোনো সময়
+            পেমেন্ট যাচাই সম্পন্ন হলে আমাদের টিম দ্রুততম সময়ে কাজ শুরু করবে। আপনি যেকোনো সময়
             ড্যাশবোর্ড থেকে অর্ডারের সর্বশেষ আপডেট দেখতে পারবেন।
           </Text>
           <Button href="https://shahedit.com/dashboard" style={button}>ড্যাশবোর্ড দেখুন</Button>
         </Section>
         <Hr style={hr} />
-        <Text style={footer}>সাহায্য প্রয়োজন? কল করুন <strong>01820-060046</strong></Text>
+        <Text style={footer}>সাহায্য প্রয়োজন? কল করুন <strong>01820-060046</strong></Text>
       </Container>
     </Body>
   </Html>

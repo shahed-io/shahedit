@@ -7,9 +7,9 @@ interface Props { name?: string; orderNumber?: string }
 
 const Email = (p: Props) => (
   <Layout
-    preview={'অর্ডার প্রসেসিং শুরু হয়েছে'}
+    preview={'অর্ডার প্রসেসিং শুরু হয়েছে'}
     title={'অর্ডার প্রসেসিং শুরু'}
-    intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, আমরা আপনার অর্ডার নিয়ে কাজ শুরু করেছি।`}
+    intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, আমরা আপনার অর্ডার নিয়ে কাজ শুরু করেছি।`}
     paragraphs={['আপডেট পেতে ড্যাশবোর্ডে চোখ রাখুন।']}
     rows={[['অর্ডার নম্বর', p.orderNumber]]}
     ctaLabel={'অর্ডার দেখুন'}

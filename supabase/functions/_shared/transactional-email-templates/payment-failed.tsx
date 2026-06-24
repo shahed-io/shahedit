@@ -7,10 +7,10 @@ interface Props { name?: string; amount?: number | string; orderNumber?: string;
 
 const Email = (p: Props) => (
   <Layout
-    preview={'পেমেন্ট ব্যর্থ হয়েছে'}
+    preview={'পেমেন্ট ব্যর্থ হয়েছে'}
     title={'পেমেন্ট ব্যর্থ'}
-    intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, দুঃখিত, আপনার পেমেন্ট সম্পন্ন করা যায়নি।`}
-    paragraphs={[`কারণ: ${p.reason ?? 'অজানা'}`, 'অনুগ্রহ করে আবার চেষ্টা করুন অথবা ভিন্ন পেমেন্ট পদ্ধতি ব্যবহার করুন।']}
+    intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, দুঃখিত, আপনার পেমেন্ট সম্পন্ন করা যায়নি।`}
+    paragraphs={[`কারণ: ${p.reason ?? 'অজানা'}`, 'অনুগ্রহ করে আবার চেষ্টা করুন অথবা ভিন্ন পেমেন্ট পদ্ধতি ব্যাবহার করুন।']}
     rows={[['অর্ডার নম্বর', p.orderNumber], ['পরিমাণ', `৳ ${p.amount ?? '—'}`]]}
     ctaLabel={'আবার পেমেন্ট করুন'}
     ctaUrl={'https://shahedit.com/payment'}

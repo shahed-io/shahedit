@@ -9,7 +9,7 @@ const Email = (p: Props) => (
   <Layout
     preview={'সিস্টেম নোটিফিকেশন'}
     title={p.heading ?? 'সিস্টেম নোটিফিকেশন'}
-    intro={`প্রিয় ${p.name ?? 'গ্রাহক'},`}
+    intro={`প্রিয় ${p.name ?? 'গ্রাহক'},`}
     paragraphs={[p.body ?? 'আপনার একাউন্ট সম্পর্কিত একটি নোটিফিকেশন আছে।']}
     
     ctaLabel={p.ctaLabel ?? 'বিস্তারিত দেখুন'}

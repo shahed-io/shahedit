@@ -9,7 +9,7 @@ const Email = (p: Props) => (
   <Layout
     preview={'সাপোর্ট টিকেটে নতুন উত্তর'}
     title={'টিকেটে নতুন উত্তর'}
-    intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, আপনার টিকেটে আমাদের টিম উত্তর দিয়েছে।`}
+    intro={`প্রিয় ${p.name ?? 'গ্রাহক'}, আপনার টিকেটে আমাদের টিম উত্তর দিয়েছে।`}
     paragraphs={[p.reply ? `"${p.reply}"` : '']}
     rows={[['টিকেট নম্বর', p.ticketNumber]]}
     ctaLabel={'উত্তর দেখুন'}
@@ -22,5 +22,5 @@ export const template = {
   component: Email,
   subject: (d) => `টিকেট #${d.ticketNumber ?? ''} এ নতুন উত্তর`,
   displayName: 'সাপোর্ট টিকেট উত্তর',
-  previewData: {"name":"করিম","ticketNumber":"T-1024","reply":"আপনার সমস্যাটি সমাধান হয়েছে।"},
+  previewData: {"name":"করিম","ticketNumber":"T-1024","reply":"আপনার সমস্যাটি সমাধান হয়েছে।"},
 } satisfies TemplateEntry
