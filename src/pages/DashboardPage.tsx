@@ -17,6 +17,7 @@ import { openInvoice } from "@/lib/invoice";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { cn } from "@/lib/utils";
+import MyDownloadsSection from "@/components/MyDownloadsSection";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 interface Lead {
