@@ -130,6 +130,7 @@ const navGroups: NavGroup[] = [
       { label: "Welcome Popups", icon: ImageIcon, href: "/ceo/welcome-popups", badge: "NEW", section: "welcome-popups" },
       { label: "Site Settings", icon: Settings, href: "/ceo/settings", section: "settings" },
       { label: "Backup & Export", icon: Database, href: "/ceo/backup", badge: "NEW", section: "backup" },
+      { label: "Security Audit", icon: Shield, href: "/ceo/security-audit", badge: "NEW", section: "security-audit" },
 
     ],
   },
