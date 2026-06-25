@@ -110,6 +110,45 @@ export type Database = {
         }
         Relationships: []
       }
+      backup_jobs: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          file_name: string | null
+          id: string
+          notes: string | null
+          row_count: number | null
+          size_bytes: number | null
+          status: string
+          table_count: number | null
+          type: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          file_name?: string | null
+          id?: string
+          notes?: string | null
+          row_count?: number | null
+          size_bytes?: number | null
+          status?: string
+          table_count?: number | null
+          type: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          file_name?: string | null
+          id?: string
+          notes?: string | null
+          row_count?: number | null
+          size_bytes?: number | null
+          status?: string
+          table_count?: number | null
+          type?: string
+        }
+        Relationships: []
+      }
       bkash_transactions: {
         Row: {
           amount: number
@@ -1918,6 +1957,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      maintenance_settings: {
+        Row: {
+          auto_backup_enabled: boolean | null
+          auto_backup_frequency: string | null
+          auto_backup_retention_days: number | null
+          auto_backup_time: string | null
+          cache_version: number | null
+          id: number
+          last_auto_backup_at: string | null
+          maintenance_allow_admin: boolean | null
+          maintenance_message: string | null
+          maintenance_mode: boolean | null
+          updated_at: string
+        }
+        Insert: {
+          auto_backup_enabled?: boolean | null
+          auto_backup_frequency?: string | null
+          auto_backup_retention_days?: number | null
+          auto_backup_time?: string | null
+          cache_version?: number | null
+          id?: number
+          last_auto_backup_at?: string | null
+          maintenance_allow_admin?: boolean | null
+          maintenance_message?: string | null
+          maintenance_mode?: boolean | null
+          updated_at?: string
+        }
+        Update: {
+          auto_backup_enabled?: boolean | null
+          auto_backup_frequency?: string | null
+          auto_backup_retention_days?: number | null
+          auto_backup_time?: string | null
+          cache_version?: number | null
+          id?: number
+          last_auto_backup_at?: string | null
+          maintenance_allow_admin?: boolean | null
+          maintenance_message?: string | null
+          maintenance_mode?: boolean | null
+          updated_at?: string
+        }
+        Relationships: []
       }
       media_assets: {
         Row: {
