@@ -781,6 +781,77 @@ export type Database = {
         }
         Relationships: []
       }
+      custom_role_assignments: {
+        Row: {
+          assigned_at: string
+          assigned_by: string | null
+          custom_role_id: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          assigned_at?: string
+          assigned_by?: string | null
+          custom_role_id: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          assigned_at?: string
+          assigned_by?: string | null
+          custom_role_id?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "custom_role_assignments_custom_role_id_fkey"
+            columns: ["custom_role_id"]
+            isOneToOne: false
+            referencedRelation: "custom_roles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      custom_roles: {
+        Row: {
+          color: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          permissions: Json
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          permissions?: Json
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          color?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          permissions?: Json
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       customer_devices: {
         Row: {
           browser: string | null
@@ -4377,6 +4448,19 @@ export type Database = {
           wallet_balance: number
         }[]
       }
+      admin_list_staff: {
+        Args: never
+        Returns: {
+          avatar_url: string
+          created_at: string
+          custom_role_slugs: string[]
+          email: string
+          full_name: string
+          last_sign_in_at: string
+          roles: Database["public"]["Enums"]["app_role"][]
+          user_id: string
+        }[]
+      }
       admin_log_license_resend: {
         Args: { _key_id: string; _to_email: string }
         Returns: undefined
@@ -4552,7 +4636,7 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "super_admin" | "admin" | "editor" | "manager"
+      app_role: "super_admin" | "admin" | "editor" | "manager" | "support"
       lead_source: "quote_form" | "contact_form" | "whatsapp" | "other"
       lead_status: "new" | "in_progress" | "contacted" | "converted" | "closed"
       license_key_status: "available" | "assigned" | "revoked"
@@ -4684,7 +4768,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["super_admin", "admin", "editor", "manager"],
+      app_role: ["super_admin", "admin", "editor", "manager", "support"],
       lead_source: ["quote_form", "contact_form", "whatsapp", "other"],
       lead_status: ["new", "in_progress", "contacted", "converted", "closed"],
       license_key_status: ["available", "assigned", "revoked"],
