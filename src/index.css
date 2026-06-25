@@ -679,3 +679,50 @@
     backdrop-filter: none !important;
   }
 }
+
+/* ─────────────────────────────────────────────
+   Admin panel — mobile usability
+   - Make raw <table> elements horizontally scrollable on small screens
+   - Prevent flex/grid children from forcing horizontal page overflow
+   - Tame oversized headings on phones
+   ───────────────────────────────────────────── */
+[data-admin-layout] main {
+  min-width: 0;
+}
+[data-admin-layout] main table {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  white-space: nowrap;
+}
+[data-admin-layout] main table thead,
+[data-admin-layout] main table tbody,
+[data-admin-layout] main table tr {
+  display: table;
+  width: 100%;
+  table-layout: auto;
+}
+@media (min-width: 768px) {
+  [data-admin-layout] main table {
+    display: table;
+    white-space: normal;
+  }
+}
+@media (max-width: 640px) {
+  [data-admin-layout] main h1 { font-size: 1.5rem; line-height: 2rem; }
+  [data-admin-layout] main h2 { font-size: 1.25rem; line-height: 1.75rem; }
+  [data-admin-layout] main .text-3xl { font-size: 1.5rem; line-height: 2rem; }
+  [data-admin-layout] main .text-4xl { font-size: 1.75rem; line-height: 2.1rem; }
+  /* Dialog content on phones gets full width with safe margin */
+  [data-admin-layout] [role="dialog"] {
+    width: calc(100vw - 1.5rem);
+    max-width: calc(100vw - 1.5rem);
+  }
+}
+/* Cards/sections inside admin should never spill horizontally */
+[data-admin-layout] main > div { min-width: 0; }
+[data-admin-layout] main img,
+[data-admin-layout] main video,
+[data-admin-layout] main canvas { max-width: 100%; height: auto; }
