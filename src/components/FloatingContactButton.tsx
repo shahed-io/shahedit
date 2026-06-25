@@ -102,7 +102,7 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
         }}
       >
         {/* Rotating conic glow ring (closed only) */}
-        {!open && !isMobile && (
+        {!open && (
           <motion.span
             aria-hidden
             animate={{ rotate: 360 }}
