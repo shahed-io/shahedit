@@ -120,6 +120,7 @@ const navGroups: NavGroup[] = [
     title: "SEO & Ranking",
     icon: Globe,
     items: [
+      { label: "SEO Panel", icon: Search, href: "/ceo/seo-panel", badge: "HUB", section: "seo-panel" },
       { label: "Ranking Setup (All Google)", icon: Globe, href: "/ceo/ranking-setup", badge: "NEW", section: "ranking-setup" },
       { label: "SEO Manager", icon: Search, href: "/ceo/seo", section: "seo" },
       { label: "SEO Tools & Reports", icon: BarChart3, href: "/ceo/seo-tools", badge: "NEW", section: "seo-tools" },
