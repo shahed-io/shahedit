@@ -91,6 +91,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }, 0);
         if (event === "SIGNED_IN") {
           setTimeout(() => syncProfileFromOAuth(session.user), 0);
+          setTimeout(async () => {
+            const blocked = await checkBlocked(session.user.id);
+            if (blocked) {
+              toast({ title: "অ্যাকাউন্ট ব্লক", description: "আপনার অ্যাকাউন্ট ব্লক করা হয়েছে। সাপোর্টের সাথে যোগাযোগ করুন।", variant: "destructive" });
+              await supabase.auth.signOut();
+              return;
+            }
+            trackLoginAndDevice(session.user.id);
+          }, 0);
         }
       } else {
         setRole(null);
