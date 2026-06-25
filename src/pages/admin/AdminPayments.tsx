@@ -1,13 +1,38 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { CheckCircle, XCircle, Clock, RefreshCw, Settings, Zap, User, Phone, CreditCard, Hash, Receipt } from "lucide-react";
+import { CheckCircle, XCircle, Clock, RefreshCw, Settings, Zap, User, Phone, CreditCard, Hash, Receipt, History, RefreshCcw, ExternalLink, ArrowDownToLine, ArrowUpFromLine, Search, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { openInvoice } from "@/lib/invoice";
 import { PaymentMethodsManager } from "@/components/admin/PaymentMethodsManager";
 import { WalletSettingsManager } from "@/components/admin/WalletSettingsManager";
+
+type TxRow = {
+  id: string;
+  source: "submission" | "bkash" | "wallet";
+  date: string;
+  name: string;
+  method: string;
+  amount: number;
+  direction: "credit" | "debit";
+  status: string;
+  reference: string;
+};
+
+const STATUS_PILL: Record<string, string> = {
+  pending: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
+  confirmed: "bg-green-500/10 text-green-400 border-green-500/20",
+  completed: "bg-green-500/10 text-green-400 border-green-500/20",
+  rejected: "bg-red-500/10 text-red-400 border-red-500/20",
+  failed: "bg-red-500/10 text-red-400 border-red-500/20",
+  processing: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+  approved: "bg-green-500/10 text-green-400 border-green-500/20",
+};
 
 interface Payment {
   id: string;
