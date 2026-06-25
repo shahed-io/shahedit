@@ -46,11 +46,11 @@ function useSettings() {
     setSettings(data as Settings);
   };
   useEffect(() => { load(); }, []);
-  const save = async (patch: Partial<Settings>) => {
+  const save = async (patch: Partial<Settings>): Promise<void> => {
     const { error } = await supabase.from("email_system_settings").update(patch as any).eq("id", 1);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Saved");
-    load();
+    await load();
   };
   return { settings, save, reload: load };
 }
