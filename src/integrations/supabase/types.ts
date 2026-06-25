@@ -14,6 +14,24 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_dashboard_layout: {
+        Row: {
+          updated_at: string
+          user_id: string
+          widgets: Json
+        }
+        Insert: {
+          updated_at?: string
+          user_id: string
+          widgets?: Json
+        }
+        Update: {
+          updated_at?: string
+          user_id?: string
+          widgets?: Json
+        }
+        Relationships: []
+      }
       ai_support_settings: {
         Row: {
           bot_name: string
@@ -77,6 +95,42 @@ export type Database = {
           referrer?: string | null
           session_id?: string | null
           user_agent?: string | null
+        }
+        Relationships: []
+      }
+      api_tokens: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          last_used_at: string | null
+          name: string
+          prefix: string
+          revoked_at: string | null
+          scopes: string[]
+          token_hash: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          last_used_at?: string | null
+          name: string
+          prefix: string
+          revoked_at?: string | null
+          scopes?: string[]
+          token_hash: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          last_used_at?: string | null
+          name?: string
+          prefix?: string
+          revoked_at?: string | null
+          scopes?: string[]
+          token_hash?: string
         }
         Relationships: []
       }
@@ -515,6 +569,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      client_error_logs: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+          metadata: Json | null
+          severity: string
+          stack: string | null
+          url: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          metadata?: Json | null
+          severity?: string
+          stack?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          metadata?: Json | null
+          severity?: string
+          stack?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
       }
       clients: {
         Row: {
@@ -4258,6 +4348,86 @@ export type Database = {
           id?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      webhook_deliveries: {
+        Row: {
+          attempted_at: string
+          event: string
+          id: string
+          payload: Json | null
+          response_body: string | null
+          response_status: number | null
+          webhook_id: string | null
+        }
+        Insert: {
+          attempted_at?: string
+          event: string
+          id?: string
+          payload?: Json | null
+          response_body?: string | null
+          response_status?: number | null
+          webhook_id?: string | null
+        }
+        Update: {
+          attempted_at?: string
+          event?: string
+          id?: string
+          payload?: Json | null
+          response_body?: string | null
+          response_status?: number | null
+          webhook_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "webhook_deliveries_webhook_id_fkey"
+            columns: ["webhook_id"]
+            isOneToOne: false
+            referencedRelation: "webhooks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      webhooks: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          events: string[]
+          id: string
+          is_active: boolean
+          last_fired_at: string | null
+          last_status: number | null
+          name: string
+          secret: string | null
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          events?: string[]
+          id?: string
+          is_active?: boolean
+          last_fired_at?: string | null
+          last_status?: number | null
+          name: string
+          secret?: string | null
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          events?: string[]
+          id?: string
+          is_active?: boolean
+          last_fired_at?: string | null
+          last_status?: number | null
+          name?: string
+          secret?: string | null
+          updated_at?: string
+          url?: string
         }
         Relationships: []
       }
