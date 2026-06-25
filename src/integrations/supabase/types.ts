@@ -583,6 +583,54 @@ export type Database = {
           },
         ]
       }
+      coupon_redemptions: {
+        Row: {
+          coupon_id: string
+          created_at: string
+          discount_amount: number
+          id: string
+          order_amount: number
+          order_id: string | null
+          user_email: string | null
+          user_id: string | null
+        }
+        Insert: {
+          coupon_id: string
+          created_at?: string
+          discount_amount?: number
+          id?: string
+          order_amount?: number
+          order_id?: string | null
+          user_email?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          coupon_id?: string
+          created_at?: string
+          discount_amount?: number
+          id?: string
+          order_amount?: number
+          order_id?: string | null
+          user_email?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "coupon_redemptions_coupon_id_fkey"
+            columns: ["coupon_id"]
+            isOneToOne: false
+            referencedRelation: "coupons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "coupon_redemptions_coupon_id_fkey"
+            columns: ["coupon_id"]
+            isOneToOne: false
+            referencedRelation: "public_coupons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       coupons: {
         Row: {
           applies_id: string | null
@@ -592,12 +640,18 @@ export type Database = {
           description: string | null
           discount_type: string
           discount_value: number
+          first_order_only: boolean
+          free_shipping: boolean
           id: string
           is_active: boolean
+          max_discount_amount: number | null
           max_uses: number | null
           min_order_amount: number | null
+          per_user_limit: number | null
           updated_at: string
           used_count: number
+          user_email: string | null
+          user_id: string | null
           valid_from: string | null
           valid_until: string | null
         }
@@ -609,12 +663,18 @@ export type Database = {
           description?: string | null
           discount_type?: string
           discount_value?: number
+          first_order_only?: boolean
+          free_shipping?: boolean
           id?: string
           is_active?: boolean
+          max_discount_amount?: number | null
           max_uses?: number | null
           min_order_amount?: number | null
+          per_user_limit?: number | null
           updated_at?: string
           used_count?: number
+          user_email?: string | null
+          user_id?: string | null
           valid_from?: string | null
           valid_until?: string | null
         }
@@ -626,12 +686,18 @@ export type Database = {
           description?: string | null
           discount_type?: string
           discount_value?: number
+          first_order_only?: boolean
+          free_shipping?: boolean
           id?: string
           is_active?: boolean
+          max_discount_amount?: number | null
           max_uses?: number | null
           min_order_amount?: number | null
+          per_user_limit?: number | null
           updated_at?: string
           used_count?: number
+          user_email?: string | null
+          user_id?: string | null
           valid_from?: string | null
           valid_until?: string | null
         }
@@ -4106,12 +4172,47 @@ export type Database = {
           read_ct: number
         }[]
       }
+      redeem_coupon: {
+        Args: {
+          _code: string
+          _discount_amount: number
+          _order_amount: number
+          _order_id?: string
+          _user_email?: string
+          _user_id?: string
+        }
+        Returns: {
+          coupon_id: string
+          created_at: string
+          discount_amount: number
+          id: string
+          order_amount: number
+          order_id: string | null
+          user_email: string | null
+          user_id: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "coupon_redemptions"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       resolve_delivery_days: {
         Args: { _package_id: string; _service_id: string }
         Returns: number
       }
       run_scheduled_publish: { Args: never; Returns: undefined }
       slugify: { Args: { input: string }; Returns: string }
+      validate_coupon: {
+        Args: {
+          _code: string
+          _order_amount: number
+          _user_email?: string
+          _user_id?: string
+        }
+        Returns: Json
+      }
       wallet_apply_transaction: {
         Args: {
           _amount: number
