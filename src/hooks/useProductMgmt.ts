@@ -253,6 +253,73 @@ export const useDeleteLicenseKey = () => {
   });
 };
 
+export const useLicensePoolStats = (package_id?: string) =>
+  useQuery({
+    queryKey: ["license_pool_stats", package_id || "all"],
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc("license_pool_stats" as any, { _package_id: package_id ?? null });
+      if (error) throw error;
+      return (data as any[]) || [];
+    },
+  });
+
+export const useLicenseHistory = (license_key_id?: string) =>
+  useQuery({
+    queryKey: ["license_history", license_key_id],
+    enabled: !!license_key_id,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("license_history" as any)
+        .select("*")
+        .eq("license_key_id", license_key_id!)
+        .order("created_at", { ascending: false })
+        .limit(200);
+      if (error) throw error;
+      return data as any[];
+    },
+  });
+
+export const useManualAssignLicense = () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (p: { key_id: string; user_email?: string; user_id?: string; order_id?: string; note?: string }) => {
+      const { data, error } = await supabase.rpc("admin_assign_license" as any, {
+        _key_id: p.key_id,
+        _user_id: p.user_id ?? null,
+        _user_email: p.user_email ?? null,
+        _order_id: p.order_id ?? null,
+        _note: p.note ?? null,
+      });
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["license_keys"] });
+      qc.invalidateQueries({ queryKey: ["license_pool_stats"] });
+    },
+  });
+};
+
+export const useResendLicense = () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (p: { key_id: string; to_email: string; template_data: Record<string, any> }) => {
+      const { error: e1 } = await supabase.functions.invoke("send-transactional-email", {
+        body: {
+          templateName: "license-delivery",
+          recipientEmail: p.to_email,
+          templateData: p.template_data,
+        },
+      });
+      if (e1) throw e1;
+      const { error: e2 } = await supabase.rpc("admin_log_license_resend" as any, { _key_id: p.key_id, _to_email: p.to_email });
+      if (e2) throw e2;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["license_history"] }),
+  });
+};
+
+
 /* ---------- My Downloads (user-side) ---------- */
 export const useMyDownloads = () =>
   useQuery({
