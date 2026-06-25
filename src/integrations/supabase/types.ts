@@ -2462,29 +2462,53 @@ export type Database = {
       }
       product_reviews: {
         Row: {
+          admin_reply: string | null
           comment: string | null
           created_at: string
           id: string
+          is_spam: boolean
           package_id: string
           rating: number
+          replied_at: string | null
+          replied_by: string | null
+          spam_reasons: string[] | null
+          spam_score: number | null
+          status: string
+          title: string | null
           updated_at: string
           user_id: string
         }
         Insert: {
+          admin_reply?: string | null
           comment?: string | null
           created_at?: string
           id?: string
+          is_spam?: boolean
           package_id: string
           rating: number
+          replied_at?: string | null
+          replied_by?: string | null
+          spam_reasons?: string[] | null
+          spam_score?: number | null
+          status?: string
+          title?: string | null
           updated_at?: string
           user_id: string
         }
         Update: {
+          admin_reply?: string | null
           comment?: string | null
           created_at?: string
           id?: string
+          is_spam?: boolean
           package_id?: string
           rating?: number
+          replied_at?: string | null
+          replied_by?: string | null
+          spam_reasons?: string[] | null
+          spam_score?: number | null
+          status?: string
+          title?: string | null
           updated_at?: string
           user_id?: string
         }
@@ -4205,6 +4229,7 @@ export type Database = {
       get_package_reviews: {
         Args: { _package_id: string }
         Returns: {
+          admin_reply: string
           comment: string
           created_at: string
           id: string
@@ -4212,6 +4237,7 @@ export type Database = {
           rating: number
           reviewer_avatar: string
           reviewer_name: string
+          title: string
         }[]
       }
       has_role: {
@@ -4279,6 +4305,23 @@ export type Database = {
       resolve_delivery_days: {
         Args: { _package_id: string; _service_id: string }
         Returns: number
+      }
+      review_rating_summary: {
+        Args: { _package_id?: string }
+        Returns: {
+          approved: number
+          avg_rating: number
+          package_id: string
+          package_title: string
+          pending: number
+          r1: number
+          r2: number
+          r3: number
+          r4: number
+          r5: number
+          spam: number
+          total: number
+        }[]
       }
       run_scheduled_publish: { Args: never; Returns: undefined }
       slugify: { Args: { input: string }; Returns: string }
