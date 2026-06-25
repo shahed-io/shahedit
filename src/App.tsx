@@ -15,6 +15,7 @@ import GlobalSupport from "@/components/GlobalSupport";
 import WelcomePopup from "@/components/WelcomePopup";
 import ThemeAppearanceProvider from "@/components/ThemeAppearanceProvider";
 import SiteBackground from "@/components/SiteBackground";
+import { useAdminGlobals } from "@/hooks/useAdminGlobals";
 import { lazy, Suspense } from "react";
 
 // Eagerly loaded (most-visited / lightweight)
@@ -189,8 +190,6 @@ const RoleRoute = ({ section, children }: { section: AdminSection; children: Rea
 };
 
 const AdminRoutes = () => {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const { useAdminGlobals } = require("@/hooks/useAdminGlobals");
   useAdminGlobals();
   return (
   <ProtectedRoute>
@@ -276,7 +275,8 @@ const AdminRoutes = () => {
       </Suspense>
     </AdminLayout>
   </ProtectedRoute>
-);
+  );
+};
 
 
 // Root component that injects analytics on every page load
