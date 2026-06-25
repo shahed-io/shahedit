@@ -1626,10 +1626,52 @@ export type Database = {
         }
         Relationships: []
       }
+      order_timeline: {
+        Row: {
+          actor: string
+          actor_id: string | null
+          created_at: string
+          event: string
+          id: string
+          message: string | null
+          metadata: Json
+          order_id: string
+        }
+        Insert: {
+          actor?: string
+          actor_id?: string | null
+          created_at?: string
+          event: string
+          id?: string
+          message?: string | null
+          metadata?: Json
+          order_id: string
+        }
+        Update: {
+          actor?: string
+          actor_id?: string | null
+          created_at?: string
+          event?: string
+          id?: string
+          message?: string | null
+          metadata?: Json
+          order_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_timeline_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       orders: {
         Row: {
           admin_notes: string | null
           amount: number
+          cancel_reason: string | null
           created_at: string
           currency: string
           customer_email: string
@@ -1648,12 +1690,16 @@ export type Database = {
           product_title: string
           service_id: string | null
           status: string
+          tracking_carrier: string | null
+          tracking_number: string | null
+          tracking_url: string | null
           updated_at: string
           user_id: string | null
         }
         Insert: {
           admin_notes?: string | null
           amount?: number
+          cancel_reason?: string | null
           created_at?: string
           currency?: string
           customer_email: string
@@ -1672,12 +1718,16 @@ export type Database = {
           product_title: string
           service_id?: string | null
           status?: string
+          tracking_carrier?: string | null
+          tracking_number?: string | null
+          tracking_url?: string | null
           updated_at?: string
           user_id?: string | null
         }
         Update: {
           admin_notes?: string | null
           amount?: number
+          cancel_reason?: string | null
           created_at?: string
           currency?: string
           customer_email?: string
@@ -1696,6 +1746,9 @@ export type Database = {
           product_title?: string
           service_id?: string | null
           status?: string
+          tracking_carrier?: string | null
+          tracking_number?: string | null
+          tracking_url?: string | null
           updated_at?: string
           user_id?: string | null
         }
