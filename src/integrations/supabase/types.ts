@@ -2042,6 +2042,105 @@ export type Database = {
         }
         Relationships: []
       }
+      notification_channels: {
+        Row: {
+          admin_alert_emails: string | null
+          admin_alert_on_failed_payment: boolean | null
+          admin_alert_on_new_lead: boolean | null
+          admin_alert_on_new_order: boolean | null
+          admin_alert_on_refund: boolean | null
+          email_enabled: boolean | null
+          id: number
+          push_enabled: boolean | null
+          push_provider: string | null
+          push_vapid_public: string | null
+          sms_enabled: boolean | null
+          sms_from: string | null
+          sms_provider: string | null
+          updated_at: string
+          whatsapp_default_message: string | null
+          whatsapp_enabled: boolean | null
+          whatsapp_number: string | null
+        }
+        Insert: {
+          admin_alert_emails?: string | null
+          admin_alert_on_failed_payment?: boolean | null
+          admin_alert_on_new_lead?: boolean | null
+          admin_alert_on_new_order?: boolean | null
+          admin_alert_on_refund?: boolean | null
+          email_enabled?: boolean | null
+          id?: number
+          push_enabled?: boolean | null
+          push_provider?: string | null
+          push_vapid_public?: string | null
+          sms_enabled?: boolean | null
+          sms_from?: string | null
+          sms_provider?: string | null
+          updated_at?: string
+          whatsapp_default_message?: string | null
+          whatsapp_enabled?: boolean | null
+          whatsapp_number?: string | null
+        }
+        Update: {
+          admin_alert_emails?: string | null
+          admin_alert_on_failed_payment?: boolean | null
+          admin_alert_on_new_lead?: boolean | null
+          admin_alert_on_new_order?: boolean | null
+          admin_alert_on_refund?: boolean | null
+          email_enabled?: boolean | null
+          id?: number
+          push_enabled?: boolean | null
+          push_provider?: string | null
+          push_vapid_public?: string | null
+          sms_enabled?: boolean | null
+          sms_from?: string | null
+          sms_provider?: string | null
+          updated_at?: string
+          whatsapp_default_message?: string | null
+          whatsapp_enabled?: boolean | null
+          whatsapp_number?: string | null
+        }
+        Relationships: []
+      }
+      notification_templates: {
+        Row: {
+          body: string
+          channel: string
+          created_at: string
+          id: string
+          is_active: boolean | null
+          label: string
+          subject: string | null
+          template_key: string
+          updated_at: string
+          variables: Json | null
+        }
+        Insert: {
+          body?: string
+          channel: string
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          label: string
+          subject?: string | null
+          template_key: string
+          updated_at?: string
+          variables?: Json | null
+        }
+        Update: {
+          body?: string
+          channel?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          label?: string
+          subject?: string | null
+          template_key?: string
+          updated_at?: string
+          variables?: Json | null
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           body: string
