@@ -2941,6 +2941,27 @@ export type Database = {
       }
     }
     Views: {
+      ai_support_settings_public: {
+        Row: {
+          bot_name: string | null
+          greeting_message: string | null
+          id: number | null
+          is_enabled: boolean | null
+        }
+        Insert: {
+          bot_name?: string | null
+          greeting_message?: string | null
+          id?: number | null
+          is_enabled?: boolean | null
+        }
+        Update: {
+          bot_name?: string | null
+          greeting_message?: string | null
+          id?: number | null
+          is_enabled?: boolean | null
+        }
+        Relationships: []
+      }
       product_review_stats: {
         Row: {
           average_rating: number | null
