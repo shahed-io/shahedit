@@ -39,6 +39,13 @@ const navGroups: NavGroup[] = [
     ],
   },
   {
+    title: "People",
+    icon: Users,
+    items: [
+      { label: "Customer Management", icon: Users, href: "/ceo/customers", badge: "NEW", section: "customers" },
+    ],
+  },
+  {
     title: "Sales & CRM",
     icon: Inbox,
     items: [
