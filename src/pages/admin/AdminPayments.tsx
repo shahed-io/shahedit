@@ -379,6 +379,150 @@ const AdminPayments = () => {
           </div>
         )}
       </div>
+        </TabsContent>
+
+        <TabsContent value="manual" className="space-y-6 mt-4">
+          <PaymentMethodsManager />
+          <WalletSettingsManager />
+        </TabsContent>
+
+        <TabsContent value="gateway" className="space-y-4 mt-4">
+          <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <Zap size={16} className="text-teal-400" />
+              <h2 className="text-white font-semibold text-sm">Payment Gateway Integrations</h2>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-3">
+              <Link to="/ceo/bkash-pgw" className="border border-slate-800 hover:border-pink-500/40 bg-slate-950 rounded-xl p-4 transition-all group">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-pink-400 font-bold">bKash PGW</span>
+                  <ExternalLink size={14} className="text-slate-500 group-hover:text-pink-400" />
+                </div>
+                <p className="text-slate-400 text-xs">Live merchant payments via bKash Payment Gateway. Configure App Key, Secret, callback URLs and view trx logs.</p>
+              </Link>
+              <div className="border border-slate-800 bg-slate-950 rounded-xl p-4 opacity-75">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-orange-400 font-bold">Nagad / Rocket / Upay</span>
+                  <Badge variant="outline" className="text-[10px] text-slate-400">Manual</Badge>
+                </div>
+                <p className="text-slate-400 text-xs">Currently handled via Manual Payment numbers — configure receiver numbers in the Manual Payment tab.</p>
+              </div>
+            </div>
+            <p className="text-slate-500 text-[11px] mt-4">Verification mode (manual vs auto API) is controlled in the Verification tab.</p>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="transactions" className="space-y-4 mt-4">
+          <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
+            <div className="flex items-center justify-between gap-3 flex-wrap mb-3">
+              <div className="flex items-center gap-2 flex-wrap">
+                {(["all", "submission", "bkash", "wallet"] as const).map(s => (
+                  <button key={s} onClick={() => setTxSourceFilter(s)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${txSourceFilter === s ? "bg-purple-600 text-white" : "bg-slate-800 text-slate-400 hover:text-white"}`}>
+                    {s === "all" ? "All Sources" : s === "submission" ? "Manual" : s === "bkash" ? "bKash" : "Wallet"}
+                  </button>
+                ))}
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="relative">
+                  <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                  <Input value={txSearch} onChange={e => setTxSearch(e.target.value)} placeholder="Search trx / name / ref" className="pl-7 h-8 w-56 text-xs bg-slate-950 border-slate-800" />
+                </div>
+                <Button size="sm" variant="outline" onClick={fetchTransactions} className="h-8 gap-1 border-slate-700 text-slate-300"><RefreshCw size={12} />Sync</Button>
+                <Button size="sm" variant="outline" onClick={exportTxCsv} className="h-8 gap-1 border-slate-700 text-slate-300"><Download size={12} />CSV</Button>
+              </div>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs">
+                <thead className="text-slate-500 uppercase text-[10px]">
+                  <tr className="border-b border-slate-800">
+                    <th className="text-left p-2">Date</th>
+                    <th className="text-left p-2">Source</th>
+                    <th className="text-left p-2">Name</th>
+                    <th className="text-left p-2">Method</th>
+                    <th className="text-right p-2">Amount</th>
+                    <th className="text-center p-2">Status</th>
+                    <th className="text-left p-2">Reference</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {txLoading ? (
+                    <tr><td colSpan={7} className="text-center p-6 text-slate-500">Loading…</td></tr>
+                  ) : filteredTx.length === 0 ? (
+                    <tr><td colSpan={7} className="text-center p-6 text-slate-500">No transactions</td></tr>
+                  ) : filteredTx.slice(0, 300).map(r => (
+                    <tr key={r.id} className="border-b border-slate-800/50 hover:bg-slate-800/30">
+                      <td className="p-2 text-slate-400">{new Date(r.date).toLocaleString("en-IN", { dateStyle: "short", timeStyle: "short" })}</td>
+                      <td className="p-2"><Badge variant="outline" className="text-[10px]">{r.source}</Badge></td>
+                      <td className="p-2 text-white">{r.name}</td>
+                      <td className="p-2 text-slate-400">{r.method}</td>
+                      <td className={`p-2 text-right font-semibold ${r.direction === "credit" ? "text-green-400" : "text-rose-400"}`}>
+                        <span className="inline-flex items-center gap-1">
+                          {r.direction === "credit" ? <ArrowDownToLine size={10} /> : <ArrowUpFromLine size={10} />}
+                          ৳{r.amount.toLocaleString("en-IN")}
+                        </span>
+                      </td>
+                      <td className="p-2 text-center"><span className={`text-[10px] px-2 py-0.5 rounded-full border ${STATUS_PILL[r.status] ?? "border-slate-700 text-slate-400"}`}>{r.status}</span></td>
+                      <td className="p-2 font-mono text-[10px] text-slate-500">{r.reference}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {filteredTx.length > 300 && <p className="text-[10px] text-slate-500 text-center mt-2">Showing first 300 of {filteredTx.length} — refine filters or export CSV.</p>}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="refunds" className="space-y-4 mt-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {[
+              { label: "Total Requests", value: refundStats.total, color: "text-white" },
+              { label: "Pending", value: refundStats.pending, color: "text-yellow-400" },
+              { label: "Approved", value: refundStats.approved, color: "text-green-400" },
+              { label: "Rejected", value: refundStats.rejected, color: "text-red-400" },
+            ].map(s => (
+              <div key={s.label} className="bg-slate-900 border border-slate-800 rounded-xl p-4 text-center">
+                <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
+                <p className="text-slate-500 text-xs mt-1">{s.label}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-white font-semibold text-sm flex items-center gap-2"><RefreshCcw size={14} className="text-rose-400" />Recent Refund History</h2>
+              <Link to="/ceo/refunds"><Button size="sm" variant="outline" className="gap-1 h-8 border-slate-700 text-slate-300"><ExternalLink size={12} />Manage Refunds</Button></Link>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs">
+                <thead className="text-slate-500 uppercase text-[10px]">
+                  <tr className="border-b border-slate-800">
+                    <th className="text-left p-2">Date</th>
+                    <th className="text-left p-2">Request #</th>
+                    <th className="text-left p-2">Customer</th>
+                    <th className="text-left p-2">Reason</th>
+                    <th className="text-center p-2">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {refunds.length === 0 ? (
+                    <tr><td colSpan={5} className="text-center p-6 text-slate-500">No refund requests</td></tr>
+                  ) : refunds.slice(0, 50).map(r => (
+                    <tr key={r.id} className="border-b border-slate-800/50 hover:bg-slate-800/30">
+                      <td className="p-2 text-slate-400">{new Date(r.created_at).toLocaleDateString("en-IN")}</td>
+                      <td className="p-2 font-mono text-[10px] text-slate-300">{r.request_number || r.id.slice(0, 8)}</td>
+                      <td className="p-2 text-white">{r.name} <span className="text-slate-500">· {r.email}</span></td>
+                      <td className="p-2 text-slate-400 max-w-xs truncate">{r.reason}</td>
+                      <td className="p-2 text-center"><span className={`text-[10px] px-2 py-0.5 rounded-full border ${STATUS_PILL[r.status] ?? "border-slate-700 text-slate-400"}`}>{r.status}</span></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
