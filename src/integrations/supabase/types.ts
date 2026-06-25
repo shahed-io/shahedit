@@ -1450,40 +1450,102 @@ export type Database = {
         }
         Relationships: []
       }
+      license_history: {
+        Row: {
+          actor: string | null
+          actor_id: string | null
+          created_at: string
+          event: string
+          id: string
+          license_key_id: string
+          message: string | null
+          metadata: Json
+          user_id: string | null
+        }
+        Insert: {
+          actor?: string | null
+          actor_id?: string | null
+          created_at?: string
+          event: string
+          id?: string
+          license_key_id: string
+          message?: string | null
+          metadata?: Json
+          user_id?: string | null
+        }
+        Update: {
+          actor?: string | null
+          actor_id?: string | null
+          created_at?: string
+          event?: string
+          id?: string
+          license_key_id?: string
+          message?: string | null
+          metadata?: Json
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "license_history_license_key_id_fkey"
+            columns: ["license_key_id"]
+            isOneToOne: false
+            referencedRelation: "license_keys"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       license_keys: {
         Row: {
+          activation_count: number
           assigned_at: string | null
+          assigned_to_email: string | null
           assigned_to_user_id: string | null
           created_at: string
           id: string
           key_value: string
+          last_activated_at: string | null
+          max_activations: number
           notes: string | null
           order_id: string | null
           package_id: string
+          revoked_at: string | null
+          revoked_reason: string | null
           status: Database["public"]["Enums"]["license_key_status"]
           updated_at: string
         }
         Insert: {
+          activation_count?: number
           assigned_at?: string | null
+          assigned_to_email?: string | null
           assigned_to_user_id?: string | null
           created_at?: string
           id?: string
           key_value: string
+          last_activated_at?: string | null
+          max_activations?: number
           notes?: string | null
           order_id?: string | null
           package_id: string
+          revoked_at?: string | null
+          revoked_reason?: string | null
           status?: Database["public"]["Enums"]["license_key_status"]
           updated_at?: string
         }
         Update: {
+          activation_count?: number
           assigned_at?: string | null
+          assigned_to_email?: string | null
           assigned_to_user_id?: string | null
           created_at?: string
           id?: string
           key_value?: string
+          last_activated_at?: string | null
+          max_activations?: number
           notes?: string | null
           order_id?: string | null
           package_id?: string
+          revoked_at?: string | null
+          revoked_reason?: string | null
           status?: Database["public"]["Enums"]["license_key_status"]
           updated_at?: string
         }
@@ -3868,6 +3930,33 @@ export type Database = {
       }
     }
     Functions: {
+      activate_license: {
+        Args: { _key_value: string }
+        Returns: {
+          activation_count: number
+          assigned_at: string | null
+          assigned_to_email: string | null
+          assigned_to_user_id: string | null
+          created_at: string
+          id: string
+          key_value: string
+          last_activated_at: string | null
+          max_activations: number
+          notes: string | null
+          order_id: string | null
+          package_id: string
+          revoked_at: string | null
+          revoked_reason: string | null
+          status: Database["public"]["Enums"]["license_key_status"]
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "license_keys"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       adjust_reward_points: {
         Args: {
           _delta: number
@@ -3890,6 +3979,39 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      admin_assign_license: {
+        Args: {
+          _key_id: string
+          _note?: string
+          _order_id?: string
+          _user_email?: string
+          _user_id?: string
+        }
+        Returns: {
+          activation_count: number
+          assigned_at: string | null
+          assigned_to_email: string | null
+          assigned_to_user_id: string | null
+          created_at: string
+          id: string
+          key_value: string
+          last_activated_at: string | null
+          max_activations: number
+          notes: string | null
+          order_id: string | null
+          package_id: string
+          revoked_at: string | null
+          revoked_reason: string | null
+          status: Database["public"]["Enums"]["license_key_status"]
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "license_keys"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       admin_list_customers: {
         Args: never
         Returns: {
@@ -3906,6 +4028,10 @@ export type Database = {
           user_id: string
           wallet_balance: number
         }[]
+      }
+      admin_log_license_resend: {
+        Args: { _key_id: string; _to_email: string }
+        Returns: undefined
       }
       admin_set_block_status: {
         Args: { _blocked: boolean; _reason?: string; _user_id: string }
@@ -3952,6 +4078,17 @@ export type Database = {
         Returns: boolean
       }
       is_admin: { Args: { _user_id: string }; Returns: boolean }
+      license_pool_stats: {
+        Args: { _package_id?: string }
+        Returns: {
+          assigned: number
+          available: number
+          package_id: string
+          package_title: string
+          revoked: number
+          total: number
+        }[]
+      }
       move_to_dlq: {
         Args: {
           dlq_name: string
