@@ -1,13 +1,38 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { CheckCircle, XCircle, Clock, RefreshCw, Settings, Zap, User, Phone, CreditCard, Hash, Receipt } from "lucide-react";
+import { CheckCircle, XCircle, Clock, RefreshCw, Settings, Zap, User, Phone, CreditCard, Hash, Receipt, History, RefreshCcw, ExternalLink, ArrowDownToLine, ArrowUpFromLine, Search, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { openInvoice } from "@/lib/invoice";
 import { PaymentMethodsManager } from "@/components/admin/PaymentMethodsManager";
 import { WalletSettingsManager } from "@/components/admin/WalletSettingsManager";
+
+type TxRow = {
+  id: string;
+  source: "submission" | "bkash" | "wallet";
+  date: string;
+  name: string;
+  method: string;
+  amount: number;
+  direction: "credit" | "debit";
+  status: string;
+  reference: string;
+};
+
+const STATUS_PILL: Record<string, string> = {
+  pending: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
+  confirmed: "bg-green-500/10 text-green-400 border-green-500/20",
+  completed: "bg-green-500/10 text-green-400 border-green-500/20",
+  rejected: "bg-red-500/10 text-red-400 border-red-500/20",
+  failed: "bg-red-500/10 text-red-400 border-red-500/20",
+  processing: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+  approved: "bg-green-500/10 text-green-400 border-green-500/20",
+};
 
 interface Payment {
   id: string;
@@ -54,7 +79,56 @@ const AdminPayments = () => {
     if (data) setMode(data.value as "manual" | "auto");
   };
 
-  useEffect(() => { fetchPayments(); fetchMode(); }, []);
+  // Transaction history (combined sources)
+  const [txRows, setTxRows] = useState<TxRow[]>([]);
+  const [txLoading, setTxLoading] = useState(false);
+  const [txSearch, setTxSearch] = useState("");
+  const [txSourceFilter, setTxSourceFilter] = useState<"all" | "submission" | "bkash" | "wallet">("all");
+
+  const fetchTransactions = async () => {
+    setTxLoading(true);
+    const db = supabase as any;
+    const [subs, bkash, wallet] = await Promise.all([
+      db.from("payment_submissions").select("id,name,amount,payment_method,transaction_id,status,created_at").order("created_at", { ascending: false }).limit(500),
+      db.from("bkash_transactions").select("id,customer_name,amount,trx_id,status,mode,created_at,payment_create_time").order("created_at", { ascending: false }).limit(500),
+      db.from("wallet_transactions").select("id,user_id,type,direction,amount,payment_method,reference_id,description,created_at").order("created_at", { ascending: false }).limit(500),
+    ]);
+    const rows: TxRow[] = [];
+    (subs.data ?? []).forEach((s: any) => rows.push({
+      id: `sub-${s.id}`, source: "submission", date: s.created_at, name: s.name, method: s.payment_method,
+      amount: Number(s.amount), direction: "credit", status: s.status, reference: s.transaction_id || "—",
+    }));
+    (bkash.data ?? []).forEach((b: any) => rows.push({
+      id: `bk-${b.id}`, source: "bkash", date: b.created_at || b.payment_create_time, name: b.customer_name || "Customer",
+      method: `bKash ${b.mode || ""}`.trim(), amount: Number(b.amount), direction: "credit", status: (b.status || "pending").toLowerCase(), reference: b.trx_id || "—",
+    }));
+    (wallet.data ?? []).forEach((w: any) => rows.push({
+      id: `wl-${w.id}`, source: "wallet", date: w.created_at, name: w.description || w.type,
+      method: w.payment_method || "Wallet", amount: Number(w.amount), direction: w.direction, status: "completed",
+      reference: w.reference_id || w.type,
+    }));
+    rows.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    setTxRows(rows);
+    setTxLoading(false);
+  };
+
+  const exportTxCsv = () => {
+    const filtered = txRows.filter(r => (txSourceFilter === "all" || r.source === txSourceFilter) && (!txSearch || JSON.stringify(r).toLowerCase().includes(txSearch.toLowerCase())));
+    const header = "Date,Source,Name,Method,Amount,Direction,Status,Reference\n";
+    const body = filtered.map(r => `"${new Date(r.date).toISOString()}","${r.source}","${r.name}","${r.method}",${r.amount},${r.direction},${r.status},"${r.reference}"`).join("\n");
+    const blob = new Blob([header + body], { type: "text/csv" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = `transactions-${Date.now()}.csv`; a.click();
+  };
+
+  // Refund history
+  const [refunds, setRefunds] = useState<any[]>([]);
+  const fetchRefunds = async () => {
+    const { data } = await (supabase as any).from("refund_requests").select("*").order("created_at", { ascending: false }).limit(200);
+    setRefunds(data ?? []);
+  };
+
+  useEffect(() => { fetchPayments(); fetchMode(); fetchTransactions(); fetchRefunds(); }, []);
 
   const updateStatus = async (id: string, status: string) => {
     const { error } = await (supabase as any).from("payment_submissions").update({ status }).eq("id", id);
@@ -100,15 +174,26 @@ const AdminPayments = () => {
     totalAmount: payments.filter(p => p.status === "confirmed").reduce((s, p) => s + Number(p.amount), 0),
   };
 
+  const filteredTx = txRows.filter(r =>
+    (txSourceFilter === "all" || r.source === txSourceFilter) &&
+    (!txSearch || `${r.name} ${r.reference} ${r.method} ${r.status}`.toLowerCase().includes(txSearch.toLowerCase()))
+  );
+  const refundStats = {
+    total: refunds.length,
+    pending: refunds.filter(r => r.status === "pending").length,
+    approved: refunds.filter(r => ["approved", "processing", "completed"].includes(r.status)).length,
+    rejected: refunds.filter(r => r.status === "rejected").length,
+  };
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-white">পেমেন্ট ম্যানেজমেন্ট</h1>
-          <p className="text-slate-400 text-sm">সকল পেমেন্ট দেখুন ও যাচাই করুন</p>
+          <h1 className="text-2xl font-bold text-white">Payment Management</h1>
+          <p className="text-slate-400 text-sm">Gateway · Manual Payment · Verification · Transactions · Refunds</p>
         </div>
-        <Button onClick={fetchPayments} variant="outline" size="sm" className="gap-2 border-slate-700 text-slate-300">
-          <RefreshCw size={14} /> রিফ্রেশ
+        <Button onClick={() => { fetchPayments(); fetchTransactions(); fetchRefunds(); }} variant="outline" size="sm" className="gap-2 border-slate-700 text-slate-300">
+          <RefreshCw size={14} /> Refresh
         </Button>
       </div>
 
@@ -127,6 +212,17 @@ const AdminPayments = () => {
           </div>
         ))}
       </div>
+
+      <Tabs defaultValue="verification" className="w-full">
+        <TabsList className="bg-slate-900 border border-slate-800 flex flex-wrap h-auto">
+          <TabsTrigger value="verification" className="gap-1.5"><CheckCircle size={14} />Verification</TabsTrigger>
+          <TabsTrigger value="manual" className="gap-1.5"><CreditCard size={14} />Manual Payment</TabsTrigger>
+          <TabsTrigger value="gateway" className="gap-1.5"><Zap size={14} />Gateway</TabsTrigger>
+          <TabsTrigger value="transactions" className="gap-1.5"><History size={14} />Transaction History</TabsTrigger>
+          <TabsTrigger value="refunds" className="gap-1.5"><RefreshCcw size={14} />Refund History</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="verification" className="space-y-6 mt-4">
 
       {/* Verification Mode */}
       <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
@@ -169,14 +265,8 @@ const AdminPayments = () => {
         )}
       </div>
 
-      {/* Wallet Top-up settings */}
-      <WalletSettingsManager />
-
-      {/* Manual Payment Numbers Manager */}
-      <PaymentMethodsManager />
-
       {/* Filter */}
-      <div className="flex gap-2">
+      <div className="flex gap-2 flex-wrap">
         {["all", "pending", "confirmed", "rejected"].map(f => (
           <button
             key={f}
@@ -289,6 +379,150 @@ const AdminPayments = () => {
           </div>
         )}
       </div>
+        </TabsContent>
+
+        <TabsContent value="manual" className="space-y-6 mt-4">
+          <PaymentMethodsManager />
+          <WalletSettingsManager />
+        </TabsContent>
+
+        <TabsContent value="gateway" className="space-y-4 mt-4">
+          <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <Zap size={16} className="text-teal-400" />
+              <h2 className="text-white font-semibold text-sm">Payment Gateway Integrations</h2>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-3">
+              <Link to="/ceo/bkash-pgw" className="border border-slate-800 hover:border-pink-500/40 bg-slate-950 rounded-xl p-4 transition-all group">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-pink-400 font-bold">bKash PGW</span>
+                  <ExternalLink size={14} className="text-slate-500 group-hover:text-pink-400" />
+                </div>
+                <p className="text-slate-400 text-xs">Live merchant payments via bKash Payment Gateway. Configure App Key, Secret, callback URLs and view trx logs.</p>
+              </Link>
+              <div className="border border-slate-800 bg-slate-950 rounded-xl p-4 opacity-75">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-orange-400 font-bold">Nagad / Rocket / Upay</span>
+                  <Badge variant="outline" className="text-[10px] text-slate-400">Manual</Badge>
+                </div>
+                <p className="text-slate-400 text-xs">Currently handled via Manual Payment numbers — configure receiver numbers in the Manual Payment tab.</p>
+              </div>
+            </div>
+            <p className="text-slate-500 text-[11px] mt-4">Verification mode (manual vs auto API) is controlled in the Verification tab.</p>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="transactions" className="space-y-4 mt-4">
+          <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
+            <div className="flex items-center justify-between gap-3 flex-wrap mb-3">
+              <div className="flex items-center gap-2 flex-wrap">
+                {(["all", "submission", "bkash", "wallet"] as const).map(s => (
+                  <button key={s} onClick={() => setTxSourceFilter(s)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${txSourceFilter === s ? "bg-purple-600 text-white" : "bg-slate-800 text-slate-400 hover:text-white"}`}>
+                    {s === "all" ? "All Sources" : s === "submission" ? "Manual" : s === "bkash" ? "bKash" : "Wallet"}
+                  </button>
+                ))}
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="relative">
+                  <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                  <Input value={txSearch} onChange={e => setTxSearch(e.target.value)} placeholder="Search trx / name / ref" className="pl-7 h-8 w-56 text-xs bg-slate-950 border-slate-800" />
+                </div>
+                <Button size="sm" variant="outline" onClick={fetchTransactions} className="h-8 gap-1 border-slate-700 text-slate-300"><RefreshCw size={12} />Sync</Button>
+                <Button size="sm" variant="outline" onClick={exportTxCsv} className="h-8 gap-1 border-slate-700 text-slate-300"><Download size={12} />CSV</Button>
+              </div>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs">
+                <thead className="text-slate-500 uppercase text-[10px]">
+                  <tr className="border-b border-slate-800">
+                    <th className="text-left p-2">Date</th>
+                    <th className="text-left p-2">Source</th>
+                    <th className="text-left p-2">Name</th>
+                    <th className="text-left p-2">Method</th>
+                    <th className="text-right p-2">Amount</th>
+                    <th className="text-center p-2">Status</th>
+                    <th className="text-left p-2">Reference</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {txLoading ? (
+                    <tr><td colSpan={7} className="text-center p-6 text-slate-500">Loading…</td></tr>
+                  ) : filteredTx.length === 0 ? (
+                    <tr><td colSpan={7} className="text-center p-6 text-slate-500">No transactions</td></tr>
+                  ) : filteredTx.slice(0, 300).map(r => (
+                    <tr key={r.id} className="border-b border-slate-800/50 hover:bg-slate-800/30">
+                      <td className="p-2 text-slate-400">{new Date(r.date).toLocaleString("en-IN", { dateStyle: "short", timeStyle: "short" })}</td>
+                      <td className="p-2"><Badge variant="outline" className="text-[10px]">{r.source}</Badge></td>
+                      <td className="p-2 text-white">{r.name}</td>
+                      <td className="p-2 text-slate-400">{r.method}</td>
+                      <td className={`p-2 text-right font-semibold ${r.direction === "credit" ? "text-green-400" : "text-rose-400"}`}>
+                        <span className="inline-flex items-center gap-1">
+                          {r.direction === "credit" ? <ArrowDownToLine size={10} /> : <ArrowUpFromLine size={10} />}
+                          ৳{r.amount.toLocaleString("en-IN")}
+                        </span>
+                      </td>
+                      <td className="p-2 text-center"><span className={`text-[10px] px-2 py-0.5 rounded-full border ${STATUS_PILL[r.status] ?? "border-slate-700 text-slate-400"}`}>{r.status}</span></td>
+                      <td className="p-2 font-mono text-[10px] text-slate-500">{r.reference}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {filteredTx.length > 300 && <p className="text-[10px] text-slate-500 text-center mt-2">Showing first 300 of {filteredTx.length} — refine filters or export CSV.</p>}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="refunds" className="space-y-4 mt-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {[
+              { label: "Total Requests", value: refundStats.total, color: "text-white" },
+              { label: "Pending", value: refundStats.pending, color: "text-yellow-400" },
+              { label: "Approved", value: refundStats.approved, color: "text-green-400" },
+              { label: "Rejected", value: refundStats.rejected, color: "text-red-400" },
+            ].map(s => (
+              <div key={s.label} className="bg-slate-900 border border-slate-800 rounded-xl p-4 text-center">
+                <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
+                <p className="text-slate-500 text-xs mt-1">{s.label}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-white font-semibold text-sm flex items-center gap-2"><RefreshCcw size={14} className="text-rose-400" />Recent Refund History</h2>
+              <Link to="/ceo/refunds"><Button size="sm" variant="outline" className="gap-1 h-8 border-slate-700 text-slate-300"><ExternalLink size={12} />Manage Refunds</Button></Link>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs">
+                <thead className="text-slate-500 uppercase text-[10px]">
+                  <tr className="border-b border-slate-800">
+                    <th className="text-left p-2">Date</th>
+                    <th className="text-left p-2">Request #</th>
+                    <th className="text-left p-2">Customer</th>
+                    <th className="text-left p-2">Reason</th>
+                    <th className="text-center p-2">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {refunds.length === 0 ? (
+                    <tr><td colSpan={5} className="text-center p-6 text-slate-500">No refund requests</td></tr>
+                  ) : refunds.slice(0, 50).map(r => (
+                    <tr key={r.id} className="border-b border-slate-800/50 hover:bg-slate-800/30">
+                      <td className="p-2 text-slate-400">{new Date(r.created_at).toLocaleDateString("en-IN")}</td>
+                      <td className="p-2 font-mono text-[10px] text-slate-300">{r.request_number || r.id.slice(0, 8)}</td>
+                      <td className="p-2 text-white">{r.name} <span className="text-slate-500">· {r.email}</span></td>
+                      <td className="p-2 text-slate-400 max-w-xs truncate">{r.reason}</td>
+                      <td className="p-2 text-center"><span className={`text-[10px] px-2 py-0.5 rounded-full border ${STATUS_PILL[r.status] ?? "border-slate-700 text-slate-400"}`}>{r.status}</span></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
