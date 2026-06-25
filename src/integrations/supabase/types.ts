@@ -1408,6 +1408,33 @@ export type Database = {
         }
         Relationships: []
       }
+      failed_login_attempts: {
+        Row: {
+          attempted_at: string
+          email: string | null
+          id: string
+          ip_address: string | null
+          reason: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          attempted_at?: string
+          email?: string | null
+          id?: string
+          ip_address?: string | null
+          reason?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          attempted_at?: string
+          email?: string | null
+          id?: string
+          ip_address?: string | null
+          reason?: string | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       faqs: {
         Row: {
           answer: string
@@ -1629,6 +1656,36 @@ export type Database = {
           terms?: string | null
           total?: number
           updated_at?: string
+        }
+        Relationships: []
+      }
+      ip_whitelist: {
+        Row: {
+          applies_to: string | null
+          created_at: string
+          created_by: string | null
+          id: string
+          ip_address: string
+          is_active: boolean | null
+          label: string | null
+        }
+        Insert: {
+          applies_to?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          ip_address: string
+          is_active?: boolean | null
+          label?: string | null
+        }
+        Update: {
+          applies_to?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          ip_address?: string
+          is_active?: boolean | null
+          label?: string | null
         }
         Relationships: []
       }
@@ -3322,6 +3379,51 @@ export type Database = {
           reason?: string | null
           type?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      security_settings: {
+        Row: {
+          failed_login_lockout_minutes: number | null
+          failed_login_lockout_threshold: number | null
+          id: number
+          ip_whitelist_enabled: boolean | null
+          recaptcha_enabled: boolean | null
+          recaptcha_secret_key: string | null
+          recaptcha_site_key: string | null
+          session_absolute_timeout_hours: number | null
+          session_idle_timeout_minutes: number | null
+          twofa_required_for_admins: boolean | null
+          twofa_required_for_all: boolean | null
+          updated_at: string
+        }
+        Insert: {
+          failed_login_lockout_minutes?: number | null
+          failed_login_lockout_threshold?: number | null
+          id?: number
+          ip_whitelist_enabled?: boolean | null
+          recaptcha_enabled?: boolean | null
+          recaptcha_secret_key?: string | null
+          recaptcha_site_key?: string | null
+          session_absolute_timeout_hours?: number | null
+          session_idle_timeout_minutes?: number | null
+          twofa_required_for_admins?: boolean | null
+          twofa_required_for_all?: boolean | null
+          updated_at?: string
+        }
+        Update: {
+          failed_login_lockout_minutes?: number | null
+          failed_login_lockout_threshold?: number | null
+          id?: number
+          ip_whitelist_enabled?: boolean | null
+          recaptcha_enabled?: boolean | null
+          recaptcha_secret_key?: string | null
+          recaptcha_site_key?: string | null
+          session_absolute_timeout_hours?: number | null
+          session_idle_timeout_minutes?: number | null
+          twofa_required_for_admins?: boolean | null
+          twofa_required_for_all?: boolean | null
+          updated_at?: string
         }
         Relationships: []
       }
