@@ -15,6 +15,7 @@ import GlobalSupport from "@/components/GlobalSupport";
 import WelcomePopup from "@/components/WelcomePopup";
 import ThemeAppearanceProvider from "@/components/ThemeAppearanceProvider";
 import SiteBackground from "@/components/SiteBackground";
+import { useAdminGlobals } from "@/hooks/useAdminGlobals";
 import { lazy, Suspense } from "react";
 
 // Eagerly loaded (most-visited / lightweight)
@@ -97,6 +98,7 @@ const AdminSecurityCenter = lazy(() => import("./pages/admin/AdminSecurityCenter
 const AdminBackupMaintenance = lazy(() => import("./pages/admin/AdminBackupMaintenance"));
 const AdminAnalyticsHub = lazy(() => import("./pages/admin/AdminAnalyticsHub"));
 const AdminSettingsHub = lazy(() => import("./pages/admin/AdminSettingsHub"));
+const AdminAdvancedTools = lazy(() => import("./pages/admin/AdminAdvancedTools"));
 
 
 // Auth / user pages
@@ -187,7 +189,9 @@ const RoleRoute = ({ section, children }: { section: AdminSection; children: Rea
   return <>{children}</>;
 };
 
-const AdminRoutes = () => (
+const AdminRoutes = () => {
+  useAdminGlobals();
+  return (
   <ProtectedRoute>
     <AdminLayout>
       <Suspense fallback={<AdminPageFallback />}>
@@ -265,12 +269,14 @@ const AdminRoutes = () => (
         <Route path="backup-maintenance" element={<RoleRoute section="backup-maintenance"><AdminBackupMaintenance /></RoleRoute>} />
         <Route path="analytics-hub" element={<RoleRoute section="analytics-hub"><AdminAnalyticsHub /></RoleRoute>} />
         <Route path="settings-hub" element={<RoleRoute section="settings-hub"><AdminSettingsHub /></RoleRoute>} />
+        <Route path="advanced-tools" element={<RoleRoute section="advanced-tools"><AdminAdvancedTools /></RoleRoute>} />
 
       </Routes>
       </Suspense>
     </AdminLayout>
   </ProtectedRoute>
-);
+  );
+};
 
 
 // Root component that injects analytics on every page load
