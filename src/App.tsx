@@ -137,9 +137,13 @@ const AdminPageFallback = () => (
 
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { user, loading, isAdmin } = useAuth();
+  const { user, loading, roleLoading, isAdmin } = useAuth();
   if (loading) return <PageFallback />;
-  if (!user || !isAdmin) return <Navigate to="/ceo/login" replace />;
+  if (!user) return <Navigate to="/ceo/login" replace />;
+  // Wait for the role lookup to finish before deciding — otherwise we briefly
+  // see isAdmin=false right after sign-in and bounce the user out.
+  if (roleLoading) return <PageFallback />;
+  if (!isAdmin) return <Navigate to="/ceo/login" replace />;
   return <>{children}</>;
 };
 

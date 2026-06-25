@@ -7,6 +7,7 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
+  roleLoading: boolean;
   role: AppRole | null;
   isAdmin: boolean;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
@@ -17,6 +18,7 @@ const AuthContext = createContext<AuthContextType>({
   user: null,
   session: null,
   loading: true,
+  roleLoading: true,
   role: null,
   isAdmin: false,
   signIn: async () => ({ error: null }),
@@ -29,9 +31,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [roleLoading, setRoleLoading] = useState(true);
   const [role, setRole] = useState<AppRole | null>(null);
 
   const fetchRole = async (userId: string) => {
+    setRoleLoading(true);
     const { data } = await supabase
       .from("user_roles")
       .select("role")
@@ -40,6 +44,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       .limit(1)
       .maybeSingle();
     setRole((data?.role as AppRole) ?? null);
+    setRoleLoading(false);
     return (data?.role as AppRole) ?? null;
   };
 
@@ -87,6 +92,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
       } else {
         setRole(null);
+        setRoleLoading(false);
       }
       if (!initialized) {
         initialized = true;
@@ -97,7 +103,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
-      if (session?.user) await fetchRole(session.user.id);
+      if (session?.user) {
+        await fetchRole(session.user.id);
+      } else {
+        setRoleLoading(false);
+      }
       initialized = true;
       setLoading(false);
     });
@@ -116,7 +126,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const isAdmin = role !== null;
 
   return (
-    <AuthContext.Provider value={{ user, session, loading, role, isAdmin, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, session, loading, roleLoading, role, isAdmin, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
