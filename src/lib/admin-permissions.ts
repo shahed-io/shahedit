@@ -65,6 +65,7 @@ export type AdminSection =
   | "reports"
   | "website-cms"
   | "blog-management"
+  | "reviews"
   | "security-audit";
 
 
