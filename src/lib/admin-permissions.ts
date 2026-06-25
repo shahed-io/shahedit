@@ -62,6 +62,7 @@ export type AdminSection =
   | "license-keys"
   | "bulk-products"
   | "customers"
+  | "reports"
   | "security-audit";
 
 
