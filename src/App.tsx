@@ -242,6 +242,7 @@ const AdminRoutes = () => (
         <Route path="license-keys" element={<RoleRoute section="license-keys"><AdminLicenseKeys /></RoleRoute>} />
         <Route path="bulk-products" element={<RoleRoute section="bulk-products"><AdminBulkProducts /></RoleRoute>} />
         <Route path="security-audit" element={<RoleRoute section="security-audit"><AdminSecurityAudit /></RoleRoute>} />
+        <Route path="customers" element={<RoleRoute section="customers"><AdminCustomers /></RoleRoute>} />
 
       </Routes>
       </Suspense>
