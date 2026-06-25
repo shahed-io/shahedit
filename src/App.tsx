@@ -85,6 +85,7 @@ const AdminDigitalFiles = lazy(() => import("./pages/admin/AdminDigitalFiles"));
 const AdminLicenseKeys = lazy(() => import("./pages/admin/AdminLicenseKeys"));
 const AdminBulkProducts = lazy(() => import("./pages/admin/AdminBulkProducts"));
 const AdminSecurityAudit = lazy(() => import("./pages/admin/AdminSecurityAudit"));
+const AdminCustomers = lazy(() => import("./pages/admin/AdminCustomers"));
 
 
 // Auth / user pages
