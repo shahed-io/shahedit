@@ -137,6 +137,7 @@ const navGroups: NavGroup[] = [
     items: [
       { label: "AI Support", icon: MessageSquare, href: "/ceo/ai-support", section: "ai-support" },
       { label: "Admin Users", icon: Shield, href: "/ceo/users", section: "users" },
+      { label: "Staff Management", icon: Users, href: "/ceo/staff-management", badge: "NEW", section: "staff-management" },
       { label: "Website CMS", icon: LayoutTemplate, href: "/ceo/website-cms", badge: "NEW", section: "website-cms" },
       { label: "Footer Editor", icon: LayoutTemplate, href: "/ceo/footer", section: "footer" },
       { label: "Hero Banners", icon: LayoutTemplate, href: "/ceo/banners", badge: "NEW", section: "banners" },
