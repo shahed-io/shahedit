@@ -69,7 +69,8 @@ export type AdminSection =
   | "seo-panel"
   | "email-system"
   | "security-audit"
-  | "staff-management";
+  | "staff-management"
+  | "security-center";
 
 
 /**
@@ -144,6 +145,7 @@ const PERMISSIONS: Record<AdminSection, AppRole[]> = {
   "seo-panel":        ["super_admin", "admin", "editor"],
   "email-system":     ["super_admin", "admin", "manager"],
   "staff-management": ["super_admin", "admin"],
+  "security-center":  ["super_admin", "admin"],
 
 };
 
