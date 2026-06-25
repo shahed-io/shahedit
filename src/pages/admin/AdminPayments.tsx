@@ -174,15 +174,26 @@ const AdminPayments = () => {
     totalAmount: payments.filter(p => p.status === "confirmed").reduce((s, p) => s + Number(p.amount), 0),
   };
 
+  const filteredTx = txRows.filter(r =>
+    (txSourceFilter === "all" || r.source === txSourceFilter) &&
+    (!txSearch || `${r.name} ${r.reference} ${r.method} ${r.status}`.toLowerCase().includes(txSearch.toLowerCase()))
+  );
+  const refundStats = {
+    total: refunds.length,
+    pending: refunds.filter(r => r.status === "pending").length,
+    approved: refunds.filter(r => ["approved", "processing", "completed"].includes(r.status)).length,
+    rejected: refunds.filter(r => r.status === "rejected").length,
+  };
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-white">পেমেন্ট ম্যানেজমেন্ট</h1>
-          <p className="text-slate-400 text-sm">সকল পেমেন্ট দেখুন ও যাচাই করুন</p>
+          <h1 className="text-2xl font-bold text-white">Payment Management</h1>
+          <p className="text-slate-400 text-sm">Gateway · Manual Payment · Verification · Transactions · Refunds</p>
         </div>
-        <Button onClick={fetchPayments} variant="outline" size="sm" className="gap-2 border-slate-700 text-slate-300">
-          <RefreshCw size={14} /> রিফ্রেশ
+        <Button onClick={() => { fetchPayments(); fetchTransactions(); fetchRefunds(); }} variant="outline" size="sm" className="gap-2 border-slate-700 text-slate-300">
+          <RefreshCw size={14} /> Refresh
         </Button>
       </div>
 
@@ -201,6 +212,17 @@ const AdminPayments = () => {
           </div>
         ))}
       </div>
+
+      <Tabs defaultValue="verification" className="w-full">
+        <TabsList className="bg-slate-900 border border-slate-800 flex flex-wrap h-auto">
+          <TabsTrigger value="verification" className="gap-1.5"><CheckCircle size={14} />Verification</TabsTrigger>
+          <TabsTrigger value="manual" className="gap-1.5"><CreditCard size={14} />Manual Payment</TabsTrigger>
+          <TabsTrigger value="gateway" className="gap-1.5"><Zap size={14} />Gateway</TabsTrigger>
+          <TabsTrigger value="transactions" className="gap-1.5"><History size={14} />Transaction History</TabsTrigger>
+          <TabsTrigger value="refunds" className="gap-1.5"><RefreshCcw size={14} />Refund History</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="verification" className="space-y-6 mt-4">
 
       {/* Verification Mode */}
       <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
