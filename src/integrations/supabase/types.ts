@@ -3890,6 +3890,40 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      admin_list_customers: {
+        Args: never
+        Returns: {
+          avatar_url: string
+          created_at: string
+          email: string
+          full_name: string
+          is_blocked: boolean
+          last_login_at: string
+          order_count: number
+          phone: string
+          reward_points: number
+          total_spent: number
+          user_id: string
+          wallet_balance: number
+        }[]
+      }
+      admin_set_block_status: {
+        Args: { _blocked: boolean; _reason?: string; _user_id: string }
+        Returns: {
+          blocked_at: string | null
+          blocked_by: string | null
+          blocked_reason: string | null
+          is_blocked: boolean
+          updated_at: string
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "customer_status"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       delete_email: {
         Args: { message_id: number; queue_name: string }
         Returns: boolean
