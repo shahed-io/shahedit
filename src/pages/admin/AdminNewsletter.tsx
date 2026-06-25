@@ -57,7 +57,7 @@ export default function AdminNewsletter() {
         actions={<Button variant="outline" onClick={exportCsv}><Download className="w-4 h-4 mr-2" />Export CSV</Button>}
       />
 
-      <div className="grid grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
         <KpiCard label="Total" value={stats.total} icon={Mail} accent="violet" />
         <KpiCard label="Active" value={stats.active} icon={Mail} accent="emerald" />
         <KpiCard label="Unsubscribed" value={stats.unsub} icon={UserMinus} accent="rose" />

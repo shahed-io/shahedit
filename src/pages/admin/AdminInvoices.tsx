@@ -184,7 +184,7 @@ export default function AdminInvoices() {
             <Button variant="outline" size="sm" onClick={() => setForm({ ...form, items: [...form.items, { ...emptyItem }] })}><Plus className="w-3 h-3 mr-1" />Add Item</Button>
           </div>
 
-          <div className="grid grid-cols-3 gap-2 mt-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-4">
             <Input type="number" placeholder="Tax %" value={form.tax_rate} onChange={e => setForm({ ...form, tax_rate: e.target.value })} />
             <Input type="number" placeholder="Discount" value={form.discount} onChange={e => setForm({ ...form, discount: e.target.value })} />
             <div className="text-right text-sm self-center font-bold">Total: ৳{totals().total.toLocaleString()}</div>
