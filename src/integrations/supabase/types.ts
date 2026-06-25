@@ -2864,6 +2864,81 @@ export type Database = {
         }
         Relationships: []
       }
+      welcome_popups: {
+        Row: {
+          bg_color: string | null
+          border_radius: number | null
+          button_bg_color: string | null
+          button_text_color: string | null
+          created_at: string
+          cta_label: string | null
+          cta_link: string | null
+          delay_seconds: number | null
+          ends_at: string | null
+          id: string
+          image_url: string | null
+          is_active: boolean
+          overlay_opacity: number | null
+          priority: number
+          show_once: boolean
+          starts_at: string | null
+          subtitle: string | null
+          target_paths: string[] | null
+          targeting: string
+          text_color: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          bg_color?: string | null
+          border_radius?: number | null
+          button_bg_color?: string | null
+          button_text_color?: string | null
+          created_at?: string
+          cta_label?: string | null
+          cta_link?: string | null
+          delay_seconds?: number | null
+          ends_at?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          overlay_opacity?: number | null
+          priority?: number
+          show_once?: boolean
+          starts_at?: string | null
+          subtitle?: string | null
+          target_paths?: string[] | null
+          targeting?: string
+          text_color?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Update: {
+          bg_color?: string | null
+          border_radius?: number | null
+          button_bg_color?: string | null
+          button_text_color?: string | null
+          created_at?: string
+          cta_label?: string | null
+          cta_link?: string | null
+          delay_seconds?: number | null
+          ends_at?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          overlay_opacity?: number | null
+          priority?: number
+          show_once?: boolean
+          starts_at?: string | null
+          subtitle?: string | null
+          target_paths?: string[] | null
+          targeting?: string
+          text_color?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       product_review_stats: {
