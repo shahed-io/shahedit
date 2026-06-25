@@ -79,7 +79,56 @@ const AdminPayments = () => {
     if (data) setMode(data.value as "manual" | "auto");
   };
 
-  useEffect(() => { fetchPayments(); fetchMode(); }, []);
+  // Transaction history (combined sources)
+  const [txRows, setTxRows] = useState<TxRow[]>([]);
+  const [txLoading, setTxLoading] = useState(false);
+  const [txSearch, setTxSearch] = useState("");
+  const [txSourceFilter, setTxSourceFilter] = useState<"all" | "submission" | "bkash" | "wallet">("all");
+
+  const fetchTransactions = async () => {
+    setTxLoading(true);
+    const db = supabase as any;
+    const [subs, bkash, wallet] = await Promise.all([
+      db.from("payment_submissions").select("id,name,amount,payment_method,transaction_id,status,created_at").order("created_at", { ascending: false }).limit(500),
+      db.from("bkash_transactions").select("id,customer_name,amount,trx_id,status,mode,created_at,payment_create_time").order("created_at", { ascending: false }).limit(500),
+      db.from("wallet_transactions").select("id,user_id,type,direction,amount,payment_method,reference_id,description,created_at").order("created_at", { ascending: false }).limit(500),
+    ]);
+    const rows: TxRow[] = [];
+    (subs.data ?? []).forEach((s: any) => rows.push({
+      id: `sub-${s.id}`, source: "submission", date: s.created_at, name: s.name, method: s.payment_method,
+      amount: Number(s.amount), direction: "credit", status: s.status, reference: s.transaction_id || "—",
+    }));
+    (bkash.data ?? []).forEach((b: any) => rows.push({
+      id: `bk-${b.id}`, source: "bkash", date: b.created_at || b.payment_create_time, name: b.customer_name || "Customer",
+      method: `bKash ${b.mode || ""}`.trim(), amount: Number(b.amount), direction: "credit", status: (b.status || "pending").toLowerCase(), reference: b.trx_id || "—",
+    }));
+    (wallet.data ?? []).forEach((w: any) => rows.push({
+      id: `wl-${w.id}`, source: "wallet", date: w.created_at, name: w.description || w.type,
+      method: w.payment_method || "Wallet", amount: Number(w.amount), direction: w.direction, status: "completed",
+      reference: w.reference_id || w.type,
+    }));
+    rows.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    setTxRows(rows);
+    setTxLoading(false);
+  };
+
+  const exportTxCsv = () => {
+    const filtered = txRows.filter(r => (txSourceFilter === "all" || r.source === txSourceFilter) && (!txSearch || JSON.stringify(r).toLowerCase().includes(txSearch.toLowerCase())));
+    const header = "Date,Source,Name,Method,Amount,Direction,Status,Reference\n";
+    const body = filtered.map(r => `"${new Date(r.date).toISOString()}","${r.source}","${r.name}","${r.method}",${r.amount},${r.direction},${r.status},"${r.reference}"`).join("\n");
+    const blob = new Blob([header + body], { type: "text/csv" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = `transactions-${Date.now()}.csv`; a.click();
+  };
+
+  // Refund history
+  const [refunds, setRefunds] = useState<any[]>([]);
+  const fetchRefunds = async () => {
+    const { data } = await (supabase as any).from("refund_requests").select("*").order("created_at", { ascending: false }).limit(200);
+    setRefunds(data ?? []);
+  };
+
+  useEffect(() => { fetchPayments(); fetchMode(); fetchTransactions(); fetchRefunds(); }, []);
 
   const updateStatus = async (id: string, status: string) => {
     const { error } = await (supabase as any).from("payment_submissions").update({ status }).eq("id", id);
