@@ -224,7 +224,7 @@ const SiteFooter = () => {
                 <span className="w-8 h-8 rounded-full flex items-center justify-center bg-gradient-to-br from-emerald-500 to-teal-500 shadow-md">
                   <MapPin size={13} className="text-white" />
                 </span>
-                <span className="text-sm font-medium text-foreground/90">Sopura, Rajshahi, Bangladesh</span>
+                <span className="text-sm font-medium text-foreground/90">Rajshahi, Bangladesh</span>
               </div>
             </div>
 
