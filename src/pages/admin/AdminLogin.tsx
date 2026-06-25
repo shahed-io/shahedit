@@ -16,21 +16,24 @@ const AdminLogin = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { signIn, user, isAdmin, role, loading: authLoading } = useAuth();
+  const { signIn, user, isAdmin, role, loading: authLoading, roleLoading } = useAuth();
   const navigate = useNavigate();
 
   // If already logged in as an admin, skip login entirely.
-  // If logged in but NOT an admin, send them to home (do NOT sign them out — that breaks their website session).
+  // If logged in but NOT an admin (after role lookup completes), send them home.
   useEffect(() => {
     if (authLoading) return;
     if (!user) return;
+    // Wait until the role check finishes — otherwise we kick out a real admin
+    // during the brief window before fetchRole() resolves.
+    if (roleLoading) return;
     if (isAdmin) {
       navigate("/ceo", { replace: true });
     } else {
       toast.error("এই অ্যাকাউন্টে admin panel access নেই।");
       navigate("/", { replace: true });
     }
-  }, [user, isAdmin, role, authLoading, navigate]);
+  }, [user, isAdmin, role, authLoading, roleLoading, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,9 +49,9 @@ const AdminLogin = () => {
     }
   };
 
-  // While we're checking session OR an existing logged-in user is being redirected,
+  // While checking session OR an existing logged-in user is being redirected,
   // show a spinner instead of the login form (prevents the "double login" feel).
-  if (authLoading || user) {
+  if (authLoading || (user && roleLoading) || (user && isAdmin)) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
         <div className="w-10 h-10 border-2 border-purple-400 border-t-transparent rounded-full animate-spin" />
