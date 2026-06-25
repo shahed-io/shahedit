@@ -96,6 +96,7 @@ const AdminStaffManagement = lazy(() => import("./pages/admin/AdminStaffManageme
 const AdminSecurityCenter = lazy(() => import("./pages/admin/AdminSecurityCenter"));
 const AdminBackupMaintenance = lazy(() => import("./pages/admin/AdminBackupMaintenance"));
 const AdminAnalyticsHub = lazy(() => import("./pages/admin/AdminAnalyticsHub"));
+const AdminSettingsHub = lazy(() => import("./pages/admin/AdminSettingsHub"));
 
 
 // Auth / user pages
@@ -263,6 +264,7 @@ const AdminRoutes = () => (
         <Route path="security-center" element={<RoleRoute section="security-center"><AdminSecurityCenter /></RoleRoute>} />
         <Route path="backup-maintenance" element={<RoleRoute section="backup-maintenance"><AdminBackupMaintenance /></RoleRoute>} />
         <Route path="analytics-hub" element={<RoleRoute section="analytics-hub"><AdminAnalyticsHub /></RoleRoute>} />
+        <Route path="settings-hub" element={<RoleRoute section="settings-hub"><AdminSettingsHub /></RoleRoute>} />
 
       </Routes>
       </Suspense>
