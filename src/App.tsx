@@ -12,6 +12,7 @@ import { SEO } from "@/components/SEO";
 import { AutoStructuredData } from "@/components/AutoStructuredData";
 
 import GlobalSupport from "@/components/GlobalSupport";
+import WelcomePopup from "@/components/WelcomePopup";
 import ThemeAppearanceProvider from "@/components/ThemeAppearanceProvider";
 import SiteBackground from "@/components/SiteBackground";
 import { lazy, Suspense } from "react";
@@ -39,6 +40,7 @@ const AdminOrders = lazy(() => import("./pages/admin/AdminOrders"));
 const AdminUsers = lazy(() => import("./pages/admin/AdminUsers"));
 const AdminFooterEditor = lazy(() => import("./pages/admin/AdminFooterEditor"));
 const AdminBanners = lazy(() => import("./pages/admin/AdminBanners"));
+const AdminWelcomePopups = lazy(() => import("./pages/admin/AdminWelcomePopups"));
 const AdminClientDocuments = lazy(() => import("./pages/admin/AdminClientDocuments"));
 const AdminSEO = lazy(() => import("./pages/admin/AdminSEO"));
 const AdminPortfolio = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminPortfolio })));
@@ -192,6 +194,7 @@ const AdminRoutes = () => (
         <Route path="users" element={<RoleRoute section="users"><AdminUsers /></RoleRoute>} />
         <Route path="footer" element={<RoleRoute section="footer"><AdminFooterEditor /></RoleRoute>} />
         <Route path="banners" element={<RoleRoute section="banners"><AdminBanners /></RoleRoute>} />
+        <Route path="welcome-popups" element={<RoleRoute section="welcome-popups"><AdminWelcomePopups /></RoleRoute>} />
         <Route path="client-docs" element={<RoleRoute section="client-docs"><AdminClientDocuments /></RoleRoute>} />
         <Route path="popular-searches" element={<RoleRoute section="popular-searches"><AdminPopularSearches /></RoleRoute>} />
         <Route path="analytics" element={<RoleRoute section="analytics"><AdminAnalytics /></RoleRoute>} />
@@ -281,6 +284,7 @@ const AppWithAnalytics = () => {
       </div>
       <ThemeAppearanceProvider />
       <GlobalSupport />
+      <WelcomePopup />
     </Suspense>
   );
 };
