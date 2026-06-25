@@ -481,9 +481,9 @@ function BrokenLinksTab() {
           if (!res.ok && res.status >= 400) {
             broken++;
             const path = new URL(u).pathname;
-            await supabase.from("broken_links").upsert({
+            await supabase.from("broken_links").insert({
               path, hits: 1, last_seen_at: new Date().toISOString(), resolved: false,
-            } as any, { onConflict: "path" } as any);
+            } as any);
           }
         } catch { /* CORS may block external */ }
       }
