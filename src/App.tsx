@@ -188,7 +188,11 @@ const RoleRoute = ({ section, children }: { section: AdminSection; children: Rea
   return <>{children}</>;
 };
 
-const AdminRoutes = () => (
+const AdminRoutes = () => {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { useAdminGlobals } = require("@/hooks/useAdminGlobals");
+  useAdminGlobals();
+  return (
   <ProtectedRoute>
     <AdminLayout>
       <Suspense fallback={<AdminPageFallback />}>
