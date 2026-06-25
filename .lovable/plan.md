@@ -1,74 +1,67 @@
-# Customer Management — Implementation Plan
+## Advanced Admin Tools Hub
 
-একটি unified Admin → **Customer Management** module তৈরি করব যেখানে নিচের ৮টা feature থাকবে।
+A single new admin section `/ceo/advanced-tools` with tabbed access to all 20 features. Each tab is a focused panel — no separate routes — so the work ships fast and stays organized.
 
-## ১. নতুন/পুনর্ব্যবহৃত Database Tables
+### What gets built
 
-বিদ্যমান টেবিল ব্যবহার করব যেখানে সম্ভব:
-- `profiles` + `auth.users` → Customer List-এর base
-- `orders` → Purchase History
-- `wallets` + `wallet_transactions` → Wallet (already exists)
+**AI Tools (1 edge function, 4 tabs)**
+- New edge function `ai-admin-tools` using Lovable AI (`google/gemini-2.5-flash-lite`) with an `action` param:
+  - `product_description` — generate Bengali/English product copy from title + features
+  - `seo_meta` — generate meta title/description/keywords/OG for any page or product
+  - `support_reply` — draft a polite Bengali support reply from a customer message
+  - `email_writer` — draft marketing/transactional emails from a brief
+- Each tab: input form → "Generate" → editable output → "Copy" / "Save to product" where applicable.
 
-নতুন টেবিল (migration):
-- **`customer_reward_points`** — user_id, points balance, lifetime_earned
-- **`reward_points_log`** — user_id, points, type (earn/redeem/adjust), reason, order_id, admin_id
-- **`customer_login_history`** — user_id, ip, user_agent, device, browser, os, country, logged_in_at, session_id
-- **`customer_devices`** — user_id, device_fingerprint, device_name, browser, os, last_seen, is_active, is_trusted
-- **`customer_status`** — user_id (PK), is_blocked, blocked_reason, blocked_by, blocked_at
-- **`customer_notes`** — user_id, note, admin_id, is_pinned, created_at
+**Product Productivity (3 tabs)**
+- **Bulk Price Update** — filter by category/brand, apply % or flat ৳ change (increase/decrease/set), preview affected rows, commit.
+- **One-Click Duplicate** — pick a product, clone it (new slug `-copy`, `is_published=false`) including images/variants/tags.
+- **Bulk License Import** — paste/upload CSV of license keys for a chosen package; reuses existing `license_keys` table.
 
-সব টেবিলে RLS + GRANT (admin only via `is_admin()`)। User নিজের wallet/rewards/history দেখতে পারবে।
+**Operations & Monitoring (5 tabs)**
+- **Activity Timeline** — unified feed merging `audit_logs`, `order_timeline`, `license_history` with filters.
+- **Live Visitor Counter** — Realtime subscription on `analytics_events` from last 5 min; shows online sessions, current pages.
+- **Real-time Sales Notification** — Realtime subscription on `orders` insert; toast + sound + persistent list in panel.
+- **Error Log Viewer** — reads `audit_logs` filtered by error severity + an in-app `client_error_logs` table for frontend errors.
+- **System Health Check** — runs checks: DB ping (count from `site_settings`), Auth (current user), Storage (bucket list), Edge function ping; green/red status cards.
 
-## ২. Auth & Tracking Hooks
+**Admin UX (3 tabs)**
+- **Dark Mode Admin** — toggle persisted to localStorage; applies `dark` class to admin layout. Already supported by Tailwind theme.
+- **Keyboard Shortcuts** — global listener: `g d` dashboard, `g o` orders, `g p` products, `g c` customers, `/` focus search, `?` show cheatsheet modal. Active only on admin routes.
+- **Drag & Drop Dashboard Widgets** — reorderable widget list saved to localStorage per user. Uses existing `@dnd-kit` if installed; otherwise simple up/down arrows fallback.
 
-- `AuthContext.tsx` — successful sign-in হলে `customer_login_history` ও `customer_devices` upsert করার hook (browser/IP/UA capture)।
-- Block check: login-এর পর `customer_status.is_blocked = true` হলে auto sign-out + Bengali message।
+**Advanced Search (1 tab)**
+- Single search box that queries orders (`order_number`, `customer_name`, `customer_email`), customers (`profiles.full_name`, email), invoices (`invoice_number`), licenses (`key_value`) in parallel. Results grouped by type with deep links.
 
-## ৩. Admin UI — `/ceo/customers`
+**Developer Tools (4 tabs)**
+- **QR Code Invoice** — already implemented in invoice PDF; this tab shows a live QR for any invoice number with download.
+- **API Access** — new `api_tokens` table; admin generates a bearer token, lists/revokes; instructions for use against existing edge functions.
+- **Webhook Support** — new `webhooks` table (url, event types, secret, is_active); admin CRUD. A small dispatcher edge function `webhook-dispatch` posts JSON with HMAC signature when called from triggers (initial wiring: order.created, order.status_changed, payment.verified).
+- **Cron Job Manager** — lists existing `pg_cron` jobs (read-only from `cron.job` via RPC) plus toggle for app-side scheduled tasks.
 
-নতুন page `src/pages/admin/AdminCustomers.tsx` — multi-tab layout:
+**File Manager (1 tab)**
+- Browse `cms-media`, `product-images`, `client-docs`, `digital-products` storage buckets. List/preview/upload/delete with confirmation. Folder navigation.
 
-```text
-[ All Customers ] [ Blocked ] [ Top Spenders ] [ New This Month ]
-─────────────────────────────────────────────────────────────
-Search • Filter (role / status / date) • Export CSV
-─────────────────────────────────────────────────────────────
-Customer Cards (avatar, name, email, lifetime spent, wallet,
-points, last login, status badge, "Manage" button)
-```
+### Database changes (one migration)
 
-**Customer Detail Drawer/Dialog** (tabs):
-1. **Overview** — profile, contact, joined date, totals
-2. **Purchase History** — orders list with invoice download, status, amount
-3. **Wallet** — balance, transactions, admin credit/debit form (uses existing `wallet_apply_transaction` RPC)
-4. **Reward Points** — balance, log, manual adjust (add/deduct with reason)
-5. **Login History** — last 50 logins (IP, device, time, location)
-6. **Active Devices** — list with "Revoke / Mark untrusted" actions
-7. **Block / Unblock** — toggle with reason field, audit logged
-8. **Notes** — admin-only notes, pin/edit/delete
+- `client_error_logs` (message, stack, url, user_agent, user_id) — RLS: admin read, anyone insert.
+- `api_tokens` (name, token_hash, prefix, last_used_at, revoked_at, created_by) — RLS: admin only.
+- `webhooks` (name, url, secret, events text[], is_active, last_status, last_fired_at) — RLS: admin only.
+- `webhook_deliveries` (webhook_id, event, payload, response_status, response_body, attempted_at) — RLS: admin only.
+- `admin_dashboard_layout` (user_id, widgets jsonb) — RLS: user owns row.
+- All tables include the standard GRANTs + `updated_at` triggers where applicable.
 
-## ৪. Permissions & Routing
+### Files to create
 
-- `admin-permissions.ts` → add `customers` section (super_admin + admin)
-- `App.tsx` → lazy route `/ceo/customers`
-- `AdminLayout.tsx` sidebar → "Customer Management" entry under People group
+- `supabase/functions/ai-admin-tools/index.ts`
+- `supabase/functions/webhook-dispatch/index.ts`
+- `src/pages/admin/AdminAdvancedTools.tsx` (router/tabs shell)
+- `src/components/admin/advanced/` — one component per tab (~20 small files)
+- Route + nav entry in `App.tsx`, `AdminLayout.tsx`, `admin-permissions.ts`
 
-## ৫. Reward Points Automation
+### Scope notes
 
-Order verified হলে (`status = in_progress` trigger) automatic points award — 1 point per ৳100 (configurable via `site_settings.reward_rate`). Existing `notify_order_change` trigger-এর পাশে নতুন trigger।
+- Reuses existing tables wherever possible (orders, licenses, audit_logs, analytics_events, invoices, storage buckets).
+- No third-party paid services; AI runs on Lovable AI Gateway (no extra key).
+- Keyboard shortcuts, dark mode toggle and live counters are admin-scoped only — no impact on the public site.
 
-## ৬. Files to Create
-
-- `supabase/migrations/...` (single migration with all new tables, RLS, GRANTs, triggers)
-- `src/pages/admin/AdminCustomers.tsx` (main page)
-- `src/components/admin/customers/CustomerDetailDialog.tsx` (8-tab dialog)
-- `src/hooks/useCustomerMgmt.ts` (data hooks)
-- Edits: `App.tsx`, `AdminLayout.tsx`, `admin-permissions.ts`, `AuthContext.tsx`
-
-## ৭. Notes
-
-- Country/geo lookup IP থেকে optional (free `ipapi.co` or skip)
-- Device fingerprint = hash(UA + screen + tz) — lightweight, no external lib
-- Block enforcement client + server (RLS on orders/payments will reject blocked users)
-
-কনফার্ম করলে migration দিয়ে শুরু করব।
+Shall I proceed and build all 20 features as described?
