@@ -102,7 +102,7 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
         }}
       >
         {/* Rotating conic glow ring (closed only) */}
-        {!open && !isMobile && (
+        {!open && (
           <motion.span
             aria-hidden
             animate={{ rotate: 360 }}
@@ -135,7 +135,7 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
         )}
 
         {/* Soft pulse halo */}
-        {!open && !isMobile && (
+        {!open && (
           <span
             className="absolute inset-0 rounded-full animate-ping pointer-events-none"
             style={{ background: "rgba(168,85,247,0.25)" }}
@@ -190,7 +190,7 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
             }}
           >
             <span className="relative flex w-2.5 h-2.5">
-              <span className={`absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 ${isMobile ? "" : "animate-ping"}`} />
+              <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400" />
             </span>
           </span>
