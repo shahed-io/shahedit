@@ -84,6 +84,7 @@ const AdminProductTags = lazy(() => import("./pages/admin/AdminProductTags"));
 const AdminDigitalFiles = lazy(() => import("./pages/admin/AdminDigitalFiles"));
 const AdminLicenseKeys = lazy(() => import("./pages/admin/AdminLicenseKeys"));
 const AdminBulkProducts = lazy(() => import("./pages/admin/AdminBulkProducts"));
+const AdminSecurityAudit = lazy(() => import("./pages/admin/AdminSecurityAudit"));
 
 
 // Auth / user pages
@@ -239,6 +240,7 @@ const AdminRoutes = () => (
         <Route path="digital-files" element={<RoleRoute section="digital-files"><AdminDigitalFiles /></RoleRoute>} />
         <Route path="license-keys" element={<RoleRoute section="license-keys"><AdminLicenseKeys /></RoleRoute>} />
         <Route path="bulk-products" element={<RoleRoute section="bulk-products"><AdminBulkProducts /></RoleRoute>} />
+        <Route path="security-audit" element={<RoleRoute section="security-audit"><AdminSecurityAudit /></RoleRoute>} />
 
       </Routes>
       </Suspense>

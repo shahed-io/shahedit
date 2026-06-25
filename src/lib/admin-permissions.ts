@@ -60,7 +60,8 @@ export type AdminSection =
   | "product-tags"
   | "digital-files"
   | "license-keys"
-  | "bulk-products";
+  | "bulk-products"
+  | "security-audit";
 
 
 /**
@@ -126,6 +127,7 @@ const PERMISSIONS: Record<AdminSection, AppRole[]> = {
   "digital-files":    ["super_admin", "admin"],
   "license-keys":     ["super_admin", "admin"],
   "bulk-products":    ["super_admin", "admin"],
+  "security-audit":   ["super_admin", "admin"],
 
 };
 
