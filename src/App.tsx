@@ -93,6 +93,7 @@ const AdminSecurityAudit = lazy(() => import("./pages/admin/AdminSecurityAudit")
 const AdminCustomers = lazy(() => import("./pages/admin/AdminCustomers"));
 const AdminReports = lazy(() => import("./pages/admin/AdminReports"));
 const AdminStaffManagement = lazy(() => import("./pages/admin/AdminStaffManagement"));
+const AdminSecurityCenter = lazy(() => import("./pages/admin/AdminSecurityCenter"));
 
 
 // Auth / user pages
@@ -257,6 +258,7 @@ const AdminRoutes = () => (
         <Route path="reports" element={<RoleRoute section="reports"><AdminReports /></RoleRoute>} />
         <Route path="website-cms" element={<RoleRoute section="website-cms"><AdminWebsiteCms /></RoleRoute>} />
         <Route path="staff-management" element={<RoleRoute section="staff-management"><AdminStaffManagement /></RoleRoute>} />
+        <Route path="security-center" element={<RoleRoute section="security-center"><AdminSecurityCenter /></RoleRoute>} />
 
       </Routes>
       </Suspense>
