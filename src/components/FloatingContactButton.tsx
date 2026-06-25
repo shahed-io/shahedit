@@ -190,7 +190,7 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
             }}
           >
             <span className="relative flex w-2.5 h-2.5">
-              <span className={`absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 ${isMobile ? "" : "animate-ping"}`} />
+              <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400" />
             </span>
           </span>
