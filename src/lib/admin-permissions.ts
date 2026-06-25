@@ -131,6 +131,7 @@ const PERMISSIONS: Record<AdminSection, AppRole[]> = {
   "bulk-products":    ["super_admin", "admin"],
   "security-audit":   ["super_admin", "admin"],
   customers:          ["super_admin", "admin", "manager"],
+  reports:            ["super_admin", "admin", "manager"],
 
 };
 
