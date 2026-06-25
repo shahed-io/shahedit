@@ -324,7 +324,7 @@ export const useBulkImportPackages = () => {
           meta_description: r.meta_description || null,
           is_digital: !!r.is_digital,
         }));
-      const { error, count } = await supabase.from("service_packages").insert(normalized as any, { count: "exact" });
+      const { error, count } = await (supabase.from("service_packages") as any).insert(normalized, { count: "exact" });
       if (error) throw error;
       return { inserted: count ?? normalized.length };
     },
