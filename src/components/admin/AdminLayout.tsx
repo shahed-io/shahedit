@@ -106,6 +106,7 @@ const navGroups: NavGroup[] = [
       { label: "Blog Categories", icon: FolderTree, href: "/ceo/blog-categories", section: "blog-categories" },
       { label: "Media Library", icon: ImageIcon, href: "/ceo/media", badge: "NEW", section: "media" },
       { label: "AI Writer", icon: Sparkles, href: "/ceo/ai-writer", badge: "AI", section: "ai-writer" },
+      { label: "Email System", icon: Mail, href: "/ceo/email-system", badge: "HUB", section: "email-system" },
       { label: "Email Campaigns", icon: Mail, href: "/ceo/campaigns", badge: "NEW", section: "campaigns" },
       { label: "Reviews", icon: Star, href: "/ceo/reviews", badge: "NEW", section: "reviews" },
       { label: "Testimonials", icon: Star, href: "/ceo/testimonials", section: "testimonials" },

@@ -50,6 +50,7 @@ const AdminBlogCategories = lazy(() => import("./pages/admin/AdminCrud").then(m 
 const AdminBlogManagement = lazy(() => import("./pages/admin/AdminBlogManagement"));
 const AdminReviews = lazy(() => import("./pages/admin/AdminReviews"));
 const AdminSEOPanel = lazy(() => import("./pages/admin/AdminSEOPanel"));
+const AdminEmailSystem = lazy(() => import("./pages/admin/AdminEmailSystem"));
 const AdminMedia = lazy(() => import("./pages/admin/AdminMedia"));
 const AdminTestimonials = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminTestimonials })));
 const AdminTeam = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminTeam })));
@@ -200,6 +201,7 @@ const AdminRoutes = () => (
         <Route path="blog-management" element={<RoleRoute section="blog-management"><AdminBlogManagement /></RoleRoute>} />
         <Route path="reviews" element={<RoleRoute section="reviews"><AdminReviews /></RoleRoute>} />
         <Route path="seo-panel" element={<RoleRoute section="seo-panel"><AdminSEOPanel /></RoleRoute>} />
+        <Route path="email-system" element={<RoleRoute section="email-system"><AdminEmailSystem /></RoleRoute>} />
         <Route path="media" element={<RoleRoute section="media"><AdminMedia /></RoleRoute>} />
         <Route path="testimonials" element={<RoleRoute section="testimonials"><AdminTestimonials /></RoleRoute>} />
         <Route path="team" element={<RoleRoute section="team"><AdminTeam /></RoleRoute>} />

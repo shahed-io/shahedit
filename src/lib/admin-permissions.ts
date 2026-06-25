@@ -67,6 +67,7 @@ export type AdminSection =
   | "blog-management"
   | "reviews"
   | "seo-panel"
+  | "email-system"
   | "security-audit";
 
 
@@ -140,6 +141,7 @@ const PERMISSIONS: Record<AdminSection, AppRole[]> = {
   "blog-management":  ["super_admin", "admin", "editor"],
   reviews:            ["super_admin", "admin", "editor", "manager"],
   "seo-panel":        ["super_admin", "admin", "editor"],
+  "email-system":     ["super_admin", "admin", "manager"],
 
 };
 
