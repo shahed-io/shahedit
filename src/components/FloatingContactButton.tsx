@@ -135,7 +135,7 @@ export default function FloatingContactButton({ onOpenAI }: FloatingContactProps
         )}
 
         {/* Soft pulse halo */}
-        {!open && !isMobile && (
+        {!open && (
           <span
             className="absolute inset-0 rounded-full animate-ping pointer-events-none"
             style={{ background: "rgba(168,85,247,0.25)" }}
