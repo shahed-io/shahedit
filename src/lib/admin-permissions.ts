@@ -135,6 +135,7 @@ const PERMISSIONS: Record<AdminSection, AppRole[]> = {
   customers:          ["super_admin", "admin", "manager"],
   reports:            ["super_admin", "admin", "manager"],
   "website-cms":      ["super_admin", "admin", "editor"],
+  "blog-management":  ["super_admin", "admin", "editor"],
 
 };
 
