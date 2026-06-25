@@ -68,7 +68,8 @@ export type AdminSection =
   | "reviews"
   | "seo-panel"
   | "email-system"
-  | "security-audit";
+  | "security-audit"
+  | "staff-management";
 
 
 /**
@@ -142,6 +143,7 @@ const PERMISSIONS: Record<AdminSection, AppRole[]> = {
   reviews:            ["super_admin", "admin", "editor", "manager"],
   "seo-panel":        ["super_admin", "admin", "editor"],
   "email-system":     ["super_admin", "admin", "manager"],
+  "staff-management": ["super_admin", "admin"],
 
 };
 
@@ -156,6 +158,7 @@ export const ROLE_LABELS: Record<AppRole, string> = {
   admin: "Admin",
   manager: "Manager",
   editor: "Editor",
+  support: "Support",
 };
 
 export const ROLE_DESCRIPTIONS: Record<AppRole, string> = {
@@ -163,4 +166,5 @@ export const ROLE_DESCRIPTIONS: Record<AppRole, string> = {
   admin: "প্রায় সব ফিচার — শুধু User Management ছাড়া",
   manager: "অর্ডার, লিড, পেমেন্ট, ক্যাম্পেইন ও অ্যানালিটিক্স",
   editor: "কনটেন্ট ও SEO — ব্লগ, পোর্টফোলিও, সার্ভিস ইত্যাদি",
+  support: "Support ticket, customer query ও refund handling",
 };

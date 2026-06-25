@@ -1,4 +1,4 @@
-export type AppRole = 'super_admin' | 'admin' | 'manager' | 'editor';
+export type AppRole = 'super_admin' | 'admin' | 'manager' | 'editor' | 'support';
 export type LeadStatus = 'new' | 'in_progress' | 'contacted' | 'converted' | 'closed';
 export type LeadSource = 'quote_form' | 'contact_form' | 'whatsapp' | 'other';
 
