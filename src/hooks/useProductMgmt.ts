@@ -287,7 +287,7 @@ export const useBulkUpdatePackages = () => {
   return useMutation({
     mutationFn: async (p: { ids: string[]; patch: Record<string, any> }) => {
       if (!p.ids.length) return 0;
-      const { error } = await supabase.from("service_packages").update(p.patch).in("id", p.ids);
+      const { error } = await (supabase.from("service_packages") as any).update(p.patch).in("id", p.ids);
       if (error) throw error;
       return p.ids.length;
     },
