@@ -78,6 +78,12 @@ const AdminNotificationCenter = lazy(() => import("./pages/admin/AdminNotificati
 const AdminKpiTracker = lazy(() => import("./pages/admin/AdminKpiTracker"));
 const AdminTaskBoard = lazy(() => import("./pages/admin/AdminTaskBoard"));
 const AdminBackupCenter = lazy(() => import("./pages/admin/AdminBackupCenter"));
+const AdminCategories = lazy(() => import("./pages/admin/AdminCategories"));
+const AdminBrands = lazy(() => import("./pages/admin/AdminBrands"));
+const AdminProductTags = lazy(() => import("./pages/admin/AdminProductTags"));
+const AdminDigitalFiles = lazy(() => import("./pages/admin/AdminDigitalFiles"));
+const AdminLicenseKeys = lazy(() => import("./pages/admin/AdminLicenseKeys"));
+const AdminBulkProducts = lazy(() => import("./pages/admin/AdminBulkProducts"));
 
 
 // Auth / user pages
@@ -225,6 +231,14 @@ const AdminRoutes = () => (
         <Route path="kpi" element={<RoleRoute section="kpi"><AdminKpiTracker /></RoleRoute>} />
         <Route path="task-board" element={<RoleRoute section="task-board"><AdminTaskBoard /></RoleRoute>} />
         <Route path="backup" element={<RoleRoute section="backup"><AdminBackupCenter /></RoleRoute>} />
+
+        <Route path="backup" element={<RoleRoute section="backup"><AdminBackupCenter /></RoleRoute>} />
+        <Route path="categories" element={<RoleRoute section="categories"><AdminCategories /></RoleRoute>} />
+        <Route path="brands" element={<RoleRoute section="brands"><AdminBrands /></RoleRoute>} />
+        <Route path="product-tags" element={<RoleRoute section="product-tags"><AdminProductTags /></RoleRoute>} />
+        <Route path="digital-files" element={<RoleRoute section="digital-files"><AdminDigitalFiles /></RoleRoute>} />
+        <Route path="license-keys" element={<RoleRoute section="license-keys"><AdminLicenseKeys /></RoleRoute>} />
+        <Route path="bulk-products" element={<RoleRoute section="bulk-products"><AdminBulkProducts /></RoleRoute>} />
 
       </Routes>
       </Suspense>

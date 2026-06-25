@@ -54,7 +54,13 @@ export type AdminSection =
   | "notifications"
   | "kpi"
   | "task-board"
-  | "backup";
+  | "backup"
+  | "categories"
+  | "brands"
+  | "product-tags"
+  | "digital-files"
+  | "license-keys"
+  | "bulk-products";
 
 
 /**
@@ -114,6 +120,12 @@ const PERMISSIONS: Record<AdminSection, AppRole[]> = {
   kpi:                ["super_admin", "admin", "manager"],
   "task-board":       ["super_admin", "admin", "manager", "editor"],
   backup:             ["super_admin"],
+  categories:         ["super_admin", "admin", "editor"],
+  brands:             ["super_admin", "admin", "editor"],
+  "product-tags":     ["super_admin", "admin", "editor"],
+  "digital-files":    ["super_admin", "admin"],
+  "license-keys":     ["super_admin", "admin"],
+  "bulk-products":    ["super_admin", "admin"],
 
 };
 
