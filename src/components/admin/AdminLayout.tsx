@@ -101,8 +101,9 @@ const navGroups: NavGroup[] = [
     title: "Content & Marketing",
     icon: FileText,
     items: [
+      { label: "Blog Management", icon: FileText, href: "/ceo/blog-management", badge: "HUB", section: "blog-management" },
       { label: "Blog Posts", icon: FileText, href: "/ceo/blog", section: "blog" },
-      { label: "Blog Categories", icon: FolderTree, href: "/ceo/blog-categories", badge: "NEW", section: "blog-categories" },
+      { label: "Blog Categories", icon: FolderTree, href: "/ceo/blog-categories", section: "blog-categories" },
       { label: "Media Library", icon: ImageIcon, href: "/ceo/media", badge: "NEW", section: "media" },
       { label: "AI Writer", icon: Sparkles, href: "/ceo/ai-writer", badge: "AI", section: "ai-writer" },
       { label: "Email Campaigns", icon: Mail, href: "/ceo/campaigns", badge: "NEW", section: "campaigns" },
