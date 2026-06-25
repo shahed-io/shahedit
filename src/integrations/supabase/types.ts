@@ -1184,6 +1184,87 @@ export type Database = {
         }
         Relationships: []
       }
+      email_system_settings: {
+        Row: {
+          from_email: string | null
+          from_name: string | null
+          id: number
+          newsletter_enabled: boolean | null
+          order_confirmation_enabled: boolean | null
+          order_delivery_enabled: boolean | null
+          order_status_enabled: boolean | null
+          password_reset_enabled: boolean | null
+          reply_to: string | null
+          updated_at: string
+          welcome_email_enabled: boolean | null
+        }
+        Insert: {
+          from_email?: string | null
+          from_name?: string | null
+          id?: number
+          newsletter_enabled?: boolean | null
+          order_confirmation_enabled?: boolean | null
+          order_delivery_enabled?: boolean | null
+          order_status_enabled?: boolean | null
+          password_reset_enabled?: boolean | null
+          reply_to?: string | null
+          updated_at?: string
+          welcome_email_enabled?: boolean | null
+        }
+        Update: {
+          from_email?: string | null
+          from_name?: string | null
+          id?: number
+          newsletter_enabled?: boolean | null
+          order_confirmation_enabled?: boolean | null
+          order_delivery_enabled?: boolean | null
+          order_status_enabled?: boolean | null
+          password_reset_enabled?: boolean | null
+          reply_to?: string | null
+          updated_at?: string
+          welcome_email_enabled?: boolean | null
+        }
+        Relationships: []
+      }
+      email_templates: {
+        Row: {
+          body_html: string
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          label: string
+          subject: string
+          template_key: string
+          updated_at: string
+          variables: Json | null
+        }
+        Insert: {
+          body_html?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          label: string
+          subject?: string
+          template_key: string
+          updated_at?: string
+          variables?: Json | null
+        }
+        Update: {
+          body_html?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          label?: string
+          subject?: string
+          template_key?: string
+          updated_at?: string
+          variables?: Json | null
+        }
+        Relationships: []
+      }
       email_unsubscribe_tokens: {
         Row: {
           created_at: string
