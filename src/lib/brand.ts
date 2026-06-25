@@ -6,7 +6,7 @@ export const BRAND = {
   name: "SHAHED IT",
   tagline: "Smart IT Solutions",
   fullName: "SHAHED IT",
-  address: "Sopura, Rajshahi, Bangladesh",
+  address: "Rajshahi, Bangladesh",
   phone: "01820-060046",
   email: "info@shahedit.com",
   website: "shahedit.com",

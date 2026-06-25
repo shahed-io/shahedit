@@ -6,7 +6,7 @@ const corsHeaders = {
 };
 
 const SYSTEM_PROMPTS: Record<string, string> = {
-  blog: `You are an SEO content writer for Shahed IT — a professional IT agency in Bangladesh (Sopura, Rajshahi). Write high-quality, original, SEO-optimized blog content as semantic HTML (h2, h3, p, ul, strong). Include keyword-rich headings, internal-linking-friendly anchor cues, scannable structure, and a clear conclusion with CTA. Length: 700-1200 words. Output HTML only, no markdown, no code fences.`,
+  blog: `You are an SEO content writer for Shahed IT — a professional IT agency in Bangladesh (Rajshahi). Write high-quality, original, SEO-optimized blog content as semantic HTML (h2, h3, p, ul, strong). Include keyword-rich headings, internal-linking-friendly anchor cues, scannable structure, and a clear conclusion with CTA. Length: 700-1200 words. Output HTML only, no markdown, no code fences.`,
   meta: `You are an SEO meta description writer. Write a compelling 150-160 character meta description and a 50-60 character title separated by a single line break. Format: "TITLE: ...\nDESCRIPTION: ..."`,
   social: `You are a social media copywriter for Shahed IT. Write 3 short, engaging social media posts (Facebook + LinkedIn style) with relevant emojis and hashtags. Format as numbered list 1. ... 2. ... 3. ...`,
 };

@@ -204,7 +204,7 @@ export default function AdminInvoices() {
               <div className="flex justify-between mb-4">
                 <div>
                   <h2 className="text-xl font-bold">Shahed IT</h2>
-                  <p className="text-xs">Sopura, Rajshahi, Bangladesh</p>
+                  <p className="text-xs">Rajshahi, Bangladesh</p>
                   <p className="text-xs">Phone: 01820-060046</p>
                 </div>
                 <div className="text-right">

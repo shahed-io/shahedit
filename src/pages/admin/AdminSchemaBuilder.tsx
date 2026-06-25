@@ -18,7 +18,7 @@ const TEMPLATES: Record<SchemaType, any> = {
   LocalBusiness: {
     "@context": "https://schema.org", "@type": "LocalBusiness",
     name: "Shahed IT", image: "https://shahedit.com/logo.png", telephone: "+8801820060046",
-    address: { "@type": "PostalAddress", streetAddress: "Sopura", addressLocality: "Rajshahi", addressCountry: "BD" },
+    address: { "@type": "PostalAddress", addressLocality: "Rajshahi", addressCountry: "BD" },
     openingHours: "Mo-Su 10:00-22:00", priceRange: "৳৳",
   },
   Article: {

@@ -201,7 +201,7 @@ export default function AdminQuotations() {
               <div className="flex justify-between mb-4">
                 <div>
                   <h2 className="text-xl font-bold">Shahed IT</h2>
-                  <p className="text-xs">Sopura, Rajshahi · 01820-060046</p>
+                  <p className="text-xs">Rajshahi · 01820-060046</p>
                 </div>
                 <div className="text-right">
                   <h3 className="font-bold text-lg">QUOTATION</h3>
