@@ -50,7 +50,7 @@ interface Order {
   payment_method: string | null; created_at: string;
 }
 
-type TabKey = "overview" | "orders" | "quotes" | "payments" | "documents" | "profile";
+type TabKey = "overview" | "orders" | "quotes" | "payments" | "documents" | "downloads" | "profile";
 
 // ── Status maps using semantic tokens ────────────────────────────────────────
 const statusConfig: Record<string, { label: string; tone: string; icon: React.ElementType }> = {
@@ -280,6 +280,7 @@ export default function DashboardPage() {
     { key: "quotes",    label: "Quotations", icon: FileText, badge: leads.length || undefined },
     { key: "payments",  label: "Payments",   icon: CreditCard },
     { key: "documents", label: "Documents",  icon: FolderOpen, badge: documents.length || undefined },
+    { key: "downloads", label: "My Downloads", icon: Package },
     { key: "profile",   label: "Profile",    icon: User },
   ];
 
@@ -964,6 +965,14 @@ export default function DashboardPage() {
                       ))}
                     </div>
                   )}
+                </div>
+              )}
+
+              {/* ══════════════════ MY DOWNLOADS TAB ══════════════════ */}
+              {activeTab === "downloads" && (
+                <div className="space-y-6">
+                  <SectionHead title="My Downloads" subtitle="Digital file ও license key" />
+                  <MyDownloadsSection />
                 </div>
               )}
 
