@@ -265,14 +265,8 @@ const AdminPayments = () => {
         )}
       </div>
 
-      {/* Wallet Top-up settings */}
-      <WalletSettingsManager />
-
-      {/* Manual Payment Numbers Manager */}
-      <PaymentMethodsManager />
-
       {/* Filter */}
-      <div className="flex gap-2">
+      <div className="flex gap-2 flex-wrap">
         {["all", "pending", "confirmed", "rejected"].map(f => (
           <button
             key={f}
