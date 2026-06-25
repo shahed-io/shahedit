@@ -296,12 +296,34 @@ export default function ProductDetailsPage() {
                   href={`https://wa.me/8801820060046?text=${waMessage}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-5 py-3.5 rounded-2xl flex items-center justify-center gap-2 transition-all text-sm font-bold"
-                  style={{ background: 'rgba(37,211,102,0.15)', border: '1px solid rgba(37,211,102,0.35)', color: '#25D366' }}
+                  whileHover={{ scale: 1.04, y: -1 }}
+                  whileTap={{ scale: 0.96 }}
+                  className="relative overflow-hidden group px-5 py-3.5 rounded-2xl flex items-center justify-center gap-2 text-sm font-bold text-white"
+                  style={{
+                    background: 'linear-gradient(135deg, #25D366 0%, #1ebe57 55%, #128C7E 100%)',
+                    border: '1px solid rgba(255,255,255,0.18)',
+                    boxShadow: '0 6px 24px rgba(37,211,102,0.45), 0 0 0 1px rgba(37,211,102,0.25), inset 0 1px 0 rgba(255,255,255,0.25)',
+                  }}
                 >
-                  <MessageCircle size={16} /> WhatsApp
+                  {/* glossy top highlight */}
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute inset-x-0 top-0 h-1/2 rounded-t-2xl"
+                    style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.28), rgba(255,255,255,0))' }}
+                  />
+                  {/* shimmer sweep */}
+                  <motion.span
+                    aria-hidden
+                    className="pointer-events-none absolute top-0 left-0 h-full w-1/3"
+                    style={{ background: 'linear-gradient(110deg, transparent 0%, rgba(255,255,255,0.45) 50%, transparent 100%)', filter: 'blur(2px)' }}
+                    initial={{ x: '-150%' }}
+                    animate={{ x: '350%' }}
+                    transition={{ duration: 2.6, repeat: Infinity, repeatDelay: 1.2, ease: 'easeInOut' }}
+                  />
+                  <span className="relative flex items-center justify-center w-5 h-5 rounded-full bg-white/20 backdrop-blur-sm">
+                    <MessageCircle size={12} className="text-white" />
+                  </span>
+                  <span className="relative tracking-wide drop-shadow-sm">WhatsApp</span>
                 </motion.a>
               </div>
             )}
