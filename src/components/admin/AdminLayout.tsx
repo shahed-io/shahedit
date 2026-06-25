@@ -78,6 +78,18 @@ const navGroups: NavGroup[] = [
     ],
   },
   {
+    title: "Product Management",
+    icon: Package,
+    items: [
+      { label: "Categories", icon: FolderTree, href: "/ceo/categories", badge: "NEW", section: "categories" },
+      { label: "Brands", icon: Building2, href: "/ceo/brands", badge: "NEW", section: "brands" },
+      { label: "Tags", icon: Tag, href: "/ceo/product-tags", badge: "NEW", section: "product-tags" },
+      { label: "Digital Files", icon: Database, href: "/ceo/digital-files", badge: "NEW", section: "digital-files" },
+      { label: "License Keys", icon: Shield, href: "/ceo/license-keys", badge: "NEW", section: "license-keys" },
+      { label: "Bulk Import / Edit", icon: ListChecks, href: "/ceo/bulk-products", badge: "NEW", section: "bulk-products" },
+    ],
+  },
+  {
     title: "Content & Marketing",
     icon: FileText,
     items: [

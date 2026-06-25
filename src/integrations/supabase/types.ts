@@ -637,6 +637,133 @@ export type Database = {
         }
         Relationships: []
       }
+      digital_downloads: {
+        Row: {
+          created_at: string
+          download_count: number
+          download_limit: number
+          expires_at: string | null
+          file_id: string | null
+          id: string
+          last_downloaded_at: string | null
+          license_key_id: string | null
+          order_id: string | null
+          package_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          download_count?: number
+          download_limit?: number
+          expires_at?: string | null
+          file_id?: string | null
+          id?: string
+          last_downloaded_at?: string | null
+          license_key_id?: string | null
+          order_id?: string | null
+          package_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          download_count?: number
+          download_limit?: number
+          expires_at?: string | null
+          file_id?: string | null
+          id?: string
+          last_downloaded_at?: string | null
+          license_key_id?: string | null
+          order_id?: string | null
+          package_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "digital_downloads_file_id_fkey"
+            columns: ["file_id"]
+            isOneToOne: false
+            referencedRelation: "digital_files"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "digital_downloads_license_key_id_fkey"
+            columns: ["license_key_id"]
+            isOneToOne: false
+            referencedRelation: "license_keys"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "digital_downloads_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "digital_downloads_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "service_packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      digital_files: {
+        Row: {
+          created_at: string
+          download_limit: number
+          expiry_days: number
+          file_name: string
+          file_size_bytes: number | null
+          id: string
+          is_active: boolean
+          mime_type: string | null
+          package_id: string
+          storage_path: string
+          updated_at: string
+          version: string | null
+        }
+        Insert: {
+          created_at?: string
+          download_limit?: number
+          expiry_days?: number
+          file_name: string
+          file_size_bytes?: number | null
+          id?: string
+          is_active?: boolean
+          mime_type?: string | null
+          package_id: string
+          storage_path: string
+          updated_at?: string
+          version?: string | null
+        }
+        Update: {
+          created_at?: string
+          download_limit?: number
+          expiry_days?: number
+          file_name?: string
+          file_size_bytes?: number | null
+          id?: string
+          is_active?: boolean
+          mime_type?: string | null
+          package_id?: string
+          storage_path?: string
+          updated_at?: string
+          version?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "digital_files_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "service_packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       email_campaigns: {
         Row: {
           audience: string
@@ -1160,6 +1287,60 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      license_keys: {
+        Row: {
+          assigned_at: string | null
+          assigned_to_user_id: string | null
+          created_at: string
+          id: string
+          key_value: string
+          notes: string | null
+          order_id: string | null
+          package_id: string
+          status: Database["public"]["Enums"]["license_key_status"]
+          updated_at: string
+        }
+        Insert: {
+          assigned_at?: string | null
+          assigned_to_user_id?: string | null
+          created_at?: string
+          id?: string
+          key_value: string
+          notes?: string | null
+          order_id?: string | null
+          package_id: string
+          status?: Database["public"]["Enums"]["license_key_status"]
+          updated_at?: string
+        }
+        Update: {
+          assigned_at?: string | null
+          assigned_to_user_id?: string | null
+          created_at?: string
+          id?: string
+          key_value?: string
+          notes?: string | null
+          order_id?: string | null
+          package_id?: string
+          status?: Database["public"]["Enums"]["license_key_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "license_keys_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "license_keys_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "service_packages"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       media_assets: {
         Row: {
@@ -1737,6 +1918,127 @@ export type Database = {
         }
         Relationships: []
       }
+      product_brands: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          logo_url: string | null
+          name: string
+          slug: string
+          updated_at: string
+          website_url: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          logo_url?: string | null
+          name: string
+          slug: string
+          updated_at?: string
+          website_url?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          logo_url?: string | null
+          name?: string
+          slug?: string
+          updated_at?: string
+          website_url?: string | null
+        }
+        Relationships: []
+      }
+      product_categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          is_active: boolean
+          name: string
+          parent_id: string | null
+          slug: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          name: string
+          parent_id?: string | null
+          slug: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          name?: string
+          parent_id?: string | null
+          slug?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_categories_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "product_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      product_images: {
+        Row: {
+          alt_text: string | null
+          created_at: string
+          id: string
+          is_primary: boolean
+          package_id: string
+          sort_order: number
+          url: string
+        }
+        Insert: {
+          alt_text?: string | null
+          created_at?: string
+          id?: string
+          is_primary?: boolean
+          package_id: string
+          sort_order?: number
+          url: string
+        }
+        Update: {
+          alt_text?: string | null
+          created_at?: string
+          id?: string
+          is_primary?: boolean
+          package_id?: string
+          sort_order?: number
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_images_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "service_packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       product_reviews: {
         Row: {
           comment: string | null
@@ -1768,6 +2070,136 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "product_reviews_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "service_packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      product_tag_relations: {
+        Row: {
+          package_id: string
+          tag_id: string
+        }
+        Insert: {
+          package_id: string
+          tag_id: string
+        }
+        Update: {
+          package_id?: string
+          tag_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_tag_relations_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "service_packages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "product_tag_relations_tag_id_fkey"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "product_tags"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      product_tags: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          slug: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          slug: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          slug?: string
+        }
+        Relationships: []
+      }
+      product_variant_options: {
+        Row: {
+          id: string
+          option_name: string
+          option_value: string
+          variant_id: string
+        }
+        Insert: {
+          id?: string
+          option_name: string
+          option_value: string
+          variant_id: string
+        }
+        Update: {
+          id?: string
+          option_name?: string
+          option_value?: string
+          variant_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_variant_options_variant_id_fkey"
+            columns: ["variant_id"]
+            isOneToOne: false
+            referencedRelation: "product_variants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      product_variants: {
+        Row: {
+          created_at: string
+          id: string
+          image_url: string | null
+          is_active: boolean
+          package_id: string
+          price: number | null
+          sale_price: number | null
+          sku: string | null
+          sort_order: number
+          stock_quantity: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          package_id: string
+          price?: number | null
+          sale_price?: number | null
+          sku?: string | null
+          sort_order?: number
+          stock_quantity?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          package_id?: string
+          price?: number | null
+          sale_price?: number | null
+          sku?: string | null
+          sort_order?: number
+          stock_quantity?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_variants_package_id_fkey"
             columns: ["package_id"]
             isOneToOne: false
             referencedRelation: "service_packages"
@@ -2281,6 +2713,10 @@ export type Database = {
       service_packages: {
         Row: {
           badge: string | null
+          barcode: string | null
+          brand_id: string | null
+          canonical_url: string | null
+          category_id: string | null
           created_at: string
           currency: string | null
           delivery_days: number | null
@@ -2288,19 +2724,32 @@ export type Database = {
           features: string[] | null
           id: string
           image_url: string | null
+          is_digital: boolean
           is_featured: boolean | null
           is_published: boolean | null
+          meta_description: string | null
+          meta_keywords: string | null
+          meta_title: string | null
+          og_image: string | null
           original_price: number | null
           price: number | null
+          publish_status: Database["public"]["Enums"]["publish_status"]
+          scheduled_publish_at: string | null
           service_id: string
           short_description: string | null
+          sku: string | null
           slug: string | null
           sort_order: number | null
           title: string
           updated_at: string
+          weight_grams: number | null
         }
         Insert: {
           badge?: string | null
+          barcode?: string | null
+          brand_id?: string | null
+          canonical_url?: string | null
+          category_id?: string | null
           created_at?: string
           currency?: string | null
           delivery_days?: number | null
@@ -2308,19 +2757,32 @@ export type Database = {
           features?: string[] | null
           id?: string
           image_url?: string | null
+          is_digital?: boolean
           is_featured?: boolean | null
           is_published?: boolean | null
+          meta_description?: string | null
+          meta_keywords?: string | null
+          meta_title?: string | null
+          og_image?: string | null
           original_price?: number | null
           price?: number | null
+          publish_status?: Database["public"]["Enums"]["publish_status"]
+          scheduled_publish_at?: string | null
           service_id: string
           short_description?: string | null
+          sku?: string | null
           slug?: string | null
           sort_order?: number | null
           title: string
           updated_at?: string
+          weight_grams?: number | null
         }
         Update: {
           badge?: string | null
+          barcode?: string | null
+          brand_id?: string | null
+          canonical_url?: string | null
+          category_id?: string | null
           created_at?: string
           currency?: string | null
           delivery_days?: number | null
@@ -2328,18 +2790,41 @@ export type Database = {
           features?: string[] | null
           id?: string
           image_url?: string | null
+          is_digital?: boolean
           is_featured?: boolean | null
           is_published?: boolean | null
+          meta_description?: string | null
+          meta_keywords?: string | null
+          meta_title?: string | null
+          og_image?: string | null
           original_price?: number | null
           price?: number | null
+          publish_status?: Database["public"]["Enums"]["publish_status"]
+          scheduled_publish_at?: string | null
           service_id?: string
           short_description?: string | null
+          sku?: string | null
           slug?: string | null
           sort_order?: number | null
           title?: string
           updated_at?: string
+          weight_grams?: number | null
         }
         Relationships: [
+          {
+            foreignKeyName: "service_packages_brand_id_fkey"
+            columns: ["brand_id"]
+            isOneToOne: false
+            referencedRelation: "product_brands"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "service_packages_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "product_categories"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "service_packages_service_id_fkey"
             columns: ["service_id"]
@@ -3184,6 +3669,7 @@ export type Database = {
         Args: { _package_id: string; _service_id: string }
         Returns: number
       }
+      run_scheduled_publish: { Args: never; Returns: undefined }
       slugify: { Args: { input: string }; Returns: string }
       wallet_apply_transaction: {
         Args: {
@@ -3226,6 +3712,8 @@ export type Database = {
       app_role: "super_admin" | "admin" | "editor" | "manager"
       lead_source: "quote_form" | "contact_form" | "whatsapp" | "other"
       lead_status: "new" | "in_progress" | "contacted" | "converted" | "closed"
+      license_key_status: "available" | "assigned" | "revoked"
+      publish_status: "draft" | "scheduled" | "published"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -3356,6 +3844,8 @@ export const Constants = {
       app_role: ["super_admin", "admin", "editor", "manager"],
       lead_source: ["quote_form", "contact_form", "whatsapp", "other"],
       lead_status: ["new", "in_progress", "contacted", "converted", "closed"],
+      license_key_status: ["available", "assigned", "revoked"],
+      publish_status: ["draft", "scheduled", "published"],
     },
   },
 } as const
