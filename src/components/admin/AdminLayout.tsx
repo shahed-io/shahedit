@@ -144,6 +144,7 @@ const navGroups: NavGroup[] = [
       { label: "Welcome Popups", icon: ImageIcon, href: "/ceo/welcome-popups", badge: "NEW", section: "welcome-popups" },
       { label: "Site Settings", icon: Settings, href: "/ceo/settings", section: "settings" },
       { label: "Backup & Export", icon: Database, href: "/ceo/backup", badge: "NEW", section: "backup" },
+      { label: "Backup & Maintenance", icon: Database, href: "/ceo/backup-maintenance", badge: "NEW", section: "backup-maintenance" },
       { label: "Security Audit", icon: Shield, href: "/ceo/security-audit", badge: "NEW", section: "security-audit" },
       { label: "Security Center", icon: Shield, href: "/ceo/security-center", badge: "NEW", section: "security-center" },
 
