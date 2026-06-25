@@ -195,6 +195,7 @@ const AdminRoutes = () => (
         <Route path="portfolio" element={<RoleRoute section="portfolio"><AdminPortfolio /></RoleRoute>} />
         <Route path="blog" element={<RoleRoute section="blog"><AdminBlog /></RoleRoute>} />
         <Route path="blog-categories" element={<RoleRoute section="blog-categories"><AdminBlogCategories /></RoleRoute>} />
+        <Route path="blog-management" element={<RoleRoute section="blog-management"><AdminBlogManagement /></RoleRoute>} />
         <Route path="media" element={<RoleRoute section="media"><AdminMedia /></RoleRoute>} />
         <Route path="testimonials" element={<RoleRoute section="testimonials"><AdminTestimonials /></RoleRoute>} />
         <Route path="team" element={<RoleRoute section="team"><AdminTeam /></RoleRoute>} />
