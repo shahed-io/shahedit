@@ -47,6 +47,7 @@ const AdminSEO = lazy(() => import("./pages/admin/AdminSEO"));
 const AdminPortfolio = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminPortfolio })));
 const AdminBlog = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminBlog })));
 const AdminBlogCategories = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminBlogCategories })));
+const AdminBlogManagement = lazy(() => import("./pages/admin/AdminBlogManagement"));
 const AdminMedia = lazy(() => import("./pages/admin/AdminMedia"));
 const AdminTestimonials = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminTestimonials })));
 const AdminTeam = lazy(() => import("./pages/admin/AdminCrud").then(m => ({ default: m.AdminTeam })));
