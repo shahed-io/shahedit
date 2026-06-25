@@ -32,6 +32,7 @@ const navGroups: NavGroup[] = [
     items: [
       { label: "Dashboard", icon: LayoutDashboard, href: "/ceo", section: "dashboard" },
       { label: "Analytics", icon: BarChart3, href: "/ceo/analytics", badge: "NEW", section: "analytics" },
+      { label: "Reports", icon: BarChart3, href: "/ceo/reports", badge: "NEW", section: "reports" },
       { label: "KPI & Goals", icon: TrendingUp, href: "/ceo/kpi", badge: "NEW", section: "kpi" },
       { label: "Notifications", icon: Bell, href: "/ceo/notifications", badge: "NEW", section: "notifications" },
       { label: "Activity Log", icon: History, href: "/ceo/activity", section: "activity" },
