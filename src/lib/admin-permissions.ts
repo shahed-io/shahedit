@@ -63,6 +63,7 @@ export type AdminSection =
   | "bulk-products"
   | "customers"
   | "reports"
+  | "website-cms"
   | "security-audit";
 
 
