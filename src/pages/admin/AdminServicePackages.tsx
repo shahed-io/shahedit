@@ -637,7 +637,7 @@ export default function AdminServicePackages() {
                             </div>
                           </div>
 
-                          <div className="grid grid-cols-3 gap-3">
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                             <div className="space-y-1">
                               <label className="text-slate-400 text-xs">ক্রম নম্বর</label>
                               <Input

@@ -131,7 +131,7 @@ export default function AdminClientDocuments() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
             { label: "মোট Documents", value: docs.length, color: "#a78bfa" },
             { label: "Visible", value: docs.filter(d => d.is_visible).length, color: "#34d399" },
