@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminPage, AdminPageHeader, GlassCard, KpiCard } from "@/components/admin/ui";
-import { FileText, Plus, Trash2, Edit2, Save, Eye, Download, X, DollarSign, Check } from "lucide-react";
+import { FileText, Plus, Trash2, Edit2, Save, Eye, Download, X, DollarSign, Check, Mail, Image as ImageIcon, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import { QRCodeCanvas } from "qrcode.react";
+import { BRAND } from "@/lib/brand";
 
 const db = supabase as any;
 const STATUS = ["draft", "sent", "paid", "overdue", "cancelled"];
@@ -17,6 +19,7 @@ const STATUS_COLOR: Record<string, string> = {
   overdue: "bg-rose-500/20 text-rose-300",
   cancelled: "bg-slate-500/20 text-slate-400",
 };
+const SETTINGS_KEY = "invoice_logo_url";
 
 const emptyItem = { description: "", quantity: 1, unit_price: 0 };
 const emptyForm = {
@@ -32,12 +35,35 @@ export default function AdminInvoices() {
   const [form, setForm] = useState<any>(emptyForm);
   const [showForm, setShowForm] = useState(false);
   const [viewing, setViewing] = useState<any | null>(null);
+  const [logoUrl, setLogoUrl] = useState<string>(BRAND.logoUrl);
+  const [showLogoEditor, setShowLogoEditor] = useState(false);
+  const [logoDraft, setLogoDraft] = useState("");
+  const [sendingId, setSendingId] = useState<string | null>(null);
+  const [downloadingPdf, setDownloadingPdf] = useState(false);
+  const invoiceRef = useRef<HTMLDivElement>(null);
 
   const load = async () => {
     const { data } = await db.from("invoices").select("*").order("created_at", { ascending: false });
     setItems(data ?? []);
   };
-  useEffect(() => { load(); }, []);
+  const loadLogo = async () => {
+    const { data } = await db.from("site_settings").select("value").eq("key", SETTINGS_KEY).maybeSingle();
+    if (data?.value) setLogoUrl(data.value);
+  };
+  useEffect(() => { load(); loadLogo(); }, []);
+
+  const saveLogo = async () => {
+    const url = logoDraft.trim() || BRAND.logoUrl;
+    const { data: existing } = await db.from("site_settings").select("id").eq("key", SETTINGS_KEY).maybeSingle();
+    if (existing) {
+      await db.from("site_settings").update({ value: url }).eq("key", SETTINGS_KEY);
+    } else {
+      await db.from("site_settings").insert({ key: SETTINGS_KEY, value: url, type: "text", group_name: "invoices", label: "Invoice Logo URL" });
+    }
+    setLogoUrl(url);
+    setShowLogoEditor(false);
+    toast.success("Logo updated");
+  };
 
   const totals = () => {
     const subtotal = form.items.reduce((s: number, it: any) => s + (Number(it.quantity) || 0) * (Number(it.unit_price) || 0), 0);
@@ -71,7 +97,7 @@ export default function AdminInvoices() {
         invoice_id: data.id, description: it.description, quantity: Number(it.quantity), unit_price: Number(it.unit_price),
         amount: Number(it.quantity) * Number(it.unit_price), sort_order: i,
       })));
-      toast.success("Invoice created");
+      toast.success(`Invoice ${data.invoice_number} created`);
     }
     setEditing(null); setForm(emptyForm); setShowForm(false); load();
   };
@@ -97,7 +123,70 @@ export default function AdminInvoices() {
     const { data: lineItems } = await db.from("invoice_items").select("*").eq("invoice_id", inv.id).order("sort_order");
     setViewing({ ...inv, items: lineItems ?? [] });
   };
-  const printInvoice = () => window.print();
+
+  const downloadPdf = async () => {
+    if (!invoiceRef.current || !viewing) return;
+    setDownloadingPdf(true);
+    try {
+      const [{ default: html2canvas }, { default: jsPDF }] = await Promise.all([
+        import("html2canvas"),
+        import("jspdf"),
+      ]);
+      const canvas = await html2canvas(invoiceRef.current, { scale: 2, backgroundColor: "#ffffff", useCORS: true });
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
+      const pageW = pdf.internal.pageSize.getWidth();
+      const pageH = pdf.internal.pageSize.getHeight();
+      const imgW = pageW;
+      const imgH = (canvas.height * imgW) / canvas.width;
+      let heightLeft = imgH;
+      let position = 0;
+      pdf.addImage(imgData, "PNG", 0, position, imgW, imgH);
+      heightLeft -= pageH;
+      while (heightLeft > 0) {
+        position = heightLeft - imgH;
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", 0, position, imgW, imgH);
+        heightLeft -= pageH;
+      }
+      pdf.save(`${viewing.invoice_number}.pdf`);
+      toast.success("PDF downloaded");
+    } catch (e: any) {
+      toast.error(e.message || "PDF failed");
+    } finally {
+      setDownloadingPdf(false);
+    }
+  };
+
+  const sendEmail = async (inv: any) => {
+    if (!inv.client_email) return toast.error("Client email missing");
+    setSendingId(inv.id);
+    try {
+      const { error } = await supabase.functions.invoke("send-transactional-email", {
+        body: {
+          templateName: "invoice-email",
+          recipientEmail: inv.client_email,
+          templateData: {
+            name: inv.client_name,
+            invoiceNumber: inv.invoice_number,
+            amount: Number(inv.total).toLocaleString(),
+            dueDate: inv.due_date || inv.issue_date,
+            invoiceUrl: `${window.location.origin}/dashboard?tab=invoices&id=${inv.id}`,
+          },
+        },
+      });
+      if (error) throw error;
+      if (inv.status === "draft") {
+        await db.from("invoices").update({ status: "sent" }).eq("id", inv.id);
+      }
+      toast.success(`Invoice emailed to ${inv.client_email}`);
+      load();
+    } catch (e: any) {
+      toast.error(e.message || "Email failed");
+    } finally {
+      setSendingId(null);
+    }
+  };
 
   const stats = {
     total: items.length,
@@ -106,13 +195,31 @@ export default function AdminInvoices() {
     overdue: items.filter(i => i.status === "overdue").length,
   };
 
+  const qrPayload = viewing ? JSON.stringify({
+    inv: viewing.invoice_number,
+    amt: Number(viewing.total),
+    cur: viewing.currency || "BDT",
+    to: viewing.client_name,
+    date: viewing.issue_date,
+    url: `${window.location.origin}/dashboard?tab=invoices&id=${viewing.id}`,
+  }) : "";
+
   return (
     <AdminPage>
       <AdminPageHeader
         title="Invoices"
-        subtitle="Professional invoice generator with PDF download"
+        subtitle="Auto-numbered invoices · PDF · QR · Email · VAT/TAX"
         icon={FileText}
-        actions={<Button onClick={() => { setEditing(null); setForm(emptyForm); setShowForm(true); }}><Plus className="w-4 h-4 mr-2" />New Invoice</Button>}
+        actions={
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={() => { setLogoDraft(logoUrl); setShowLogoEditor(true); }}>
+              <ImageIcon className="w-4 h-4 mr-2" />Custom Logo
+            </Button>
+            <Button onClick={() => { setEditing(null); setForm(emptyForm); setShowForm(true); }}>
+              <Plus className="w-4 h-4 mr-2" />New Invoice
+            </Button>
+          </div>
+        }
       />
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
@@ -142,11 +249,14 @@ export default function AdminInvoices() {
                 <td className="p-3 text-xs text-muted-foreground">{inv.issue_date}</td>
                 <td className="p-3 text-right font-semibold">৳{Number(inv.total).toLocaleString()}</td>
                 <td className="p-3 text-center"><span className={`text-[10px] px-2 py-0.5 rounded-full ${STATUS_COLOR[inv.status]}`}>{inv.status}</span></td>
-                <td className="p-3 text-right">
-                  <Button size="icon" variant="ghost" className="h-7 w-7" onClick={() => openView(inv)}><Eye className="w-3 h-3" /></Button>
-                  {inv.status !== "paid" && <Button size="icon" variant="ghost" className="h-7 w-7 text-emerald-400" onClick={() => markPaid(inv.id)}><Check className="w-3 h-3" /></Button>}
-                  <Button size="icon" variant="ghost" className="h-7 w-7" onClick={() => openEdit(inv)}><Edit2 className="w-3 h-3" /></Button>
-                  <Button size="icon" variant="ghost" className="h-7 w-7 text-rose-400" onClick={() => del(inv.id)}><Trash2 className="w-3 h-3" /></Button>
+                <td className="p-3 text-right whitespace-nowrap">
+                  <Button size="icon" variant="ghost" className="h-7 w-7" title="View" onClick={() => openView(inv)}><Eye className="w-3 h-3" /></Button>
+                  <Button size="icon" variant="ghost" className="h-7 w-7 text-sky-400" title="Email invoice" disabled={sendingId === inv.id} onClick={() => sendEmail(inv)}>
+                    {sendingId === inv.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <Mail className="w-3 h-3" />}
+                  </Button>
+                  {inv.status !== "paid" && <Button size="icon" variant="ghost" className="h-7 w-7 text-emerald-400" title="Mark paid" onClick={() => markPaid(inv.id)}><Check className="w-3 h-3" /></Button>}
+                  <Button size="icon" variant="ghost" className="h-7 w-7" title="Edit" onClick={() => openEdit(inv)}><Edit2 className="w-3 h-3" /></Button>
+                  <Button size="icon" variant="ghost" className="h-7 w-7 text-rose-400" title="Delete" onClick={() => del(inv.id)}><Trash2 className="w-3 h-3" /></Button>
                 </td>
               </tr>
             ))}
@@ -158,7 +268,7 @@ export default function AdminInvoices() {
       {/* Form Dialog */}
       <Dialog open={showForm} onOpenChange={setShowForm}>
         <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader><DialogTitle>{editing ? "Edit Invoice" : "New Invoice"}</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>{editing ? "Edit Invoice" : "New Invoice (auto-numbered)"}</DialogTitle></DialogHeader>
           <div className="grid md:grid-cols-2 gap-3">
             <Input placeholder="Client name *" value={form.client_name} onChange={e => setForm({ ...form, client_name: e.target.value })} />
             <Input placeholder="Client email" value={form.client_email} onChange={e => setForm({ ...form, client_email: e.target.value })} />
@@ -185,9 +295,18 @@ export default function AdminInvoices() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-4">
-            <Input type="number" placeholder="Tax %" value={form.tax_rate} onChange={e => setForm({ ...form, tax_rate: e.target.value })} />
-            <Input type="number" placeholder="Discount" value={form.discount} onChange={e => setForm({ ...form, discount: e.target.value })} />
-            <div className="text-right text-sm self-center font-bold">Total: ৳{totals().total.toLocaleString()}</div>
+            <div>
+              <label className="text-[10px] uppercase text-muted-foreground">VAT / TAX %</label>
+              <Input type="number" placeholder="e.g. 15" value={form.tax_rate} onChange={e => setForm({ ...form, tax_rate: e.target.value })} />
+            </div>
+            <div>
+              <label className="text-[10px] uppercase text-muted-foreground">Discount (৳)</label>
+              <Input type="number" placeholder="0" value={form.discount} onChange={e => setForm({ ...form, discount: e.target.value })} />
+            </div>
+            <div className="text-right text-sm self-end font-bold">
+              <div className="text-[10px] text-muted-foreground">Subtotal ৳{totals().subtotal.toLocaleString()} · VAT ৳{totals().tax_amount.toLocaleString()}</div>
+              Total: ৳{totals().total.toLocaleString()}
+            </div>
           </div>
           <Textarea className="mt-2" placeholder="Notes" value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} />
           <Textarea className="mt-2" placeholder="Terms" value={form.terms} onChange={e => setForm({ ...form, terms: e.target.value })} />
@@ -195,50 +314,91 @@ export default function AdminInvoices() {
         </DialogContent>
       </Dialog>
 
-      {/* View Dialog (printable) */}
+      {/* Logo Editor */}
+      <Dialog open={showLogoEditor} onOpenChange={setShowLogoEditor}>
+        <DialogContent className="max-w-md">
+          <DialogHeader><DialogTitle>Custom Invoice Logo</DialogTitle></DialogHeader>
+          <p className="text-xs text-muted-foreground">Paste a publicly hosted image URL. Leave empty to use the default Shahed IT logo.</p>
+          <Input placeholder="https://example.com/logo.png" value={logoDraft} onChange={e => setLogoDraft(e.target.value)} />
+          {(logoDraft || logoUrl) && <img src={logoDraft || logoUrl} alt="Logo preview" className="h-16 object-contain mx-auto bg-white rounded p-2" />}
+          <div className="flex gap-2 justify-end">
+            <Button variant="outline" onClick={() => setShowLogoEditor(false)}>Cancel</Button>
+            <Button onClick={saveLogo}><Save className="w-4 h-4 mr-2" />Save</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* View Dialog (printable + PDF) */}
       <Dialog open={!!viewing} onOpenChange={o => !o && setViewing(null)}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader><DialogTitle>Invoice {viewing?.invoice_number}</DialogTitle></DialogHeader>
           {viewing && (
-            <div className="bg-white text-black p-6 rounded print:shadow-none" id="invoice-print">
+            <div ref={invoiceRef} className="bg-white text-black p-6 rounded" id="invoice-print">
               <div className="flex justify-between mb-4">
-                <div>
-                  <h2 className="text-xl font-bold">Shahed IT</h2>
-                  <p className="text-xs">Rajshahi, Bangladesh</p>
-                  <p className="text-xs">Phone: 01820-060046</p>
+                <div className="flex items-start gap-3">
+                  <img src={logoUrl} alt="Logo" crossOrigin="anonymous" className="h-14 w-14 object-contain" />
+                  <div>
+                    <h2 className="text-xl font-bold">{BRAND.name}</h2>
+                    <p className="text-xs">{BRAND.address}</p>
+                    <p className="text-xs">Phone: {BRAND.phone}</p>
+                    <p className="text-xs">{BRAND.email}</p>
+                  </div>
                 </div>
                 <div className="text-right">
                   <h3 className="font-bold text-lg">INVOICE</h3>
                   <p className="text-xs">#{viewing.invoice_number}</p>
                   <p className="text-xs">Date: {viewing.issue_date}</p>
                   {viewing.due_date && <p className="text-xs">Due: {viewing.due_date}</p>}
+                  <p className="text-[10px] mt-1 px-2 py-0.5 inline-block rounded bg-gray-100 uppercase font-semibold">{viewing.status}</p>
                 </div>
               </div>
               <div className="mb-4 border-t border-b py-2">
                 <p className="text-xs text-gray-500">Bill To:</p>
                 <p className="font-semibold">{viewing.client_name}</p>
                 {viewing.client_email && <p className="text-xs">{viewing.client_email}</p>}
+                {viewing.client_phone && <p className="text-xs">{viewing.client_phone}</p>}
                 {viewing.client_address && <p className="text-xs whitespace-pre-line">{viewing.client_address}</p>}
               </div>
               <table className="w-full text-xs mb-4">
-                <thead><tr className="border-b"><th className="text-left p-1">Item</th><th className="text-right p-1">Qty</th><th className="text-right p-1">Price</th><th className="text-right p-1">Amount</th></tr></thead>
+                <thead><tr className="border-b bg-gray-50"><th className="text-left p-1">Item</th><th className="text-right p-1">Qty</th><th className="text-right p-1">Price</th><th className="text-right p-1">Amount</th></tr></thead>
                 <tbody>
                   {viewing.items?.map((it: any) => (
                     <tr key={it.id} className="border-b"><td className="p-1">{it.description}</td><td className="text-right p-1">{it.quantity}</td><td className="text-right p-1">৳{Number(it.unit_price).toLocaleString()}</td><td className="text-right p-1">৳{Number(it.amount).toLocaleString()}</td></tr>
                   ))}
                 </tbody>
               </table>
-              <div className="text-right text-xs space-y-1">
-                <p>Subtotal: ৳{Number(viewing.subtotal).toLocaleString()}</p>
-                {viewing.tax_rate > 0 && <p>Tax ({viewing.tax_rate}%): ৳{Number(viewing.tax_amount).toLocaleString()}</p>}
-                {viewing.discount > 0 && <p>Discount: -৳{Number(viewing.discount).toLocaleString()}</p>}
-                <p className="text-lg font-bold border-t pt-1">Total: ৳{Number(viewing.total).toLocaleString()}</p>
+              <div className="flex justify-between items-end gap-4">
+                <div className="flex flex-col items-center">
+                  <div className="bg-white p-1 border rounded">
+                    <QRCodeCanvas value={qrPayload} size={96} level="M" includeMargin={false} />
+                  </div>
+                  <p className="text-[9px] text-gray-500 mt-1">Scan to verify</p>
+                </div>
+                <div className="text-right text-xs space-y-1">
+                  <p>Subtotal: ৳{Number(viewing.subtotal).toLocaleString()}</p>
+                  {viewing.tax_rate > 0 && <p>VAT / TAX ({viewing.tax_rate}%): ৳{Number(viewing.tax_amount).toLocaleString()}</p>}
+                  {viewing.discount > 0 && <p>Discount: -৳{Number(viewing.discount).toLocaleString()}</p>}
+                  <p className="text-lg font-bold border-t pt-1">Total: ৳{Number(viewing.total).toLocaleString()}</p>
+                </div>
               </div>
               {viewing.notes && <p className="text-xs mt-4"><strong>Notes:</strong> {viewing.notes}</p>}
               {viewing.terms && <p className="text-xs mt-2"><strong>Terms:</strong> {viewing.terms}</p>}
+              <p className="text-[10px] text-gray-400 text-center mt-4 pt-2 border-t">Thank you for your business · {BRAND.website}</p>
             </div>
           )}
-          <Button onClick={printInvoice} className="mt-2"><Download className="w-4 h-4 mr-2" />Print / Save PDF</Button>
+          <div className="flex gap-2 mt-2 flex-wrap">
+            <Button onClick={downloadPdf} disabled={downloadingPdf}>
+              {downloadingPdf ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Download className="w-4 h-4 mr-2" />}
+              Download PDF
+            </Button>
+            <Button variant="outline" onClick={() => window.print()}>Print</Button>
+            {viewing?.client_email && (
+              <Button variant="outline" disabled={sendingId === viewing.id} onClick={() => sendEmail(viewing)}>
+                {sendingId === viewing.id ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Mail className="w-4 h-4 mr-2" />}
+                Email to {viewing.client_email}
+              </Button>
+            )}
+          </div>
         </DialogContent>
       </Dialog>
     </AdminPage>
