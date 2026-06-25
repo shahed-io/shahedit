@@ -60,4 +60,5 @@ export const TEMPLATES: Record<string, TemplateEntry> = {
   'maintenance-notice': maintenanceNotice,
   'security-alert': securityAlert,
   'system-notification': systemNotification,
+  'license-delivery': licenseDelivery,
 }
