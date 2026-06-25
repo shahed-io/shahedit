@@ -24,6 +24,7 @@ import { template as newCommentNotification } from './new-comment-notification.t
 import { template as maintenanceNotice } from './maintenance-notice.tsx'
 import { template as securityAlert } from './security-alert.tsx'
 import { template as systemNotification } from './system-notification.tsx'
+import { template as licenseDelivery } from './license-delivery.tsx'
 
 export interface TemplateEntry {
   component: ComponentType<any>
