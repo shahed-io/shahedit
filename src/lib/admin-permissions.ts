@@ -61,6 +61,7 @@ export type AdminSection =
   | "digital-files"
   | "license-keys"
   | "bulk-products"
+  | "customers"
   | "security-audit";
 
 
