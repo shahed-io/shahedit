@@ -244,6 +244,7 @@ const AdminRoutes = () => (
         <Route path="bulk-products" element={<RoleRoute section="bulk-products"><AdminBulkProducts /></RoleRoute>} />
         <Route path="security-audit" element={<RoleRoute section="security-audit"><AdminSecurityAudit /></RoleRoute>} />
         <Route path="customers" element={<RoleRoute section="customers"><AdminCustomers /></RoleRoute>} />
+        <Route path="reports" element={<RoleRoute section="reports"><AdminReports /></RoleRoute>} />
 
       </Routes>
       </Suspense>
