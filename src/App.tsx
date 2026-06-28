@@ -99,6 +99,8 @@ const AdminBackupMaintenance = lazy(() => import("./pages/admin/AdminBackupMaint
 const AdminAnalyticsHub = lazy(() => import("./pages/admin/AdminAnalyticsHub"));
 const AdminSettingsHub = lazy(() => import("./pages/admin/AdminSettingsHub"));
 const AdminAdvancedTools = lazy(() => import("./pages/admin/AdminAdvancedTools"));
+const AdminOffers = lazy(() => import("./pages/admin/AdminOffers"));
+const OfferPage = lazy(() => import("./pages/OfferPage"));
 
 
 // Auth / user pages
@@ -270,6 +272,7 @@ const AdminRoutes = () => {
         <Route path="analytics-hub" element={<RoleRoute section="analytics-hub"><AdminAnalyticsHub /></RoleRoute>} />
         <Route path="settings-hub" element={<RoleRoute section="settings-hub"><AdminSettingsHub /></RoleRoute>} />
         <Route path="advanced-tools" element={<RoleRoute section="advanced-tools"><AdminAdvancedTools /></RoleRoute>} />
+        <Route path="offers" element={<RoleRoute section="offers"><AdminOffers /></RoleRoute>} />
 
       </Routes>
       </Suspense>
@@ -324,6 +327,7 @@ const AppWithAnalytics = () => {
         <Route path="/ai-search" element={<AiSearchPage />} />
         <Route path="/tech/:slug" element={<TechDetailPage />} />
         <Route path="/unsubscribe" element={<UnsubscribePage />} />
+        <Route path="/offer/:slug" element={<OfferPage />} />
 
         {/* Admin Routes (mounted at /ceo) */}
         <Route path="/ceo/login" element={<AdminLogin />} />
