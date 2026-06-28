@@ -2473,6 +2473,206 @@ export type Database = {
         }
         Relationships: []
       }
+      offer_campaigns: {
+        Row: {
+          banner_url: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          ends_at: string | null
+          fields: Json
+          google_form_url: string | null
+          id: string
+          max_entries: number | null
+          meta_description: string | null
+          meta_title: string | null
+          prize_description: string | null
+          redirect_url: string | null
+          require_login: boolean
+          selection_method: string
+          settings: Json
+          slug: string
+          starts_at: string | null
+          status: string
+          thank_you_message: string | null
+          title: string
+          updated_at: string
+          use_google_form: boolean
+          winner_prizes: Json
+          winners_announce_at: string | null
+          winners_announced: boolean
+          winners_count: number
+        }
+        Insert: {
+          banner_url?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          ends_at?: string | null
+          fields?: Json
+          google_form_url?: string | null
+          id?: string
+          max_entries?: number | null
+          meta_description?: string | null
+          meta_title?: string | null
+          prize_description?: string | null
+          redirect_url?: string | null
+          require_login?: boolean
+          selection_method?: string
+          settings?: Json
+          slug: string
+          starts_at?: string | null
+          status?: string
+          thank_you_message?: string | null
+          title: string
+          updated_at?: string
+          use_google_form?: boolean
+          winner_prizes?: Json
+          winners_announce_at?: string | null
+          winners_announced?: boolean
+          winners_count?: number
+        }
+        Update: {
+          banner_url?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          ends_at?: string | null
+          fields?: Json
+          google_form_url?: string | null
+          id?: string
+          max_entries?: number | null
+          meta_description?: string | null
+          meta_title?: string | null
+          prize_description?: string | null
+          redirect_url?: string | null
+          require_login?: boolean
+          selection_method?: string
+          settings?: Json
+          slug?: string
+          starts_at?: string | null
+          status?: string
+          thank_you_message?: string | null
+          title?: string
+          updated_at?: string
+          use_google_form?: boolean
+          winner_prizes?: Json
+          winners_announce_at?: string | null
+          winners_announced?: boolean
+          winners_count?: number
+        }
+        Relationships: []
+      }
+      offer_submissions: {
+        Row: {
+          answers: Json
+          campaign_id: string
+          created_at: string
+          email: string | null
+          id: string
+          ip_address: string | null
+          is_disqualified: boolean
+          name: string | null
+          notes: string | null
+          phone: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          answers?: Json
+          campaign_id: string
+          created_at?: string
+          email?: string | null
+          id?: string
+          ip_address?: string | null
+          is_disqualified?: boolean
+          name?: string | null
+          notes?: string | null
+          phone?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          answers?: Json
+          campaign_id?: string
+          created_at?: string
+          email?: string | null
+          id?: string
+          ip_address?: string | null
+          is_disqualified?: boolean
+          name?: string | null
+          notes?: string | null
+          phone?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "offer_submissions_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "offer_campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      offer_winners: {
+        Row: {
+          campaign_id: string
+          created_at: string
+          id: string
+          is_published: boolean
+          notified: boolean
+          position: number
+          prize: string | null
+          reason: string | null
+          selected_at: string
+          selected_by: string
+          submission_id: string
+        }
+        Insert: {
+          campaign_id: string
+          created_at?: string
+          id?: string
+          is_published?: boolean
+          notified?: boolean
+          position?: number
+          prize?: string | null
+          reason?: string | null
+          selected_at?: string
+          selected_by?: string
+          submission_id: string
+        }
+        Update: {
+          campaign_id?: string
+          created_at?: string
+          id?: string
+          is_published?: boolean
+          notified?: boolean
+          position?: number
+          prize?: string | null
+          reason?: string | null
+          selected_at?: string
+          selected_by?: string
+          submission_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "offer_winners_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "offer_campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "offer_winners_submission_id_fkey"
+            columns: ["submission_id"]
+            isOneToOne: false
+            referencedRelation: "offer_submissions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       order_timeline: {
         Row: {
           actor: string
