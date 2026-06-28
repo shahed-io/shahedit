@@ -9,7 +9,7 @@ import {
   LayoutTemplate, Search, TrendingUp, Sparkles, Globe, Tag, Mail,
   History, BarChart3, ArrowLeftRight, ChevronDown, Crown, ExternalLink,
   Zap, RefreshCcw, Image as ImageIcon, FolderTree, BookOpen, ListChecks,
-  Receipt, TrendingDown, ClipboardList, X, ChevronRight, Command, Wallet, Database,
+  Receipt, TrendingDown, ClipboardList, X, ChevronRight, Command, Wallet, Database, Gift,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
