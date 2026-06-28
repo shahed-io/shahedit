@@ -82,7 +82,7 @@ export default function AdminOffers() {
     setWinners((w as any[]) ?? []);
   };
 
-  const openCreate = () => { setEditing(null); setForm(emptyForm); setOpen(true); };
+  const openCreate = () => { setEditing(null); setForm(emptyForm); setAiBrief(""); setOpen(true); };
   const openEdit = (c: Campaign) => {
     setEditing(c);
     setForm({
