@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { toast } from "sonner";
-import { Plus, Edit, Trash2, Copy, Trophy, Sparkles, Eye, Users, Gift, Download } from "lucide-react";
+import { Plus, Edit, Trash2, Copy, Trophy, Sparkles, Eye, Users, Gift, Download, Wand2 } from "lucide-react";
 
 type Field = { key: string; label: string; type: "text" | "email" | "tel" | "textarea" | "select"; required?: boolean; options?: string[]; placeholder?: string };
 type Campaign = any;
