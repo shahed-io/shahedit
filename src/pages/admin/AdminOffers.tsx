@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { toast } from "sonner";
-import { Plus, Edit, Trash2, Copy, Trophy, Sparkles, Eye, Users, Gift, Download } from "lucide-react";
+import { Plus, Edit, Trash2, Copy, Trophy, Sparkles, Eye, Users, Gift, Download, Wand2 } from "lucide-react";
 
 type Field = { key: string; label: string; type: "text" | "email" | "tel" | "textarea" | "select"; required?: boolean; options?: string[]; placeholder?: string };
 type Campaign = any;
@@ -42,6 +42,26 @@ export default function AdminOffers() {
   const [winners, setWinners] = useState<any[]>([]);
   const [tab, setTab] = useState("list");
   const [picking, setPicking] = useState(false);
+  const [aiBrief, setAiBrief] = useState("");
+  const [aiBusy, setAiBusy] = useState(false);
+
+  const aiGenerate = async () => {
+    if (!aiBrief.trim()) return toast.error("Offer-এর বিস্তারিত লিখুন");
+    setAiBusy(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("generate-offer-campaign", {
+        body: { brief: aiBrief },
+      });
+      if (error || (data as any)?.error) throw new Error((data as any)?.error || error?.message);
+      setForm({ ...emptyForm, ...(data as any) });
+      toast.success("AI offer তৈরি করেছে — যাচাই করে Save করুন");
+    } catch (e: any) {
+      toast.error(e.message || "AI generate ব্যর্থ");
+    } finally {
+      setAiBusy(false);
+    }
+  };
+
 
   const load = async () => {
     setLoading(true);
@@ -62,7 +82,7 @@ export default function AdminOffers() {
     setWinners((w as any[]) ?? []);
   };
 
-  const openCreate = () => { setEditing(null); setForm(emptyForm); setOpen(true); };
+  const openCreate = () => { setEditing(null); setForm(emptyForm); setAiBrief(""); setOpen(true); };
   const openEdit = (c: Campaign) => {
     setEditing(c);
     setForm({
@@ -318,14 +338,31 @@ export default function AdminOffers() {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
           <DialogHeader><DialogTitle>{editing ? "অফার সম্পাদনা" : "নতুন অফার"}</DialogTitle></DialogHeader>
-          <Tabs defaultValue="basics">
+          <Tabs defaultValue={editing ? "basics" : "ai"}>
             <TabsList className="flex-wrap h-auto">
+              <TabsTrigger value="ai"><Wand2 className="w-3.5 h-3.5 mr-1" /> AI</TabsTrigger>
               <TabsTrigger value="basics">Basics</TabsTrigger>
               <TabsTrigger value="form">Form Fields</TabsTrigger>
               <TabsTrigger value="winners">Winners</TabsTrigger>
               <TabsTrigger value="schedule">Schedule</TabsTrigger>
               <TabsTrigger value="advanced">Advanced</TabsTrigger>
             </TabsList>
+
+            <TabsContent value="ai" className="space-y-3">
+              <div className="rounded-xl border bg-gradient-to-br from-purple-500/5 to-pink-500/5 p-4 space-y-3">
+                <div className="flex items-center gap-2 text-sm font-semibold"><Wand2 className="w-4 h-4 text-purple-500" /> AI Offer Builder (Gemini)</div>
+                <p className="text-xs text-muted-foreground">আপনার অফারের বিস্তারিত সহজ ভাষায় লিখুন — AI title, description, form fields, winners, prize, schedule সব নিজে থেকে তৈরি করে সকল box-এ বসিয়ে দিবে। পরে যেকোনো tab-এ গিয়ে edit করতে পারবেন।</p>
+                <Textarea rows={8} value={aiBrief} onChange={(e) => setAiBrief(e.target.value)}
+                  placeholder={`উদাহরণ:\nঈদ উপলক্ষে আমরা ৩ জন winner কে iPhone 15, Samsung Galaxy Watch ও ৫০০০ টাকা গিফট কার্ড দিব। অংশগ্রহণ করতে নাম, ইমেইল, মোবাইল, ফেসবুক প্রোফাইল লিঙ্ক এবং "আপনি কেন জিততে চান" লাগবে। ১০ দিন চলবে, সর্বোচ্চ ১০০০ এন্ট্রি।`} />
+                <div className="flex gap-2">
+                  <Button onClick={aiGenerate} disabled={aiBusy} className="bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+                    <Sparkles className="w-4 h-4 mr-1" /> {aiBusy ? "তৈরি হচ্ছে..." : "AI দিয়ে সব Generate করো"}
+                  </Button>
+                  {form.title && <span className="text-xs text-green-600 self-center">✓ "{form.title}" তৈরি হয়েছে — অন্য tab চেক করুন</span>}
+                </div>
+              </div>
+            </TabsContent>
+
 
             <TabsContent value="basics" className="space-y-3">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
