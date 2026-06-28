@@ -9,7 +9,7 @@ import {
   LayoutTemplate, Search, TrendingUp, Sparkles, Globe, Tag, Mail,
   History, BarChart3, ArrowLeftRight, ChevronDown, Crown, ExternalLink,
   Zap, RefreshCcw, Image as ImageIcon, FolderTree, BookOpen, ListChecks,
-  Receipt, TrendingDown, ClipboardList, X, ChevronRight, Command, Wallet, Database,
+  Receipt, TrendingDown, ClipboardList, X, ChevronRight, Command, Wallet, Database, Gift,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -150,6 +150,7 @@ const navGroups: NavGroup[] = [
       { label: "Security Audit", icon: Shield, href: "/ceo/security-audit", badge: "NEW", section: "security-audit" },
       { label: "Security Center", icon: Shield, href: "/ceo/security-center", badge: "NEW", section: "security-center" },
       { label: "Advanced Tools", icon: Sparkles, href: "/ceo/advanced-tools", badge: "NEW", section: "advanced-tools" },
+      { label: "Offers & Giveaways", icon: Gift, href: "/ceo/offers", badge: "NEW", section: "offers" },
 
     ],
   },
