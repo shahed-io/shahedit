@@ -78,6 +78,18 @@ export default function OfferPage() {
           return;
         }
       }
+      // Enforce max_entries limit
+      if (campaign.max_entries && Number(campaign.max_entries) > 0) {
+        const { count } = await supabase
+          .from("offer_submissions" as any)
+          .select("id", { count: "exact", head: true })
+          .eq("campaign_id", campaign.id);
+        if ((count ?? 0) >= Number(campaign.max_entries)) {
+          toast.error("দুঃখিত, এন্ট্রি লিমিট পূর্ণ হয়ে গেছে।");
+          setSubmitting(false);
+          return;
+        }
+      }
       const payload: any = {
         campaign_id: campaign.id,
         name: values.name || null,
