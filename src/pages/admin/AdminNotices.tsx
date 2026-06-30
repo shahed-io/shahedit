@@ -49,6 +49,9 @@ export default function AdminNotices() {
   const [generating, setGenerating] = useState(false);
   const [listening, setListening] = useState(false);
   const recogRef = useRef<any>(null);
+  const noticeRef = useRef<HTMLDivElement>(null);
+  const [downloadingPdf, setDownloadingPdf] = useState(false);
+  const [downloadingId, setDownloadingId] = useState<string | null>(null);
 
   // Settings
   const [logoUrl, setLogoUrl] = useState<string>(BRAND.logoUrl);
