@@ -84,7 +84,7 @@ export default function AdminOffers() {
     setWinners((w as any[]) ?? []);
   };
 
-  const openCreate = () => { setEditing(null); setForm(emptyForm); setAiBrief(""); setOpen(true); };
+  const openCreate = () => { setEditing(null); setForm(emptyForm); setAiBrief(""); setDialogTab("ai"); setOpen(true); };
   const openEdit = (c: Campaign) => {
     setEditing(c);
     setForm({
@@ -95,6 +95,7 @@ export default function AdminOffers() {
       ends_at: c.ends_at ? c.ends_at.slice(0, 16) : "",
       max_entries: c.max_entries ?? "",
     });
+    setDialogTab("basics");
     setOpen(true);
   };
 
