@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminPage, AdminPageHeader, GlassCard, KpiCard } from "@/components/admin/ui";
-import { FileText, Plus, Trash2, Edit2, Save, Eye, X, Mic, MicOff, Sparkles, Loader2, Printer, Bell, PenTool, Upload, Image as ImageIcon } from "lucide-react";
+import { FileText, Plus, Trash2, Edit2, Save, Eye, X, Mic, MicOff, Sparkles, Loader2, Printer, Bell, PenTool, Upload, Image as ImageIcon, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -49,6 +49,9 @@ export default function AdminNotices() {
   const [generating, setGenerating] = useState(false);
   const [listening, setListening] = useState(false);
   const recogRef = useRef<any>(null);
+  const noticeRef = useRef<HTMLDivElement>(null);
+  const [downloadingPdf, setDownloadingPdf] = useState(false);
+  const [downloadingId, setDownloadingId] = useState<string | null>(null);
 
   // Settings
   const [logoUrl, setLogoUrl] = useState<string>(BRAND.logoUrl);
@@ -218,6 +221,71 @@ export default function AdminNotices() {
 
   const printNotice = () => window.print();
 
+  // ---- PDF Download ----
+  const downloadPdf = async () => {
+    if (!noticeRef.current || !viewing) return;
+    setDownloadingPdf(true);
+    try {
+      const [{ default: html2canvas }, { default: jsPDF }] = await Promise.all([
+        import("html2canvas"),
+        import("jspdf"),
+      ]);
+      const canvas = await html2canvas(noticeRef.current, { scale: 2, backgroundColor: "#ffffff", useCORS: true });
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
+      const pageW = pdf.internal.pageSize.getWidth();
+      const pageH = pdf.internal.pageSize.getHeight();
+      const imgH = (canvas.height * pageW) / canvas.width;
+      let heightLeft = imgH;
+      let position = 0;
+      pdf.addImage(imgData, "PNG", 0, position, pageW, imgH);
+      heightLeft -= pageH;
+      while (heightLeft > 0) {
+        position = heightLeft - imgH;
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", 0, position, pageW, imgH);
+        heightLeft -= pageH;
+      }
+      pdf.save(`${viewing.notice_number || "notice"}.pdf`);
+      toast.success("PDF downloaded");
+    } catch (e: any) {
+      toast.error(e.message || "PDF download failed");
+    } finally {
+      setDownloadingPdf(false);
+    }
+  };
+
+  // ---- Quick download from list row (opens view briefly, renders, downloads) ----
+  const quickDownload = async (n: any) => {
+    setDownloadingId(n.id);
+    setViewing(n);
+    // wait for dialog + images to mount/render
+    await new Promise(r => setTimeout(r, 700));
+    await downloadPdf();
+    setDownloadingId(null);
+  };
+
+  // ---- Export all notices as CSV ----
+  const exportCsv = () => {
+    if (items.length === 0) return toast.error("কোন notice নেই");
+    const headers = ["Notice #", "Title", "Subject", "Recipient", "Email", "Phone", "Date", "Status", "Category", "Body"];
+    const escape = (v: any) => `"${String(v ?? "").replace(/"/g, '""').replace(/\r?\n/g, " ")}"`;
+    const rows = items.map(n => [
+      n.notice_number, n.title, n.subject, n.recipient_name, n.recipient_email,
+      n.recipient_phone, n.issue_date, n.status, n.category, n.body,
+    ].map(escape).join(","));
+    const csv = "\uFEFF" + headers.map(escape).join(",") + "\n" + rows.join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `notices-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success("CSV downloaded");
+  };
+
+
   const kpis = {
     total: items.length,
     draft: items.filter(i => i.status === "draft").length,
@@ -231,7 +299,8 @@ export default function AdminNotices() {
         title="Notice System"
         subtitle="AI-powered notice generator with voice input — invoice-style design"
         actions={
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
+            <Button variant="outline" onClick={exportCsv}><Download className="w-4 h-4 mr-2" />Export CSV</Button>
             <Button variant="outline" onClick={() => setShowSig(true)}><PenTool className="w-4 h-4 mr-2" />Signature</Button>
             <Button onClick={openNew}><Plus className="w-4 h-4 mr-2" />New Notice</Button>
           </div>
@@ -270,7 +339,10 @@ export default function AdminNotices() {
                   <td className="p-2"><span className={`text-[10px] uppercase px-2 py-0.5 rounded ${STATUS_COLOR[n.status] || ""}`}>{n.status}</span></td>
                   <td className="p-2">
                     <div className="flex gap-1 justify-end">
-                      <Button size="sm" variant="ghost" onClick={() => setViewing(n)}><Eye className="w-4 h-4" /></Button>
+                      <Button size="sm" variant="ghost" onClick={() => setViewing(n)} title="View"><Eye className="w-4 h-4" /></Button>
+                      <Button size="sm" variant="ghost" onClick={() => quickDownload(n)} title="Download PDF" disabled={downloadingId === n.id}>
+                        {downloadingId === n.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4 text-emerald-400" />}
+                      </Button>
                       <Button size="sm" variant="ghost" onClick={() => openEdit(n)}><Edit2 className="w-4 h-4" /></Button>
                       <Button size="sm" variant="ghost" onClick={() => remove(n.id)}><Trash2 className="w-4 h-4 text-rose-400" /></Button>
                     </div>
@@ -450,7 +522,7 @@ export default function AdminNotices() {
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader><DialogTitle>Notice {viewing?.notice_number}</DialogTitle></DialogHeader>
           {viewing && (
-            <div className="bg-white text-black p-6 rounded" id="notice-print">
+            <div ref={noticeRef} className="bg-white text-black p-6 rounded" id="notice-print">
               <div className="flex justify-between mb-4">
                 <div className="flex items-start gap-3">
                   <img src={logoUrl} alt="Logo" crossOrigin="anonymous" className="h-14 w-14 object-contain" />
@@ -511,7 +583,11 @@ export default function AdminNotices() {
             </div>
           )}
           <div className="flex gap-2 mt-2 flex-wrap">
-            <Button onClick={printNotice}><Printer className="w-4 h-4 mr-2" />Print / Save PDF</Button>
+            <Button onClick={downloadPdf} disabled={downloadingPdf}>
+              {downloadingPdf ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Download className="w-4 h-4 mr-2" />}
+              Download PDF
+            </Button>
+            <Button variant="outline" onClick={printNotice}><Printer className="w-4 h-4 mr-2" />Print</Button>
             {viewing && <Button variant="outline" onClick={() => { setViewing(null); openEdit(viewing); }}><Edit2 className="w-4 h-4 mr-2" />Edit</Button>}
           </div>
         </DialogContent>
