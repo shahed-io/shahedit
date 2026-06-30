@@ -130,6 +130,14 @@ export default function AdminOffers() {
     load();
   };
 
+  const toggleStatus = async (c: Campaign) => {
+    const next = c.status === "published" ? "draft" : "published";
+    const { error } = await supabase.from("offer_campaigns" as any).update({ status: next }).eq("id", c.id);
+    if (error) return toast.error(error.message);
+    toast.success(next === "published" ? "✅ লাইভ — ফর্ম এখন পাবলিকলি দেখাবে" : "Draft করা হলো");
+    load();
+  };
+
   const pickWinners = async (mode: "smart" | "random" = "smart", extra?: string) => {
     if (!active) return;
     setPicking(true);
