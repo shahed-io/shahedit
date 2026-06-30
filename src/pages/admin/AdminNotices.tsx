@@ -168,7 +168,7 @@ export default function AdminNotices() {
       <AdminPageHeader
         icon={Bell}
         title="Notice System"
-        description="AI-powered notice generator with voice input — invoice-style design"
+        subtitle="AI-powered notice generator with voice input — invoice-style design"
         actions={<Button onClick={openNew}><Plus className="w-4 h-4 mr-2" />New Notice</Button>}
       />
 
