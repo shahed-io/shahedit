@@ -583,7 +583,11 @@ export default function AdminNotices() {
             </div>
           )}
           <div className="flex gap-2 mt-2 flex-wrap">
-            <Button onClick={printNotice}><Printer className="w-4 h-4 mr-2" />Print / Save PDF</Button>
+            <Button onClick={downloadPdf} disabled={downloadingPdf}>
+              {downloadingPdf ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Download className="w-4 h-4 mr-2" />}
+              Download PDF
+            </Button>
+            <Button variant="outline" onClick={printNotice}><Printer className="w-4 h-4 mr-2" />Print</Button>
             {viewing && <Button variant="outline" onClick={() => { setViewing(null); openEdit(viewing); }}><Edit2 className="w-4 h-4 mr-2" />Edit</Button>}
           </div>
         </DialogContent>
