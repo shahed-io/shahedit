@@ -366,7 +366,7 @@ export default function AdminOffers() {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
           <DialogHeader><DialogTitle>{editing ? "অফার সম্পাদনা" : "নতুন অফার"}</DialogTitle></DialogHeader>
-          <Tabs defaultValue={editing ? "basics" : "ai"}>
+          <Tabs value={dialogTab} onValueChange={setDialogTab}>
             <TabsList className="flex-wrap h-auto">
               <TabsTrigger value="ai"><Wand2 className="w-3.5 h-3.5 mr-1" /> AI</TabsTrigger>
               <TabsTrigger value="basics">Basics</TabsTrigger>
