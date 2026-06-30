@@ -8,9 +8,17 @@ export type CopyProtectionSettings = {
   disableRightClick: boolean;
   disableTextSelection: boolean;
   disableCopy: boolean;
+  disablePaste: boolean;
   disableDevtoolsKeys: boolean;
+  detectDevtools: boolean;
   disableImageDrag: boolean;
   disablePrint: boolean;
+  blockPrintScreen: boolean;
+  disableTouchCallout: boolean;
+  disableMiddleClick: boolean;
+  blurOnWindowBlur: boolean;
+  frameBuster: boolean;
+  consoleWarning: boolean;
   showWarning: boolean;
   warningMessage: string;
   watermarkEnabled: boolean;
@@ -23,9 +31,17 @@ export const DEFAULT_COPY_PROTECTION: CopyProtectionSettings = {
   disableRightClick: true,
   disableTextSelection: true,
   disableCopy: true,
+  disablePaste: false,
   disableDevtoolsKeys: true,
+  detectDevtools: false,
   disableImageDrag: true,
   disablePrint: false,
+  blockPrintScreen: false,
+  disableTouchCallout: true,
+  disableMiddleClick: false,
+  blurOnWindowBlur: false,
+  frameBuster: true,
+  consoleWarning: true,
   showWarning: true,
   warningMessage: "এই কন্টেন্ট কপি করা যাবে না — © Shahed IT",
   watermarkEnabled: false,
