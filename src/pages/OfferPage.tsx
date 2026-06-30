@@ -142,11 +142,11 @@ export default function OfferPage() {
           <p className="text-base sm:text-lg text-muted-foreground whitespace-pre-line mb-6 leading-relaxed">{campaign.description}</p>
         )}
         {campaign.prize_description && (
-          <div className="rounded-2xl border-2 border-amber-400/50 bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-500/15 dark:to-orange-500/10 p-5 mb-7 shadow-sm">
-            <div className="flex items-center gap-2 font-bold text-amber-700 dark:text-amber-300 text-base sm:text-lg">
+          <div className="rounded-2xl border-2 border-amber-400/60 bg-amber-500/10 p-5 mb-7 shadow-sm">
+            <div className="flex items-center gap-2 font-bold text-amber-500 text-base sm:text-lg">
               <Trophy className="w-5 h-5" /> পুরস্কার
             </div>
-            <p className="mt-2 text-sm sm:text-base whitespace-pre-line text-foreground/90 leading-relaxed">{campaign.prize_description}</p>
+            <p className="mt-2 text-sm sm:text-base whitespace-pre-line text-foreground leading-relaxed">{campaign.prize_description}</p>
           </div>
         )}
 
