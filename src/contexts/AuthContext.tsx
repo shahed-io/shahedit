@@ -36,8 +36,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [roleLoading, setRoleLoading] = useState(true);
   const [role, setRole] = useState<AppRole | null>(null);
 
-  const fetchRole = async (userId: string) => {
-    setRoleLoading(true);
+  const fetchRole = async (userId: string, opts: { showLoading?: boolean } = {}) => {
+    if (opts.showLoading) setRoleLoading(true);
     const { data } = await supabase
       .from("user_roles")
       .select("role")
@@ -49,6 +49,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setRoleLoading(false);
     return (data?.role as AppRole) ?? null;
   };
+
 
   const syncProfileFromOAuth = async (u: User) => {
     const meta = u.user_metadata ?? {};
