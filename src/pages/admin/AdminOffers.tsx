@@ -268,7 +268,10 @@ export default function AdminOffers() {
                           /offer/{c.slug}
                         </button>
                       </TableCell>
-                      <TableCell className="text-right space-x-1">
+                      <TableCell className="text-right space-x-1 whitespace-nowrap">
+                        <Button size="sm" variant={c.status === "published" ? "secondary" : "default"} onClick={() => toggleStatus(c)} title="Toggle Publish">
+                          {c.status === "published" ? "Unpublish" : "Publish"}
+                        </Button>
                         <Button size="icon" variant="ghost" onClick={() => loadDetail(c)} title="View entries"><Users className="w-4 h-4" /></Button>
                         <Button size="icon" variant="ghost" onClick={() => window.open(offerUrl(c.slug), "_blank")} title="Open"><Eye className="w-4 h-4" /></Button>
                         <Button size="icon" variant="ghost" onClick={() => openEdit(c)}><Edit className="w-4 h-4" /></Button>
