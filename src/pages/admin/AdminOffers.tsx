@@ -20,7 +20,7 @@ const emptyForm = {
   title: "", slug: "", description: "", banner_url: "", prize_description: "",
   google_form_url: "", use_google_form: false,
   winners_count: 1, winner_prizes: [] as string[],
-  status: "draft", starts_at: "", ends_at: "",
+  status: "published", starts_at: "", ends_at: "",
   max_entries: "", require_login: false,
   thank_you_message: "", redirect_url: "",
   meta_title: "", meta_description: "",
@@ -127,6 +127,14 @@ export default function AdminOffers() {
     if (error) return toast.error(error.message);
     toast.success("মুছে ফেলা হয়েছে");
     if (active?.id === id) setActive(null);
+    load();
+  };
+
+  const toggleStatus = async (c: Campaign) => {
+    const next = c.status === "published" ? "draft" : "published";
+    const { error } = await supabase.from("offer_campaigns" as any).update({ status: next }).eq("id", c.id);
+    if (error) return toast.error(error.message);
+    toast.success(next === "published" ? "✅ লাইভ — ফর্ম এখন পাবলিকলি দেখাবে" : "Draft করা হলো");
     load();
   };
 
@@ -260,7 +268,10 @@ export default function AdminOffers() {
                           /offer/{c.slug}
                         </button>
                       </TableCell>
-                      <TableCell className="text-right space-x-1">
+                      <TableCell className="text-right space-x-1 whitespace-nowrap">
+                        <Button size="sm" variant={c.status === "published" ? "secondary" : "default"} onClick={() => toggleStatus(c)} title="Toggle Publish">
+                          {c.status === "published" ? "Unpublish" : "Publish"}
+                        </Button>
                         <Button size="icon" variant="ghost" onClick={() => loadDetail(c)} title="View entries"><Users className="w-4 h-4" /></Button>
                         <Button size="icon" variant="ghost" onClick={() => window.open(offerUrl(c.slug), "_blank")} title="Open"><Eye className="w-4 h-4" /></Button>
                         <Button size="icon" variant="ghost" onClick={() => openEdit(c)}><Edit className="w-4 h-4" /></Button>
