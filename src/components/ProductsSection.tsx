@@ -138,23 +138,17 @@ export const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose
     const code = couponCode.trim().toUpperCase();
     if (!code) { toast.error("কুপন কোড দিন"); return; }
     setCouponLoading(true);
-    const { data, error } = await supabase
-      .from("coupons" as any).select("*").eq("code", code).eq("is_active", true).maybeSingle();
+    const { data, error } = await (supabase as any).rpc("validate_coupon", {
+      _code: code,
+      _order_amount: basePrice,
+      _user_email: form.email || null,
+    });
     setCouponLoading(false);
-    if (error || !data) { toast.error("কুপন কোড সঠিক নয়"); return; }
-    const c: any = data;
-    const now = new Date();
-    if (c.valid_from && new Date(c.valid_from) > now) { toast.error("কুপন এখনো সক্রিয় হয়নি"); return; }
-    if (c.valid_until && new Date(c.valid_until) < now) { toast.error("কুপনের মেয়াদ শেষ"); return; }
-    if (c.max_uses && c.used_count >= c.max_uses) { toast.error("কুপনের সীমা শেষ"); return; }
-    if (c.min_order_amount && basePrice < Number(c.min_order_amount)) {
-      toast.error(`এই কুপনের জন্য সর্বনিম্ন অর্ডার ৳${c.min_order_amount}`); return;
-    }
-    const amount = c.discount_type === "percentage"
-      ? Math.round((basePrice * Number(c.discount_value)) / 100)
-      : Number(c.discount_value);
-    setDiscount({ code: c.code, amount: Math.min(amount, basePrice) });
-    toast.success(`কুপন প্রয়োগ হয়েছে! ৳${Math.min(amount, basePrice)} ছাড়`);
+    const res: any = data;
+    if (error || !res?.valid) { toast.error(res?.reason || "কুপন কোড সঠিক নয়"); return; }
+    const amount = Math.min(Number(res.discount_amount || 0), basePrice);
+    setDiscount({ code: res.code, amount });
+    toast.success(`কুপন প্রয়োগ হয়েছে! ৳${amount} ছাড়`);
   };
 
   const goNextFromInfo = () => {
