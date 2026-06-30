@@ -44,6 +44,7 @@ export default function AdminOffers() {
   const [picking, setPicking] = useState(false);
   const [aiBrief, setAiBrief] = useState("");
   const [aiBusy, setAiBusy] = useState(false);
+  const [dialogTab, setDialogTab] = useState("ai");
 
   const aiGenerate = async () => {
     if (!aiBrief.trim()) return toast.error("Offer-এর বিস্তারিত লিখুন");
@@ -54,7 +55,8 @@ export default function AdminOffers() {
       });
       if (error || (data as any)?.error) throw new Error((data as any)?.error || error?.message);
       setForm({ ...emptyForm, ...(data as any) });
-      toast.success("AI offer তৈরি করেছে — যাচাই করে Save করুন");
+      setDialogTab("basics");
+      toast.success("AI offer তৈরি করেছে — এখন প্রতিটি tab-এ গিয়ে edit/Save করুন");
     } catch (e: any) {
       toast.error(e.message || "AI generate ব্যর্থ");
     } finally {
@@ -82,7 +84,7 @@ export default function AdminOffers() {
     setWinners((w as any[]) ?? []);
   };
 
-  const openCreate = () => { setEditing(null); setForm(emptyForm); setAiBrief(""); setOpen(true); };
+  const openCreate = () => { setEditing(null); setForm(emptyForm); setAiBrief(""); setDialogTab("ai"); setOpen(true); };
   const openEdit = (c: Campaign) => {
     setEditing(c);
     setForm({
@@ -93,6 +95,7 @@ export default function AdminOffers() {
       ends_at: c.ends_at ? c.ends_at.slice(0, 16) : "",
       max_entries: c.max_entries ?? "",
     });
+    setDialogTab("basics");
     setOpen(true);
   };
 
@@ -363,7 +366,7 @@ export default function AdminOffers() {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
           <DialogHeader><DialogTitle>{editing ? "অফার সম্পাদনা" : "নতুন অফার"}</DialogTitle></DialogHeader>
-          <Tabs defaultValue={editing ? "basics" : "ai"}>
+          <Tabs value={dialogTab} onValueChange={setDialogTab}>
             <TabsList className="flex-wrap h-auto">
               <TabsTrigger value="ai"><Wand2 className="w-3.5 h-3.5 mr-1" /> AI</TabsTrigger>
               <TabsTrigger value="basics">Basics</TabsTrigger>
