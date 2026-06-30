@@ -20,7 +20,7 @@ const emptyForm = {
   title: "", slug: "", description: "", banner_url: "", prize_description: "",
   google_form_url: "", use_google_form: false,
   winners_count: 1, winner_prizes: [] as string[],
-  status: "draft", starts_at: "", ends_at: "",
+  status: "published", starts_at: "", ends_at: "",
   max_entries: "", require_login: false,
   thank_you_message: "", redirect_url: "",
   meta_title: "", meta_description: "",
