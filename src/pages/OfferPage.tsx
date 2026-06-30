@@ -61,9 +61,11 @@ export default function OfferPage() {
   );
 
   const now = new Date();
-  const isOpen = campaign.status === "published"
-    && (!campaign.starts_at || new Date(campaign.starts_at) <= now)
+  const scheduleOk = (!campaign.starts_at || new Date(campaign.starts_at) <= now)
     && (!campaign.ends_at || new Date(campaign.ends_at) >= now);
+  const isPublished = campaign.status === "published";
+  const isOpen = (isPublished || isAdmin) && scheduleOk;
+  const adminPreview = isAdmin && !isPublished;
 
   const fields: Field[] = Array.isArray(campaign.fields) && campaign.fields.length
     ? campaign.fields
