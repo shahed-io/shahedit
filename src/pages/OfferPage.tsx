@@ -21,11 +21,17 @@ export default function OfferPage() {
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
   const [values, setValues] = useState<Record<string, string>>({});
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     (async () => {
       const { data } = await supabase.from("offer_campaigns" as any).select("*").eq("slug", slug).maybeSingle();
       setCampaign(data);
+      const { data: auth } = await supabase.auth.getUser();
+      if (auth?.user) {
+        const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", auth.user.id);
+        setIsAdmin(!!roles?.some((r: any) => r.role === "admin" || r.role === "super_admin"));
+      }
       if (data) {
         const { data: w } = await supabase
           .from("offer_winners" as any)
