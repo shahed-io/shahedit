@@ -8,6 +8,7 @@ import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { canAccess, type AdminSection } from "@/lib/admin-permissions";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { useAnalyticsInjection } from "@/hooks/useAnalyticsInjection";
+import { useApplyCopyProtection } from "@/hooks/useCopyProtection";
 import { SEO } from "@/components/SEO";
 import { AutoStructuredData } from "@/components/AutoStructuredData";
 
@@ -100,6 +101,7 @@ const AdminAnalyticsHub = lazy(() => import("./pages/admin/AdminAnalyticsHub"));
 const AdminSettingsHub = lazy(() => import("./pages/admin/AdminSettingsHub"));
 const AdminAdvancedTools = lazy(() => import("./pages/admin/AdminAdvancedTools"));
 const AdminOffers = lazy(() => import("./pages/admin/AdminOffers"));
+const AdminCopyProtection = lazy(() => import("./pages/admin/AdminCopyProtection"));
 const OfferPage = lazy(() => import("./pages/OfferPage"));
 
 
@@ -273,6 +275,7 @@ const AdminRoutes = () => {
         <Route path="settings-hub" element={<RoleRoute section="settings-hub"><AdminSettingsHub /></RoleRoute>} />
         <Route path="advanced-tools" element={<RoleRoute section="advanced-tools"><AdminAdvancedTools /></RoleRoute>} />
         <Route path="offers" element={<RoleRoute section="offers"><AdminOffers /></RoleRoute>} />
+        <Route path="copy-protection" element={<RoleRoute section="copy-protection"><AdminCopyProtection /></RoleRoute>} />
 
       </Routes>
       </Suspense>
@@ -285,6 +288,7 @@ const AdminRoutes = () => {
 // Root component that injects analytics on every page load
 const AppWithAnalytics = () => {
   useAnalyticsInjection();
+  useApplyCopyProtection();
   return (
     <Suspense fallback={<PageFallback />}>
       <SEO />
