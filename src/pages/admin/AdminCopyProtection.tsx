@@ -85,17 +85,12 @@ export default function AdminCopyProtection() {
         </Button>
       </div>
 
-      <Card className="border-2 border-primary/20">
+      <Card className="border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
         <CardHeader>
-          <CardTitle className="flex items-center justify-between">
-            <span>Master Switch</span>
-            <Switch
-              checked={s.enabled}
-              onCheckedChange={(v) => update("enabled", v)}
-            />
-          </CardTitle>
+          <CardTitle>স্বাধীন নিয়ন্ত্রণ (Independent Toggles)</CardTitle>
           <CardDescription>
-            সম্পূর্ণ Copy Protection {s.enabled ? "চালু আছে" : "বন্ধ আছে"}. বাকি অপশনগুলো তখনই কাজ করবে যখন এটি চালু থাকবে।
+            নিচের প্রতিটি protection আলাদা আলাদা ভাবে কাজ করে — যেকোনোটা একা চালু/বন্ধ করতে পারেন।
+            সবগুলো বন্ধ থাকলে কোনো protection apply হবে না; যেকোনো একটা চালু থাকলেই সেটা apply হবে।
           </CardDescription>
         </CardHeader>
       </Card>
