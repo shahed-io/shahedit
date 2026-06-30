@@ -76,8 +76,16 @@ export function useApplyCopyProtection() {
   const isAdmin = location.pathname.startsWith("/ceo");
 
   useEffect(() => {
-    if (!settings.enabled) return;
     if (settings.excludeAdmin && isAdmin) return;
+    const anyOn =
+      settings.disableRightClick ||
+      settings.disableTextSelection ||
+      settings.disableCopy ||
+      settings.disableDevtoolsKeys ||
+      settings.disableImageDrag ||
+      settings.disablePrint ||
+      settings.watermarkEnabled;
+    if (!anyOn) return;
 
     const s = settings;
     const warn = () => s.showWarning && warnOnce(s.warningMessage);
