@@ -151,6 +151,7 @@ const navGroups: NavGroup[] = [
       { label: "Security Center", icon: Shield, href: "/ceo/security-center", badge: "NEW", section: "security-center" },
       { label: "Advanced Tools", icon: Sparkles, href: "/ceo/advanced-tools", badge: "NEW", section: "advanced-tools" },
       { label: "Offers & Giveaways", icon: Gift, href: "/ceo/offers", badge: "NEW", section: "offers" },
+      { label: "Copy Protection", icon: Shield, href: "/ceo/copy-protection", badge: "NEW", section: "copy-protection" },
 
     ],
   },

@@ -75,7 +75,8 @@ export type AdminSection =
   | "analytics-hub"
   | "settings-hub"
   | "advanced-tools"
-  | "offers";
+  | "offers"
+  | "copy-protection";
 
 
 /**
@@ -156,6 +157,7 @@ const PERMISSIONS: Record<AdminSection, AppRole[]> = {
   "settings-hub":     ["super_admin", "admin"],
   "advanced-tools":   ["super_admin", "admin"],
   offers:             ["super_admin", "admin", "manager"],
+  "copy-protection":  ["super_admin", "admin"],
 
 };
 
