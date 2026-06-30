@@ -171,25 +171,27 @@ export default function OfferPage() {
             <p className="text-muted-foreground whitespace-pre-line">{campaign.thank_you_message || "আপনার এন্ট্রি গৃহীত হয়েছে। বিজয়ী ঘোষণা হলে আমরা যোগাযোগ করব।"}</p>
           </div>
         ) : isOpen ? (
-          <form onSubmit={submit} className="rounded-2xl border bg-card p-6 space-y-4">
-            <div className="flex items-center gap-2 text-sm text-primary"><Sparkles className="w-4 h-4" /> অংশগ্রহণ করুন</div>
+          <form onSubmit={submit} className="rounded-2xl border bg-card p-6 sm:p-7 space-y-5 shadow-sm">
+            <div className="flex items-center gap-2 text-sm font-semibold text-primary"><Sparkles className="w-4 h-4" /> অংশগ্রহণ করুন</div>
             {fields.map((f) => (
-              <div key={f.key} className="space-y-1.5">
-                <Label>{f.label}{f.required && <span className="text-red-500"> *</span>}</Label>
+              <div key={f.key} className="space-y-2">
+                <Label className="text-sm sm:text-base font-medium">{f.label}{f.required && <span className="text-red-500"> *</span>}</Label>
                 {f.type === "textarea" ? (
-                  <Textarea value={values[f.key] || ""} onChange={(e) => setValues({ ...values, [f.key]: e.target.value })} placeholder={f.placeholder} />
+                  <Textarea rows={4} className="text-base" value={values[f.key] || ""} onChange={(e) => setValues({ ...values, [f.key]: e.target.value })} placeholder={f.placeholder} />
                 ) : f.type === "select" ? (
-                  <select className="w-full h-10 rounded-md border border-input bg-background px-3 text-sm"
+                  <select className="w-full h-11 rounded-md border border-input bg-background px-3 text-base"
                     value={values[f.key] || ""} onChange={(e) => setValues({ ...values, [f.key]: e.target.value })}>
                     <option value="">— নির্বাচন করুন —</option>
                     {(f.options || []).map((o) => <option key={o} value={o}>{o}</option>)}
                   </select>
                 ) : (
-                  <Input type={f.type} value={values[f.key] || ""} onChange={(e) => setValues({ ...values, [f.key]: e.target.value })} placeholder={f.placeholder} />
+                  <Input type={f.type} className="h-11 text-base" value={values[f.key] || ""} onChange={(e) => setValues({ ...values, [f.key]: e.target.value })} placeholder={f.placeholder} />
                 )}
               </div>
             ))}
-            <Button type="submit" disabled={submitting} className="w-full">{submitting ? "জমা হচ্ছে..." : "জমা দিন"}</Button>
+            <Button type="submit" disabled={submitting} className="w-full h-12 text-base font-semibold bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-700 hover:to-fuchsia-700">
+              {submitting ? "জমা হচ্ছে..." : "জমা দিন →"}
+            </Button>
           </form>
         ) : (
           <div className="rounded-2xl border bg-card p-6 text-center">
