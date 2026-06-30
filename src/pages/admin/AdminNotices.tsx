@@ -522,7 +522,7 @@ export default function AdminNotices() {
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader><DialogTitle>Notice {viewing?.notice_number}</DialogTitle></DialogHeader>
           {viewing && (
-            <div className="bg-white text-black p-6 rounded" id="notice-print">
+            <div ref={noticeRef} className="bg-white text-black p-6 rounded" id="notice-print">
               <div className="flex justify-between mb-4">
                 <div className="flex items-start gap-3">
                   <img src={logoUrl} alt="Logo" crossOrigin="anonymous" className="h-14 w-14 object-contain" />
