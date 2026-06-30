@@ -172,6 +172,27 @@ export default function AdminOffers() {
     URL.revokeObjectURL(url);
   };
 
+  const exportWinnersCsv = () => {
+    if (!winners.length) return;
+    const headers = ["position", "name", "email", "phone", "prize", "reason", "selected_by", "is_published", "created_at"];
+    const rows = winners.map((w) => [
+      w.position,
+      w.offer_submissions?.name,
+      w.offer_submissions?.email,
+      w.offer_submissions?.phone,
+      w.prize,
+      w.reason,
+      w.selected_by,
+      w.is_published ? "yes" : "no",
+      w.created_at,
+    ].map((v) => `"${(v ?? "").toString().replace(/"/g, '""')}"`).join(","));
+    const csv = [headers.join(","), ...rows].join("\n");
+    const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a"); a.href = url; a.download = `${active?.slug || "offer"}-winners.csv`; a.click();
+    URL.revokeObjectURL(url);
+  };
+
   const offerUrl = (slug: string) => `${window.location.origin}/offer/${slug}`;
 
   const updateField = (i: number, patch: Partial<Field>) => {
