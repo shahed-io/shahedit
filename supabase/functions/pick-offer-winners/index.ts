@@ -1,5 +1,5 @@
-// AI-assisted random winner picker for offer campaigns.
-// Body: { campaign_id: string, count?: number, prompt?: string }
+// AI-assisted or pure-random winner picker for offer campaigns.
+// Body: { campaign_id: string, count?: number, prompt?: string, mode?: "smart" | "random" }
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { createClient } from "npm:@supabase/supabase-js@2";
 
@@ -10,7 +10,7 @@ const aiKey = Deno.env.get("LOVABLE_API_KEY")!;
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   try {
-    const { campaign_id, count, prompt } = await req.json();
+    const { campaign_id, count, prompt, mode } = await req.json();
     if (!campaign_id) {
       return new Response(JSON.stringify({ error: "campaign_id required" }), {
         status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -38,29 +38,34 @@ Deno.serve(async (req) => {
     const n = Math.max(1, Math.min(count ?? campaign.winners_count ?? 1, subs.length));
     const prizes: string[] = Array.isArray(campaign.winner_prizes) ? campaign.winner_prizes : [];
 
-    // Ask AI to pick a fair, random-feeling shortlist with short reasons.
-    const list = subs.map((s, i) => ({ idx: i, id: s.id, name: s.name, email: s.email }));
-    const sys = `তুমি একজন নিরপেক্ষ ও সৎ judge। প্রদত্ত entry list থেকে ${n} জন winner বেছে নাও। শুধু JSON ফেরত দাও: {"winners":[{"id":"<id>","reason":"<short Bengali reason>"}]}`;
-    const userMsg = `Campaign: ${campaign.title}\nPrize: ${campaign.prize_description ?? ""}\nExtra rule: ${prompt ?? "এলোমেলোভাবে fair pick"}\nEntries: ${JSON.stringify(list)}`;
-
-    const r = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${aiKey}` },
-      body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
-        messages: [{ role: "system", content: sys }, { role: "user", content: userMsg }],
-        response_format: { type: "json_object" },
-      }),
-    });
     let picked: { id: string; reason: string }[] = [];
-    if (r.ok) {
-      const data = await r.json();
-      try {
-        const parsed = JSON.parse(data?.choices?.[0]?.message?.content ?? "{}");
-        if (Array.isArray(parsed?.winners)) picked = parsed.winners.filter((w: any) => w?.id);
-      } catch { /* fall through */ }
+    const pickMode: "smart" | "random" = mode === "random" ? "random" : "smart";
+
+    if (pickMode === "smart") {
+      // Ask AI to pick a fair shortlist with short reasons.
+      const list = subs.map((s, i) => ({ idx: i, id: s.id, name: s.name, email: s.email }));
+      const sys = `তুমি একজন নিরপেক্ষ ও সৎ judge। প্রদত্ত entry list থেকে ${n} জন winner বেছে নাও। শুধু JSON ফেরত দাও: {"winners":[{"id":"<id>","reason":"<short Bengali reason>"}]}`;
+      const userMsg = `Campaign: ${campaign.title}\nPrize: ${campaign.prize_description ?? ""}\nExtra rule: ${prompt ?? "এলোমেলোভাবে fair pick"}\nEntries: ${JSON.stringify(list)}`;
+
+      const r = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${aiKey}` },
+        body: JSON.stringify({
+          model: "google/gemini-3-flash-preview",
+          messages: [{ role: "system", content: sys }, { role: "user", content: userMsg }],
+          response_format: { type: "json_object" },
+        }),
+      });
+      if (r.ok) {
+        const data = await r.json();
+        try {
+          const parsed = JSON.parse(data?.choices?.[0]?.message?.content ?? "{}");
+          if (Array.isArray(parsed?.winners)) picked = parsed.winners.filter((w: any) => w?.id);
+        } catch { /* fall through */ }
+      }
     }
-    // Fallback: random pick if AI fails or returns invalid ids
+
+    // Validate AI picks, fill remainder (or all, for random mode) via shuffle
     const validIds = new Set(subs.map((s) => s.id));
     picked = picked.filter((w) => validIds.has(w.id));
     if (picked.length < n) {
@@ -71,7 +76,10 @@ Deno.serve(async (req) => {
       }
       for (const s of remaining) {
         if (picked.length >= n) break;
-        picked.push({ id: s.id, reason: "এলোমেলোভাবে নির্বাচিত (AI fallback)" });
+        picked.push({
+          id: s.id,
+          reason: pickMode === "random" ? "এলোমেলো লটারির মাধ্যমে নির্বাচিত" : "এলোমেলোভাবে নির্বাচিত (AI fallback)",
+        });
       }
     }
     picked = picked.slice(0, n);
@@ -85,7 +93,7 @@ Deno.serve(async (req) => {
       position: i + 1,
       prize: prizes[i] ?? campaign.prize_description ?? null,
       reason: w.reason,
-      selected_by: "ai",
+      selected_by: pickMode === "random" ? "random" : "ai",
       is_published: false,
     }));
     const { data: inserted, error: iErr } = await supa.from("offer_winners").insert(rows).select();

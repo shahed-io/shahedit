@@ -127,15 +127,15 @@ export default function AdminOffers() {
     load();
   };
 
-  const pickWinners = async (extra?: string) => {
+  const pickWinners = async (mode: "smart" | "random" = "smart", extra?: string) => {
     if (!active) return;
     setPicking(true);
     try {
       const { data, error } = await supabase.functions.invoke("pick-offer-winners", {
-        body: { campaign_id: active.id, count: active.winners_count, prompt: extra },
+        body: { campaign_id: active.id, count: active.winners_count, prompt: extra, mode },
       });
       if (error || (data as any)?.error) throw new Error((data as any)?.error || error?.message);
-      toast.success(`${(data as any).winners.length} জন বিজয়ী নির্বাচিত!`);
+      toast.success(`${(data as any).winners.length} জন বিজয়ী নির্বাচিত! (${mode === "random" ? "Random" : "AI Smart"})`);
       loadDetail(active);
     } catch (e: any) {
       toast.error(e.message || "নির্বাচন ব্যর্থ");
@@ -299,7 +299,8 @@ export default function AdminOffers() {
                   <p className="text-xs text-muted-foreground">AI {active.winners_count} জন winner বেছে নিবে এন্ট্রি থেকে।</p>
                 </div>
                 <div className="flex gap-2 flex-wrap">
-                  <Button onClick={() => pickWinners()} disabled={picking}><Sparkles className="w-4 h-4 mr-1" /> {picking ? "নির্বাচন হচ্ছে..." : "AI দিয়ে বিজয়ী বাছাই"}</Button>
+                  <Button onClick={() => pickWinners("smart")} disabled={picking}><Sparkles className="w-4 h-4 mr-1" /> {picking ? "নির্বাচন হচ্ছে..." : "AI Smart Pick"}</Button>
+                  <Button variant="secondary" onClick={() => pickWinners("random")} disabled={picking}><Trophy className="w-4 h-4 mr-1" /> Random Pick</Button>
                   {winners.length > 0 && (
                     <Button variant="outline" onClick={() => publishAll(!winners.every((w) => w.is_published))}>
                       {winners.every((w) => w.is_published) ? "সব Unpublish" : "সব Publish"}
