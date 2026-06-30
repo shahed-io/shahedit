@@ -127,15 +127,15 @@ export default function AdminOffers() {
     load();
   };
 
-  const pickWinners = async (extra?: string) => {
+  const pickWinners = async (mode: "smart" | "random" = "smart", extra?: string) => {
     if (!active) return;
     setPicking(true);
     try {
       const { data, error } = await supabase.functions.invoke("pick-offer-winners", {
-        body: { campaign_id: active.id, count: active.winners_count, prompt: extra },
+        body: { campaign_id: active.id, count: active.winners_count, prompt: extra, mode },
       });
       if (error || (data as any)?.error) throw new Error((data as any)?.error || error?.message);
-      toast.success(`${(data as any).winners.length} জন বিজয়ী নির্বাচিত!`);
+      toast.success(`${(data as any).winners.length} জন বিজয়ী নির্বাচিত! (${mode === "random" ? "Random" : "AI Smart"})`);
       loadDetail(active);
     } catch (e: any) {
       toast.error(e.message || "নির্বাচন ব্যর্থ");
