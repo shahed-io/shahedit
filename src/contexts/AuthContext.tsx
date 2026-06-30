@@ -84,11 +84,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
-        // Refresh role in background — do NOT toggle global loading after first mount,
-        // otherwise ProtectedRoute will unmount the AdminLayout on every token refresh
-        // and the user will see a flash back to the dashboard/loading state.
+        // Only block UI with roleLoading on real sign-in / initial session.
+        // TOKEN_REFRESHED and USER_UPDATED must NOT flip roleLoading=true,
+        // otherwise ProtectedRoute flashes the loader and feels like a re-login.
+        const isSignIn = event === "SIGNED_IN" || event === "INITIAL_SESSION";
+        if (isSignIn) {
+          // Synchronously mark role as loading so ProtectedRoute does NOT
+          // render the dashboard for a moment before bouncing to /ceo/login.
+          setRoleLoading(true);
+        }
         setTimeout(() => {
-          fetchRole(session.user.id);
+          fetchRole(session.user.id, { showLoading: false });
         }, 0);
         if (event === "SIGNED_IN") {
           setTimeout(() => syncProfileFromOAuth(session.user), 0);
@@ -116,7 +122,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
-        await fetchRole(session.user.id);
+        await fetchRole(session.user.id, { showLoading: true });
       } else {
         setRoleLoading(false);
       }
@@ -124,6 +130,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setLoading(false);
     });
   }, []);
+
 
 
   const signIn = async (email: string, password: string) => {
