@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminPage, AdminPageHeader, GlassCard, KpiCard } from "@/components/admin/ui";
-import { FileText, Plus, Trash2, Edit2, Save, Eye, X, Mic, MicOff, Sparkles, Loader2, Printer, Bell, PenTool, Upload, Image as ImageIcon } from "lucide-react";
+import { FileText, Plus, Trash2, Edit2, Save, Eye, X, Mic, MicOff, Sparkles, Loader2, Printer, Bell, PenTool, Upload, Image as ImageIcon, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
