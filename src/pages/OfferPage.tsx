@@ -133,14 +133,21 @@ export default function OfferPage() {
           </div>
         )}
 
-        {campaign.use_google_form && campaign.google_form_url ? (
-          <div className="rounded-2xl border bg-card p-4">
-            <p className="text-sm text-muted-foreground mb-3">নিচের ফর্মটি পূরণ করে অংশগ্রহণ করুন:</p>
-            <div className="aspect-[4/5] w-full">
-              <iframe src={campaign.google_form_url} className="w-full h-full rounded-xl border" loading="lazy" title="Offer form" />
+        {campaign.use_google_form && campaign.google_form_url ? (() => {
+          const raw: string = campaign.google_form_url;
+          const embedUrl = raw.includes("embedded=true")
+            ? raw
+            : raw + (raw.includes("?") ? "&" : "?") + "embedded=true";
+          return (
+            <div className="rounded-2xl border bg-card p-4">
+              <p className="text-sm text-muted-foreground mb-3">নিচের ফর্মটি পূরণ করে অংশগ্রহণ করুন:</p>
+              <div className="aspect-[4/5] w-full">
+                <iframe src={embedUrl} className="w-full h-full rounded-xl border" loading="lazy" title="Offer form" />
+              </div>
+              <a href={raw} target="_blank" rel="noopener noreferrer" className="mt-3 inline-block text-sm text-primary underline">ফর্ম দেখা যাচ্ছে না? নতুন ট্যাবে খুলুন →</a>
             </div>
-          </div>
-        ) : done ? (
+          );
+        })() : done ? (
           <div className="rounded-2xl border bg-card p-8 text-center">
             <CheckCircle2 className="w-14 h-14 mx-auto text-green-500 mb-3" />
             <h2 className="text-xl font-bold mb-2">ধন্যবাদ!</h2>
