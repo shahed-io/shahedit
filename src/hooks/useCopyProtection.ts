@@ -8,9 +8,17 @@ export type CopyProtectionSettings = {
   disableRightClick: boolean;
   disableTextSelection: boolean;
   disableCopy: boolean;
+  disablePaste: boolean;
   disableDevtoolsKeys: boolean;
+  detectDevtools: boolean;
   disableImageDrag: boolean;
   disablePrint: boolean;
+  blockPrintScreen: boolean;
+  disableTouchCallout: boolean;
+  disableMiddleClick: boolean;
+  blurOnWindowBlur: boolean;
+  frameBuster: boolean;
+  consoleWarning: boolean;
   showWarning: boolean;
   warningMessage: string;
   watermarkEnabled: boolean;
@@ -23,9 +31,17 @@ export const DEFAULT_COPY_PROTECTION: CopyProtectionSettings = {
   disableRightClick: true,
   disableTextSelection: true,
   disableCopy: true,
+  disablePaste: false,
   disableDevtoolsKeys: true,
+  detectDevtools: false,
   disableImageDrag: true,
   disablePrint: false,
+  blockPrintScreen: false,
+  disableTouchCallout: true,
+  disableMiddleClick: false,
+  blurOnWindowBlur: false,
+  frameBuster: true,
+  consoleWarning: true,
   showWarning: true,
   warningMessage: "এই কন্টেন্ট কপি করা যাবে না — © Shahed IT",
   watermarkEnabled: false,
@@ -81,14 +97,44 @@ export function useApplyCopyProtection() {
       settings.disableRightClick ||
       settings.disableTextSelection ||
       settings.disableCopy ||
+      settings.disablePaste ||
       settings.disableDevtoolsKeys ||
+      settings.detectDevtools ||
       settings.disableImageDrag ||
       settings.disablePrint ||
+      settings.blockPrintScreen ||
+      settings.disableTouchCallout ||
+      settings.disableMiddleClick ||
+      settings.blurOnWindowBlur ||
+      settings.frameBuster ||
+      settings.consoleWarning ||
       settings.watermarkEnabled;
     if (!anyOn) return;
 
     const s = settings;
     const warn = () => s.showWarning && warnOnce(s.warningMessage);
+
+    // Frame-buster — prevent embedding inside another site
+    if (s.frameBuster && window.top !== window.self) {
+      try {
+        window.top!.location.href = window.location.href;
+      } catch {
+        document.body.innerHTML = "";
+      }
+    }
+
+    // Console branding/warning
+    if (s.consoleWarning) {
+      try {
+        console.log(
+          "%c⚠ STOP!",
+          "color:#e11d48;font-size:48px;font-weight:bold;text-shadow:2px 2px 4px rgba(0,0,0,0.3);"
+        );
+        console.log("%c" + s.warningMessage, "color:#111;font-size:16px;font-weight:600;");
+      } catch {
+        /* ignore */
+      }
+    }
 
     const onContext = (e: MouseEvent) => {
       if (!s.disableRightClick) return;
@@ -100,10 +146,24 @@ export function useApplyCopyProtection() {
       e.preventDefault();
       warn();
     };
+    const onPaste = (e: ClipboardEvent) => {
+      if (!s.disablePaste) return;
+      const t = e.target as HTMLElement;
+      if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || (t as any).isContentEditable)) {
+        e.preventDefault();
+        warn();
+      }
+    };
     const onDragStart = (e: DragEvent) => {
       if (!s.disableImageDrag) return;
       const t = e.target as HTMLElement;
       if (t?.tagName === "IMG") {
+        e.preventDefault();
+        warn();
+      }
+    };
+    const onAuxClick = (e: MouseEvent) => {
+      if (s.disableMiddleClick && e.button === 1) {
         e.preventDefault();
         warn();
       }
@@ -116,8 +176,22 @@ export function useApplyCopyProtection() {
         warn();
         return;
       }
+      if (s.disablePaste && ctrl && key === "v") {
+        e.preventDefault();
+        warn();
+        return;
+      }
       if (s.disablePrint && ctrl && (key === "p" || key === "s")) {
         e.preventDefault();
+        warn();
+        return;
+      }
+      if (s.blockPrintScreen && (key === "printscreen" || e.code === "PrintScreen")) {
+        try {
+          navigator.clipboard?.writeText("");
+        } catch {
+          /* ignore */
+        }
         warn();
         return;
       }
@@ -140,17 +214,60 @@ export function useApplyCopyProtection() {
       }
     };
 
+    // DevTools detection via window-size delta
+    let devtoolsBlur = false;
+    const devtoolsCheck = () => {
+      const threshold = 170;
+      const widthDiff = window.outerWidth - window.innerWidth;
+      const heightDiff = window.outerHeight - window.innerHeight;
+      const open = widthDiff > threshold || heightDiff > threshold;
+      if (open && !devtoolsBlur) {
+        devtoolsBlur = true;
+        document.body.style.filter = "blur(14px)";
+        warnOnce("DevTools detected — content hidden");
+      } else if (!open && devtoolsBlur) {
+        devtoolsBlur = false;
+        document.body.style.filter = "";
+      }
+    };
+    let devtoolsInterval: number | null = null;
+    if (s.detectDevtools) {
+      devtoolsInterval = window.setInterval(devtoolsCheck, 1000);
+    }
+
+    // Blur when window loses focus (anti screen-share peek)
+    let windowBlurred = false;
+    const onWinBlur = () => {
+      if (!s.blurOnWindowBlur) return;
+      windowBlurred = true;
+      document.body.style.filter = "blur(10px)";
+    };
+    const onWinFocus = () => {
+      if (windowBlurred) {
+        windowBlurred = false;
+        if (!devtoolsBlur) document.body.style.filter = "";
+      }
+    };
+
     document.addEventListener("contextmenu", onContext);
     document.addEventListener("copy", onCopy);
     document.addEventListener("cut", onCopy);
+    document.addEventListener("paste", onPaste);
     document.addEventListener("dragstart", onDragStart);
+    document.addEventListener("auxclick", onAuxClick);
     document.addEventListener("keydown", onKeyDown);
+    window.addEventListener("blur", onWinBlur);
+    window.addEventListener("focus", onWinFocus);
 
     const body = document.body;
     const prevSelect = body.style.userSelect;
+    const prevCallout = (body.style as any).webkitTouchCallout;
     if (s.disableTextSelection) {
       body.style.userSelect = "none";
       (body.style as any).webkitUserSelect = "none";
+    }
+    if (s.disableTouchCallout) {
+      (body.style as any).webkitTouchCallout = "none";
     }
 
     let watermarkEl: HTMLDivElement | null = null;
@@ -178,10 +295,17 @@ export function useApplyCopyProtection() {
       document.removeEventListener("contextmenu", onContext);
       document.removeEventListener("copy", onCopy);
       document.removeEventListener("cut", onCopy);
+      document.removeEventListener("paste", onPaste);
       document.removeEventListener("dragstart", onDragStart);
+      document.removeEventListener("auxclick", onAuxClick);
       document.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("blur", onWinBlur);
+      window.removeEventListener("focus", onWinFocus);
       body.style.userSelect = prevSelect;
       (body.style as any).webkitUserSelect = prevSelect;
+      (body.style as any).webkitTouchCallout = prevCallout;
+      body.style.filter = "";
+      if (devtoolsInterval) clearInterval(devtoolsInterval);
       if (watermarkEl) watermarkEl.remove();
     };
   }, [settings, isAdmin]);
