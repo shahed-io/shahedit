@@ -60,6 +60,7 @@ const navGroups: NavGroup[] = [
       { label: "Custom Order", icon: ClipboardList, href: "/ceo/custom-order", badge: "NEW", section: "custom-order" },
       { label: "Quotations", icon: FileText, href: "/ceo/quotations", badge: "NEW", section: "quotations" },
       { label: "Invoices", icon: Receipt, href: "/ceo/invoices", badge: "NEW", section: "invoices" },
+      { label: "Notices (AI)", icon: Bell, href: "/ceo/notices", badge: "NEW", section: "notices" },
       { label: "Coupons", icon: Tag, href: "/ceo/coupons", badge: "NEW", section: "coupons" },
     ],
   },
