@@ -124,20 +124,29 @@ export default function OfferPage() {
     <div className="min-h-screen flex flex-col">
       <SEO title={campaign.meta_title || campaign.title} description={campaign.meta_description || campaign.description?.slice(0, 150)} />
       <SiteHeader />
-      <main className="flex-1 max-w-3xl mx-auto w-full px-4 py-10">
-        {campaign.banner_url && (
-          <img src={campaign.banner_url} alt={campaign.title} className="w-full rounded-2xl mb-6 object-cover max-h-72" />
+      <main className="flex-1 max-w-3xl mx-auto w-full px-4 sm:px-6 py-8 sm:py-12">
+        {adminPreview && (
+          <div className="mb-5 rounded-xl border border-amber-400/50 bg-amber-50 dark:bg-amber-500/10 text-amber-800 dark:text-amber-200 px-4 py-3 text-sm">
+            ⚠️ <strong>Admin Preview:</strong> এই অফারটি এখনো <strong>Draft</strong>। পাবলিকলি দেখাতে Admin → Offers → <strong>Publish</strong> বাটন চাপুন।
+          </div>
         )}
-        <div className="flex items-center gap-2 mb-3">
-          <Gift className="w-6 h-6 text-purple-500" />
-          <span className="text-xs uppercase tracking-wider text-purple-500 font-semibold">Special Offer</span>
+        {campaign.banner_url && (
+          <img src={campaign.banner_url} alt={campaign.title} className="w-full rounded-2xl mb-6 object-cover max-h-80 shadow-lg" />
+        )}
+        <div className="flex items-center gap-2 mb-4">
+          <Gift className="w-5 h-5 text-purple-500" />
+          <span className="text-[11px] sm:text-xs uppercase tracking-[0.18em] text-purple-500 font-bold">Special Offer</span>
         </div>
-        <h1 className="text-3xl md:text-4xl font-bold mb-3">{campaign.title}</h1>
-        {campaign.description && <p className="text-muted-foreground whitespace-pre-line mb-4">{campaign.description}</p>}
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight mb-4 bg-gradient-to-r from-purple-600 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">{campaign.title}</h1>
+        {campaign.description && (
+          <p className="text-base sm:text-lg text-muted-foreground whitespace-pre-line mb-6 leading-relaxed">{campaign.description}</p>
+        )}
         {campaign.prize_description && (
-          <div className="rounded-xl border border-amber-300/40 bg-amber-50/40 dark:bg-amber-500/10 p-4 mb-6">
-            <div className="flex items-center gap-2 font-semibold text-amber-700 dark:text-amber-300"><Trophy className="w-5 h-5" /> পুরস্কার</div>
-            <p className="mt-1 text-sm whitespace-pre-line">{campaign.prize_description}</p>
+          <div className="rounded-2xl border-2 border-amber-400/50 bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-500/15 dark:to-orange-500/10 p-5 mb-7 shadow-sm">
+            <div className="flex items-center gap-2 font-bold text-amber-700 dark:text-amber-300 text-base sm:text-lg">
+              <Trophy className="w-5 h-5" /> পুরস্কার
+            </div>
+            <p className="mt-2 text-sm sm:text-base whitespace-pre-line text-foreground/90 leading-relaxed">{campaign.prize_description}</p>
           </div>
         )}
 
