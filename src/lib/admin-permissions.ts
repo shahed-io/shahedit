@@ -45,6 +45,7 @@ export type AdminSection =
   | "activity"
   | "projects"
   | "invoices"
+  | "notices"
   | "expenses"
   | "quotations"
   | "newsletter"
