@@ -339,7 +339,10 @@ export default function AdminNotices() {
                   <td className="p-2"><span className={`text-[10px] uppercase px-2 py-0.5 rounded ${STATUS_COLOR[n.status] || ""}`}>{n.status}</span></td>
                   <td className="p-2">
                     <div className="flex gap-1 justify-end">
-                      <Button size="sm" variant="ghost" onClick={() => setViewing(n)}><Eye className="w-4 h-4" /></Button>
+                      <Button size="sm" variant="ghost" onClick={() => setViewing(n)} title="View"><Eye className="w-4 h-4" /></Button>
+                      <Button size="sm" variant="ghost" onClick={() => quickDownload(n)} title="Download PDF" disabled={downloadingId === n.id}>
+                        {downloadingId === n.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4 text-emerald-400" />}
+                      </Button>
                       <Button size="sm" variant="ghost" onClick={() => openEdit(n)}><Edit2 className="w-4 h-4" /></Button>
                       <Button size="sm" variant="ghost" onClick={() => remove(n.id)}><Trash2 className="w-4 h-4 text-rose-400" /></Button>
                     </div>
