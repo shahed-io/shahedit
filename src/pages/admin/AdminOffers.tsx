@@ -172,6 +172,27 @@ export default function AdminOffers() {
     URL.revokeObjectURL(url);
   };
 
+  const exportWinnersCsv = () => {
+    if (!winners.length) return;
+    const headers = ["position", "name", "email", "phone", "prize", "reason", "selected_by", "is_published", "created_at"];
+    const rows = winners.map((w) => [
+      w.position,
+      w.offer_submissions?.name,
+      w.offer_submissions?.email,
+      w.offer_submissions?.phone,
+      w.prize,
+      w.reason,
+      w.selected_by,
+      w.is_published ? "yes" : "no",
+      w.created_at,
+    ].map((v) => `"${(v ?? "").toString().replace(/"/g, '""')}"`).join(","));
+    const csv = [headers.join(","), ...rows].join("\n");
+    const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a"); a.href = url; a.download = `${active?.slug || "offer"}-winners.csv`; a.click();
+    URL.revokeObjectURL(url);
+  };
+
   const offerUrl = (slug: string) => `${window.location.origin}/offer/${slug}`;
 
   const updateField = (i: number, patch: Partial<Field>) => {
@@ -302,9 +323,12 @@ export default function AdminOffers() {
                   <Button onClick={() => pickWinners("smart")} disabled={picking}><Sparkles className="w-4 h-4 mr-1" /> {picking ? "নির্বাচন হচ্ছে..." : "AI Smart Pick"}</Button>
                   <Button variant="secondary" onClick={() => pickWinners("random")} disabled={picking}><Trophy className="w-4 h-4 mr-1" /> Random Pick</Button>
                   {winners.length > 0 && (
-                    <Button variant="outline" onClick={() => publishAll(!winners.every((w) => w.is_published))}>
-                      {winners.every((w) => w.is_published) ? "সব Unpublish" : "সব Publish"}
-                    </Button>
+                    <>
+                      <Button variant="outline" onClick={exportWinnersCsv}>📥 Winners CSV</Button>
+                      <Button variant="outline" onClick={() => publishAll(!winners.every((w) => w.is_published))}>
+                        {winners.every((w) => w.is_published) ? "সব Unpublish" : "সব Publish"}
+                      </Button>
+                    </>
                   )}
                 </div>
               </CardHeader>
