@@ -247,6 +247,7 @@ const AdminRoutes = () => {
         <Route path="products" element={<RoleRoute section="products"><AdminProducts /></RoleRoute>} />
         <Route path="projects" element={<RoleRoute section="projects"><AdminProjects /></RoleRoute>} />
         <Route path="invoices" element={<RoleRoute section="invoices"><AdminInvoices /></RoleRoute>} />
+        <Route path="notices" element={<RoleRoute section="notices"><AdminNotices /></RoleRoute>} />
         <Route path="expenses" element={<RoleRoute section="expenses"><AdminExpenses /></RoleRoute>} />
         <Route path="quotations" element={<RoleRoute section="quotations"><AdminQuotations /></RoleRoute>} />
         <Route path="newsletter" element={<RoleRoute section="newsletter"><AdminNewsletter /></RoleRoute>} />
