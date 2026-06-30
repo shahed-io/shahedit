@@ -1,5 +1,5 @@
-// AI-assisted random winner picker for offer campaigns.
-// Body: { campaign_id: string, count?: number, prompt?: string }
+// AI-assisted or pure-random winner picker for offer campaigns.
+// Body: { campaign_id: string, count?: number, prompt?: string, mode?: "smart" | "random" }
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { createClient } from "npm:@supabase/supabase-js@2";
 
@@ -10,7 +10,7 @@ const aiKey = Deno.env.get("LOVABLE_API_KEY")!;
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   try {
-    const { campaign_id, count, prompt } = await req.json();
+    const { campaign_id, count, prompt, mode } = await req.json();
     if (!campaign_id) {
       return new Response(JSON.stringify({ error: "campaign_id required" }), {
         status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
