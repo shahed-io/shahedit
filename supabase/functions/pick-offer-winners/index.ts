@@ -93,7 +93,7 @@ Deno.serve(async (req) => {
       position: i + 1,
       prize: prizes[i] ?? campaign.prize_description ?? null,
       reason: w.reason,
-      selected_by: "ai",
+      selected_by: pickMode === "random" ? "random" : "ai",
       is_published: false,
     }));
     const { data: inserted, error: iErr } = await supa.from("offer_winners").insert(rows).select();
