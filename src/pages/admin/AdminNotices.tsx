@@ -299,7 +299,8 @@ export default function AdminNotices() {
         title="Notice System"
         subtitle="AI-powered notice generator with voice input — invoice-style design"
         actions={
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
+            <Button variant="outline" onClick={exportCsv}><Download className="w-4 h-4 mr-2" />Export CSV</Button>
             <Button variant="outline" onClick={() => setShowSig(true)}><PenTool className="w-4 h-4 mr-2" />Signature</Button>
             <Button onClick={openNew}><Plus className="w-4 h-4 mr-2" />New Notice</Button>
           </div>
