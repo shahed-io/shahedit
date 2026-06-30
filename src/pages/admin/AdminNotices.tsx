@@ -221,6 +221,71 @@ export default function AdminNotices() {
 
   const printNotice = () => window.print();
 
+  // ---- PDF Download ----
+  const downloadPdf = async () => {
+    if (!noticeRef.current || !viewing) return;
+    setDownloadingPdf(true);
+    try {
+      const [{ default: html2canvas }, { default: jsPDF }] = await Promise.all([
+        import("html2canvas"),
+        import("jspdf"),
+      ]);
+      const canvas = await html2canvas(noticeRef.current, { scale: 2, backgroundColor: "#ffffff", useCORS: true });
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
+      const pageW = pdf.internal.pageSize.getWidth();
+      const pageH = pdf.internal.pageSize.getHeight();
+      const imgH = (canvas.height * pageW) / canvas.width;
+      let heightLeft = imgH;
+      let position = 0;
+      pdf.addImage(imgData, "PNG", 0, position, pageW, imgH);
+      heightLeft -= pageH;
+      while (heightLeft > 0) {
+        position = heightLeft - imgH;
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", 0, position, pageW, imgH);
+        heightLeft -= pageH;
+      }
+      pdf.save(`${viewing.notice_number || "notice"}.pdf`);
+      toast.success("PDF downloaded");
+    } catch (e: any) {
+      toast.error(e.message || "PDF download failed");
+    } finally {
+      setDownloadingPdf(false);
+    }
+  };
+
+  // ---- Quick download from list row (opens view briefly, renders, downloads) ----
+  const quickDownload = async (n: any) => {
+    setDownloadingId(n.id);
+    setViewing(n);
+    // wait for dialog + images to mount/render
+    await new Promise(r => setTimeout(r, 700));
+    await downloadPdf();
+    setDownloadingId(null);
+  };
+
+  // ---- Export all notices as CSV ----
+  const exportCsv = () => {
+    if (items.length === 0) return toast.error("কোন notice নেই");
+    const headers = ["Notice #", "Title", "Subject", "Recipient", "Email", "Phone", "Date", "Status", "Category", "Body"];
+    const escape = (v: any) => `"${String(v ?? "").replace(/"/g, '""').replace(/\r?\n/g, " ")}"`;
+    const rows = items.map(n => [
+      n.notice_number, n.title, n.subject, n.recipient_name, n.recipient_email,
+      n.recipient_phone, n.issue_date, n.status, n.category, n.body,
+    ].map(escape).join(","));
+    const csv = "\uFEFF" + headers.map(escape).join(",") + "\n" + rows.join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `notices-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success("CSV downloaded");
+  };
+
+
   const kpis = {
     total: items.length,
     draft: items.filter(i => i.status === "draft").length,
