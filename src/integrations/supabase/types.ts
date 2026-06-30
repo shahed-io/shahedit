@@ -2341,6 +2341,75 @@ export type Database = {
         }
         Relationships: []
       }
+      notices: {
+        Row: {
+          ai_prompt: string | null
+          body: string
+          category: string | null
+          created_at: string
+          created_by: string | null
+          id: string
+          issue_date: string
+          issued_by: string | null
+          language: string | null
+          notice_number: string
+          recipient_address: string | null
+          recipient_email: string | null
+          recipient_name: string | null
+          recipient_phone: string | null
+          reference: string | null
+          status: string
+          subject: string | null
+          title: string
+          tone: string | null
+          updated_at: string
+        }
+        Insert: {
+          ai_prompt?: string | null
+          body: string
+          category?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          issue_date?: string
+          issued_by?: string | null
+          language?: string | null
+          notice_number: string
+          recipient_address?: string | null
+          recipient_email?: string | null
+          recipient_name?: string | null
+          recipient_phone?: string | null
+          reference?: string | null
+          status?: string
+          subject?: string | null
+          title: string
+          tone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          ai_prompt?: string | null
+          body?: string
+          category?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          issue_date?: string
+          issued_by?: string | null
+          language?: string | null
+          notice_number?: string
+          recipient_address?: string | null
+          recipient_email?: string | null
+          recipient_name?: string | null
+          recipient_phone?: string | null
+          reference?: string | null
+          status?: string
+          subject?: string | null
+          title?: string
+          tone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       notification_channels: {
         Row: {
           admin_alert_emails: string | null
