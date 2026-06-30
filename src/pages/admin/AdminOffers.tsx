@@ -44,6 +44,7 @@ export default function AdminOffers() {
   const [picking, setPicking] = useState(false);
   const [aiBrief, setAiBrief] = useState("");
   const [aiBusy, setAiBusy] = useState(false);
+  const [dialogTab, setDialogTab] = useState("ai");
 
   const aiGenerate = async () => {
     if (!aiBrief.trim()) return toast.error("Offer-এর বিস্তারিত লিখুন");
@@ -54,7 +55,8 @@ export default function AdminOffers() {
       });
       if (error || (data as any)?.error) throw new Error((data as any)?.error || error?.message);
       setForm({ ...emptyForm, ...(data as any) });
-      toast.success("AI offer তৈরি করেছে — যাচাই করে Save করুন");
+      setDialogTab("basics");
+      toast.success("AI offer তৈরি করেছে — এখন প্রতিটি tab-এ গিয়ে edit/Save করুন");
     } catch (e: any) {
       toast.error(e.message || "AI generate ব্যর্থ");
     } finally {
