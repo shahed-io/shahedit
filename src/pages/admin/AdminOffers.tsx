@@ -323,9 +323,12 @@ export default function AdminOffers() {
                   <Button onClick={() => pickWinners("smart")} disabled={picking}><Sparkles className="w-4 h-4 mr-1" /> {picking ? "নির্বাচন হচ্ছে..." : "AI Smart Pick"}</Button>
                   <Button variant="secondary" onClick={() => pickWinners("random")} disabled={picking}><Trophy className="w-4 h-4 mr-1" /> Random Pick</Button>
                   {winners.length > 0 && (
-                    <Button variant="outline" onClick={() => publishAll(!winners.every((w) => w.is_published))}>
-                      {winners.every((w) => w.is_published) ? "সব Unpublish" : "সব Publish"}
-                    </Button>
+                    <>
+                      <Button variant="outline" onClick={exportWinnersCsv}>📥 Winners CSV</Button>
+                      <Button variant="outline" onClick={() => publishAll(!winners.every((w) => w.is_published))}>
+                        {winners.every((w) => w.is_published) ? "সব Unpublish" : "সব Publish"}
+                      </Button>
+                    </>
                   )}
                 </div>
               </CardHeader>
