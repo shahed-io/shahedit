@@ -1,13 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminPage, AdminPageHeader, GlassCard, KpiCard } from "@/components/admin/ui";
-import { FileText, Plus, Trash2, Edit2, Save, Eye, Download, X, Mic, MicOff, Sparkles, Loader2, Printer, Bell } from "lucide-react";
+import { FileText, Plus, Trash2, Edit2, Save, Eye, X, Mic, MicOff, Sparkles, Loader2, Printer, Bell, PenTool, Upload, Image as ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { QRCodeCanvas } from "qrcode.react";
 import { BRAND } from "@/lib/brand";
@@ -28,23 +27,17 @@ const CATEGORIES = [
   { v: "legal", l: "Legal / আইনি" },
   { v: "announcement", l: "Announcement / ঘোষণা" },
 ];
+const LOGO_KEY = "invoice_logo_url";
+const SIG_KEY = "notice_signature_url";
+const SIG_NAME_KEY = "notice_signature_name";
 
 const emptyForm = {
-  title: "",
-  subject: "",
-  body: "",
-  recipient_name: "",
-  recipient_address: "",
-  recipient_email: "",
-  recipient_phone: "",
+  title: "", subject: "", body: "",
+  recipient_name: "", recipient_address: "", recipient_email: "", recipient_phone: "",
   issued_by: "Shahed IT — Authorized Officer",
   issue_date: new Date().toISOString().slice(0, 10),
-  reference: "",
-  category: "general",
-  status: "draft",
-  language: "bn",
-  tone: "formal",
-  ai_prompt: "",
+  reference: "", category: "general", status: "draft",
+  language: "bn", tone: "formal", ai_prompt: "",
 };
 
 export default function AdminNotices() {
@@ -56,23 +49,103 @@ export default function AdminNotices() {
   const [generating, setGenerating] = useState(false);
   const [listening, setListening] = useState(false);
   const recogRef = useRef<any>(null);
-  const noticeRef = useRef<HTMLDivElement>(null);
+
+  // Settings
+  const [logoUrl, setLogoUrl] = useState<string>(BRAND.logoUrl);
+  const [sigUrl, setSigUrl] = useState<string>("");
+  const [sigName, setSigName] = useState<string>("Shahed IT — Authorized Officer");
+  const [showSig, setShowSig] = useState(false);
+  const [sigBusy, setSigBusy] = useState(false);
+  const [aiSigName, setAiSigName] = useState("");
+  const [aiSigStyle, setAiSigStyle] = useState("elegant");
+  const fileRef = useRef<HTMLInputElement>(null);
 
   const load = async () => {
     const { data } = await db.from("notices").select("*").order("created_at", { ascending: false });
     setItems(data ?? []);
   };
-  useEffect(() => { load(); }, []);
+  const loadSettings = async () => {
+    const { data } = await db.from("site_settings").select("key,value").in("key", [LOGO_KEY, SIG_KEY, SIG_NAME_KEY]);
+    (data || []).forEach((r: any) => {
+      if (r.key === LOGO_KEY && r.value) setLogoUrl(r.value);
+      if (r.key === SIG_KEY && r.value) setSigUrl(r.value);
+      if (r.key === SIG_NAME_KEY && r.value) setSigName(r.value);
+    });
+  };
+  useEffect(() => { load(); loadSettings(); }, []);
 
-  // ---- Voice input (Web Speech API) ----
+  const upsertSetting = async (key: string, value: string, label: string) => {
+    const { data: ex } = await db.from("site_settings").select("id").eq("key", key).maybeSingle();
+    if (ex) await db.from("site_settings").update({ value }).eq("key", key);
+    else await db.from("site_settings").insert({ key, value, type: "text", group_name: "notices", label });
+  };
+
+  // ---- Signature upload ----
+  const handleUpload = async (file: File) => {
+    if (!file) return;
+    if (!file.type.startsWith("image/")) return toast.error("শুধুমাত্র image file আপলোড করুন");
+    setSigBusy(true);
+    try {
+      const path = `signatures/notice-signature-${Date.now()}.${file.name.split(".").pop()}`;
+      const { error } = await supabase.storage.from("cms-media").upload(path, file, { upsert: true, contentType: file.type });
+      if (error) throw error;
+      const { data } = supabase.storage.from("cms-media").getPublicUrl(path);
+      await upsertSetting(SIG_KEY, data.publicUrl, "Notice Signature Image URL");
+      setSigUrl(data.publicUrl);
+      toast.success("Signature uploaded");
+    } catch (e: any) {
+      toast.error(e.message);
+    } finally { setSigBusy(false); }
+  };
+
+  // ---- AI signature ----
+  const generateSig = async () => {
+    const name = aiSigName.trim();
+    if (!name) return toast.error("নাম লিখুন");
+    setSigBusy(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("generate-notice", {
+        body: { mode: "signature", name, style: aiSigStyle },
+      });
+      if (error) throw error;
+      if ((data as any)?.error) throw new Error((data as any).error);
+      const dataUrl = (data as any).image_data_url as string;
+      // Convert to Blob and upload
+      const resp = await fetch(dataUrl);
+      const blob = await resp.blob();
+      const path = `signatures/ai-signature-${Date.now()}.png`;
+      const { error: upErr } = await supabase.storage.from("cms-media").upload(path, blob, { upsert: true, contentType: "image/png" });
+      if (upErr) throw upErr;
+      const { data: pub } = supabase.storage.from("cms-media").getPublicUrl(path);
+      await upsertSetting(SIG_KEY, pub.publicUrl, "Notice Signature Image URL");
+      await upsertSetting(SIG_NAME_KEY, name, "Notice Signature Name");
+      setSigUrl(pub.publicUrl);
+      setSigName(name);
+      toast.success("AI signature তৈরি হয়েছে");
+    } catch (e: any) {
+      toast.error(e.message);
+    } finally { setSigBusy(false); }
+  };
+
+  const clearSig = async () => {
+    await upsertSetting(SIG_KEY, "", "Notice Signature Image URL");
+    setSigUrl("");
+    toast.success("Signature cleared");
+  };
+
+  const saveSigName = async () => {
+    await upsertSetting(SIG_NAME_KEY, sigName, "Notice Signature Name");
+    toast.success("Saved");
+  };
+
+  // ---- Voice input ----
   const toggleVoice = () => {
     const SR: any = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SR) { toast.error("আপনার ব্রাউজার voice input সাপোর্ট করে না (Chrome/Edge ব্যবহার করুন)"); return; }
     if (listening) { recogRef.current?.stop(); return; }
     const r = new SR();
     r.lang = form.language === "en" ? "en-US" : "bn-BD";
-    r.continuous = true;
-    r.interimResults = true;
+    r.continuous = true; r.interimResults = true;
     let finalText = form.ai_prompt;
     r.onstart = () => setListening(true);
     r.onend = () => setListening(false);
@@ -86,23 +159,17 @@ export default function AdminNotices() {
       }
       setForm((f: any) => ({ ...f, ai_prompt: finalText + (interim ? " " + interim : "") }));
     };
-    recogRef.current = r;
-    r.start();
+    recogRef.current = r; r.start();
   };
 
-  // ---- AI generate ----
   const generate = async () => {
     if (!form.ai_prompt.trim()) return toast.error("আগে নোটিশের বিস্তারিত লিখুন বা বলুন");
     setGenerating(true);
     try {
       const { data, error } = await supabase.functions.invoke("generate-notice", {
         body: {
-          prompt: form.ai_prompt,
-          language: form.language,
-          tone: form.tone,
-          category: form.category,
-          recipient_name: form.recipient_name,
-          reference: form.reference,
+          prompt: form.ai_prompt, language: form.language, tone: form.tone,
+          category: form.category, recipient_name: form.recipient_name, reference: form.reference,
         },
       });
       if (error) throw error;
@@ -114,14 +181,11 @@ export default function AdminNotices() {
         body: (data as any).body || f.body,
       }));
       toast.success("AI নোটিশ তৈরি করেছে");
-    } catch (e: any) {
-      toast.error(e.message || "AI generation failed");
-    } finally {
-      setGenerating(false);
-    }
+    } catch (e: any) { toast.error(e.message || "AI generation failed"); }
+    finally { setGenerating(false); }
   };
 
-  const openNew = () => { setForm(emptyForm); setEditingId(null); setShowForm(true); };
+  const openNew = () => { setForm({ ...emptyForm, issued_by: sigName || emptyForm.issued_by }); setEditingId(null); setShowForm(true); };
   const openEdit = (n: any) => { setForm({ ...emptyForm, ...n }); setEditingId(n.id); setShowForm(true); };
 
   const save = async () => {
@@ -142,17 +206,14 @@ export default function AdminNotices() {
       const { error } = await db.from("notices").insert({ ...payload, created_by: user?.id });
       if (error) return toast.error(error.message);
     }
-    toast.success("Saved");
-    setShowForm(false);
-    load();
+    toast.success("Saved"); setShowForm(false); load();
   };
 
   const remove = async (id: string) => {
     if (!confirm("Delete this notice?")) return;
     const { error } = await db.from("notices").delete().eq("id", id);
     if (error) return toast.error(error.message);
-    toast.success("Deleted");
-    load();
+    toast.success("Deleted"); load();
   };
 
   const printNotice = () => window.print();
@@ -169,7 +230,12 @@ export default function AdminNotices() {
         icon={Bell}
         title="Notice System"
         subtitle="AI-powered notice generator with voice input — invoice-style design"
-        actions={<Button onClick={openNew}><Plus className="w-4 h-4 mr-2" />New Notice</Button>}
+        actions={
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={() => setShowSig(true)}><PenTool className="w-4 h-4 mr-2" />Signature</Button>
+            <Button onClick={openNew}><Plus className="w-4 h-4 mr-2" />New Notice</Button>
+          </div>
+        }
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
@@ -216,18 +282,70 @@ export default function AdminNotices() {
         </div>
       </GlassCard>
 
+      {/* ===== Signature Manager ===== */}
+      <Dialog open={showSig} onOpenChange={setShowSig}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader><DialogTitle>Notice Signature Manager</DialogTitle></DialogHeader>
+          <div className="space-y-4">
+            <div className="rounded-lg border border-white/10 p-3 bg-white/5">
+              <p className="text-xs text-muted-foreground mb-2">Current signature (used on all notices automatically)</p>
+              {sigUrl ? (
+                <div className="bg-white rounded p-3 flex items-center justify-center min-h-[80px]">
+                  <img src={sigUrl} alt="Signature" className="max-h-20 object-contain" />
+                </div>
+              ) : (
+                <div className="bg-white/5 rounded p-3 text-center text-xs text-muted-foreground">কোন signature সেট করা নেই</div>
+              )}
+              {sigUrl && <Button size="sm" variant="outline" className="mt-2" onClick={clearSig}><X className="w-3 h-3 mr-1" />Remove</Button>}
+            </div>
+
+            <div>
+              <label className="text-xs text-muted-foreground">Signer Name (নাম + পদবি)</label>
+              <div className="flex gap-2">
+                <Input value={sigName} onChange={e => setSigName(e.target.value)} placeholder="যেমন: Shahed Hossain — Director" />
+                <Button onClick={saveSigName}><Save className="w-4 h-4" /></Button>
+              </div>
+            </div>
+
+            <div className="rounded-lg border border-white/10 p-3 space-y-2">
+              <div className="flex items-center gap-2 text-sm font-semibold"><Upload className="w-4 h-4" />Upload Signature Image</div>
+              <p className="text-xs text-muted-foreground">PNG (transparent preferred) বা JPG — স্ক্যান করা signature</p>
+              <input ref={fileRef} type="file" accept="image/*" hidden onChange={e => e.target.files?.[0] && handleUpload(e.target.files[0])} />
+              <Button variant="outline" disabled={sigBusy} onClick={() => fileRef.current?.click()}>
+                {sigBusy ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <ImageIcon className="w-4 h-4 mr-2" />}
+                Choose Image
+              </Button>
+            </div>
+
+            <div className="rounded-lg border border-violet-500/30 bg-gradient-to-br from-violet-500/5 to-fuchsia-500/5 p-3 space-y-2">
+              <div className="flex items-center gap-2 text-sm font-semibold"><Sparkles className="w-4 h-4 text-violet-400" />AI Signature Generator</div>
+              <Input placeholder="Signer name (e.g. Shahed Hossain)" value={aiSigName} onChange={e => setAiSigName(e.target.value)} />
+              <Select value={aiSigStyle} onValueChange={setAiSigStyle}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="elegant">Elegant cursive</SelectItem>
+                  <SelectItem value="bold">Bold</SelectItem>
+                  <SelectItem value="modern">Modern minimal</SelectItem>
+                  <SelectItem value="classic">Classic copperplate</SelectItem>
+                </SelectContent>
+              </Select>
+              <Button disabled={sigBusy} onClick={generateSig} className="bg-gradient-to-r from-violet-600 to-fuchsia-600">
+                {sigBusy ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Sparkles className="w-4 h-4 mr-2" />}
+                Generate with AI
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {/* ===== Create / Edit Dialog ===== */}
       <Dialog open={showForm} onOpenChange={setShowForm}>
         <DialogContent className="max-w-3xl max-h-[92vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>{editingId ? "Edit Notice" : "New Notice"}</DialogTitle>
-          </DialogHeader>
+          <DialogHeader><DialogTitle>{editingId ? "Edit Notice" : "New Notice"}</DialogTitle></DialogHeader>
 
-          {/* AI Block */}
           <div className="rounded-lg border border-violet-500/30 bg-gradient-to-br from-violet-500/5 to-fuchsia-500/5 p-4 space-y-3">
             <div className="flex items-center gap-2 text-sm font-semibold">
-              <Sparkles className="w-4 h-4 text-violet-400" />
-              AI Notice Writer (Gemini)
+              <Sparkles className="w-4 h-4 text-violet-400" />AI Notice Writer (Gemini)
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
               <Select value={form.language} onValueChange={v => setForm({ ...form, language: v })}>
@@ -249,37 +367,27 @@ export default function AdminNotices() {
               </Select>
               <Select value={form.category} onValueChange={v => setForm({ ...form, category: v })}>
                 <SelectTrigger><SelectValue placeholder="Category" /></SelectTrigger>
-                <SelectContent>
-                  {CATEGORIES.map(c => <SelectItem key={c.v} value={c.v}>{c.l}</SelectItem>)}
-                </SelectContent>
+                <SelectContent>{CATEGORIES.map(c => <SelectItem key={c.v} value={c.v}>{c.l}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div className="relative">
               <Textarea
-                placeholder="নোটিশে কি লিখতে চান বিস্তারিত বলুন... অথবা মাইক চেপে কথা বলুন। উদাহরণ: 'রায়হান সাহেবকে একটি পেমেন্ট রিমাইন্ডার নোটিশ লিখুন, বকেয়া ২৫,০০০ টাকা, ৭ দিনের মধ্যে পরিশোধের জন্য।'"
+                placeholder="নোটিশে কি লিখতে চান বিস্তারিত বলুন... অথবা মাইক চেপে কথা বলুন।"
                 value={form.ai_prompt}
                 onChange={e => setForm({ ...form, ai_prompt: e.target.value })}
-                rows={4}
-                className="pr-12"
+                rows={4} className="pr-12"
               />
-              <Button
-                type="button"
-                size="icon"
-                variant={listening ? "destructive" : "secondary"}
-                className="absolute top-2 right-2"
-                onClick={toggleVoice}
-                title={listening ? "Stop recording" : "Speak"}
-              >
+              <Button type="button" size="icon" variant={listening ? "destructive" : "secondary"}
+                className="absolute top-2 right-2" onClick={toggleVoice}>
                 {listening ? <MicOff className="w-4 h-4 animate-pulse" /> : <Mic className="w-4 h-4" />}
               </Button>
             </div>
-            <Button onClick={generate} disabled={generating} className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-700 hover:to-fuchsia-700">
+            <Button onClick={generate} disabled={generating} className="bg-gradient-to-r from-violet-600 to-fuchsia-600">
               {generating ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Sparkles className="w-4 h-4 mr-2" />}
               Generate with AI
             </Button>
           </div>
 
-          {/* Fields */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
             <div className="sm:col-span-2">
               <label className="text-xs text-muted-foreground">Title *</label>
@@ -325,9 +433,7 @@ export default function AdminNotices() {
               <label className="text-xs text-muted-foreground">Status</label>
               <Select value={form.status} onValueChange={v => setForm({ ...form, status: v })}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  {STATUS.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)}
-                </SelectContent>
+                <SelectContent>{STATUS.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)}</SelectContent>
               </Select>
             </div>
           </div>
@@ -344,10 +450,10 @@ export default function AdminNotices() {
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader><DialogTitle>Notice {viewing?.notice_number}</DialogTitle></DialogHeader>
           {viewing && (
-            <div ref={noticeRef} className="bg-white text-black p-6 rounded" id="notice-print">
+            <div className="bg-white text-black p-6 rounded" id="notice-print">
               <div className="flex justify-between mb-4">
                 <div className="flex items-start gap-3">
-                  <img src={BRAND.logoUrl} alt="Logo" crossOrigin="anonymous" className="h-14 w-14 object-contain" />
+                  <img src={logoUrl} alt="Logo" crossOrigin="anonymous" className="h-14 w-14 object-contain" />
                   <div>
                     <h2 className="text-xl font-bold">{BRAND.name}</h2>
                     <p className="text-xs">{BRAND.address}</p>
@@ -385,9 +491,16 @@ export default function AdminNotices() {
                   <p className="text-[9px] text-gray-500 mt-1">Scan to verify</p>
                 </div>
                 <div className="text-right text-xs">
-                  <div className="border-t border-gray-400 pt-1 mt-8 min-w-[180px]">
-                    <p className="font-semibold">{viewing.issued_by}</p>
-                    <p className="text-gray-500">Authorized Signature</p>
+                  <div className="min-w-[200px] flex flex-col items-end">
+                    {sigUrl ? (
+                      <img src={sigUrl} alt="Signature" crossOrigin="anonymous" className="h-16 object-contain mb-1 mix-blend-multiply" />
+                    ) : (
+                      <div className="h-12" />
+                    )}
+                    <div className="border-t border-gray-400 pt-1 w-full text-right">
+                      <p className="font-semibold">{sigName || viewing.issued_by}</p>
+                      <p className="text-gray-500">Authorized Signature</p>
+                    </div>
                   </div>
                 </div>
               </div>
