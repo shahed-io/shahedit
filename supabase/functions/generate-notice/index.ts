@@ -25,11 +25,48 @@ Deno.serve(async (req) => {
     const allowed = new Set(["admin", "super_admin", "editor"]);
     if (!roles?.some((r: any) => allowed.has(r.role))) return json(403, { error: "Forbidden" });
 
-    const { prompt, language = "bn", tone = "formal", category = "general", recipient_name = "", reference = "" } = await req.json();
-    if (!prompt || !prompt.trim()) return json(400, { error: "Prompt required" });
-
     const apiKey = Deno.env.get("LOVABLE_API_KEY");
     if (!apiKey) return json(500, { error: "AI gateway not configured" });
+
+    const body = await req.json();
+    const mode = body.mode || "notice";
+
+    // ============ Signature image generation ============
+    if (mode === "signature") {
+      const { name = "Authorized Officer", style = "elegant" } = body;
+      const styleHint: Record<string, string> = {
+        elegant: "elegant flowing cursive handwritten signature, smooth thin and thick strokes",
+        bold: "bold confident handwritten signature with strong horizontal strokes",
+        modern: "modern minimal signature with simple loops",
+        classic: "classic formal signature in traditional copperplate style",
+      };
+      const prompt = `A realistic handwritten signature of the name "${name}", ${styleHint[style] || styleHint.elegant}. Black ink on pure white background, no other elements, no decorations, no text labels, just the signature itself centered on the canvas.`;
+
+      const resp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${apiKey}` },
+        body: JSON.stringify({
+          model: "google/gemini-2.5-flash-image-preview",
+          messages: [{ role: "user", content: prompt }],
+          modalities: ["image", "text"],
+        }),
+      });
+
+      if (!resp.ok) {
+        const text = await resp.text();
+        if (resp.status === 429) return json(429, { error: "Rate limit exceeded" });
+        if (resp.status === 402) return json(402, { error: "AI credits exhausted" });
+        return json(resp.status, { error: text });
+      }
+      const data = await resp.json();
+      const imgUrl = data?.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+      if (!imgUrl) return json(500, { error: "No image returned from AI" });
+      return json(200, { image_data_url: imgUrl });
+    }
+
+    // ============ Notice text generation ============
+    const { prompt, language = "bn", tone = "formal", category = "general", recipient_name = "", reference = "" } = body;
+    if (!prompt || !prompt.trim()) return json(400, { error: "Prompt required" });
 
     const lang = language === "en" ? "English" : language === "mixed" ? "Bengali with English technical terms" : "Bengali (বাংলা)";
     const system = `You are an official notice writer for Shahed IT (Rajshahi, Bangladesh). Generate a clear, professional ${tone} notice in ${lang}.
