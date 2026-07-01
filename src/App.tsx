@@ -76,7 +76,6 @@ const AdminRankingSetup = lazy(() => import("./pages/admin/AdminRankingSetup"));
 const AdminProducts = lazy(() => import("./pages/admin/AdminProducts"));
 const AdminProjects = lazy(() => import("./pages/admin/AdminProjects"));
 const AdminInvoices = lazy(() => import("./pages/admin/AdminInvoices"));
-const AdminNotices = lazy(() => import("./pages/admin/AdminNotices"));
 const AdminExpenses = lazy(() => import("./pages/admin/AdminExpenses"));
 const AdminQuotations = lazy(() => import("./pages/admin/AdminQuotations"));
 const AdminNewsletter = lazy(() => import("./pages/admin/AdminNewsletter"));
@@ -247,7 +246,6 @@ const AdminRoutes = () => {
         <Route path="products" element={<RoleRoute section="products"><AdminProducts /></RoleRoute>} />
         <Route path="projects" element={<RoleRoute section="projects"><AdminProjects /></RoleRoute>} />
         <Route path="invoices" element={<RoleRoute section="invoices"><AdminInvoices /></RoleRoute>} />
-        <Route path="notices" element={<RoleRoute section="notices"><AdminNotices /></RoleRoute>} />
         <Route path="expenses" element={<RoleRoute section="expenses"><AdminExpenses /></RoleRoute>} />
         <Route path="quotations" element={<RoleRoute section="quotations"><AdminQuotations /></RoleRoute>} />
         <Route path="newsletter" element={<RoleRoute section="newsletter"><AdminNewsletter /></RoleRoute>} />

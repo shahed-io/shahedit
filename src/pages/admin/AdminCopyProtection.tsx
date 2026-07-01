@@ -98,23 +98,15 @@ export default function AdminCopyProtection() {
       <Card>
         <CardHeader>
           <CardTitle>Protection Rules</CardTitle>
-          <CardDescription>প্রতিটা rule আলাদাভাবে চালু/বন্ধ করা যাবে</CardDescription>
+          <CardDescription>যে যে গুলো ব্লক করতে চান সেগুলো টিক দিন</CardDescription>
         </CardHeader>
         <CardContent className="grid gap-3 md:grid-cols-2">
           <Toggle k="disableRightClick" title="Right-Click বন্ধ" desc="মাউস ডান-ক্লিক ও context menu ব্লক করবে" />
           <Toggle k="disableTextSelection" title="Text Selection বন্ধ" desc="লেখা select করা যাবে না" />
           <Toggle k="disableCopy" title="Copy / Cut বন্ধ" desc="Ctrl+C, Ctrl+X এবং copy event ব্লক" />
-          <Toggle k="disablePaste" title="Paste বন্ধ" desc="Form input-এ Ctrl+V এবং paste event ব্লক" />
           <Toggle k="disableDevtoolsKeys" title="DevTools Shortcut বন্ধ" desc="F12, Ctrl+Shift+I/J/C, Ctrl+U ব্লক" />
-          <Toggle k="detectDevtools" title="DevTools Detection" desc="DevTools খুললেই পুরো পেজ blur হয়ে যাবে" />
           <Toggle k="disableImageDrag" title="Image Drag বন্ধ" desc="ছবি drag করে save করা যাবে না" />
           <Toggle k="disablePrint" title="Print / Save Page বন্ধ" desc="Ctrl+P এবং Ctrl+S ব্লক" />
-          <Toggle k="blockPrintScreen" title="PrintScreen Key Block" desc="PrintScreen চাপলে clipboard clear হবে" />
-          <Toggle k="disableTouchCallout" title="Mobile Long-Press বন্ধ" desc="মোবাইলে long-press menu আসবে না" />
-          <Toggle k="disableMiddleClick" title="Middle-Click বন্ধ" desc="মাউস scroll button click ব্লক" />
-          <Toggle k="blurOnWindowBlur" title="Window Blur হলে Blur" desc="অন্য tab/app-এ গেলে content blur হবে (anti screen-share)" />
-          <Toggle k="frameBuster" title="Frame Buster (iframe বন্ধ)" desc="অন্য সাইট iframe দিয়ে আপনার সাইট embed করতে পারবে না" />
-          <Toggle k="consoleWarning" title="Console Warning Message" desc="ব্রাউজার Console-এ লাল warning bookmark করবে" />
           <Toggle k="excludeAdmin" title="Admin Panel-এ ছাড়" desc="/ceo রুটে protection apply হবে না (সুপারিশকৃত)" />
           <Toggle k="showWarning" title="Warning Toast দেখাও" desc="ইউজার চেষ্টা করলে notification আসবে" />
         </CardContent>

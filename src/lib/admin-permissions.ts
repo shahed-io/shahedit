@@ -45,7 +45,6 @@ export type AdminSection =
   | "activity"
   | "projects"
   | "invoices"
-  | "notices"
   | "expenses"
   | "quotations"
   | "newsletter"
@@ -127,7 +126,6 @@ const PERMISSIONS: Record<AdminSection, AppRole[]> = {
   "custom-order":     ["super_admin", "admin", "manager"],
   projects:           ["super_admin", "admin", "manager"],
   invoices:           ["super_admin", "admin", "manager"],
-  notices:            ["super_admin", "admin", "manager", "editor"],
   expenses:           ["super_admin", "admin"],
   quotations:         ["super_admin", "admin", "manager"],
   newsletter:         ["super_admin", "admin", "manager"],

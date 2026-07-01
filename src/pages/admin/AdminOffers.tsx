@@ -20,7 +20,7 @@ const emptyForm = {
   title: "", slug: "", description: "", banner_url: "", prize_description: "",
   google_form_url: "", use_google_form: false,
   winners_count: 1, winner_prizes: [] as string[],
-  status: "published", starts_at: "", ends_at: "",
+  status: "draft", starts_at: "", ends_at: "",
   max_entries: "", require_login: false,
   thank_you_message: "", redirect_url: "",
   meta_title: "", meta_description: "",
@@ -44,7 +44,6 @@ export default function AdminOffers() {
   const [picking, setPicking] = useState(false);
   const [aiBrief, setAiBrief] = useState("");
   const [aiBusy, setAiBusy] = useState(false);
-  const [dialogTab, setDialogTab] = useState("ai");
 
   const aiGenerate = async () => {
     if (!aiBrief.trim()) return toast.error("Offer-এর বিস্তারিত লিখুন");
@@ -55,8 +54,7 @@ export default function AdminOffers() {
       });
       if (error || (data as any)?.error) throw new Error((data as any)?.error || error?.message);
       setForm({ ...emptyForm, ...(data as any) });
-      setDialogTab("basics");
-      toast.success("AI offer তৈরি করেছে — এখন প্রতিটি tab-এ গিয়ে edit/Save করুন");
+      toast.success("AI offer তৈরি করেছে — যাচাই করে Save করুন");
     } catch (e: any) {
       toast.error(e.message || "AI generate ব্যর্থ");
     } finally {
@@ -84,7 +82,7 @@ export default function AdminOffers() {
     setWinners((w as any[]) ?? []);
   };
 
-  const openCreate = () => { setEditing(null); setForm(emptyForm); setAiBrief(""); setDialogTab("ai"); setOpen(true); };
+  const openCreate = () => { setEditing(null); setForm(emptyForm); setAiBrief(""); setOpen(true); };
   const openEdit = (c: Campaign) => {
     setEditing(c);
     setForm({
@@ -95,7 +93,6 @@ export default function AdminOffers() {
       ends_at: c.ends_at ? c.ends_at.slice(0, 16) : "",
       max_entries: c.max_entries ?? "",
     });
-    setDialogTab("basics");
     setOpen(true);
   };
 
@@ -130,23 +127,15 @@ export default function AdminOffers() {
     load();
   };
 
-  const toggleStatus = async (c: Campaign) => {
-    const next = c.status === "published" ? "draft" : "published";
-    const { error } = await supabase.from("offer_campaigns" as any).update({ status: next }).eq("id", c.id);
-    if (error) return toast.error(error.message);
-    toast.success(next === "published" ? "✅ লাইভ — ফর্ম এখন পাবলিকলি দেখাবে" : "Draft করা হলো");
-    load();
-  };
-
-  const pickWinners = async (mode: "smart" | "random" = "smart", extra?: string) => {
+  const pickWinners = async (extra?: string) => {
     if (!active) return;
     setPicking(true);
     try {
       const { data, error } = await supabase.functions.invoke("pick-offer-winners", {
-        body: { campaign_id: active.id, count: active.winners_count, prompt: extra, mode },
+        body: { campaign_id: active.id, count: active.winners_count, prompt: extra },
       });
       if (error || (data as any)?.error) throw new Error((data as any)?.error || error?.message);
-      toast.success(`${(data as any).winners.length} জন বিজয়ী নির্বাচিত! (${mode === "random" ? "Random" : "AI Smart"})`);
+      toast.success(`${(data as any).winners.length} জন বিজয়ী নির্বাচিত!`);
       loadDetail(active);
     } catch (e: any) {
       toast.error(e.message || "নির্বাচন ব্যর্থ");
@@ -180,27 +169,6 @@ export default function AdminOffers() {
     const blob = new Blob([csv], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a"); a.href = url; a.download = `${active?.slug || "offer"}-entries.csv`; a.click();
-    URL.revokeObjectURL(url);
-  };
-
-  const exportWinnersCsv = () => {
-    if (!winners.length) return;
-    const headers = ["position", "name", "email", "phone", "prize", "reason", "selected_by", "is_published", "created_at"];
-    const rows = winners.map((w) => [
-      w.position,
-      w.offer_submissions?.name,
-      w.offer_submissions?.email,
-      w.offer_submissions?.phone,
-      w.prize,
-      w.reason,
-      w.selected_by,
-      w.is_published ? "yes" : "no",
-      w.created_at,
-    ].map((v) => `"${(v ?? "").toString().replace(/"/g, '""')}"`).join(","));
-    const csv = [headers.join(","), ...rows].join("\n");
-    const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a"); a.href = url; a.download = `${active?.slug || "offer"}-winners.csv`; a.click();
     URL.revokeObjectURL(url);
   };
 
@@ -268,10 +236,7 @@ export default function AdminOffers() {
                           /offer/{c.slug}
                         </button>
                       </TableCell>
-                      <TableCell className="text-right space-x-1 whitespace-nowrap">
-                        <Button size="sm" variant={c.status === "published" ? "secondary" : "default"} onClick={() => toggleStatus(c)} title="Toggle Publish">
-                          {c.status === "published" ? "Unpublish" : "Publish"}
-                        </Button>
+                      <TableCell className="text-right space-x-1">
                         <Button size="icon" variant="ghost" onClick={() => loadDetail(c)} title="View entries"><Users className="w-4 h-4" /></Button>
                         <Button size="icon" variant="ghost" onClick={() => window.open(offerUrl(c.slug), "_blank")} title="Open"><Eye className="w-4 h-4" /></Button>
                         <Button size="icon" variant="ghost" onClick={() => openEdit(c)}><Edit className="w-4 h-4" /></Button>
@@ -334,15 +299,11 @@ export default function AdminOffers() {
                   <p className="text-xs text-muted-foreground">AI {active.winners_count} জন winner বেছে নিবে এন্ট্রি থেকে।</p>
                 </div>
                 <div className="flex gap-2 flex-wrap">
-                  <Button onClick={() => pickWinners("smart")} disabled={picking}><Sparkles className="w-4 h-4 mr-1" /> {picking ? "নির্বাচন হচ্ছে..." : "AI Smart Pick"}</Button>
-                  <Button variant="secondary" onClick={() => pickWinners("random")} disabled={picking}><Trophy className="w-4 h-4 mr-1" /> Random Pick</Button>
+                  <Button onClick={() => pickWinners()} disabled={picking}><Sparkles className="w-4 h-4 mr-1" /> {picking ? "নির্বাচন হচ্ছে..." : "AI দিয়ে বিজয়ী বাছাই"}</Button>
                   {winners.length > 0 && (
-                    <>
-                      <Button variant="outline" onClick={exportWinnersCsv}>📥 Winners CSV</Button>
-                      <Button variant="outline" onClick={() => publishAll(!winners.every((w) => w.is_published))}>
-                        {winners.every((w) => w.is_published) ? "সব Unpublish" : "সব Publish"}
-                      </Button>
-                    </>
+                    <Button variant="outline" onClick={() => publishAll(!winners.every((w) => w.is_published))}>
+                      {winners.every((w) => w.is_published) ? "সব Unpublish" : "সব Publish"}
+                    </Button>
                   )}
                 </div>
               </CardHeader>
@@ -377,7 +338,7 @@ export default function AdminOffers() {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
           <DialogHeader><DialogTitle>{editing ? "অফার সম্পাদনা" : "নতুন অফার"}</DialogTitle></DialogHeader>
-          <Tabs value={dialogTab} onValueChange={setDialogTab}>
+          <Tabs defaultValue={editing ? "basics" : "ai"}>
             <TabsList className="flex-wrap h-auto">
               <TabsTrigger value="ai"><Wand2 className="w-3.5 h-3.5 mr-1" /> AI</TabsTrigger>
               <TabsTrigger value="basics">Basics</TabsTrigger>
