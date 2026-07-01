@@ -285,7 +285,7 @@ export default function AdminSecurityCenter() {
                 onChange={v => setSettings({ ...settings, recaptcha_enabled: v })} />
               <div className="grid md:grid-cols-2 gap-4">
                 <div><Label>Site Key</Label><Input value={settings.recaptcha_site_key ?? ""} onChange={e=>setSettings({...settings, recaptcha_site_key: e.target.value})} placeholder="6Lc..." /></div>
-                <div><Label>Secret Key</Label><Input type="password" value={settings.recaptcha_secret_key ?? ""} onChange={e=>setSettings({...settings, recaptcha_secret_key: e.target.value})} placeholder="6Lc..." /></div>
+                <div><Label>Secret Key</Label><Input type="password" value="" disabled placeholder="Edge Function secret: RECAPTCHA_SECRET_KEY" /></div>
               </div>
               <p className="text-xs text-muted-foreground"><KeyRound className="h-3 w-3 inline mr-1" />Keys পাবেন: google.com/recaptcha/admin</p>
               <Button onClick={saveSettings} disabled={saving}>সংরক্ষণ করুন</Button>
