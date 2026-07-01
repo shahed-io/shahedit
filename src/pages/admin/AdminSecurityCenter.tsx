@@ -17,7 +17,7 @@ type Settings = {
   twofa_required_for_all: boolean;
   recaptcha_enabled: boolean;
   recaptcha_site_key: string | null;
-  recaptcha_secret_key: string | null;
+  // recaptcha_secret_key is stored as an edge function secret, not in the DB.
   ip_whitelist_enabled: boolean;
   failed_login_lockout_threshold: number;
   failed_login_lockout_minutes: number;
@@ -51,7 +51,7 @@ export default function AdminSecurityCenter() {
     ]);
     setSettings(s.data ?? {
       id: 1, twofa_required_for_admins: false, twofa_required_for_all: false,
-      recaptcha_enabled: false, recaptcha_site_key: "", recaptcha_secret_key: "",
+      recaptcha_enabled: false, recaptcha_site_key: "",
       ip_whitelist_enabled: false, failed_login_lockout_threshold: 5, failed_login_lockout_minutes: 15,
       session_idle_timeout_minutes: 60, session_absolute_timeout_hours: 24,
     });
