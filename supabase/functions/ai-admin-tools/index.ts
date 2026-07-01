@@ -17,24 +17,17 @@ const PROMPTS: Record<string, string> = {
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   try {
-    const key = Deno.env.get("LOVABLE_API_KEY");
-    if (!key) return new Response(JSON.stringify({ error: "Missing LOVABLE_API_KEY" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
-
     const { action, input, model } = await req.json();
     const system = PROMPTS[action];
     if (!system) return new Response(JSON.stringify({ error: "Invalid action" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     if (!input || typeof input !== "string") return new Response(JSON.stringify({ error: "input required" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 
-    const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
-      body: JSON.stringify({
-        model: model || "google/gemini-2.5-flash-lite",
-        messages: [
-          { role: "system", content: system },
-          { role: "user", content: input },
-        ],
-      }),
+    const res = await chatCompletion({
+      messages: [
+        { role: "system", content: system },
+        { role: "user", content: input },
+      ],
+      modelHint: model || "google/gemini-2.5-flash-lite",
     });
     if (res.status === 429) return new Response(JSON.stringify({ error: "rate_limited" }), { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     if (res.status === 402) return new Response(JSON.stringify({ error: "credits_exhausted" }), { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } });
