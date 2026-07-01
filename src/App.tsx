@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { canAccess, type AdminSection } from "@/lib/admin-permissions";
@@ -289,11 +289,15 @@ const AdminRoutes = () => {
 const AppWithAnalytics = () => {
   useAnalyticsInjection();
   useApplyCopyProtection();
+  // Admin routes get a lightweight shell: no public SEO/Helmet churn,
+  // no animated site background, no welcome popup, no floating support widget.
+  const { pathname } = useLocation();
+  const isAdminRoute = pathname.startsWith("/ceo");
   return (
     <Suspense fallback={<PageFallback />}>
-      <SEO />
-      <AutoStructuredData />
-      <SiteBackground />
+      {!isAdminRoute && <SEO />}
+      {!isAdminRoute && <AutoStructuredData />}
+      {!isAdminRoute && <SiteBackground />}
       <div className="relative z-10">
       <Routes>
 
@@ -340,9 +344,9 @@ const AppWithAnalytics = () => {
         <Route path="*" element={<NotFound />} />
       </Routes>
       </div>
-      <ThemeAppearanceProvider />
-      <GlobalSupport />
-      <WelcomePopup />
+      {!isAdminRoute && <ThemeAppearanceProvider />}
+      {!isAdminRoute && <GlobalSupport />}
+      {!isAdminRoute && <WelcomePopup />}
     </Suspense>
   );
 };
