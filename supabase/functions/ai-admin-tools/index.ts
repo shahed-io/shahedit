@@ -1,6 +1,7 @@
 // AI Admin Tools — Lovable AI Gateway powered helpers
 // Actions: product_description | seo_meta | support_reply | email_writer
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+import { chatCompletion } from "../_shared/ai-router.ts";
 
 const PROMPTS: Record<string, string> = {
   product_description:
