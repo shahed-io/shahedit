@@ -108,5 +108,44 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Preview iframe safety net: if the app fails to mount within 6s inside a
+      // Lovable preview/editor iframe (e.g. stale cached bundle after HMR gate
+      // flush), do ONE cache-busting reload so the user never sees a blank/black
+      // screen. Guarded by sessionStorage so it can't loop.
+      (function () {
+        try {
+          var host = location.hostname;
+          var inIframe = window.top !== window.self;
+          var isPreview =
+            host.indexOf("lovableproject.com") !== -1 ||
+            host.indexOf("lovable.app") !== -1 ||
+            host.indexOf("lovable.dev") !== -1 ||
+            host === "localhost" ||
+            host === "127.0.0.1";
+          if (!inIframe || !isPreview) return;
+          setTimeout(function () {
+            var root = document.getElementById("root");
+            var mounted = root && root.childElementCount > 0;
+            if (mounted) return;
+            if (sessionStorage.getItem("__lov_preview_reloaded__")) return;
+            sessionStorage.setItem("__lov_preview_reloaded__", "1");
+            var u = new URL(location.href);
+            u.searchParams.set("_r", Date.now().toString(36));
+            location.replace(u.toString());
+          }, 6000);
+          // Clear the guard once React has painted something.
+          var clearGuard = function () {
+            var root = document.getElementById("root");
+            if (root && root.childElementCount > 0) {
+              sessionStorage.removeItem("__lov_preview_reloaded__");
+            } else {
+              setTimeout(clearGuard, 1500);
+            }
+          };
+          setTimeout(clearGuard, 1500);
+        } catch (e) { /* ignore */ }
+      })();
+    </script>
   </body>
 </html>
