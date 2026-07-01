@@ -63,10 +63,10 @@ export function openInvoice(p: InvoiceData) {
   .brand-name{font-size:26px;font-weight:800;letter-spacing:0.5px;background:linear-gradient(135deg,#ffffff 0%,#e9d5ff 35%,#c4b5fd 60%,#f0abfc 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;line-height:1}
   .brand-tag{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:10px;letter-spacing:3px;font-weight:600;color:#c4b5fd;text-transform:uppercase}
   .brand-tag::before,.brand-tag::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(196,181,253,0.4),transparent);min-width:14px}
-  .head .right{text-align:right}
-  .head .right .label{font-size:11px;opacity:.75;text-transform:uppercase;letter-spacing:1.5px;color:#c4b5fd}
-  .head .right .num{font-size:22px;font-weight:800;margin-top:4px;color:#fff}
-  .badge{display:inline-block;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:.5px;margin-top:8px;background:${sb.bg};color:${sb.color}}
+  .head .right{display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:6px;text-align:right}
+  .head .right .label{font-size:11px;opacity:.85;text-transform:uppercase;letter-spacing:1.5px;color:#c4b5fd;margin:0}
+  .head .right .num{font-size:20px;font-weight:800;color:#fff;line-height:1.1;margin:0;font-variant-numeric:tabular-nums}
+  .badge{display:inline-block;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:.5px;background:${sb.bg};color:${sb.color};margin:2px 0 0}
 
   .meta{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:28px 36px;border-bottom:1px solid #ece6f8}
   .meta h3{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:#9b8fb5;margin-bottom:8px;font-weight:700}
@@ -104,8 +104,6 @@ export function openInvoice(p: InvoiceData) {
         </div>
       </div>
       <div class="right">
-
-
         <div class="label">Invoice / Receipt</div>
         <div class="num">${inv}</div>
         <div class="badge">${sb.label}</div>
