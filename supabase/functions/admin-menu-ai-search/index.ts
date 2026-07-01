@@ -47,21 +47,14 @@ Format:
 Menu catalog:
 ${catalog}`;
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash-lite",
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: query.trim() },
-        ],
-        response_format: { type: "json_object" },
-        max_tokens: 400,
-      }),
+    const response = await chatCompletion({
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: query.trim() },
+      ],
+      response_format: { type: "json_object" },
+      max_tokens: 400,
+      modelHint: "google/gemini-2.5-flash-lite",
     });
 
     if (!response.ok) {
