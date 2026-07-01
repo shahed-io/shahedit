@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { chatCompletion } from "../_shared/ai-router.ts";
+import { requireAdmin } from "../_shared/require-admin.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -17,6 +18,8 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
+    const auth = await requireAdmin(req);
+    if (!auth.ok) return new Response(JSON.stringify({ error: auth.error, results: [] }), { status: auth.status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     const { query, items } = (await req.json()) as { query: string; items: MenuItem[] };
     if (!query?.trim() || !Array.isArray(items) || items.length === 0) {
       return new Response(JSON.stringify({ results: [] }), {
