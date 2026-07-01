@@ -277,6 +277,7 @@ const AdminRoutes = () => {
         <Route path="advanced-tools" element={<RoleRoute section="advanced-tools"><AdminAdvancedTools /></RoleRoute>} />
         <Route path="offers" element={<RoleRoute section="offers"><AdminOffers /></RoleRoute>} />
         <Route path="copy-protection" element={<RoleRoute section="copy-protection"><AdminCopyProtection /></RoleRoute>} />
+        <Route path="ai-providers" element={<RoleRoute section="ai-providers"><AdminAIProviders /></RoleRoute>} />
 
       </Routes>
       </Suspense>
