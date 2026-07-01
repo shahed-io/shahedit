@@ -62,6 +62,7 @@ const BlogPostPage = () => {
           title={post.meta_title || `${post.title} — Shahed IT Blog`}
           description={(post.meta_description || post.excerpt || "").slice(0, 160)}
           image={post.og_image || post.featured_image || undefined}
+          type="article"
           schema={{
             "@context": "https://schema.org",
             "@type": "BlogPosting",

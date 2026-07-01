@@ -1038,8 +1038,9 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
                 boxShadow: '0 4px 14px -4px rgba(37,211,102,0.4)',
               }}
               title="WhatsApp-এ অর্ডার করুন"
+              aria-label="WhatsApp-এ অর্ডার করুন"
             >
-              <MessageCircle size={16} />
+              <MessageCircle size={16} aria-hidden="true" />
             </motion.a>
           </div>
         </div>
