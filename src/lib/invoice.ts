@@ -104,8 +104,6 @@ export function openInvoice(p: InvoiceData) {
         </div>
       </div>
       <div class="right">
-
-
         <div class="label">Invoice / Receipt</div>
         <div class="num">${inv}</div>
         <div class="badge">${sb.label}</div>
