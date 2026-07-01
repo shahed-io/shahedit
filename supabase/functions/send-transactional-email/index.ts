@@ -25,15 +25,41 @@ function generateToken(): string {
     .join('')
 }
 
-// Auth note: this function uses verify_jwt = true in config.toml, so Supabase's
-// gateway validates the caller's JWT (anon or service_role) before the request
-// reaches this code. No in-function auth check is needed.
+// Reject anonymous JWTs — only authenticated users or service_role may send.
+async function isAuthorizedCaller(req: Request): Promise<boolean> {
+  const authHeader = req.headers.get('Authorization') || ''
+  if (!authHeader.startsWith('Bearer ')) return false
+  const token = authHeader.replace('Bearer ', '')
+  const anonKey = Deno.env.get('SUPABASE_ANON_KEY') || ''
+  const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || ''
+  if (token === serviceKey) return true
+  if (token === anonKey) return false
+  try {
+    const client = createClient(
+      Deno.env.get('SUPABASE_URL')!,
+      anonKey,
+      { global: { headers: { Authorization: authHeader } } }
+    )
+    const { data, error } = await client.auth.getUser(token)
+    return !error && !!data?.user
+  } catch {
+    return false
+  }
+}
 
 Deno.serve(async (req) => {
   // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders })
   }
+
+  if (!(await isAuthorizedCaller(req))) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json; charset=utf-8' },
+    })
+  }
+
 
   const supabaseUrl = Deno.env.get('SUPABASE_URL')
   const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')

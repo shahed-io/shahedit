@@ -2,6 +2,7 @@
 // Returns a full campaign config JSON the admin form can hydrate.
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { chatCompletion } from "../_shared/ai-router.ts";
+import { requireAdmin } from "../_shared/require-admin.ts";
 
 
 const SYSTEM = `তুমি একজন অভিজ্ঞ marketing campaign designer। ব্যবহারকারী একটা offer/giveaway-এর সংক্ষিপ্ত brief দিবে (বাংলা/English মিশ্র হতে পারে)। তোমার কাজ: brief বুঝে একটা সম্পূর্ণ campaign config তৈরি করো।
@@ -33,6 +34,8 @@ const SYSTEM = `তুমি একজন অভিজ্ঞ marketing campaign 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   try {
+    const auth = await requireAdmin(req);
+    if (!auth.ok) return new Response(JSON.stringify({ error: auth.error }), { status: auth.status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     const { brief } = await req.json();
     if (!brief || typeof brief !== "string" || brief.trim().length < 5) {
       return new Response(JSON.stringify({ error: "brief অন্তত কয়েক শব্দের হতে হবে" }), {

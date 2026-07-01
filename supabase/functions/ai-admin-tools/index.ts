@@ -2,6 +2,7 @@
 // Actions: product_description | seo_meta | support_reply | email_writer
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { chatCompletion } from "../_shared/ai-router.ts";
+import { requireAdmin } from "../_shared/require-admin.ts";
 
 const PROMPTS: Record<string, string> = {
   product_description:
@@ -17,6 +18,8 @@ const PROMPTS: Record<string, string> = {
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   try {
+    const auth = await requireAdmin(req);
+    if (!auth.ok) return new Response(JSON.stringify({ error: auth.error }), { status: auth.status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     const { action, input, model } = await req.json();
     const system = PROMPTS[action];
     if (!system) return new Response(JSON.stringify({ error: "Invalid action" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });

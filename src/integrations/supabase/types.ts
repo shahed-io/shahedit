@@ -3871,7 +3871,6 @@ export type Database = {
           id: number
           ip_whitelist_enabled: boolean | null
           recaptcha_enabled: boolean | null
-          recaptcha_secret_key: string | null
           recaptcha_site_key: string | null
           session_absolute_timeout_hours: number | null
           session_idle_timeout_minutes: number | null
@@ -3885,7 +3884,6 @@ export type Database = {
           id?: number
           ip_whitelist_enabled?: boolean | null
           recaptcha_enabled?: boolean | null
-          recaptcha_secret_key?: string | null
           recaptcha_site_key?: string | null
           session_absolute_timeout_hours?: number | null
           session_idle_timeout_minutes?: number | null
@@ -3899,7 +3897,6 @@ export type Database = {
           id?: number
           ip_whitelist_enabled?: boolean | null
           recaptcha_enabled?: boolean | null
-          recaptcha_secret_key?: string | null
           recaptcha_site_key?: string | null
           session_absolute_timeout_hours?: number | null
           session_idle_timeout_minutes?: number | null
