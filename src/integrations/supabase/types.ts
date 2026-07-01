@@ -32,6 +32,48 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_active_provider: {
+        Row: {
+          id: number
+          provider: string
+          updated_at: string
+        }
+        Insert: {
+          id?: number
+          provider?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: number
+          provider?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      ai_provider_settings: {
+        Row: {
+          api_key: string | null
+          model: string | null
+          provider: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          api_key?: string | null
+          model?: string | null
+          provider: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          api_key?: string | null
+          model?: string | null
+          provider?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       ai_support_settings: {
         Row: {
           bot_name: string
