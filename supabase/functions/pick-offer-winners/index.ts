@@ -2,10 +2,10 @@
 // Body: { campaign_id: string, count?: number, prompt?: string }
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { chatCompletion } from "../_shared/ai-router.ts";
 
 const url = Deno.env.get("SUPABASE_URL")!;
 const service = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-const aiKey = Deno.env.get("LOVABLE_API_KEY")!;
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
