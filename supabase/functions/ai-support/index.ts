@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { chatCompletion } from "../_shared/ai-router.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -12,8 +13,7 @@ serve(async (req) => {
   try {
     const { messages, session_id, visitor_info } = await req.json();
 
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
+    // API key is resolved from ai_provider_settings by chatCompletion(); LOVABLE_API_KEY is fallback.
 
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
@@ -92,22 +92,15 @@ IMPORTANT INSTRUCTIONS:
 - When customer needs human support, say: "${humanHandoff}"
 - Do NOT make up prices or services not listed above.`;
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash-lite",
-        messages: [
-          { role: "system", content: fullSystemPrompt },
-          ...messages,
-        ],
-        stream: true,
-        max_tokens: 512,
-      }),
-    });
+    const response = await chatCompletion({
+      messages: [
+        { role: "system", content: fullSystemPrompt },
+        ...messages,
+      ],
+      stream: true,
+      max_tokens: 512,
+      modelHint: "google/gemini-2.5-flash-lite",
+    }, supabase);
 
     if (!response.ok) {
       if (response.status === 429) {

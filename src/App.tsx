@@ -102,6 +102,7 @@ const AdminSettingsHub = lazy(() => import("./pages/admin/AdminSettingsHub"));
 const AdminAdvancedTools = lazy(() => import("./pages/admin/AdminAdvancedTools"));
 const AdminOffers = lazy(() => import("./pages/admin/AdminOffers"));
 const AdminCopyProtection = lazy(() => import("./pages/admin/AdminCopyProtection"));
+const AdminAIProviders = lazy(() => import("./pages/admin/AdminAIProviders"));
 const OfferPage = lazy(() => import("./pages/OfferPage"));
 
 
@@ -276,6 +277,7 @@ const AdminRoutes = () => {
         <Route path="advanced-tools" element={<RoleRoute section="advanced-tools"><AdminAdvancedTools /></RoleRoute>} />
         <Route path="offers" element={<RoleRoute section="offers"><AdminOffers /></RoleRoute>} />
         <Route path="copy-protection" element={<RoleRoute section="copy-protection"><AdminCopyProtection /></RoleRoute>} />
+        <Route path="ai-providers" element={<RoleRoute section="ai-providers"><AdminAIProviders /></RoleRoute>} />
 
       </Routes>
       </Suspense>

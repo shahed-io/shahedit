@@ -1,8 +1,8 @@
 // AI offer campaign generator. Body: { brief: string }
 // Returns a full campaign config JSON the admin form can hydrate.
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+import { chatCompletion } from "../_shared/ai-router.ts";
 
-const aiKey = Deno.env.get("LOVABLE_API_KEY")!;
 
 const SYSTEM = `তুমি একজন অভিজ্ঞ marketing campaign designer। ব্যবহারকারী একটা offer/giveaway-এর সংক্ষিপ্ত brief দিবে (বাংলা/English মিশ্র হতে পারে)। তোমার কাজ: brief বুঝে একটা সম্পূর্ণ campaign config তৈরি করো।
 
@@ -40,17 +40,13 @@ Deno.serve(async (req) => {
       });
     }
 
-    const r = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${aiKey}` },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [
-          { role: "system", content: SYSTEM },
-          { role: "user", content: brief },
-        ],
-        response_format: { type: "json_object" },
-      }),
+    const r = await chatCompletion({
+      messages: [
+        { role: "system", content: SYSTEM },
+        { role: "user", content: brief },
+      ],
+      response_format: { type: "json_object" },
+      modelHint: "google/gemini-2.5-flash",
     });
 
     if (!r.ok) {

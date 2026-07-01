@@ -2,10 +2,10 @@
 // Body: { campaign_id: string, count?: number, prompt?: string }
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { chatCompletion } from "../_shared/ai-router.ts";
 
 const url = Deno.env.get("SUPABASE_URL")!;
 const service = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-const aiKey = Deno.env.get("LOVABLE_API_KEY")!;
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
@@ -43,15 +43,11 @@ Deno.serve(async (req) => {
     const sys = `তুমি একজন নিরপেক্ষ ও সৎ judge। প্রদত্ত entry list থেকে ${n} জন winner বেছে নাও। শুধু JSON ফেরত দাও: {"winners":[{"id":"<id>","reason":"<short Bengali reason>"}]}`;
     const userMsg = `Campaign: ${campaign.title}\nPrize: ${campaign.prize_description ?? ""}\nExtra rule: ${prompt ?? "এলোমেলোভাবে fair pick"}\nEntries: ${JSON.stringify(list)}`;
 
-    const r = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${aiKey}` },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash-lite",
-        messages: [{ role: "system", content: sys }, { role: "user", content: userMsg }],
-        response_format: { type: "json_object" },
-      }),
-    });
+    const r = await chatCompletion({
+      messages: [{ role: "system", content: sys }, { role: "user", content: userMsg }],
+      response_format: { type: "json_object" },
+      modelHint: "google/gemini-2.5-flash-lite",
+    }, supa);
     let picked: { id: string; reason: string }[] = [];
     if (r.ok) {
       const data = await r.json();

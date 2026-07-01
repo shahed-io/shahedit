@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { chatCompletion } from "../_shared/ai-router.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -38,24 +39,19 @@ Deno.serve(async (req) => {
     }
 
     const { mode, topic, keywords, tone, language } = await req.json();
-    const apiKey = Deno.env.get("LOVABLE_API_KEY");
-    if (!apiKey) return json(500, { error: "AI gateway not configured" });
+    // API key resolved via ai_provider_settings (with LOVABLE_API_KEY fallback)
 
     const langText = language === "bn" ? "Write in Bengali (বাংলা)." : language === "en" ? "Write in English." : "Use a natural mix of English and Bengali (mostly English with Bengali for emphasis).";
     const systemPrompt = (SYSTEM_PROMPTS[mode] ?? SYSTEM_PROMPTS.blog) + " " + langText + ` Tone: ${tone || "professional"}.`;
     const userPrompt = `Topic: ${topic}\nKeywords: ${keywords || "(none)"}\n\nGenerate the content now.`;
 
-    const resp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Authorization": `Bearer ${apiKey}` },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: userPrompt },
-        ],
-      }),
-    });
+    const resp = await chatCompletion({
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt },
+      ],
+      modelHint: "google/gemini-2.5-flash",
+    }, admin);
 
     if (!resp.ok) {
       const text = await resp.text();
