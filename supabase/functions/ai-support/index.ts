@@ -13,8 +13,7 @@ serve(async (req) => {
   try {
     const { messages, session_id, visitor_info } = await req.json();
 
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
+    // API key is resolved from ai_provider_settings by chatCompletion(); LOVABLE_API_KEY is fallback.
 
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
