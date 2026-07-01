@@ -1,8 +1,8 @@
 // AI offer campaign generator. Body: { brief: string }
 // Returns a full campaign config JSON the admin form can hydrate.
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+import { chatCompletion } from "../_shared/ai-router.ts";
 
-const aiKey = Deno.env.get("LOVABLE_API_KEY")!;
 
 const SYSTEM = `তুমি একজন অভিজ্ঞ marketing campaign designer। ব্যবহারকারী একটা offer/giveaway-এর সংক্ষিপ্ত brief দিবে (বাংলা/English মিশ্র হতে পারে)। তোমার কাজ: brief বুঝে একটা সম্পূর্ণ campaign config তৈরি করো।
 
