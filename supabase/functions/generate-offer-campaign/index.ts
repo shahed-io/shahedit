@@ -40,17 +40,13 @@ Deno.serve(async (req) => {
       });
     }
 
-    const r = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${aiKey}` },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [
-          { role: "system", content: SYSTEM },
-          { role: "user", content: brief },
-        ],
-        response_format: { type: "json_object" },
-      }),
+    const r = await chatCompletion({
+      messages: [
+        { role: "system", content: SYSTEM },
+        { role: "user", content: brief },
+      ],
+      response_format: { type: "json_object" },
+      modelHint: "google/gemini-2.5-flash",
     });
 
     if (!r.ok) {
