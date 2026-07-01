@@ -157,6 +157,7 @@ const PERMISSIONS: Record<AdminSection, AppRole[]> = {
   "analytics-hub":    ["super_admin", "admin", "manager"],
   "settings-hub":     ["super_admin", "admin"],
   "advanced-tools":   ["super_admin", "admin"],
+  "ai-providers":     ["super_admin"],
   offers:             ["super_admin", "admin", "manager"],
   "copy-protection":  ["super_admin", "admin"],
 
