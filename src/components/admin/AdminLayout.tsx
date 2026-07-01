@@ -515,7 +515,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                       const active = isItemActive(item.href);
                       const grad = tileGradient(item.href);
                       return (
-                        <Link key={item.href} to={item.href} onClick={persistSidebarScroll} title={(collapsed && !isMobile) ? item.label : undefined}>
+                        <Link key={item.href} to={item.href} onClick={persistSidebarScroll} title={(collapsed && !isMobile) ? item.label : undefined} className="block w-full cursor-pointer select-none">
                           <motion.div
                             whileHover={{ x: (collapsed && !isMobile) ? 0 : 2 }}
                             transition={{ type: "spring", stiffness: 400, damping: 28 }}
