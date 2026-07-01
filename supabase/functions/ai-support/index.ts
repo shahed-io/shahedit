@@ -92,22 +92,15 @@ IMPORTANT INSTRUCTIONS:
 - When customer needs human support, say: "${humanHandoff}"
 - Do NOT make up prices or services not listed above.`;
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash-lite",
-        messages: [
-          { role: "system", content: fullSystemPrompt },
-          ...messages,
-        ],
-        stream: true,
-        max_tokens: 512,
-      }),
-    });
+    const response = await chatCompletion({
+      messages: [
+        { role: "system", content: fullSystemPrompt },
+        ...messages,
+      ],
+      stream: true,
+      max_tokens: 512,
+      modelHint: "google/gemini-2.5-flash-lite",
+    }, supabase);
 
     if (!response.ok) {
       if (response.status === 429) {
