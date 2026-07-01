@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import BrandMark from "@/components/BrandMark";
+import "@/styles/admin-theme.css";
 
 import { canAccess, type AdminSection } from "@/lib/admin-permissions";
 
@@ -37,7 +38,6 @@ const navGroups: NavGroup[] = [
       { label: "KPI & Goals", icon: TrendingUp, href: "/ceo/kpi", badge: "NEW", section: "kpi" },
       { label: "Notifications", icon: Bell, href: "/ceo/notifications", badge: "NEW", section: "notifications" },
       { label: "Activity Log", icon: History, href: "/ceo/activity", section: "activity" },
-
     ],
   },
   {
@@ -72,7 +72,6 @@ const navGroups: NavGroup[] = [
       { label: "Expenses", icon: TrendingDown, href: "/ceo/expenses", badge: "NEW", section: "expenses" },
       { label: "Knowledge Base", icon: BookOpen, href: "/ceo/knowledge-base", badge: "NEW", section: "knowledge-base" },
       { label: "Newsletter", icon: Mail, href: "/ceo/newsletter", badge: "NEW", section: "newsletter" },
-
     ],
   },
   {
@@ -153,37 +152,11 @@ const navGroups: NavGroup[] = [
       { label: "Offers & Giveaways", icon: Gift, href: "/ceo/offers", badge: "NEW", section: "offers" },
       { label: "Copy Protection", icon: Shield, href: "/ceo/copy-protection", badge: "NEW", section: "copy-protection" },
       { label: "AI Providers", icon: Sparkles, href: "/ceo/ai-providers", badge: "NEW", section: "ai-providers" },
-
     ],
   },
 ];
 
-// Colorful gradient palette for per-item icon tiles (inspired by the reference design).
-const TILE_GRADIENTS = [
-  "from-rose-500 to-pink-500",
-  "from-fuchsia-500 to-purple-600",
-  "from-violet-500 to-indigo-600",
-  "from-indigo-500 to-blue-600",
-  "from-sky-500 to-cyan-500",
-  "from-cyan-500 to-teal-500",
-  "from-teal-500 to-emerald-500",
-  "from-emerald-500 to-green-500",
-  "from-lime-500 to-green-500",
-  "from-amber-500 to-orange-500",
-  "from-orange-500 to-red-500",
-  "from-pink-500 to-rose-600",
-  "from-purple-500 to-fuchsia-600",
-  "from-blue-500 to-violet-600",
-  "from-yellow-500 to-amber-600",
-];
-const tileGradient = (href: string) => {
-  let h = 0;
-  for (let i = 0; i < href.length; i++) h = (h * 31 + href.charCodeAt(i)) >>> 0;
-  return TILE_GRADIENTS[h % TILE_GRADIENTS.length];
-};
-
 const ADMIN_SIDEBAR_SCROLL_KEY = "admin:sidebarScroll";
-
 
 interface AdminLayoutProps { children: React.ReactNode }
 
@@ -223,7 +196,6 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     } catch {}
   };
 
-  // Persist sidebar UI state
   useEffect(() => {
     try { sessionStorage.setItem("admin:collapsed", collapsed ? "1" : "0"); } catch {}
   }, [collapsed]);
@@ -231,7 +203,6 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     try { sessionStorage.setItem("admin:openGroups", JSON.stringify(openGroups)); } catch {}
   }, [openGroups]);
 
-  // Restore sidebar scroll across route changes (only run once on mount)
   useEffect(() => {
     const el = sidebarScrollRef.current;
     if (!el) return;
@@ -240,10 +211,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       try { sessionStorage.setItem(ADMIN_SIDEBAR_SCROLL_KEY, String(el.scrollTop)); } catch {}
     };
     el.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      onScroll();
-      el.removeEventListener("scroll", onScroll);
-    };
+    return () => { onScroll(); el.removeEventListener("scroll", onScroll); };
   }, []);
 
   useEffect(() => {
@@ -251,7 +219,6 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     return () => cancelAnimationFrame(frame);
   }, [location.pathname]);
 
-  // Save main scroll per route; restore on revisit
   useEffect(() => {
     const el = mainScrollRef.current;
     if (!el) return;
@@ -265,8 +232,6 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     return () => el.removeEventListener("scroll", onScroll);
   }, [location.pathname]);
 
-
-
   const visibleGroups = useMemo(
     () =>
       navGroups
@@ -275,7 +240,6 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     [role]
   );
 
-  // Filtered groups for sidebar search
   const filteredGroups = useMemo(() => {
     if (!query.trim()) return visibleGroups;
     const q = query.toLowerCase();
@@ -284,18 +248,11 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       .filter((g) => g.items.length > 0);
   }, [visibleGroups, query]);
 
-  // AI fallback search — when local filter finds nothing, ask the model
   const noLocalMatch = query.trim().length >= 2 && filteredGroups.length === 0;
   useEffect(() => {
-    if (!noLocalMatch) {
-      setAiResults([]);
-      setAiError(null);
-      setAiLoading(false);
-      return;
-    }
+    if (!noLocalMatch) { setAiResults([]); setAiError(null); setAiLoading(false); return; }
     let cancelled = false;
-    setAiLoading(true);
-    setAiError(null);
+    setAiLoading(true); setAiError(null);
     const handle = setTimeout(async () => {
       try {
         const items = visibleGroups.flatMap((g) =>
@@ -309,14 +266,8 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
         if (data?.error === "rate_limited") setAiError("একটু পরে আবার চেষ্টা করুন");
         else if (data?.error === "credits_exhausted") setAiError("AI credit শেষ");
         setAiResults(Array.isArray(data?.results) ? data.results : []);
-      } catch (e) {
-        if (!cancelled) {
-          setAiError("AI search ব্যর্থ হয়েছে");
-          setAiResults([]);
-        }
-      } finally {
-        if (!cancelled) setAiLoading(false);
-      }
+      } catch { if (!cancelled) { setAiError("AI search ব্যর্থ হয়েছে"); setAiResults([]); } }
+      finally { if (!cancelled) setAiLoading(false); }
     }, 450);
     return () => { cancelled = true; clearTimeout(handle); };
   }, [query, noLocalMatch, visibleGroups]);
@@ -329,7 +280,6 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     initializedGroups.current = true;
   }, [loading, visibleGroups]);
 
-  // Close mobile drawer on route change
   useEffect(() => { setMobileOpen(false); }, [location.pathname]);
 
   useEffect(() => {
@@ -368,29 +318,30 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   const currentGroup = visibleGroups.find((g) => g.items.some((i) => isItemActive(i.href)));
   const currentTitle = currentItem?.label ?? "Dashboard";
 
-  // Sidebar markup (shared between desktop + mobile drawer)
   const renderSidebarInner = (isMobile = false) => (
     <>
-      {/* Brand */}
-      <div className="px-4 pt-5 pb-4 flex items-center justify-between">
+      {/* Brand block */}
+      <div className="px-5 pt-5 pb-4 flex items-center justify-between border-b" style={{ borderColor: "hsl(var(--a-line))" }}>
         <AnimatePresence mode="wait">
           {(!collapsed || isMobile) && (
             <motion.div
-              initial={{ opacity: 0, x: -8 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -8 }}
+              initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -6 }}
               className="flex items-center gap-3"
             >
-              <div className="relative w-11 h-11 rounded-2xl bg-gradient-to-br from-primary/80 via-primary/60 to-accent/70 p-[2px] shadow-[0_8px_28px_-8px_hsl(var(--primary)/0.85)]">
-                <div className="w-full h-full rounded-[14px] bg-background/80 backdrop-blur-sm flex items-center justify-center">
-                  <BrandMark size={28} glow="soft" />
-                </div>
-                <span className="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-accent ring-2 ring-background animate-pulse" />
+              <div
+                className="w-10 h-10 rounded-md flex items-center justify-center"
+                style={{
+                  background: "linear-gradient(135deg, hsl(var(--a-emerald) / 0.18), hsl(var(--a-emerald-deep) / 0.35))",
+                  boxShadow: "inset 0 0 0 1px hsl(var(--a-emerald) / 0.35), inset 0 1px 0 hsl(150 100% 100% / 0.05)",
+                }}
+              >
+                <BrandMark size={22} glow="soft" />
               </div>
               <div className="leading-tight">
-                <p className="text-foreground font-bold text-[15px] font-syne tracking-tight">SHAHED IT</p>
-                <p className="text-[10px] text-primary/90 mt-0.5 flex items-center gap-1 font-medium uppercase tracking-[0.12em]">
-                  <Crown size={9} className="text-accent" /> Admin Suite
+                <p className="a-display text-[15px]" style={{ color: "hsl(var(--a-text))" }}>SHAHED<span style={{ color: "hsl(var(--a-emerald))" }}>.</span>IT</p>
+                <p className="text-[9.5px] mt-0.5 flex items-center gap-1 uppercase tracking-[0.24em] a-mono" style={{ color: "hsl(var(--a-mute-2))" }}>
+                  <span className="w-1 h-1 rounded-full inline-block" style={{ background: "hsl(var(--a-emerald))" }} />
+                  Command
                 </p>
               </div>
             </motion.div>
@@ -399,14 +350,15 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
         {!isMobile && (
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="text-muted-foreground hover:text-primary p-1.5 rounded-lg hover:bg-primary/10 transition-colors ml-auto"
+            className="p-1.5 rounded-md transition-colors ml-auto"
+            style={{ color: "hsl(var(--a-muted))" }}
             title={collapsed ? "Expand" : "Collapse"}
           >
-            {collapsed ? <Menu size={16} /> : <ChevronLeft size={16} />}
+            {collapsed ? <Menu size={15} /> : <ChevronLeft size={15} />}
           </button>
         )}
         {isMobile && (
-          <button onClick={() => setMobileOpen(false)} className="text-muted-foreground hover:text-primary p-1.5 rounded-lg hover:bg-primary/10">
+          <button onClick={() => setMobileOpen(false)} className="p-1.5 rounded-md" style={{ color: "hsl(var(--a-muted))" }}>
             <X size={18} />
           </button>
         )}
@@ -414,78 +366,68 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
 
       {/* Search */}
       {(!collapsed || isMobile) && (
-        <div className="px-4 pb-3">
+        <div className="px-4 pt-4 pb-2">
           <div className="relative">
-            <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/70" />
+            <Search size={12} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: "hsl(var(--a-mute-2))" }} />
             <Input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search menu… (AI দিয়ে খুঁজুন)"
-              className="h-9 pl-8 pr-8 text-xs bg-card/40 border-primary/15 focus:border-primary/40 placeholder:text-muted-foreground/50 rounded-lg"
+              placeholder="Search menu"
+              className="h-9 pl-8 pr-8 text-[12px] a-mono rounded-md border-0"
+              style={{
+                background: "hsl(var(--a-panel-2))",
+                boxShadow: "inset 0 0 0 1px hsl(var(--a-line))",
+                color: "hsl(var(--a-text))",
+              }}
             />
             <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
-              {noLocalMatch && (
-                <Sparkles size={12} className={`text-accent ${aiLoading ? "animate-pulse" : ""}`} />
-              )}
-              {query && (
-                <button onClick={() => setQuery("")} className="text-muted-foreground/70 hover:text-foreground">
-                  <X size={12} />
-                </button>
-              )}
+              {noLocalMatch && <Sparkles size={11} className={aiLoading ? "animate-pulse" : ""} style={{ color: "hsl(var(--a-gold))" }} />}
+              {query && <button onClick={() => setQuery("")} style={{ color: "hsl(var(--a-mute-2))" }}><X size={11} /></button>}
             </div>
           </div>
 
-          {/* AI search results — only when local filter is empty */}
           {noLocalMatch && (
-            <div className="mt-2 rounded-lg border border-primary/20 bg-card/60 backdrop-blur-sm overflow-hidden">
-              <div className="px-3 py-1.5 flex items-center gap-1.5 text-[10px] uppercase tracking-[0.14em] font-bold text-primary/90 border-b border-primary/10">
-                <Sparkles size={10} className="text-accent" />
-                AI Suggestions
-                {aiLoading && <span className="ml-auto text-muted-foreground/60 normal-case tracking-normal">খুঁজছি…</span>}
+            <div className="mt-2 rounded-md overflow-hidden" style={{ background: "hsl(var(--a-panel-2))", boxShadow: "inset 0 0 0 1px hsl(var(--a-line))" }}>
+              <div className="px-3 py-1.5 flex items-center gap-1.5 text-[9.5px] uppercase tracking-[0.2em] a-mono" style={{ color: "hsl(var(--a-gold))", borderBottom: "1px solid hsl(var(--a-line))" }}>
+                <Sparkles size={9} />
+                AI Suggests
+                {aiLoading && <span className="ml-auto normal-case tracking-normal" style={{ color: "hsl(var(--a-mute-2))" }}>খুঁজছি…</span>}
               </div>
               {aiLoading && aiResults.length === 0 ? (
                 <div className="px-3 py-3 space-y-1.5">
-                  {[0, 1, 2].map((i) => (
-                    <div key={i} className="h-7 rounded bg-primary/5 animate-pulse" />
-                  ))}
+                  {[0, 1, 2].map((i) => (<div key={i} className="h-7 rounded" style={{ background: "hsl(var(--a-line))" }} />))}
                 </div>
               ) : aiResults.length > 0 ? (
                 <div className="py-1">
                   {aiResults.map((r) => (
-                    <button
-                      key={r.href}
+                    <button key={r.href}
                       onClick={() => { persistSidebarScroll(); navigate(r.href); setQuery(""); setMobileOpen(false); }}
-                      className="w-full text-left px-3 py-2 hover:bg-primary/10 transition-colors group"
+                      className="w-full text-left px-3 py-2 transition-colors group"
+                      style={{ color: "hsl(var(--a-text))" }}
                     >
                       <div className="flex items-center gap-2">
-                        <ChevronRight size={11} className="text-primary/60 group-hover:text-primary group-hover:translate-x-0.5 transition-transform" />
-                        <span className="text-xs font-medium text-foreground truncate">{r.label}</span>
+                        <ChevronRight size={10} style={{ color: "hsl(var(--a-emerald))" }} className="group-hover:translate-x-0.5 transition-transform" />
+                        <span className="text-[12px] truncate">{r.label}</span>
                       </div>
-                      {r.reason && (
-                        <p className="text-[10px] text-muted-foreground/70 mt-0.5 ml-[18px] line-clamp-1">{r.reason}</p>
-                      )}
+                      {r.reason && <p className="text-[10px] mt-0.5 ml-[16px] line-clamp-1" style={{ color: "hsl(var(--a-mute-2))" }}>{r.reason}</p>}
                     </button>
                   ))}
                 </div>
               ) : (
-                <div className="px-3 py-3 text-[11px] text-muted-foreground/70 text-center">
-                  {aiError ?? "কোনো মিল পাওয়া যায়নি"}
-                </div>
+                <div className="px-3 py-3 text-[11px] text-center" style={{ color: "hsl(var(--a-mute-2))" }}>{aiError ?? "কোনো মিল পাওয়া যায়নি"}</div>
               )}
             </div>
           )}
         </div>
       )}
 
-      {/* Nav Groups */}
-      <nav ref={sidebarScrollRef as React.RefObject<HTMLElement>} className="flex-1 overflow-y-auto py-1 px-2.5 space-y-0.5 scrollbar-thin scrollbar-thumb-primary/20">
+      {/* Nav */}
+      <nav ref={sidebarScrollRef as React.RefObject<HTMLElement>} className="flex-1 overflow-y-auto a-scroll py-2 px-2">
         {loading ? (
-          <div className="space-y-2 px-2 pt-2">
-            {Array.from({ length: 10 }).map((_, i) => (
-              <div key={i} className="h-8 rounded-lg bg-primary/5 animate-pulse" />
-            ))}
+          <div className="space-y-1.5 px-2 pt-2">
+            {Array.from({ length: 10 }).map((_, i) => (<div key={i} className="h-7 rounded" style={{ background: "hsl(var(--a-line))" }} />))}
           </div>
-        ) : filteredGroups.map((group) => {
+        ) : filteredGroups.map((group, gi) => {
           const isOpen = (collapsed && !isMobile) ? false : (query.trim() ? true : (openGroups[group.title] ?? false));
           const groupActive = group.items.some((i) => isItemActive(i.href));
           return (
@@ -493,15 +435,14 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
               {(!collapsed || isMobile) && (
                 <button
                   onClick={() => setOpenGroups({ ...openGroups, [group.title]: !isOpen })}
-                  className={`w-full group flex items-center justify-between px-2.5 py-1.5 mt-2 text-[10px] uppercase tracking-[0.14em] font-bold transition-colors ${
-                    groupActive ? "text-primary" : "text-muted-foreground/70 hover:text-foreground"
-                  }`}
+                  className="w-full group flex items-center justify-between px-3 py-2 mt-2 a-mono text-[9.5px] uppercase tracking-[0.22em] transition-colors"
+                  style={{ color: groupActive ? "hsl(var(--a-emerald))" : "hsl(var(--a-mute-2))" }}
                 >
-                  <span className="flex items-center gap-2">
-                    <group.icon size={11} className={groupActive ? "text-primary" : ""} />
-                    {group.title}
+                  <span className="flex items-center gap-2.5">
+                    <span className="a-mono opacity-50">{String(gi + 1).padStart(2, "0")}</span>
+                    <span>{group.title}</span>
                   </span>
-                  <ChevronDown size={11} className={`transition-transform opacity-60 group-hover:opacity-100 ${isOpen ? "" : "-rotate-90"}`} />
+                  <ChevronDown size={10} className={`transition-transform ${isOpen ? "" : "-rotate-90"}`} />
                 </button>
               )}
               <AnimatePresence initial={false}>
@@ -510,61 +451,64 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                     initial={(collapsed && !isMobile) ? false : { height: 0, opacity: 0 }}
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    className="overflow-hidden space-y-0.5 mt-0.5"
+                    className="overflow-hidden"
                   >
                     {group.items.map((item) => {
                       const active = isItemActive(item.href);
-                      const grad = tileGradient(item.href);
                       return (
-                        <Link key={item.href} to={item.href} onClick={persistSidebarScroll} title={(collapsed && !isMobile) ? item.label : undefined} className="block w-full cursor-pointer select-none">
-                          <motion.div
-                            whileHover={{ x: (collapsed && !isMobile) ? 0 : 2 }}
-                            transition={{ type: "spring", stiffness: 400, damping: 28 }}
-                            className={`group/item relative flex items-center gap-3 px-2 py-1.5 rounded-xl text-[13px] font-medium transition-all duration-200 ${
-                              active
-                                ? "bg-gradient-to-r from-primary/25 via-primary/10 to-transparent text-foreground"
-                                : "text-foreground/85 hover:text-foreground hover:bg-foreground/[0.04]"
-                            }`}
+                        <Link
+                          key={item.href}
+                          to={item.href}
+                          onClick={persistSidebarScroll}
+                          title={(collapsed && !isMobile) ? item.label : undefined}
+                          className="block w-full cursor-pointer select-none a-rail-item"
+                          data-active={active}
+                        >
+                          <div
+                            className="relative flex items-center gap-3 pl-3 pr-2 py-1.5 mx-1 rounded-md transition-all duration-150"
+                            style={{
+                              background: active ? "linear-gradient(90deg, hsl(var(--a-emerald) / 0.10), transparent 70%)" : "transparent",
+                              color: active ? "hsl(var(--a-text))" : "hsl(var(--a-muted))",
+                            }}
                           >
                             {active && (
                               <motion.span
                                 layoutId="activeNav"
-                                className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-gradient-to-b from-primary to-accent rounded-r-full shadow-[0_0_10px_hsl(var(--primary)/0.9)]"
+                                className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-4 rounded-r"
+                                style={{ background: "hsl(var(--a-emerald))", boxShadow: "0 0 12px hsl(var(--a-emerald) / 0.8)" }}
                               />
                             )}
                             <span
-                              className={`flex-shrink-0 w-8 h-8 rounded-xl flex items-center justify-center text-white bg-gradient-to-br ${grad} shadow-[0_4px_12px_-4px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.25)] ring-1 ring-white/10 transition-transform duration-300 ${
-                                active ? "scale-110" : "group-hover/item:scale-110"
-                              }`}
+                              className="flex-shrink-0 w-6 h-6 rounded flex items-center justify-center transition-colors"
+                              style={{
+                                color: active ? "hsl(var(--a-emerald))" : "hsl(var(--a-muted))",
+                                background: active ? "hsl(var(--a-emerald) / 0.10)" : "transparent",
+                                boxShadow: active ? "inset 0 0 0 1px hsl(var(--a-emerald) / 0.25)" : "none",
+                              }}
                             >
-                              <item.icon size={15} strokeWidth={2.2} />
+                              <item.icon size={13} strokeWidth={1.9} />
                             </span>
-                            <AnimatePresence mode="wait">
-                              {(!collapsed || isMobile) && (
-                                <motion.span
-                                  initial={{ opacity: 0 }}
-                                  animate={{ opacity: 1 }}
-                                  exit={{ opacity: 0 }}
-                                  className="truncate flex-1"
-                                >
-                                  {item.label}
-                                </motion.span>
-                              )}
-                            </AnimatePresence>
+                            {(!collapsed || isMobile) && (
+                              <span className="truncate flex-1 text-[12.5px] a-body">{item.label}</span>
+                            )}
                             {(!collapsed || isMobile) && item.badge && (
-                              <span className={`text-[8.5px] font-bold px-1.5 py-0.5 rounded-md tracking-wider ${
-                                item.badge === "AI"
-                                  ? "bg-gradient-to-r from-accent/30 to-primary/30 text-accent border border-accent/40"
-                                  : "bg-gradient-to-r from-pink-500/20 to-fuchsia-500/20 text-pink-300 border border-pink-400/40"
-                              }`}>
+                              <span
+                                className="text-[8.5px] a-mono px-1.5 py-0.5 rounded uppercase tracking-wider"
+                                style={
+                                  item.badge === "AI"
+                                    ? { color: "hsl(var(--a-gold))", background: "hsl(var(--a-gold) / 0.08)", boxShadow: "inset 0 0 0 1px hsl(var(--a-gold) / 0.35)" }
+                                    : item.badge === "HUB"
+                                    ? { color: "hsl(var(--a-emerald-soft))", background: "hsl(var(--a-emerald) / 0.08)", boxShadow: "inset 0 0 0 1px hsl(var(--a-emerald) / 0.3)" }
+                                    : { color: "hsl(var(--a-mute-2))", background: "transparent", boxShadow: "inset 0 0 0 1px hsl(var(--a-line-strong))" }
+                                }
+                              >
                                 {item.badge}
                               </span>
                             )}
-                          </motion.div>
+                          </div>
                         </Link>
                       );
                     })}
-
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -572,28 +516,39 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           );
         })}
         {filteredGroups.length === 0 && (
-          <p className="text-xs text-muted-foreground text-center py-6">No matching items</p>
+          <p className="text-xs text-center py-6" style={{ color: "hsl(var(--a-mute-2))" }}>No matching items</p>
         )}
       </nav>
 
       {/* User card */}
-      <div className="p-3 mt-1">
-        <div className={`relative rounded-xl border border-primary/15 bg-gradient-to-br from-card/60 to-background/30 backdrop-blur-xl p-2.5 flex items-center gap-3 ${(collapsed && !isMobile) ? "justify-center" : ""}`}>
-          <Avatar className="w-9 h-9 flex-shrink-0 ring-2 ring-primary/40">
-            <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-primary-foreground text-xs font-bold">
+      <div className="p-3 border-t" style={{ borderColor: "hsl(var(--a-line))" }}>
+        <div
+          className={`rounded-md p-2.5 flex items-center gap-3 ${(collapsed && !isMobile) ? "justify-center" : ""}`}
+          style={{ background: "hsl(var(--a-panel-2))", boxShadow: "inset 0 0 0 1px hsl(var(--a-line))" }}
+        >
+          <Avatar className="w-8 h-8 flex-shrink-0">
+            <AvatarFallback
+              className="text-[11px] a-display"
+              style={{ background: "hsl(var(--a-emerald-deep))", color: "hsl(var(--a-emerald-soft))" }}
+            >
               {user?.email?.[0]?.toUpperCase() ?? "A"}
             </AvatarFallback>
           </Avatar>
           {(!collapsed || isMobile) && (
             <>
               <div className="flex-1 min-w-0">
-                <p className="text-foreground text-xs font-semibold truncate">{user?.email}</p>
-                <p className="text-[10px] capitalize flex items-center gap-1 text-primary/90 font-medium">
-                  <Crown size={9} className="text-accent" /> {role ?? "admin"}
+                <p className="text-[11.5px] truncate a-body" style={{ color: "hsl(var(--a-text))" }}>{user?.email}</p>
+                <p className="text-[9.5px] capitalize a-mono uppercase tracking-[0.18em] flex items-center gap-1" style={{ color: "hsl(var(--a-emerald))" }}>
+                  <Crown size={8} /> {role ?? "admin"}
                 </p>
               </div>
-              <Button variant="ghost" size="icon" onClick={handleSignOut} className="text-muted-foreground hover:text-rose-400 h-8 w-8 flex-shrink-0 rounded-lg" title="Sign out">
-                <LogOut size={14} />
+              <Button
+                variant="ghost" size="icon" onClick={handleSignOut}
+                className="h-7 w-7 flex-shrink-0 rounded-md hover:bg-transparent"
+                style={{ color: "hsl(var(--a-muted))" }}
+                title="Sign out"
+              >
+                <LogOut size={13} />
               </Button>
             </>
           )}
@@ -603,59 +558,27 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   );
 
   return (
-    <div data-admin-layout className="relative h-screen overflow-hidden font-inter text-foreground bg-[#0a0514]">
-      {/* Ambient background — matches the public site (SiteBackground) */}
-      <div
-        aria-hidden
-        className="fixed inset-0 pointer-events-none overflow-hidden z-0"
-        style={{ contain: "strict", transform: "translateZ(0)" }}
-      >
-        {/* Mobile: lightweight static gradients */}
-        <div
-          className="absolute inset-0 md:hidden"
-          style={{
-            background:
-              "radial-gradient(at 20% 10%, hsla(270,92%,55%,0.28) 0px, transparent 45%), radial-gradient(at 85% 85%, hsla(320,90%,55%,0.22) 0px, transparent 50%)",
-          }}
-        />
-        {/* Desktop: animated cinematic blobs + dot grid */}
-        <div className="absolute inset-0 opacity-50 hidden md:block">
-          <motion.div
-            className="absolute -top-[15%] -left-[10%] w-[55%] h-[60%] rounded-full bg-[hsl(270,92%,65%)] blur-[140px]"
-            animate={{ scale: [1, 1.15, 1], opacity: [0.45, 0.7, 0.45] }}
-            transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div
-            className="absolute -bottom-[15%] -right-[10%] w-[55%] h-[60%] rounded-full bg-[hsl(320,90%,55%)] blur-[140px]"
-            animate={{ scale: [1, 1.2, 1], opacity: [0.35, 0.6, 0.35] }}
-            transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          />
-          <motion.div
-            className="absolute top-[40%] left-[45%] w-[40%] h-[45%] rounded-full bg-[hsl(290,85%,60%)] blur-[160px]"
-            animate={{ scale: [1, 1.1, 1], opacity: [0.25, 0.45, 0.25] }}
-            transition={{ duration: 13, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage:
-                "radial-gradient(circle at 2px 2px, rgba(255,255,255,0.06) 1px, transparent 0)",
-              backgroundSize: "40px 40px",
-            }}
-          />
-        </div>
+    <div
+      data-admin-layout
+      data-admin-theme
+      className="relative h-screen overflow-hidden a-body"
+      style={{ color: "hsl(var(--a-text))", background: "hsl(var(--a-bg))" }}
+    >
+      {/* Ambient editorial background */}
+      <div aria-hidden className="fixed inset-0 pointer-events-none overflow-hidden z-0 a-grain">
+        <div className="absolute inset-0 a-dot-grid opacity-70" />
       </div>
 
       <div className="relative z-10 flex h-full overflow-hidden">
         {/* Desktop sidebar */}
         <motion.aside
-          animate={{ width: collapsed ? 80 : 280 }}
-          transition={{ type: "spring", stiffness: 280, damping: 32 }}
-          className="hidden md:flex flex-shrink-0 flex-col overflow-hidden border-r border-primary/10"
+          animate={{ width: collapsed ? 72 : 272 }}
+          transition={{ type: "spring", stiffness: 300, damping: 34 }}
+          className="hidden md:flex flex-shrink-0 flex-col overflow-hidden border-r"
           style={{
-            background:
-              "linear-gradient(180deg, hsl(var(--card) / 0.55) 0%, hsl(var(--background) / 0.4) 100%)",
-            backdropFilter: "blur(28px)",
+            background: "linear-gradient(180deg, hsl(var(--a-panel) / 0.85), hsl(var(--a-bg) / 0.9))",
+            backdropFilter: "blur(20px)",
+            borderColor: "hsl(var(--a-line))",
           }}
         >
           {renderSidebarInner()}
@@ -667,17 +590,18 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
             <>
               <motion.div
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                className="md:hidden fixed inset-0 bg-background/70 backdrop-blur-sm z-40"
+                className="md:hidden fixed inset-0 z-40"
+                style={{ background: "hsl(var(--a-bg) / 0.75)", backdropFilter: "blur(4px)" }}
                 onClick={() => setMobileOpen(false)}
               />
               <motion.aside
                 initial={{ x: -300 }} animate={{ x: 0 }} exit={{ x: -300 }}
-                transition={{ type: "spring", stiffness: 280, damping: 32 }}
-                className="md:hidden fixed top-0 left-0 bottom-0 w-[280px] z-50 flex flex-col border-r border-primary/15"
+                transition={{ type: "spring", stiffness: 300, damping: 34 }}
+                className="md:hidden fixed top-0 left-0 bottom-0 w-[280px] z-50 flex flex-col border-r"
                 style={{
-                  background:
-                    "linear-gradient(180deg, hsl(var(--card) / 0.95) 0%, hsl(var(--background) / 0.92) 100%)",
-                  backdropFilter: "blur(28px)",
+                  background: "linear-gradient(180deg, hsl(var(--a-panel) / 0.98), hsl(var(--a-bg) / 0.98))",
+                  backdropFilter: "blur(20px)",
+                  borderColor: "hsl(var(--a-line))",
                 }}
               >
                 {renderSidebarInner(true)}
@@ -688,73 +612,88 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
 
         {/* Main */}
         <div className="flex-1 flex flex-col overflow-hidden">
-          {/* Top bar */}
+          {/* Top bar — editorial masthead */}
           <header
-            className="h-[68px] border-b border-primary/10 flex items-center justify-between gap-3 px-4 md:px-7 flex-shrink-0"
-            style={{ background: "hsl(var(--background) / 0.55)", backdropFilter: "blur(18px)" }}
+            className="h-[64px] border-b flex items-center justify-between gap-3 px-4 md:px-8 flex-shrink-0"
+            style={{
+              background: "linear-gradient(180deg, hsl(var(--a-panel) / 0.72), hsl(var(--a-bg) / 0.5))",
+              backdropFilter: "blur(16px)",
+              borderColor: "hsl(var(--a-line))",
+            }}
           >
-            <div className="flex items-center gap-3 min-w-0">
+            <div className="flex items-center gap-4 min-w-0">
               <button
                 onClick={() => setMobileOpen(true)}
-                className="md:hidden text-foreground p-2 -ml-2 rounded-lg hover:bg-primary/10"
+                className="md:hidden p-2 -ml-2 rounded-md"
+                style={{ color: "hsl(var(--a-text))" }}
                 aria-label="Open menu"
               >
-                <Menu size={20} />
+                <Menu size={19} />
               </button>
 
-              <div className="min-w-0">
-                {/* Breadcrumb */}
-                <div className="hidden sm:flex items-center gap-1.5 text-[11px] text-muted-foreground/80 font-medium">
-                  <Link to="/ceo" className="hover:text-primary transition-colors">Admin</Link>
-                  {currentGroup && (
-                    <>
-                      <ChevronRight size={11} className="opacity-50" />
-                      <span className="opacity-90">{currentGroup.title}</span>
-                    </>
-                  )}
-                  {currentItem && (
-                    <>
-                      <ChevronRight size={11} className="opacity-50" />
-                      <span className="text-primary">{currentItem.label}</span>
-                    </>
-                  )}
+              <div className="min-w-0 flex items-center gap-4">
+                {/* Rule + issue-style label */}
+                <div className="hidden md:flex flex-col items-end pr-4 border-r a-mono text-[9.5px] uppercase tracking-[0.22em]" style={{ borderColor: "hsl(var(--a-line))", color: "hsl(var(--a-mute-2))" }}>
+                  <span>Issue №</span>
+                  <span style={{ color: "hsl(var(--a-emerald))" }}>{new Date().getFullYear()}.{String(new Date().getMonth()+1).padStart(2,'0')}</span>
                 </div>
-                <h2 className="text-foreground font-semibold text-[15px] md:text-base font-syne leading-tight truncate">
-                  {currentTitle}
-                </h2>
+                <div className="min-w-0">
+                  <div className="hidden sm:flex items-center gap-2 a-mono text-[9.5px] uppercase tracking-[0.22em]" style={{ color: "hsl(var(--a-mute-2))" }}>
+                    <Link to="/ceo" className="hover:opacity-100 opacity-70">Admin</Link>
+                    {currentGroup && (<><span className="opacity-40">/</span><span className="opacity-80">{currentGroup.title}</span></>)}
+                    {currentItem && (<><span className="opacity-40">/</span><span style={{ color: "hsl(var(--a-emerald))" }}>{currentItem.label}</span></>)}
+                  </div>
+                  <h2 className="a-display text-[17px] md:text-[19px] leading-tight truncate" style={{ color: "hsl(var(--a-text))" }}>
+                    {currentTitle}
+                  </h2>
+                </div>
               </div>
             </div>
 
             <div className="flex items-center gap-2">
-              {/* Quick search hint (visual only) */}
               <button
                 onClick={() => {
-                  const el = document.querySelector<HTMLInputElement>('input[placeholder="Search menu…"]');
+                  const el = document.querySelector<HTMLInputElement>('input[placeholder="Search menu"]');
                   el?.focus();
                 }}
-                className="hidden lg:inline-flex items-center gap-2 text-muted-foreground hover:text-foreground text-xs bg-card/40 hover:bg-card/60 border border-primary/15 hover:border-primary/30 pl-3 pr-2 py-1.5 rounded-lg transition-colors"
+                className="hidden lg:inline-flex items-center gap-2 text-[11px] a-mono uppercase tracking-[0.16em] pl-3 pr-2 py-1.5 rounded-md transition-colors"
+                style={{
+                  color: "hsl(var(--a-muted))",
+                  background: "hsl(var(--a-panel-2))",
+                  boxShadow: "inset 0 0 0 1px hsl(var(--a-line))",
+                }}
               >
-                <Search size={13} />
-                <span>Quick search</span>
-                <kbd className="ml-2 text-[9px] font-semibold bg-background/60 border border-primary/20 px-1.5 py-0.5 rounded">
+                <Search size={12} />
+                <span>Search</span>
+                <kbd className="ml-2 text-[9px] px-1.5 py-0.5 rounded" style={{ background: "hsl(var(--a-bg))", boxShadow: "inset 0 0 0 1px hsl(var(--a-line-strong))" }}>
                   <Command size={9} className="inline -mt-0.5" /> K
                 </kbd>
               </button>
 
               <Link
-                to="/"
-                target="_blank"
-                className="hidden md:inline-flex items-center gap-1.5 text-foreground/90 hover:text-primary text-xs bg-card/40 hover:bg-primary/10 border border-primary/15 hover:border-primary/30 px-3 py-1.5 rounded-lg transition-colors"
+                to="/" target="_blank"
+                className="hidden md:inline-flex items-center gap-1.5 text-[11px] a-mono uppercase tracking-[0.16em] px-3 py-1.5 rounded-md transition-colors"
+                style={{
+                  color: "hsl(var(--a-emerald-soft))",
+                  background: "hsl(var(--a-emerald) / 0.06)",
+                  boxShadow: "inset 0 0 0 1px hsl(var(--a-emerald) / 0.28)",
+                }}
               >
-                View Site <ExternalLink size={11} />
+                View Site <ExternalLink size={10} />
               </Link>
 
               <Popover>
                 <PopoverTrigger asChild>
-                  <button className="relative text-foreground/80 hover:text-primary p-2 rounded-lg hover:bg-primary/10 border border-transparent hover:border-primary/20 transition-colors">
-                    <Bell size={17} />
+                  <button
+                    className="relative p-2 rounded-md transition-colors"
+                    style={{ color: "hsl(var(--a-text))", background: "hsl(var(--a-panel-2))", boxShadow: "inset 0 0 0 1px hsl(var(--a-line))" }}
+                  >
+                    <Bell size={15} />
                     {unreadCount > 0 && (
-                      <span className="absolute top-0.5 right-0.5 min-w-[16px] h-4 px-1 rounded-full bg-gradient-to-br from-accent to-primary text-primary-foreground text-[9px] font-bold flex items-center justify-center shadow-[0_0_10px_hsl(var(--accent)/0.6)]">
+                      <span
+                        className="absolute top-0.5 right-0.5 min-w-[14px] h-3.5 px-1 rounded-full text-[9px] a-mono flex items-center justify-center"
+                        style={{ background: "hsl(var(--a-emerald))", color: "hsl(var(--a-bg))", fontWeight: 700 }}
+                      >
                         {unreadCount}
                       </span>
                     )}
@@ -762,28 +701,27 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                 </PopoverTrigger>
                 <PopoverContent
                   align="end"
-                  className="w-80 p-0 bg-card/95 backdrop-blur-xl border-primary/25 rounded-xl overflow-hidden"
+                  className="w-80 p-0 rounded-md overflow-hidden border-0"
+                  style={{ background: "hsl(var(--a-panel))", boxShadow: "0 24px 60px -20px hsl(0 0% 0% / 0.6), inset 0 0 0 1px hsl(var(--a-line))" }}
                 >
-                  <div className="p-3 border-b border-primary/15 flex items-center justify-between bg-gradient-to-r from-primary/10 to-transparent">
-                    <h3 className="text-sm font-semibold text-foreground font-syne">Notifications</h3>
-                    <Badge variant="outline" className="text-[10px] border-primary/30 text-primary">
+                  <div className="p-3 flex items-center justify-between" style={{ borderBottom: "1px solid hsl(var(--a-line))" }}>
+                    <h3 className="a-display text-[13px]" style={{ color: "hsl(var(--a-text))" }}>Notifications</h3>
+                    <Badge variant="outline" className="text-[9.5px] a-mono uppercase tracking-[0.15em] border-0" style={{ color: "hsl(var(--a-emerald))", boxShadow: "inset 0 0 0 1px hsl(var(--a-emerald) / 0.3)" }}>
                       {unreadCount} new
                     </Badge>
                   </div>
-                  <div className="max-h-80 overflow-y-auto">
+                  <div className="max-h-80 overflow-y-auto a-scroll">
                     {notifications.length === 0 ? (
                       <div className="text-center py-10 px-4">
-                        <Bell size={20} className="mx-auto text-muted-foreground/50 mb-2" />
-                        <p className="text-xs text-muted-foreground">No new activity</p>
+                        <Bell size={20} className="mx-auto mb-2" style={{ color: "hsl(var(--a-mute-2))" }} />
+                        <p className="text-xs" style={{ color: "hsl(var(--a-mute-2))" }}>No new activity</p>
                       </div>
                     ) : (
                       notifications.map((n, i) => (
                         <Link key={i} to={n.link}>
-                          <div className="px-3 py-2.5 hover:bg-primary/5 border-b border-primary/10 cursor-pointer transition-colors">
-                            <p className="text-xs text-foreground leading-snug">{n.title}</p>
-                            <p className="text-[10px] text-muted-foreground mt-0.5">
-                              {new Date(n.time).toLocaleString()}
-                            </p>
+                          <div className="px-3 py-2.5 cursor-pointer transition-colors" style={{ borderBottom: "1px solid hsl(var(--a-line))" }}>
+                            <p className="text-[12px] leading-snug a-body" style={{ color: "hsl(var(--a-text))" }}>{n.title}</p>
+                            <p className="text-[10px] mt-0.5 a-mono" style={{ color: "hsl(var(--a-mute-2))" }}>{new Date(n.time).toLocaleString()}</p>
                           </div>
                         </Link>
                       ))
@@ -792,10 +730,9 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                 </PopoverContent>
               </Popover>
 
-              {/* Compact user chip on top bar */}
-              <div className="hidden md:flex items-center gap-2 pl-2 ml-1 border-l border-primary/15">
-                <Avatar className="w-8 h-8 ring-2 ring-primary/30">
-                  <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-primary-foreground text-[11px] font-bold">
+              <div className="hidden md:flex items-center gap-2 pl-3 ml-1 border-l" style={{ borderColor: "hsl(var(--a-line))" }}>
+                <Avatar className="w-8 h-8">
+                  <AvatarFallback className="text-[11px] a-display" style={{ background: "hsl(var(--a-emerald-deep))", color: "hsl(var(--a-emerald-soft))" }}>
                     {user?.email?.[0]?.toUpperCase() ?? "A"}
                   </AvatarFallback>
                 </Avatar>
@@ -804,12 +741,11 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           </header>
 
           {/* Content */}
-          <main ref={mainScrollRef as React.RefObject<HTMLElement>} className="flex-1 overflow-y-auto">
-            <div className="p-4 md:p-7 max-w-[1600px] mx-auto">
+          <main ref={mainScrollRef as React.RefObject<HTMLElement>} className="flex-1 overflow-y-auto a-scroll">
+            <div className="p-4 md:p-8 max-w-[1600px] mx-auto">
               {children}
             </div>
           </main>
-
         </div>
       </div>
     </div>
