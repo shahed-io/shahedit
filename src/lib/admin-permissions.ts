@@ -76,7 +76,8 @@ export type AdminSection =
   | "settings-hub"
   | "advanced-tools"
   | "offers"
-  | "copy-protection";
+  | "copy-protection"
+  | "ai-providers";
 
 
 /**
