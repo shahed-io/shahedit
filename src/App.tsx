@@ -289,11 +289,15 @@ const AdminRoutes = () => {
 const AppWithAnalytics = () => {
   useAnalyticsInjection();
   useApplyCopyProtection();
+  // Admin routes get a lightweight shell: no public SEO/Helmet churn,
+  // no animated site background, no welcome popup, no floating support widget.
+  const isAdminRoute =
+    typeof window !== "undefined" && window.location.pathname.startsWith("/ceo");
   return (
     <Suspense fallback={<PageFallback />}>
-      <SEO />
-      <AutoStructuredData />
-      <SiteBackground />
+      {!isAdminRoute && <SEO />}
+      {!isAdminRoute && <AutoStructuredData />}
+      {!isAdminRoute && <SiteBackground />}
       <div className="relative z-10">
       <Routes>
 
@@ -340,9 +344,9 @@ const AppWithAnalytics = () => {
         <Route path="*" element={<NotFound />} />
       </Routes>
       </div>
-      <ThemeAppearanceProvider />
-      <GlobalSupport />
-      <WelcomePopup />
+      {!isAdminRoute && <ThemeAppearanceProvider />}
+      {!isAdminRoute && <GlobalSupport />}
+      {!isAdminRoute && <WelcomePopup />}
     </Suspense>
   );
 };
