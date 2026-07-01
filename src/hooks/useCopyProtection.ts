@@ -114,12 +114,25 @@ export function useApplyCopyProtection() {
     const s = settings;
     const warn = () => s.showWarning && warnOnce(s.warningMessage);
 
-    // Frame-buster — prevent embedding inside another site
+    // Frame-buster — prevent embedding inside unknown external sites.
+    // Never blank the app: Lovable preview/editor runs the site inside an iframe,
+    // and clearing body here caused the mobile preview to show only a black screen.
     if (s.frameBuster && window.top !== window.self) {
-      try {
-        window.top!.location.href = window.location.href;
-      } catch {
-        document.body.innerHTML = "";
+      const host = window.location.hostname;
+      const referrer = document.referrer;
+      const isLovablePreview =
+        host.includes("lovableproject.com") ||
+        host.includes("lovable.app") ||
+        referrer.includes("lovable.dev") ||
+        referrer.includes("lovable.app") ||
+        referrer.includes("lovableproject.com");
+
+      if (!isLovablePreview) {
+        try {
+          window.top!.location.href = window.location.href;
+        } catch {
+          // If the browser blocks frame navigation, keep the website visible.
+        }
       }
     }
 
