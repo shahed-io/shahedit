@@ -344,68 +344,65 @@ const SiteFooter = () => {
         </motion.div>
 
         {/* Premium Copyright Bar */}
-        <div className="mt-12 flex justify-center px-4">
+        <div className="mt-12 flex flex-col items-center px-4">
+          {/* Elegant hairline divider */}
           <div
-            className="relative inline-flex flex-wrap justify-center items-center gap-x-3 gap-y-1.5 px-7 sm:px-9 py-3 rounded-full text-[11px] sm:text-[12px] tracking-wide max-w-full"
+            aria-hidden
+            className="w-40 h-px mb-6"
             style={{
               background:
-                "linear-gradient(135deg, hsla(265,55%,10%,0.92), hsla(280,60%,8%,0.88), hsla(255,50%,6%,0.94))",
-              border: "1px solid hsla(280,80%,65%,0.30)",
-              backdropFilter: "blur(18px)",
-              WebkitBackdropFilter: "blur(18px)",
+                "linear-gradient(90deg, transparent, hsla(0,0%,100%,0.25), transparent)",
+            }}
+          />
+          <div
+            className="relative inline-flex flex-wrap justify-center items-center gap-x-3 gap-y-1 px-8 sm:px-10 py-3 rounded-full text-[11px] sm:text-[12px] max-w-full"
+            style={{
+              background:
+                "linear-gradient(180deg, hsla(0,0%,100%,0.04), hsla(0,0%,100%,0.015))",
+              border: "1px solid hsla(0,0%,100%,0.08)",
+              backdropFilter: "blur(14px)",
+              WebkitBackdropFilter: "blur(14px)",
               boxShadow:
-                "0 12px 40px -10px hsla(270,90%,40%,0.45), inset 0 1px 0 hsla(0,0%,100%,0.08), inset 0 -1px 0 hsla(280,80%,65%,0.10)",
+                "0 8px 30px -12px hsla(0,0%,0%,0.6), inset 0 1px 0 hsla(0,0%,100%,0.06)",
             }}
           >
-            {/* Top inner highlight */}
             <span
-              aria-hidden
-              className="absolute inset-x-6 top-0 h-px pointer-events-none"
-              style={{
-                background:
-                  "linear-gradient(90deg, transparent, hsla(0,0%,100%,0.45), transparent)",
-              }}
-            />
-
-            <Sparkles size={13} className="text-amber-300 drop-shadow-[0_0_8px_hsla(45,95%,60%,0.7)]" />
-
-            <span className="font-serif italic bg-gradient-to-r from-amber-200 via-yellow-300 to-amber-400 bg-clip-text text-transparent whitespace-nowrap">
+              className="font-light tracking-wider text-foreground/70 whitespace-nowrap"
+              style={{ fontFamily: "'Syne', sans-serif" }}
+            >
               © {new Date().getFullYear()}
             </span>
 
-            <span aria-hidden className="w-1 h-1 rounded-full bg-gradient-to-br from-fuchsia-300 to-primary hidden sm:inline-block" />
-
             <Link
               to="/"
-              className="font-extrabold tracking-tight bg-gradient-to-r from-primary via-fuchsia-300 to-accent bg-clip-text text-transparent whitespace-nowrap hover:brightness-125 transition"
+              className="font-semibold tracking-tight text-foreground/95 whitespace-nowrap hover:text-foreground transition-colors"
               style={{ fontFamily: "'Syne', sans-serif" }}
             >
               Shahed IT
             </Link>
 
-            <span aria-hidden className="w-1 h-1 rounded-full bg-gradient-to-br from-accent to-cyan-300 hidden sm:inline-block" />
+            <span aria-hidden className="w-px h-3 bg-white/15" />
 
-            <span className="uppercase tracking-[0.24em] text-[10px] sm:text-[11px] bg-gradient-to-r from-emerald-200 to-teal-300 bg-clip-text text-transparent font-semibold whitespace-nowrap">
+            <span className="uppercase tracking-[0.28em] text-[9.5px] sm:text-[10px] text-foreground/50 font-medium whitespace-nowrap">
               All Rights Reserved
             </span>
 
-            <span aria-hidden className="w-1 h-1 rounded-full bg-gradient-to-br from-pink-300 to-fuchsia-400 hidden sm:inline-block" />
+            <span aria-hidden className="w-px h-3 bg-white/15 hidden sm:inline-block" />
 
-            <span className="text-foreground/60 font-light italic whitespace-nowrap">
+            <span className="text-foreground/45 font-light italic whitespace-nowrap hidden sm:inline">
               Crafted by
             </span>
 
             <Link
               to="/"
-              className="font-bold bg-gradient-to-r from-pink-300 via-fuchsia-300 to-accent bg-clip-text text-transparent whitespace-nowrap hover:brightness-125 transition"
+              className="font-semibold text-foreground/85 whitespace-nowrap hover:text-foreground transition-colors hidden sm:inline"
               style={{ fontFamily: "'Syne', sans-serif" }}
             >
               Shahed IT
             </Link>
-
-            <Sparkles size={13} className="text-fuchsia-300 drop-shadow-[0_0_8px_hsla(290,95%,65%,0.7)]" />
           </div>
         </div>
+
 
 
       </div>
