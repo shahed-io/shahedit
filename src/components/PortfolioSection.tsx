@@ -74,9 +74,7 @@ const PortfolioSection = () => {
             {projects.map((project, i) => (
               <motion.a
                 key={project.id}
-                href={project.project_url ?? "/portfolio"}
-                target={project.project_url ? "_blank" : undefined}
-                rel={project.project_url ? "noopener noreferrer" : undefined}
+                href={`/portfolio#${project.id}`}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
