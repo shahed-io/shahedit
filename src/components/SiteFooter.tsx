@@ -357,27 +357,28 @@ const SiteFooter = () => {
             />
 
             <p
-              className="text-[11px] uppercase tracking-[0.25em] text-foreground/40 font-light text-center flex flex-wrap items-center justify-center gap-x-1 gap-y-1"
+              className="text-[11px] uppercase tracking-[0.25em] font-light text-center flex flex-wrap items-center justify-center gap-x-1 gap-y-1"
               style={{ fontFamily: "'Inter', sans-serif" }}
             >
-              <span>&copy; {new Date().getFullYear()}</span>
+              <span className="text-cyan-300/70">&copy; {new Date().getFullYear()}</span>
               <Link
                 to="/"
-                className="text-foreground/70 font-normal hover:text-foreground transition-colors duration-300 mx-1"
+                className="font-semibold mx-1 bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-400 via-pink-400 to-rose-400 hover:from-fuchsia-300 hover:to-rose-300 transition-all duration-300"
               >
                 Shahed IT
               </Link>
-              <span className="text-foreground/20 mx-2 font-thin">&middot;</span>
-              <span>All Rights Reserved</span>
-              <span className="text-foreground/20 mx-2 font-thin">&middot;</span>
-              <span>Crafted by</span>
+              <span className="text-white/20 mx-2 font-thin">&middot;</span>
+              <span className="text-emerald-300/70">All Rights Reserved</span>
+              <span className="text-white/20 mx-2 font-thin">&middot;</span>
+              <span className="text-amber-300/70">Crafted by</span>
               <Link
                 to="/"
-                className="text-foreground/70 font-normal hover:text-foreground transition-colors duration-300 mx-1"
+                className="font-semibold mx-1 bg-clip-text text-transparent bg-gradient-to-r from-violet-400 via-indigo-400 to-sky-400 hover:from-violet-300 hover:to-sky-300 transition-all duration-300"
               >
                 Shahed IT
               </Link>
             </p>
+
 
             {/* Micro underglow accent */}
             <div
