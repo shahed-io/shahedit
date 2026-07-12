@@ -41,7 +41,7 @@ export default function AISupportChat({ externalOpen, onExternalOpenChange }: AI
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    supabase.from("ai_support_settings").select("greeting_message, bot_name")
+    (supabase as any).from("ai_support_settings_public").select("greeting_message, bot_name")
       .eq("id", 1).single().then(({ data }) => {
         if (data?.greeting_message) setGreeting(data.greeting_message);
         if (data?.bot_name) setBotName(data.bot_name);
