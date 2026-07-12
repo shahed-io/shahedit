@@ -21,3 +21,10 @@ project_id = "tqesyvmpdlbfmxfhdshb"
     verify_jwt = true
   [functions.sitemap]
     verify_jwt = false
+  [functions.bkash-create-payment]
+    verify_jwt = true
+  [functions.bkash-execute-payment]
+    verify_jwt = true
+  [functions.admin-menu-ai-search]
+    verify_jwt = true
+
