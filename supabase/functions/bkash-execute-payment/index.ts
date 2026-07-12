@@ -37,6 +37,8 @@ async function grantToken(mode: string) {
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
   try {
+    const auth = await requireAuthUser(req);
+    if (!auth.ok) return new Response(JSON.stringify({ success: false, error: auth.error }), { status: auth.status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     const { paymentID } = await req.json();
     if (!paymentID) {
       return new Response(JSON.stringify({ success: false, error: "paymentID required" }), {
