@@ -1,0 +1,1 @@
+UPDATE public.service_packages SET image_url = '/__l5e/assets-v1/ee025adb-dbf1-43d2-85d8-1c936de1e1ba/pkg-wp-starter-v2.jpg' WHERE image_url LIKE '%pkg-wp-starter%';
