@@ -32,6 +32,8 @@ export default function ProductDetailsPage() {
 
   useEffect(() => {
     if (!id) return;
+    // Jump to top instantly BEFORE fetch to avoid smooth-scroll "jumping/buffering" feel
+    window.scrollTo({ top: 0, behavior: "auto" });
     setLoading(true);
     // Detect UUID vs slug — lookup by the appropriate column
     const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
@@ -61,7 +63,6 @@ export default function ProductDetailsPage() {
           .limit(4)
           .then(({ data: rel }) => setRelated((rel as ServicePackageRow[]) ?? []));
       }
-      window.scrollTo({ top: 0, behavior: "smooth" });
     });
   }, [id, navigate]);
 
