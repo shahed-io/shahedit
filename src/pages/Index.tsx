@@ -1,6 +1,6 @@
 import SiteHeader from "@/components/SiteHeader";
 import HeroBanner from "@/components/HeroBanner";
-import PopularCategories from "@/components/PopularCategories";
+
 import HowWeHelp from "@/components/HowWeHelp";
 import IndustrySolutions from "@/components/IndustrySolutions";
 import ProductsSection from "@/components/ProductsSection";
@@ -19,9 +19,6 @@ const Index = () => {
       <div className="relative z-10">
         <SiteHeader />
         <HeroBanner />
-        <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 800px' }}>
-          <PopularCategories />
-        </div>
         <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 1000px' }}>
           <ProductsSection />
         </div>
