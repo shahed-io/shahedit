@@ -24,16 +24,6 @@ const PopularCategories = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <motion.span
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.25em] px-5 py-2 rounded-full mb-5"
-            style={{ background: 'rgba(236,72,153,0.08)', border: '1px solid rgba(236,72,153,0.30)', color: 'hsl(320,90%,65%)', backdropFilter: 'blur(8px)' }}
-          >
-            <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'hsl(320,90%,55%)', boxShadow: '0 0 10px hsl(320,90%,55%)' }} />
-            Premium Services
-          </motion.span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-foreground mt-2 tracking-tight">
             Explore Our <span className="gradient-text">Categories</span>
           </h2>
