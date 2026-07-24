@@ -67,8 +67,12 @@ export const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose
   const { user } = useAuth();
   const { methods: dbMethods } = usePaymentMethods();
   const { settings: wallet } = useWalletSettings();
-  // Kept for reference but no longer surfaced in checkout — wallet now goes via bKash PGW.
-  void dbMethods;
+
+  // Pull the admin-managed logo for the bKash tile (from Admin → Payments).
+  const bkashDb = useMemo(
+    () => dbMethods.find(m => m.method_id?.startsWith("bkash") && m.logo_url) ?? null,
+    [dbMethods]
+  );
 
   const [step, setStep] = useState<CheckoutStep>("info");
   const [selected, setSelected] = useState<PayMethodId>("bkash_online");
