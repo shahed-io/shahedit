@@ -78,16 +78,8 @@ const PopularCategories = () => {
                     backdropFilter: 'blur(10px)',
                   }}
                 >
-                  {/* Rotating ring */}
-                  <div
-                    className="absolute inset-[-6px] rounded-full opacity-40 group-hover:opacity-100 transition-opacity duration-500"
-                    style={{
-                      background: `conic-gradient(from 0deg, transparent, ${cat.color}, transparent 40%)`,
-                      mask: 'radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px))',
-                      WebkitMask: 'radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px))',
-                      animation: 'spin 6s linear infinite',
-                    }}
-                  />
+
+
                   <cat.icon
                     size={44}
                     strokeWidth={1.5}
