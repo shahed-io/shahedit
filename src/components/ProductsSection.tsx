@@ -378,8 +378,12 @@ export const PaymentModal = ({ pkg, onClose }: { pkg: ServicePackageRow; onClose
                       <motion.button key={m.id} whileTap={{ scale: 0.97 }}
                         onClick={() => setSelected(m.id)}
                         className={`rounded-2xl p-4 text-center border-2 transition-all ${active ? "border-fuchsia-500 bg-fuchsia-50/60 shadow-md shadow-fuchsia-100" : "border-slate-200 bg-white hover:border-slate-300"}`}>
-                        <div className="w-12 h-12 rounded-2xl mx-auto mb-2 flex items-center justify-center text-white text-sm font-black shadow-sm"
-                          style={{ background: m.iconBg }}>{m.iconText}</div>
+                        <div className="w-12 h-12 rounded-2xl mx-auto mb-2 flex items-center justify-center text-white text-sm font-black shadow-sm overflow-hidden"
+                          style={{ background: m.iconBg }}>
+                          {m.id === "bkash_online" && bkashDb?.logo_url ? (
+                            <img src={bkashDb.logo_url} alt={m.label} className="w-full h-full object-cover" loading="lazy" />
+                          ) : m.iconText}
+                        </div>
                         <p className="text-[13px] font-bold text-slate-800 leading-tight">{m.label}</p>
                         <p className="text-[11px] text-slate-500 mt-0.5">{m.sublabel}</p>
                       </motion.button>
