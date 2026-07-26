@@ -881,11 +881,18 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
         />
 
         {/* Top visual area */}
-        <div className="relative aspect-square w-full flex items-center justify-center overflow-hidden"
-          style={{ background: `linear-gradient(180deg, #ffffff 0%, #f4f1fb 100%)` }}>
+        <div className="relative aspect-square w-full flex items-center justify-center overflow-hidden rounded-t-3xl"
+          style={{
+            background: `radial-gradient(120% 90% at 50% 0%, ${c.color}22 0%, hsl(265,50%,8%) 55%, hsl(265,55%,5%) 100%)`,
+            boxShadow: `inset 0 1px 0 rgba(255,255,255,0.06), inset 0 -30px 60px -20px ${c.color}25`,
+          }}>
+          {/* Hairline gradient border */}
+          <div className="pointer-events-none absolute inset-0 rounded-t-3xl"
+            style={{ background: `linear-gradient(180deg, ${c.color}40, transparent 60%)`, mask: 'linear-gradient(#000,#000) content-box, linear-gradient(#000,#000)', WebkitMask: 'linear-gradient(#000,#000) content-box, linear-gradient(#000,#000)', WebkitMaskComposite: 'xor', maskComposite: 'exclude', padding: '1px' }} />
           {/* Shine sweep on hover */}
           <div className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-[1400ms] ease-out"
-            style={{ background: 'linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.12) 50%, transparent 70%)' }} />
+            style={{ background: 'linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.10) 50%, transparent 70%)' }} />
+
           {pkg.image_url ? (
             <img
               src={pkg.image_url}
