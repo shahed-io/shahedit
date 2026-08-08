@@ -894,12 +894,27 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
             style={{ background: 'linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.10) 50%, transparent 70%)' }} />
 
           {pkg.image_url ? (
-            <img
-              src={pkg.image_url}
-              alt={pkg.title}
-              className="w-full h-full object-cover absolute inset-0"
-              onError={e => { (e.target as HTMLImageElement).style.display = "none"; }}
-            />
+            <div className="absolute inset-3 rounded-[22px] overflow-hidden z-10"
+              style={{
+                border: `1px solid ${c.color}35`,
+                boxShadow: `0 20px 50px -20px ${c.color}40, inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -20px 40px -20px rgba(0,0,0,0.5)`,
+              }}>
+              <img
+                src={pkg.image_url}
+                alt={pkg.title}
+                className="w-full h-full object-cover"
+                onError={e => { (e.target as HTMLImageElement).style.display = "none"; }}
+              />
+              {/* Top sheen */}
+              <div className="pointer-events-none absolute inset-0"
+                style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.08) 0%, transparent 35%)' }} />
+              {/* Bottom vignette for text safety */}
+              <div className="pointer-events-none absolute inset-0"
+                style={{ background: 'linear-gradient(0deg, rgba(10,6,24,0.55) 0%, transparent 45%)' }} />
+              {/* Corner glow */}
+              <div className="pointer-events-none absolute -inset-px rounded-[22px] opacity-60"
+                style={{ boxShadow: `inset 0 0 28px ${c.color}25` }} />
+            </div>
           ) : (
             <>
               <motion.div
