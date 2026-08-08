@@ -78,6 +78,8 @@ export default function LoginPage() {
   const handleGoogle = async () => {
     setGoogleLoading(true);
     try {
+      if (!(await verifyHuman())) { setGoogleLoading(false); return; }
+
       const { error } = await lovable.auth.signInWithOAuth("google", {
         redirect_uri: window.location.origin,
       });
