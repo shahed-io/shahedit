@@ -236,9 +236,26 @@ export default function LoginPage() {
                 </div>
               )}
 
+              {/* Bot verification */}
+              <div className="rounded-xl p-3" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                <div className="flex items-center gap-2 mb-2">
+                  <ShieldCheck size={14} className={captchaToken ? "text-emerald-400" : "text-foreground/40"} />
+                  <span className="text-[11px] font-semibold text-foreground/50">
+                    {captchaToken ? "ভেরিফিকেশন সম্পন্ন হয়েছে" : "আপনি মানুষ কিনা যাচাই করুন"}
+                  </span>
+                </div>
+                <TurnstileWidget
+                  resetKey={captchaKey}
+                  onVerify={setCaptchaToken}
+                  onExpire={() => setCaptchaToken(null)}
+                />
+              </div>
+
               <motion.button
                 type="submit"
-                disabled={loading}
+                disabled={loading || !captchaToken}
+                style={{ opacity: !captchaToken ? 0.6 : 1 }}
+
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold text-white transition-all"
