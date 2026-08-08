@@ -254,12 +254,11 @@ export default function LoginPage() {
               <motion.button
                 type="submit"
                 disabled={loading || !captchaToken}
-                style={{ opacity: !captchaToken ? 0.6 : 1 }}
-
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold text-white transition-all"
-                style={{ background: 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))', boxShadow: '0 8px 30px hsl(258,90%,66%,0.3)' }}
+                style={{ background: 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))', boxShadow: '0 8px 30px hsl(258,90%,66%,0.3)', opacity: !captchaToken ? 0.6 : 1 }}
+
               >
                 {loading ? (
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
