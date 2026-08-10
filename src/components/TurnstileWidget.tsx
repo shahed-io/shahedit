@@ -59,8 +59,8 @@ export default function TurnstileWidget({ onVerify, onExpire, resetKey = 0, clas
           "error-callback": () => cbRef.current.onExpire?.(),
         });
       })
-      .catch(() => {
-        /* network blocked — widget simply won't appear */
+      .catch((err) => {
+        console.error("Turnstile script load error:", err);
       });
 
     return () => {
