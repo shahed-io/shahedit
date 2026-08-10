@@ -171,11 +171,16 @@ export default function ProductDetailsPage() {
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="relative rounded-3xl overflow-hidden aspect-square w-full flex items-center justify-center"
-            style={{ background: `linear-gradient(135deg, ${c.color}25, ${c.color}08)`, border: `1px solid ${c.border}` }}
+            whileHover={{ scale: 1.02, y: -5 }}
+            className="relative rounded-3xl overflow-hidden aspect-square w-full flex items-center justify-center transition-all duration-500 group"
+            style={{ 
+              background: `linear-gradient(135deg, ${c.color}25, ${c.color}08)`, 
+              border: `1px solid ${c.border}`,
+              boxShadow: `0 20px 50px -20px ${c.color}30`
+            }}
           >
             {pkg.image_url ? (
-              <img src={pkg.image_url} alt={pkg.title} className="w-full h-full object-cover" />
+              <img src={pkg.image_url} alt={pkg.title} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
             ) : (
               <>
                 <div

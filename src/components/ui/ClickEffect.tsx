@@ -44,18 +44,18 @@ export const ClickEffect = () => {
             {/* Main Ring Ripple */}
             <motion.div
               initial={{ scale: 0, opacity: 1 }}
-              animate={{ scale: 2.5, opacity: 0 }}
+              animate={{ scale: 3, opacity: 0 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+              transition={{ duration: 0.7, ease: [0.23, 1, 0.32, 1] }}
               style={{
                 position: 'absolute',
-                left: ripple.x - 25,
-                top: ripple.y - 25,
-                width: 50,
-                height: 50,
+                left: ripple.x - 30,
+                top: ripple.y - 30,
+                width: 60,
+                height: 60,
                 borderRadius: '50%',
-                border: '2px solid hsl(270,92%,65%)',
-                boxShadow: '0 0 15px hsla(270,92%,65%, 0.5)',
+                border: '2.5px solid hsl(270,92%,65%)',
+                boxShadow: '0 0 20px hsla(270,92%,65%, 0.6), inset 0 0 10px hsla(270,92%,65%, 0.4)',
               }}
             />
             
