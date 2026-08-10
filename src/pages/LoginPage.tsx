@@ -238,36 +238,66 @@ export default function LoginPage() {
                 </div>
               )}
 
-              {/* Bot verification */}
-              <div className="rounded-xl p-4 transition-all duration-300 relative group overflow-hidden" 
+              {/* Premium Bot verification */}
+              <div className="rounded-2xl p-4 transition-all duration-500 relative group overflow-hidden" 
                    style={{ 
                      background: 'rgba(255,255,255,0.03)', 
                      border: '1px solid rgba(255,255,255,0.08)',
-                     boxShadow: 'inset 0 0 20px rgba(0,0,0,0.2)' 
+                     boxShadow: 'inset 0 0 30px rgba(0,0,0,0.3)',
                    }}>
-                {/* Glow effect */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                {/* Animated Gradient Border */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+                     style={{ 
+                       padding: '1px', 
+                       background: 'linear-gradient(90deg, transparent, rgba(168,85,247,0.3), rgba(236,72,153,0.3), transparent)',
+                       WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                       WebkitMaskComposite: 'xor',
+                       maskComposite: 'exclude'
+                     }} />
+
+                {/* Ambient Background Glow */}
+                <div className="absolute -top-10 -right-10 w-24 h-24 bg-primary/10 rounded-full blur-2xl group-hover:bg-primary/20 transition-all duration-700" />
                 
-                <div className="flex items-center gap-2 mb-3 relative z-10">
-                  <div className={`p-1 rounded-full ${captchaToken ? "bg-emerald-500/20 text-emerald-400" : "bg-white/5 text-foreground/40"}`}>
-                    <ShieldCheck size={14} />
+                <div className="flex items-center justify-between mb-3 relative z-10">
+                  <div className="flex items-center gap-2">
+                    <div className={`p-1.5 rounded-lg transition-all duration-500 ${captchaToken ? "bg-emerald-500/20 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.2)]" : "bg-white/5 text-foreground/40"}`}>
+                      <ShieldCheck size={14} className={captchaToken ? "animate-pulse" : ""} />
+                    </div>
+                    <span className="text-[10px] font-bold text-foreground/50 tracking-widest uppercase" style={{ fontFamily: "'Syne', sans-serif" }}>
+                      {captchaToken ? "Verified" : "Security Check"}
+                    </span>
                   </div>
-                  <span className="text-[11px] font-semibold text-foreground/50 tracking-wide uppercase">
-                    {captchaToken ? "ভেরিফিকেশন সফল" : "নিরাপত্তা যাচাই"}
-                  </span>
+                  
+                  {captchaToken && (
+                    <motion.div 
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="text-[9px] font-medium text-emerald-400/80 bg-emerald-400/5 px-2 py-0.5 rounded-full border border-emerald-400/20"
+                    >
+                      Success
+                    </motion.div>
+                  )}
                 </div>
                 
                 <div className="relative z-10 min-h-[65px] flex flex-col gap-2">
-                  <TurnstileWidget
-                    resetKey={captchaKey}
-                    onVerify={setCaptchaToken}
-                    onExpire={() => setCaptchaToken(null)}
-                    className="w-full"
-                  />
-                  {!captchaToken && (
-                    <p className="text-[10px] text-foreground/30 leading-relaxed px-1">
-                    </p>
-                  )}
+                  <div className="relative transition-all duration-500" style={{ transform: captchaToken ? 'scale(0.98)' : 'scale(1)' }}>
+                    <TurnstileWidget
+                      resetKey={captchaKey}
+                      onVerify={setCaptchaToken}
+                      onExpire={() => setCaptchaToken(null)}
+                      className="w-full"
+                    />
+                  </div>
+                  
+                  {/* Premium indicator bar */}
+                  <div className="w-full h-[2px] bg-white/5 rounded-full overflow-hidden mt-1">
+                    <motion.div 
+                      className="h-full bg-gradient-to-r from-primary to-accent"
+                      initial={{ width: "0%" }}
+                      animate={{ width: captchaToken ? "100%" : "30%" }}
+                      transition={{ duration: 1, ease: "easeInOut" }}
+                    />
+                  </div>
                 </div>
               </div>
 
