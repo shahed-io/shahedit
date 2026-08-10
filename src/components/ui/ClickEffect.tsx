@@ -80,10 +80,16 @@ export const ClickEffect = () => {
 
         return (
           <React.Fragment key={ripple.id}>
+            {/* Main Logo/Sticker with Float & Glow */}
             <motion.div
-              initial={{ scale: 0.1, opacity: 0, rotate: -20 }}
-              animate={{ scale: config.scale, opacity: config.opacity, rotate: 0 }}
-              exit={{ scale: config.scale * 1.2, opacity: 0, rotate: 10 }}
+              initial={{ scale: 0.1, opacity: 0, rotate: -20, y: 0 }}
+              animate={{ 
+                scale: config.scale, 
+                opacity: config.opacity, 
+                rotate: 0,
+                y: -40 // Floating up
+              }}
+              exit={{ scale: config.scale * 1.5, opacity: 0, rotate: 15, y: -60 }}
               transition={{ 
                 duration: 0.8, 
                 ease: [0.16, 1, 0.3, 1] 
@@ -98,21 +104,66 @@ export const ClickEffect = () => {
                 backgroundSize: 'contain',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
-                filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.5))',
+                filter: 'drop-shadow(0 0 15px rgba(255, 255, 255, 0.6)) brightness(1.2)',
               }}
             />
+
+            {/* Radiant Bloom Expansion */}
             <motion.div
-              initial={{ scale: 0.2, opacity: 0.1 }}
-              animate={{ scale: 2, opacity: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
+              initial={{ scale: 0.1, opacity: 0.4 }}
+              animate={{ scale: 3, opacity: 0 }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
               style={{
                 position: 'absolute',
-                left: ripple.x - 50,
-                top: ripple.y - 50,
-                width: 100,
-                height: 100,
+                left: ripple.x - 40,
+                top: ripple.y - 40,
+                width: 80,
+                height: 80,
                 borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 70%)',
+                background: 'radial-gradient(circle, rgba(168, 85, 247, 0.3) 0%, rgba(236, 72, 153, 0.1) 40%, transparent 70%)',
+                filter: 'blur(8px)',
+              }}
+            />
+
+            {/* Sparkle Particles */}
+            {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, i) => (
+              <motion.div
+                key={i}
+                initial={{ scale: 0, opacity: 1, x: 0, y: 0 }}
+                animate={{ 
+                  scale: 0, 
+                  opacity: 0,
+                  x: Math.cos(angle * Math.PI / 180) * 50,
+                  y: Math.sin(angle * Math.PI / 180) * 50
+                }}
+                transition={{ duration: 0.6, ease: "easeOut", delay: 0.05 }}
+                style={{
+                  position: 'absolute',
+                  left: ripple.x - 2,
+                  top: ripple.y - 2,
+                  width: 4,
+                  height: 4,
+                  borderRadius: '50%',
+                  background: i % 2 === 0 ? '#A855F7' : '#EC4899', // Purple/Pink sparkles
+                  boxShadow: '0 0 10px white',
+                }}
+              />
+            ))}
+
+            {/* Core Pulse */}
+            <motion.div
+              initial={{ scale: 0, opacity: 1 }}
+              animate={{ scale: 1.5, opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              style={{
+                position: 'absolute',
+                left: ripple.x - 10,
+                top: ripple.y - 10,
+                width: 20,
+                height: 20,
+                borderRadius: '50%',
+                background: 'white',
+                filter: 'blur(2px)',
               }}
             />
           </React.Fragment>
