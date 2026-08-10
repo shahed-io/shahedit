@@ -9,8 +9,9 @@ import { Slider } from "@/components/ui/slider";
 import { toast } from "sonner";
 import type { SiteSetting } from "@/lib/supabase-types";
 import SiteLogoManager from "@/components/admin/SiteLogoManager";
+import AdminClickEffectSettings from "./AdminClickEffectSettings";
 
-const groups = ["general", "social", "branding", "seo", "appearance", "analytics"];
+const groups = ["general", "social", "branding", "seo", "appearance", "analytics", "click-effect"];
 
 
 const AnalyticsSettings = ({
@@ -336,6 +337,7 @@ const AdminSettings = () => {
     seo: "SEO",
     appearance: "✨ Appearance",
     analytics: "📊 Analytics",
+    "click-effect": "🖱️ Click Effect",
   };
 
   return (
@@ -371,6 +373,10 @@ const AdminSettings = () => {
       ) : activeGroup === "appearance" ? (
         <motion.div key="appearance" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
           <AppearanceSettings values={values} setValues={setValues} saving={saving} onSave={saveSettings} />
+        </motion.div>
+      ) : activeGroup === "click-effect" ? (
+        <motion.div key="click-effect" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+          <AdminClickEffectSettings />
         </motion.div>
       ) : (
         <motion.div
