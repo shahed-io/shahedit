@@ -18,6 +18,7 @@ import ThemeAppearanceProvider from "@/components/ThemeAppearanceProvider";
 import SiteBackground from "@/components/SiteBackground";
 import { useAdminGlobals } from "@/hooks/useAdminGlobals";
 import { ClickEffect } from "@/components/ui/ClickEffect";
+import { HoverSpotlight } from "@/components/ui/HoverSpotlight";
 import { lazy, Suspense } from "react";
 
 // Eagerly loaded (most-visited / lightweight)
@@ -363,7 +364,8 @@ const App = () => (
         <BrowserRouter>
           <ThemeProvider>
             <AuthProvider>
-              <ClickEffect />
+        <ClickEffect />
+        <HoverSpotlight />
               <AppWithAnalytics />
             </AuthProvider>
           </ThemeProvider>
