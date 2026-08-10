@@ -885,10 +885,10 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
         />
 
         {/* Top visual area */}
-        <div className="relative aspect-square w-full flex items-center justify-center overflow-hidden rounded-t-3xl"
+        <div className="relative aspect-[4/3] w-full flex items-center justify-center overflow-hidden rounded-t-[2.5rem]"
           style={{
-            background: `radial-gradient(120% 90% at 50% 0%, ${c.color}22 0%, hsl(265,50%,8%) 55%, hsl(265,55%,5%) 100%)`,
-            boxShadow: `inset 0 1px 0 rgba(255,255,255,0.06), inset 0 -30px 60px -20px ${c.color}25`,
+            background: `radial-gradient(130% 100% at 50% 0%, ${c.color}35 0%, hsl(265,55%,6%) 55%, hsl(265,60%,4%) 100%)`,
+            boxShadow: `inset 0 2px 0 rgba(255,255,255,0.08), inset 0 -40px 80px -20px ${c.color}45`,
           }}>
           {/* Hairline gradient border */}
           <div className="pointer-events-none absolute inset-0 rounded-t-3xl"
@@ -1016,10 +1016,11 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
           </div>
 
           {/* Premium price chip */}
-          <div className="mb-4 mt-auto rounded-2xl px-3 py-2.5 flex items-center justify-between gap-2"
+          <div className="mb-4 mt-auto rounded-[1.25rem] px-4 py-3 flex items-center justify-between gap-3"
             style={{
-              background: `linear-gradient(135deg, ${c.color}1A, ${c.color}08)`,
-              border: `1px solid ${c.color}25`,
+              background: `linear-gradient(135deg, ${c.color}25, ${c.color}08)`,
+              border: `1px solid ${c.color}35`,
+              boxShadow: `inset 0 1px 0 rgba(255,255,255,0.04), 0 10px 30px -10px ${c.color}20`,
             }}>
             <div className="flex flex-col">
               {pkg.original_price && (
@@ -1048,10 +1049,10 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               onClick={() => setShowPayment(true)}
-              className="flex-1 py-2.5 rounded-xl text-xs font-bold text-white glossy-btn flex items-center justify-center gap-1.5 transition-all duration-300 relative overflow-hidden"
+              className="flex-1 py-3 rounded-[1.25rem] text-xs font-black text-white glossy-btn flex items-center justify-center gap-2 transition-all duration-300 relative overflow-hidden"
               style={{
-                background: `linear-gradient(135deg, ${c.color}, ${c.color}AA)`,
-                boxShadow: `0 6px 20px -4px ${c.color}55, inset 0 1px 0 rgba(255,255,255,0.25)`,
+                background: `linear-gradient(135deg, ${c.color}, ${c.color}CC)`,
+                boxShadow: `0 12px 28px -6px ${c.color}70, inset 0 1px 0 rgba(255,255,255,0.3)`,
               }}
             >
               <CreditCard size={13} /> পেমেন্ট
@@ -1064,12 +1065,12 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
               rel="noopener noreferrer"
               whileHover={{ scale: 1.05, rotate: 3 }}
               whileTap={{ scale: 0.95 }}
-              className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-all"
+              className="w-11 h-11 rounded-[1.25rem] flex items-center justify-center shrink-0 transition-all"
               style={{
-                background: 'linear-gradient(135deg, rgba(37,211,102,0.25), rgba(37,211,102,0.1))',
-                border: '1px solid rgba(37,211,102,0.45)',
+                background: 'linear-gradient(135deg, rgba(37,211,102,0.3), rgba(37,211,102,0.15))',
+                border: '1px solid rgba(37,211,102,0.6)',
                 color: '#25D366',
-                boxShadow: '0 4px 14px -4px rgba(37,211,102,0.4)',
+                boxShadow: '0 8px 20px -6px rgba(37,211,102,0.5)',
               }}
               title="WhatsApp-এ অর্ডার করুন"
               aria-label="WhatsApp-এ অর্ডার করুন"
