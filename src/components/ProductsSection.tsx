@@ -820,7 +820,11 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ delay: index * 0.1, type: "spring", stiffness: 120 }}
-        whileHover={{ y: -8, scale: 1.015 }}
+        whileHover={{ 
+          y: -12, 
+          scale: 1.025,
+          boxShadow: `0 30px 60px -15px ${c.color}50, inset 0 1px 0 rgba(255,255,255,0.1)`,
+        }}
         whileTap={{ scale: 0.94, rotate: -0.4, transition: { type: "spring", stiffness: 500, damping: 18 } }}
         onClick={handleCardClick}
         className="group relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 flex flex-col backdrop-blur-xl"
@@ -902,7 +906,7 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
               <img
                 src={pkg.image_url}
                 alt={pkg.title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-110 group-hover:rotate-1"
                 onError={e => { (e.target as HTMLImageElement).style.display = "none"; }}
               />
               {/* Top sheen */}
