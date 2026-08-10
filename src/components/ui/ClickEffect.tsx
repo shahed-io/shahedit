@@ -20,11 +20,11 @@ export const ClickEffect = () => {
       y: e.clientY,
     };
     
-    setRipples((prev) => [...prev.slice(-5), newRipple]); // Keep only last 5 for elegance
+    setRipples((prev) => [...prev.slice(-3), newRipple]); // Keep only last 3 for extreme minimalism
     
     setTimeout(() => {
       setRipples((prev) => prev.filter((r) => r.id !== newRipple.id));
-    }, 1000);
+    }, 600);
   }, []);
 
   useEffect(() => {
@@ -41,11 +41,31 @@ export const ClickEffect = () => {
       <AnimatePresence>
         {ripples.map((ripple) => (
           <React.Fragment key={ripple.id}>
-            {/* Core Glow Point */}
+            {/* Apple Style Soft Expansion Ripple */}
             <motion.div
-              initial={{ scale: 0, opacity: 0.8 }}
+              initial={{ scale: 0.2, opacity: 0.15 }}
+              animate={{ scale: 1, opacity: 0 }}
+              transition={{ 
+                duration: 0.5, 
+                ease: [0.16, 1, 0.3, 1] // Apple-like ease-out expo
+              }}
+              style={{
+                position: 'absolute',
+                left: ripple.x - 40,
+                top: ripple.y - 40,
+                width: 80,
+                height: 80,
+                borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 70%)',
+                pointerEvents: 'none',
+              }}
+            />
+
+            {/* Sharp Centered Pulse */}
+            <motion.div
+              initial={{ scale: 0, opacity: 0.4 }}
               animate={{ scale: 1.5, opacity: 0 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
               style={{
                 position: 'absolute',
                 left: ripple.x - 10,
@@ -54,71 +74,10 @@ export const ClickEffect = () => {
                 height: 20,
                 borderRadius: '50%',
                 background: 'white',
-                filter: 'blur(8px)',
-                boxShadow: '0 0 20px rgba(255, 255, 255, 0.8)',
+                filter: 'blur(2px)',
+                pointerEvents: 'none',
               }}
             />
-
-            {/* Expansion Ring 1 */}
-            <motion.div
-              initial={{ scale: 0, opacity: 0.5 }}
-              animate={{ scale: 2.5, opacity: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              style={{
-                position: 'absolute',
-                left: ripple.x - 25,
-                top: ripple.y - 25,
-                width: 50,
-                height: 50,
-                borderRadius: '50%',
-                border: '1px solid rgba(168, 85, 247, 0.6)',
-                boxShadow: '0 0 15px rgba(168, 85, 247, 0.3)',
-              }}
-            />
-
-            {/* Expansion Ring 2 (Delayed) */}
-            <motion.div
-              initial={{ scale: 0, opacity: 0.3 }}
-              animate={{ scale: 3.5, opacity: 0 }}
-              transition={{ duration: 0.8, delay: 0.05, ease: "easeOut" }}
-              style={{
-                position: 'absolute',
-                left: ripple.x - 20,
-                top: ripple.y - 20,
-                width: 40,
-                height: 40,
-                borderRadius: '50%',
-                border: '1px solid rgba(236, 72, 153, 0.4)',
-              }}
-            />
-
-            {/* Subtle Starburst Particles */}
-            {[...Array(6)].map((_, i) => (
-              <motion.div
-                key={`particle-${ripple.id}-${i}`}
-                initial={{ 
-                  x: ripple.x, 
-                  y: ripple.y, 
-                  scale: 0.8, 
-                  opacity: 1 
-                }}
-                animate={{ 
-                  x: ripple.x + (Math.cos(i * 60 * Math.PI / 180) * 60),
-                  y: ripple.y + (Math.sin(i * 60 * Math.PI / 180) * 60),
-                  scale: 0,
-                  opacity: 0
-                }}
-                transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
-                style={{
-                  position: 'absolute',
-                  width: 3,
-                  height: 3,
-                  borderRadius: '50%',
-                  background: 'white',
-                  boxShadow: '0 0 8px rgba(255, 255, 255, 0.8)',
-                }}
-              />
-            ))}
           </React.Fragment>
         ))}
       </AnimatePresence>
