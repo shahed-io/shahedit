@@ -11,56 +11,75 @@ export const ClickEffect = () => {
   const [ripples, setRipples] = useState<Ripple[]>([]);
 
   const addRipple = useCallback((e: MouseEvent) => {
+    // We use a small delay or check to ensure we don't spam if multiple events fire
     const newRipple: Ripple = {
-      id: Date.now(),
+      id: Math.random(),
       x: e.clientX,
       y: e.clientY,
     };
-    setRipples((prev) => [...prev, newRipple]);
     
-    // Auto-remove after animation
+    setRipples((prev) => [...prev.slice(-10), newRipple]); // Keep only last 10 to prevent lag
+    
+    // Auto-remove after animation finishes
     setTimeout(() => {
       setRipples((prev) => prev.filter((r) => r.id !== newRipple.id));
-    }, 1000);
+    }, 800);
   }, []);
 
   useEffect(() => {
-    window.addEventListener('mousedown', addRipple);
-    return () => window.removeEventListener('mousedown', addRipple);
+    const handleMousedown = (e: MouseEvent) => addRipple(e);
+    window.addEventListener('mousedown', handleMousedown, true);
+    return () => window.removeEventListener('mousedown', handleMousedown, true);
   }, [addRipple]);
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-[99999] overflow-hidden">
+    <div 
+      id="click-effect-container"
+      className="fixed inset-0 pointer-events-none z-[999999] overflow-hidden"
+      aria-hidden="true"
+    >
       <AnimatePresence>
         {ripples.map((ripple) => (
-          <motion.div
-            key={ripple.id}
-            initial={{ scale: 0, opacity: 0.8 }}
-            animate={{ scale: 4, opacity: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            style={{
-              position: 'absolute',
-              left: ripple.x - 20,
-              top: ripple.y - 20,
-              width: 40,
-              height: 40,
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, hsl(270,92%,65%) 0%, transparent 70%)',
-              border: '1px solid hsla(270,92%,65%, 0.3)',
-              boxShadow: '0 0 20px hsla(270,92%,65%, 0.2)',
-            }}
-          />
-        ))}
-      </AnimatePresence>
-      
-      {/* Secondary particles effect */}
-      <AnimatePresence>
-        {ripples.map((ripple) => (
-          <React.Fragment key={`particles-${ripple.id}`}>
-            {[...Array(6)].map((_, i) => (
+          <React.Fragment key={ripple.id}>
+            {/* Main Ring Ripple */}
+            <motion.div
+              initial={{ scale: 0, opacity: 1 }}
+              animate={{ scale: 2.5, opacity: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+              style={{
+                position: 'absolute',
+                left: ripple.x - 25,
+                top: ripple.y - 25,
+                width: 50,
+                height: 50,
+                borderRadius: '50%',
+                border: '2px solid hsl(270,92%,65%)',
+                boxShadow: '0 0 15px hsla(270,92%,65%, 0.5)',
+              }}
+            />
+            
+            {/* Center Flash */}
+            <motion.div
+              initial={{ scale: 0, opacity: 1 }}
+              animate={{ scale: 1.5, opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              style={{
+                position: 'absolute',
+                left: ripple.x - 10,
+                top: ripple.y - 10,
+                width: 20,
+                height: 20,
+                borderRadius: '50%',
+                background: 'white',
+                filter: 'blur(4px)',
+              }}
+            />
+
+            {/* Sparkles */}
+            {[...Array(8)].map((_, i) => (
               <motion.div
-                key={`p-${ripple.id}-${i}`}
+                key={`sparkle-${ripple.id}-${i}`}
                 initial={{ 
                   x: ripple.x, 
                   y: ripple.y, 
@@ -68,19 +87,19 @@ export const ClickEffect = () => {
                   opacity: 1 
                 }}
                 animate={{ 
-                  x: ripple.x + (Math.cos(i * 60 * Math.PI / 180) * 60),
-                  y: ripple.y + (Math.sin(i * 60 * Math.PI / 180) * 60),
+                  x: ripple.x + (Math.cos(i * 45 * Math.PI / 180) * 80),
+                  y: ripple.y + (Math.sin(i * 45 * Math.PI / 180) * 80),
                   scale: 0,
                   opacity: 0
                 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
                 style={{
                   position: 'absolute',
-                  width: 4,
-                  height: 4,
+                  width: i % 2 === 0 ? 6 : 4,
+                  height: i % 2 === 0 ? 6 : 4,
                   borderRadius: '50%',
-                  backgroundColor: i % 2 === 0 ? 'hsl(270,92%,65%)' : 'hsl(320,90%,48%)',
-                  boxShadow: '0 0 10px currentColor',
+                  background: i % 2 === 0 ? 'linear-gradient(135deg, #A855F7, #EC4899)' : '#FFF',
+                  boxShadow: '0 0 10px rgba(168,85,247,0.8)',
                 }}
               />
             ))}
@@ -90,3 +109,4 @@ export const ClickEffect = () => {
     </div>
   );
 };
+
