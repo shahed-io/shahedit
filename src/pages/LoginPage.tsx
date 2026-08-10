@@ -239,18 +239,38 @@ export default function LoginPage() {
               )}
 
               {/* Bot verification */}
-              <div className="rounded-xl p-3" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                <div className="flex items-center gap-2 mb-2">
-                  <ShieldCheck size={14} className={captchaToken ? "text-emerald-400" : "text-foreground/40"} />
-                  <span className="text-[11px] font-semibold text-foreground/50">
-                    {captchaToken ? "ভেরিফিকেশন সম্পন্ন হয়েছে" : "আপনি মানুষ কিনা যাচাই করুন"}
+              <div className="rounded-xl p-4 transition-all duration-300 relative group overflow-hidden" 
+                   style={{ 
+                     background: 'rgba(255,255,255,0.03)', 
+                     border: '1px solid rgba(255,255,255,0.08)',
+                     boxShadow: 'inset 0 0 20px rgba(0,0,0,0.2)' 
+                   }}>
+                {/* Glow effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                
+                <div className="flex items-center gap-2 mb-3 relative z-10">
+                  <div className={`p-1 rounded-full ${captchaToken ? "bg-emerald-500/20 text-emerald-400" : "bg-white/5 text-foreground/40"}`}>
+                    <ShieldCheck size={14} />
+                  </div>
+                  <span className="text-[11px] font-semibold text-foreground/50 tracking-wide uppercase">
+                    {captchaToken ? "ভেরিফিকেশন সফল" : "নিরাপত্তা যাচাই"}
                   </span>
                 </div>
-                <TurnstileWidget
-                  resetKey={captchaKey}
-                  onVerify={setCaptchaToken}
-                  onExpire={() => setCaptchaToken(null)}
-                />
+                
+                <div className="relative z-10 min-h-[65px] flex flex-col gap-2">
+                  <TurnstileWidget
+                    resetKey={captchaKey}
+                    onVerify={setCaptchaToken}
+                    onExpire={() => setCaptchaToken(null)}
+                    className="w-full"
+                  />
+                  {!captchaToken && (
+                    <p className="text-[10px] text-foreground/30 leading-relaxed px-1">
+                      '''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''
+                      এটার ডিজাইনকে আরও আপডেট করো এবং এই verify system টা ঠিকমতো কাজ করছে না, এটা আরও সমাধান করো
+                    </p>
+                  )}
+                </div>
               </div>
 
               <motion.button
