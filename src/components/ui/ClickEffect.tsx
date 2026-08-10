@@ -20,11 +20,11 @@ export const ClickEffect = () => {
       y: e.clientY,
     };
     
-    setRipples((prev) => [...prev.slice(-5), newRipple]); // Keep only last 5 for elegance
+    setRipples((prev) => [...prev.slice(-3), newRipple]); // Keep only last 3 for extreme minimalism
     
     setTimeout(() => {
       setRipples((prev) => prev.filter((r) => r.id !== newRipple.id));
-    }, 1000);
+    }, 600);
   }, []);
 
   useEffect(() => {
