@@ -266,9 +266,6 @@ export default function LoginPage() {
                   />
                   {!captchaToken && (
                     <p className="text-[10px] text-foreground/30 leading-relaxed px-1">
-                      '''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''
-                      
-                      এখানকার লেখাগুলোকে remove করে দাও
                     </p>
                   )}
                 </div>
