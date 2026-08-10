@@ -817,21 +817,22 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
     <>
       <motion.div
         initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
         viewport={{ once: true }}
         transition={{ delay: index * 0.1, type: "spring", stiffness: 120 }}
         whileHover={{ 
-          y: -12, 
-          scale: 1.025,
-          boxShadow: `0 30px 60px -15px ${c.color}50, inset 0 1px 0 rgba(255,255,255,0.1)`,
+          y: -15, 
+          scale: 1.04,
+          boxShadow: `0 40px 80px -20px ${c.color}60, inset 0 2px 0 rgba(255,255,255,0.15)`,
+          transition: { type: "spring", stiffness: 350, damping: 20 }
         }}
         whileTap={{ scale: 0.94, rotate: -0.4, transition: { type: "spring", stiffness: 500, damping: 18 } }}
         onClick={handleCardClick}
-        className="group relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 flex flex-col backdrop-blur-xl"
+        className="group relative rounded-[2.5rem] overflow-hidden cursor-pointer transition-all duration-500 flex flex-col backdrop-blur-2xl"
         style={{
-          background: `linear-gradient(160deg, ${c.color}10 0%, rgba(10,6,24,0.85) 45%, rgba(6,3,16,0.95) 100%)`,
-          border: `1px solid ${c.color}30`,
-          boxShadow: `0 10px 40px -12px ${c.color}30, inset 0 1px 0 rgba(255,255,255,0.06)`,
+          background: `linear-gradient(165deg, ${c.color}15 0%, rgba(10,6,24,0.92) 50%, rgba(6,3,16,0.98) 100%)`,
+          border: `1px solid ${c.color}45`,
+          boxShadow: `0 20px 60px -15px rgba(0,0,0,0.6), 0 0 40px -10px ${c.color}25`,
         }}
       >
         {/* Click ripple + flash */}
