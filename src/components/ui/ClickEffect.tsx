@@ -27,9 +27,9 @@ export const ClickEffect = () => {
   }, []);
 
   useEffect(() => {
-    // Use capture phase to ensure it triggers even if other elements stop propagation
-    window.addEventListener('mousedown', addRipple, true);
-    return () => window.removeEventListener('mousedown', addRipple, true);
+    const handleMousedown = (e: MouseEvent) => addRipple(e);
+    window.addEventListener('mousedown', handleMousedown, true);
+    return () => window.removeEventListener('mousedown', handleMousedown, true);
   }, [addRipple]);
 
   return (
