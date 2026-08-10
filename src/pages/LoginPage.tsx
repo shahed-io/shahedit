@@ -243,7 +243,7 @@ export default function LoginPage() {
                 <div className="flex items-center gap-2 mb-2">
                   <ShieldCheck size={14} className={captchaToken ? "text-emerald-400" : "text-foreground/40"} />
                   <span className="text-[11px] font-semibold text-foreground/50">
-                    {captchaToken ? "ভেরিফিকেশন সম্পন্ন হয়েছে" : "আপনি মানুষ কিনা যাচাই করুন"}
+                    {captchaToken ? "ভেরিফিকেশন সম্পন্ন হয়েছে" : "'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            এটার ডিজাইনকে আরও আপডেট করো এবং এই verify system টা ঠিকমতো কাজ করছে না, এটা আরও সমাধান করো"}
                   </span>
                 </div>
                 <TurnstileWidget

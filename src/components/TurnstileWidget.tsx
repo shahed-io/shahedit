@@ -54,6 +54,7 @@ export default function TurnstileWidget({ onVerify, onExpire, resetKey = 0, clas
           sitekey: TURNSTILE_SITE_KEY,
           theme: "dark",
           size: "flexible",
+          appearance: "always",
           callback: (token: string) => cbRef.current.onVerify(token),
           "expired-callback": () => cbRef.current.onExpire?.(),
           "error-callback": () => cbRef.current.onExpire?.(),
