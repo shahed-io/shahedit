@@ -17,6 +17,7 @@ import WelcomePopup from "@/components/WelcomePopup";
 import ThemeAppearanceProvider from "@/components/ThemeAppearanceProvider";
 import SiteBackground from "@/components/SiteBackground";
 import { useAdminGlobals } from "@/hooks/useAdminGlobals";
+import { ClickEffect } from "@/components/ui/ClickEffect";
 import { lazy, Suspense } from "react";
 
 // Eagerly loaded (most-visited / lightweight)
@@ -362,6 +363,7 @@ const App = () => (
         <BrowserRouter>
           <ThemeProvider>
             <AuthProvider>
+              <ClickEffect />
               <AppWithAnalytics />
             </AuthProvider>
           </ThemeProvider>
