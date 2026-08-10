@@ -30,16 +30,13 @@ Deno.serve(async (req) => {
     const ip = req.headers.get("cf-connecting-ip") || req.headers.get("x-forwarded-for")?.split(",")[0];
     if (ip) form.append("remoteip", ip.trim());
 
-    console.log("Verifying token with Cloudflare...");
     const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
       method: "POST",
       body: form,
     });
     const data = await res.json();
-    console.log("Cloudflare response:", JSON.stringify(data));
 
     if (!data.success) {
-      console.error("Captcha failed:", data["error-codes"]);
       return json({ success: false, error: "Captcha verification failed", codes: data["error-codes"] }, 400);
     }
 
