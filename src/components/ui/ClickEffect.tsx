@@ -11,25 +11,25 @@ export const ClickEffect = () => {
   const [ripples, setRipples] = useState<Ripple[]>([]);
 
   const addRipple = useCallback((e: MouseEvent) => {
-    // We use a small delay or check to ensure we don't spam if multiple events fire
+    // Check if it's a left click to avoid noise on right click
+    if (e.button !== 0) return;
+
     const newRipple: Ripple = {
       id: Math.random(),
       x: e.clientX,
       y: e.clientY,
     };
     
-    setRipples((prev) => [...prev.slice(-10), newRipple]); // Keep only last 10 to prevent lag
+    setRipples((prev) => [...prev.slice(-5), newRipple]); // Keep only last 5 for elegance
     
-    // Auto-remove after animation finishes
     setTimeout(() => {
       setRipples((prev) => prev.filter((r) => r.id !== newRipple.id));
-    }, 800);
+    }, 1000);
   }, []);
 
   useEffect(() => {
-    const handleMousedown = (e: MouseEvent) => addRipple(e);
-    window.addEventListener('mousedown', handleMousedown, true);
-    return () => window.removeEventListener('mousedown', handleMousedown, true);
+    window.addEventListener('mousedown', addRipple, true);
+    return () => window.removeEventListener('mousedown', addRipple, true);
   }, [addRipple]);
 
   return (
@@ -41,29 +41,11 @@ export const ClickEffect = () => {
       <AnimatePresence>
         {ripples.map((ripple) => (
           <React.Fragment key={ripple.id}>
-            {/* Main Ring Ripple */}
+            {/* Core Glow Point */}
             <motion.div
-              initial={{ scale: 0, opacity: 1 }}
-              animate={{ scale: 3, opacity: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.7, ease: [0.23, 1, 0.32, 1] }}
-              style={{
-                position: 'absolute',
-                left: ripple.x - 30,
-                top: ripple.y - 30,
-                width: 60,
-                height: 60,
-                borderRadius: '50%',
-                border: '2.5px solid hsl(270,92%,65%)',
-                boxShadow: '0 0 20px hsla(270,92%,65%, 0.6), inset 0 0 10px hsla(270,92%,65%, 0.4)',
-              }}
-            />
-            
-            {/* Center Flash */}
-            <motion.div
-              initial={{ scale: 0, opacity: 1 }}
+              initial={{ scale: 0, opacity: 0.8 }}
               animate={{ scale: 1.5, opacity: 0 }}
-              transition={{ duration: 0.4 }}
+              transition={{ duration: 0.3 }}
               style={{
                 position: 'absolute',
                 left: ripple.x - 10,
@@ -72,34 +54,68 @@ export const ClickEffect = () => {
                 height: 20,
                 borderRadius: '50%',
                 background: 'white',
-                filter: 'blur(4px)',
+                filter: 'blur(8px)',
+                boxShadow: '0 0 20px rgba(255, 255, 255, 0.8)',
               }}
             />
 
-            {/* Sparkles */}
-            {[...Array(8)].map((_, i) => (
+            {/* Expansion Ring 1 */}
+            <motion.div
+              initial={{ scale: 0, opacity: 0.5 }}
+              animate={{ scale: 2.5, opacity: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              style={{
+                position: 'absolute',
+                left: ripple.x - 25,
+                top: ripple.y - 25,
+                width: 50,
+                height: 50,
+                borderRadius: '50%',
+                border: '1px solid rgba(168, 85, 247, 0.6)',
+                boxShadow: '0 0 15px rgba(168, 85, 247, 0.3)',
+              }}
+            />
+
+            {/* Expansion Ring 2 (Delayed) */}
+            <motion.div
+              initial={{ scale: 0, opacity: 0.3 }}
+              animate={{ scale: 3.5, opacity: 0 }}
+              transition={{ duration: 0.8, delay: 0.05, ease: "easeOut" }}
+              style={{
+                position: 'absolute',
+                left: ripple.x - 20,
+                top: ripple.y - 20,
+                width: 40,
+                height: 40,
+                borderRadius: '50%',
+                border: '1px solid rgba(236, 72, 153, 0.4)',
+              }}
+            />
+
+            {/* Subtle Starburst Particles */}
+            {[...Array(6)].map((_, i) => (
               <motion.div
-                key={`sparkle-${ripple.id}-${i}`}
+                key={`particle-${ripple.id}-${i}`}
                 initial={{ 
                   x: ripple.x, 
                   y: ripple.y, 
-                  scale: 1, 
+                  scale: 0.8, 
                   opacity: 1 
                 }}
                 animate={{ 
-                  x: ripple.x + (Math.cos(i * 45 * Math.PI / 180) * 80),
-                  y: ripple.y + (Math.sin(i * 45 * Math.PI / 180) * 80),
+                  x: ripple.x + (Math.cos(i * 60 * Math.PI / 180) * 60),
+                  y: ripple.y + (Math.sin(i * 60 * Math.PI / 180) * 60),
                   scale: 0,
                   opacity: 0
                 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
+                transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
                 style={{
                   position: 'absolute',
-                  width: i % 2 === 0 ? 6 : 4,
-                  height: i % 2 === 0 ? 6 : 4,
+                  width: 3,
+                  height: 3,
                   borderRadius: '50%',
-                  background: i % 2 === 0 ? 'linear-gradient(135deg, #A855F7, #EC4899)' : '#FFF',
-                  boxShadow: '0 0 10px rgba(168,85,247,0.8)',
+                  background: 'white',
+                  boxShadow: '0 0 8px rgba(255, 255, 255, 0.8)',
                 }}
               />
             ))}
