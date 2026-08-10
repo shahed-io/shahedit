@@ -21,6 +21,18 @@ import { ClickEffect } from "@/components/ui/ClickEffect";
 import { HoverSpotlight } from "@/components/ui/HoverSpotlight";
 import { lazy, Suspense } from "react";
 
+// Optimized QueryClient with better caching to reduce reload times
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      gcTime: 1000 * 60 * 30, // 30 minutes
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
 // Eagerly loaded (most-visited / lightweight)
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
@@ -144,7 +156,8 @@ const UnsubscribePage = lazy(() => import("./pages/UnsubscribePage"));
 const TeamPage = lazy(() => import("./pages/TeamPage"));
 
 
-const queryClient = new QueryClient();
+// QueryClient is now initialized above with optimized caching settings
+
 
 const PageFallback = () => (
   <div className="min-h-screen flex items-center justify-center bg-background">
