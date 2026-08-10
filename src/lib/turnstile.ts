@@ -4,7 +4,7 @@
 // "1x00000000000000000000AA" is Cloudflare's always-pass TEST key.
 export const TURNSTILE_SITE_KEY =
   (import.meta.env.VITE_TURNSTILE_SITE_KEY as string | undefined) ||
-  "0x4AAAAAAEKT_LOtrhU9tMr4";
+  "1x00000000000000000000AA";
 
 export const TURNSTILE_SCRIPT_URL =
   "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
