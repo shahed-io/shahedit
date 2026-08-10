@@ -80,90 +80,84 @@ export const ClickEffect = () => {
 
         return (
           <React.Fragment key={ripple.id}>
-            {/* Main Logo/Sticker with Float & Glow */}
+            {/* Elegant Logo with Soft Pulse and Scale */}
             <motion.div
-              initial={{ scale: 0.1, opacity: 0, rotate: -20, y: 0 }}
+              initial={{ scale: 0.1, opacity: 0, rotate: -15 }}
               animate={{ 
                 scale: config.scale, 
                 opacity: config.opacity, 
-                rotate: 0,
-                y: -40 // Floating up
+                rotate: 0 
               }}
-              exit={{ scale: config.scale * 1.5, opacity: 0, rotate: 15, y: -60 }}
+              exit={{ scale: config.scale * 1.3, opacity: 0, filter: 'blur(8px)' }}
               transition={{ 
-                duration: 0.8, 
-                ease: [0.16, 1, 0.3, 1] 
+                duration: 0.6, 
+                ease: [0.23, 1, 0.32, 1] 
               }}
               style={{
                 position: 'absolute',
-                left: ripple.x - 30,
-                top: ripple.y - 30,
-                width: 60,
-                height: 60,
+                left: ripple.x - 35,
+                top: ripple.y - 35,
+                width: 70,
+                height: 70,
                 backgroundImage: `url(${imageUrl})`,
                 backgroundSize: 'contain',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
-                filter: 'drop-shadow(0 0 15px rgba(255, 255, 255, 0.6)) brightness(1.2)',
+                filter: 'drop-shadow(0 0 20px rgba(255, 255, 255, 0.4))',
+                zIndex: 2,
               }}
             />
 
-            {/* Radiant Bloom Expansion */}
+            {/* Premium Soft Ring Expansion */}
             <motion.div
-              initial={{ scale: 0.1, opacity: 0.4 }}
-              animate={{ scale: 3, opacity: 0 }}
-              transition={{ duration: 0.7, ease: "easeOut" }}
+              initial={{ scale: 0.2, opacity: 0.8, border: '1px solid rgba(255, 255, 255, 0.8)' }}
+              animate={{ scale: 3.5, opacity: 0, border: '1px solid rgba(255, 255, 255, 0)' }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
               style={{
                 position: 'absolute',
-                left: ripple.x - 40,
-                top: ripple.y - 40,
-                width: 80,
-                height: 80,
+                left: ripple.x - 20,
+                top: ripple.y - 20,
+                width: 40,
+                height: 40,
                 borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(168, 85, 247, 0.3) 0%, rgba(236, 72, 153, 0.1) 40%, transparent 70%)',
-                filter: 'blur(8px)',
+                zIndex: 1,
               }}
             />
 
-            {/* Sparkle Particles */}
-            {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, i) => (
-              <motion.div
-                key={i}
-                initial={{ scale: 0, opacity: 1, x: 0, y: 0 }}
-                animate={{ 
-                  scale: 0, 
-                  opacity: 0,
-                  x: Math.cos(angle * Math.PI / 180) * 50,
-                  y: Math.sin(angle * Math.PI / 180) * 50
-                }}
-                transition={{ duration: 0.6, ease: "easeOut", delay: 0.05 }}
-                style={{
-                  position: 'absolute',
-                  left: ripple.x - 2,
-                  top: ripple.y - 2,
-                  width: 4,
-                  height: 4,
-                  borderRadius: '50%',
-                  background: i % 2 === 0 ? '#A855F7' : '#EC4899', // Purple/Pink sparkles
-                  boxShadow: '0 0 10px white',
-                }}
-              />
-            ))}
+            {/* Subtle Gradient Halo */}
+            <motion.div
+              initial={{ scale: 0.1, opacity: 0 }}
+              animate={{ scale: 2.5, opacity: 0.15 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              style={{
+                position: 'absolute',
+                left: ripple.x - 50,
+                top: ripple.y - 50,
+                width: 100,
+                height: 100,
+                borderRadius: '50%',
+                background: 'radial-gradient(circle, #A855F7 0%, #EC4899 50%, transparent 100%)',
+                filter: 'blur(15px)',
+                zIndex: 0,
+              }}
+            />
 
-            {/* Core Pulse */}
+            {/* Tiny Core Flash */}
             <motion.div
               initial={{ scale: 0, opacity: 1 }}
-              animate={{ scale: 1.5, opacity: 0 }}
-              transition={{ duration: 0.4 }}
+              animate={{ scale: 1.2, opacity: 0 }}
+              transition={{ duration: 0.3 }}
               style={{
                 position: 'absolute',
-                left: ripple.x - 10,
-                top: ripple.y - 10,
-                width: 20,
-                height: 20,
+                left: ripple.x - 5,
+                top: ripple.y - 5,
+                width: 10,
+                height: 10,
                 borderRadius: '50%',
                 background: 'white',
-                filter: 'blur(2px)',
+                boxShadow: '0 0 15px 5px white',
+                zIndex: 3,
               }}
             />
           </React.Fragment>
