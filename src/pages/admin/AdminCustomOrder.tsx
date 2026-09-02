@@ -41,8 +41,8 @@ export default function AdminCustomOrder() {
     <AdminPage>
       <AdminPageHeader title="Custom Order Generator" subtitle="Admin-side manual order তৈরি করুন" icon={Package} />
 
-      <GlassCard className="p-6 w-full">
-        <h3 className="text-sm font-semibold mb-3">Customer Info</h3>
+      <GlassCard className="p-8 w-full">
+        <h3 className="text-base font-bold mb-4">Customer Info</h3>
         <div className="grid md:grid-cols-2 gap-3 mb-4">
           <Input placeholder="Customer name *" value={form.customer_name} onChange={e => setForm({ ...form, customer_name: e.target.value })} />
           <Input placeholder="Customer email *" value={form.customer_email} onChange={e => setForm({ ...form, customer_email: e.target.value })} />
@@ -50,7 +50,7 @@ export default function AdminCustomOrder() {
           <Input placeholder="Product/Service title" value={form.product_title} onChange={e => setForm({ ...form, product_title: e.target.value })} />
         </div>
 
-        <h3 className="text-sm font-semibold mb-2">Items (optional — for receipt breakdown)</h3>
+        <h3 className="text-base font-bold mb-3 mt-6">Items (optional — for receipt breakdown)</h3>
         {form.items.map((it: any, idx: number) => (
           <div key={idx} className="grid grid-cols-12 gap-2 mb-2">
             <Input className="col-span-6" placeholder="Item description" value={it.description} onChange={e => { const n = [...form.items]; n[idx].description = e.target.value; setForm({ ...form, items: n }); }} />
