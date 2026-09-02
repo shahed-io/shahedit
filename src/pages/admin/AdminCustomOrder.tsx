@@ -65,7 +65,7 @@ export default function AdminCustomOrder() {
 
         <div className="grid md:grid-cols-3 gap-3 mt-4">
           <Input type="number" placeholder="Final amount (override)" value={form.amount} onChange={e => setForm({ ...form, amount: e.target.value })} />
-          <select className="bg-background border border-input rounded-md px-3 text-sm" value={form.payment_method} onChange={e => setForm({ ...form, payment_method: e.target.value })}>
+          <select className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base md:text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" value={form.payment_method} onChange={e => setForm({ ...form, payment_method: e.target.value })}>
             <option value="manual">Manual</option>
             <option value="bkash">bKash</option>
             <option value="nagad">Nagad</option>
@@ -73,7 +73,7 @@ export default function AdminCustomOrder() {
             <option value="bank">Bank Transfer</option>
             <option value="cash">Cash</option>
           </select>
-          <select className="bg-background border border-input rounded-md px-3 text-sm" value={form.status} onChange={e => setForm({ ...form, status: e.target.value })}>
+          <select className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base md:text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" value={form.status} onChange={e => setForm({ ...form, status: e.target.value })}>
             <option value="pending">Pending</option>
             <option value="in_progress">In Progress</option>
             <option value="delivered">Delivered</option>
