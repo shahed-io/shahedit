@@ -1749,6 +1749,120 @@ export type Database = {
           },
         ]
       }
+      invoice_presets: {
+        Row: {
+          created_at: string
+          data: Json
+          id: string
+          name: string
+          sort_order: number
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          data?: Json
+          id?: string
+          name: string
+          sort_order?: number
+          type?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json
+          id?: string
+          name?: string
+          sort_order?: number
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      invoice_settings: {
+        Row: {
+          auto_create_order: boolean
+          bank_details: string | null
+          brand_color: string
+          company_address: string | null
+          company_email: string | null
+          company_name: string
+          company_phone: string | null
+          company_website: string | null
+          created_at: string
+          currency: string
+          default_discount: number
+          default_due_days: number
+          default_notes: string | null
+          default_tax_rate: number
+          default_terms: string | null
+          footer_note: string | null
+          id: string
+          invoice_prefix: string
+          logo_url: string | null
+          order_status: string
+          payment_instructions: string | null
+          show_qr: boolean
+          signature_name: string | null
+          signature_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          auto_create_order?: boolean
+          bank_details?: string | null
+          brand_color?: string
+          company_address?: string | null
+          company_email?: string | null
+          company_name?: string
+          company_phone?: string | null
+          company_website?: string | null
+          created_at?: string
+          currency?: string
+          default_discount?: number
+          default_due_days?: number
+          default_notes?: string | null
+          default_tax_rate?: number
+          default_terms?: string | null
+          footer_note?: string | null
+          id?: string
+          invoice_prefix?: string
+          logo_url?: string | null
+          order_status?: string
+          payment_instructions?: string | null
+          show_qr?: boolean
+          signature_name?: string | null
+          signature_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          auto_create_order?: boolean
+          bank_details?: string | null
+          brand_color?: string
+          company_address?: string | null
+          company_email?: string | null
+          company_name?: string
+          company_phone?: string | null
+          company_website?: string | null
+          created_at?: string
+          currency?: string
+          default_discount?: number
+          default_due_days?: number
+          default_notes?: string | null
+          default_tax_rate?: number
+          default_terms?: string | null
+          footer_note?: string | null
+          id?: string
+          invoice_prefix?: string
+          logo_url?: string | null
+          order_status?: string
+          payment_instructions?: string | null
+          show_qr?: boolean
+          signature_name?: string | null
+          signature_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       invoices: {
         Row: {
           client_address: string | null
