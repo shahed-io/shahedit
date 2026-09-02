@@ -17,7 +17,6 @@ import WelcomePopup from "@/components/WelcomePopup";
 import ThemeAppearanceProvider from "@/components/ThemeAppearanceProvider";
 import SiteBackground from "@/components/SiteBackground";
 import { useAdminGlobals } from "@/hooks/useAdminGlobals";
-import { ClickEffect } from "@/components/ui/ClickEffect";
 import { HoverSpotlight } from "@/components/ui/HoverSpotlight";
 import { lazy, Suspense } from "react";
 
@@ -377,7 +376,6 @@ const App = () => (
         <BrowserRouter>
           <ThemeProvider>
             <AuthProvider>
-        <ClickEffect />
         <HoverSpotlight />
               <AppWithAnalytics />
             </AuthProvider>
