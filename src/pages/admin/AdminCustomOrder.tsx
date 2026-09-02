@@ -41,7 +41,7 @@ export default function AdminCustomOrder() {
     <AdminPage>
       <AdminPageHeader title="Custom Order Generator" subtitle="Admin-side manual order তৈরি করুন" icon={Package} />
 
-      <GlassCard className="p-6 max-w-3xl">
+      <GlassCard className="p-6 w-full">
         <h3 className="text-sm font-semibold mb-3">Customer Info</h3>
         <div className="grid md:grid-cols-2 gap-3 mb-4">
           <Input placeholder="Customer name *" value={form.customer_name} onChange={e => setForm({ ...form, customer_name: e.target.value })} />
