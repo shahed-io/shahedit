@@ -222,6 +222,15 @@ export default function AdminInvoices() {
         }
       />
 
+      <Tabs defaultValue="list" className="mb-6">
+        <TabsList>
+          <TabsTrigger value="list">Invoices</TabsTrigger>
+          <TabsTrigger value="design">Invoice Design</TabsTrigger>
+          <TabsTrigger value="settings">Invoice Settings</TabsTrigger>
+        </TabsList>
+        <TabsContent value="design" className="mt-4"><InvoiceDesigner onSaved={load} /></TabsContent>
+        <TabsContent value="settings" className="mt-4"><InvoiceSettingsPanel /></TabsContent>
+        <TabsContent value="list" className="mt-4">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <KpiCard label="Total Invoices" value={stats.total} icon={FileText} accent="violet" />
         <KpiCard label="Paid (BDT)" value={`৳${stats.paid.toLocaleString()}`} icon={DollarSign} accent="emerald" />
