@@ -273,6 +273,10 @@ export default function AdminInvoices() {
           </tbody>
         </table>
       </GlassCard>
+        </TabsContent>
+      </Tabs>
+
+
 
       {/* Form Dialog */}
       <Dialog open={showForm} onOpenChange={setShowForm}>
