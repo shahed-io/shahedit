@@ -9,6 +9,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { toast } from "sonner";
 import { QRCodeCanvas } from "qrcode.react";
 import { BRAND } from "@/lib/brand";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import InvoiceDesigner from "./invoices/InvoiceDesigner";
+import InvoiceSettingsPanel from "./invoices/InvoiceSettingsPanel";
 
 const db = supabase as any;
 const STATUS = ["draft", "sent", "paid", "overdue", "cancelled"];
@@ -222,6 +225,15 @@ export default function AdminInvoices() {
         }
       />
 
+      <Tabs defaultValue="list" className="mb-6">
+        <TabsList>
+          <TabsTrigger value="list">Invoices</TabsTrigger>
+          <TabsTrigger value="design">Invoice Design</TabsTrigger>
+          <TabsTrigger value="settings">Invoice Settings</TabsTrigger>
+        </TabsList>
+        <TabsContent value="design" className="mt-4"><InvoiceDesigner onSaved={load} /></TabsContent>
+        <TabsContent value="settings" className="mt-4"><InvoiceSettingsPanel /></TabsContent>
+        <TabsContent value="list" className="mt-4">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <KpiCard label="Total Invoices" value={stats.total} icon={FileText} accent="violet" />
         <KpiCard label="Paid (BDT)" value={`৳${stats.paid.toLocaleString()}`} icon={DollarSign} accent="emerald" />
@@ -264,6 +276,10 @@ export default function AdminInvoices() {
           </tbody>
         </table>
       </GlassCard>
+        </TabsContent>
+      </Tabs>
+
+
 
       {/* Form Dialog */}
       <Dialog open={showForm} onOpenChange={setShowForm}>
