@@ -9,6 +9,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { toast } from "sonner";
 import { QRCodeCanvas } from "qrcode.react";
 import { BRAND } from "@/lib/brand";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import InvoiceDesigner from "./invoices/InvoiceDesigner";
+import InvoiceSettingsPanel from "./invoices/InvoiceSettingsPanel";
 
 const db = supabase as any;
 const STATUS = ["draft", "sent", "paid", "overdue", "cancelled"];
