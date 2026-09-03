@@ -69,7 +69,7 @@ Deno.serve(async (req) => {
         { role: "system", content: `${MODES[mode]} ${langText} Never invent client personal data.` },
         { role: "user", content: `Brief: ${prompt || "(none)"}\n\nInvoice context: ${context || "(none)"}` },
       ],
-      modelHint: "google/gemini-2.5-flash",
+      modelHint: "openai/gpt-5.6-sol",
     }, admin);
 
     if (!resp.ok) {
