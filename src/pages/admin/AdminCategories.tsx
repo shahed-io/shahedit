@@ -52,18 +52,11 @@ export default function AdminCategories() {
   return (
     <AdminPage>
       <AdminPageHeader
-        title="Categories & Services"
-        subtitle="Category, Sub-Category এবং Services এক জায়গায়"
+        title="Categories"
+        subtitle="Category এবং Sub-Category এক জায়গায় (parent দিয়ে nested)"
         icon={FolderTree}
+        actions={<Button onClick={openNew}><Plus className="w-4 h-4" /> New Category</Button>}
       />
-      <Tabs defaultValue="categories" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="categories">Categories</TabsTrigger>
-          <TabsTrigger value="services">Services</TabsTrigger>
-        </TabsList>
-        <TabsContent value="services"><AdminServices /></TabsContent>
-        <TabsContent value="categories" className="space-y-4">
-      <div className="flex justify-end"><Button onClick={openNew}><Plus className="w-4 h-4" /> New Category</Button></div>
       <GlassCard className="p-4">
         {isLoading ? <p className="text-sm text-muted-foreground">Loading…</p> : (
           <div className="overflow-x-auto">
