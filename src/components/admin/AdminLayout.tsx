@@ -79,7 +79,7 @@ const navGroups: NavGroup[] = [
     title: "Catalog",
     icon: Briefcase,
     items: [
-      { label: "Services", icon: Briefcase, href: "/ceo/services", section: "services" },
+      
       { label: "Service Packages", icon: Package, href: "/ceo/service-packages", section: "service-packages" },
       { label: "Pricing", icon: DollarSign, href: "/ceo/pricing", section: "pricing" },
       { label: "Portfolio", icon: FolderOpen, href: "/ceo/portfolio", section: "portfolio" },
