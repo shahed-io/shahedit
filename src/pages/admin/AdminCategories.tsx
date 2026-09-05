@@ -20,16 +20,16 @@ export default function AdminCategories() {
   const del = useDeleteCategory();
   const [open, setOpen] = useState(false);
   const [edit, setEdit] = useState<Row | null>(null);
-  const [form, setForm] = useState<any>({ name: "", slug: "", parent_id: null, description: "", image_url: "", sort_order: 0, is_active: true });
+  const [form, setForm] = useState<any>({ name: "", slug: "", parent_id: null, description: "", image_url: "", icon: "", sort_order: 0, is_active: true });
 
   const openNew = () => {
     setEdit(null);
-    setForm({ name: "", slug: "", parent_id: null, description: "", image_url: "", sort_order: 0, is_active: true });
+    setForm({ name: "", slug: "", parent_id: null, description: "", image_url: "", icon: "", sort_order: 0, is_active: true });
     setOpen(true);
   };
   const openEdit = (r: Row) => {
     setEdit(r);
-    setForm({ name: r.name, slug: r.slug, parent_id: r.parent_id, description: r.description ?? "", image_url: r.image_url ?? "", sort_order: r.sort_order ?? 0, is_active: r.is_active });
+    setForm({ name: r.name, slug: r.slug, parent_id: r.parent_id, description: r.description ?? "", image_url: r.image_url ?? "", icon: r.icon ?? "", sort_order: r.sort_order ?? 0, is_active: r.is_active });
     setOpen(true);
   };
   const submit = async () => {
@@ -119,6 +119,7 @@ export default function AdminCategories() {
               </Select>
             </div>
             <div><Label>Description</Label><Textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} /></div>
+            <div><Label>Icon (emoji, যেমন 💻 🎨 📊)</Label><Input value={form.icon} onChange={(e) => setForm({ ...form, icon: e.target.value })} placeholder="💻" /></div>
             <div><Label>Image URL</Label><Input value={form.image_url} onChange={(e) => setForm({ ...form, image_url: e.target.value })} /></div>
             <div className="grid grid-cols-2 gap-3">
               <div><Label>Sort Order</Label><Input type="number" value={form.sort_order} onChange={(e) => setForm({ ...form, sort_order: Number(e.target.value) })} /></div>
