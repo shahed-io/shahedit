@@ -1,1 +1,0 @@
-update public.site_settings set value = '/__l5e/assets-v1/f243f392-7734-435f-bc30-64e0afbb696b/shahed-it-logo-clean.png', updated_at = now() where key = 'logo_url';

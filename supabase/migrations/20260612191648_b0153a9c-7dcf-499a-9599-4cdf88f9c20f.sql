@@ -1,1 +1,0 @@
-DROP POLICY IF EXISTS "Reviews public read" ON public.product_reviews;

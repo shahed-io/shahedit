@@ -1,1 +1,0 @@
-UPDATE public.service_packages SET image_url='https://tqesyvmpdlbfmxfhdshb.supabase.co/storage/v1/object/public/cms-media/packages/dbid-license-premium.jpg' WHERE slug='dbid-license-application';

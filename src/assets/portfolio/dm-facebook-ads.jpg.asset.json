@@ -1,11 +1,11 @@
 {
-  "version": 1,
   "asset_id": "ef3bc797-c95d-4def-a919-b8b0d092580e",
-  "project_id": "7ce1da27-525d-4f8c-abdd-abdd477e1b26",
-  "url": "/__l5e/assets-v1/ef3bc797-c95d-4def-a919-b8b0d092580e/dm-facebook-ads.jpg",
-  "r2_key": "a/v1/7ce1da27-525d-4f8c-abdd-abdd477e1b26/ef3bc797-c95d-4def-a919-b8b0d092580e/dm-facebook-ads.jpg",
-  "original_filename": "dm-facebook-ads.jpg",
-  "size": 77567,
   "content_type": "image/jpeg",
-  "created_at": "2026-07-23T11:59:44Z"
+  "created_at": "2026-07-23T11:59:44Z",
+  "original_filename": "dm-facebook-ads.jpg",
+  "project_id": "a13b5e77-907a-4b69-8790-738dbfa81780",
+  "r2_key": "a/v1/a13b5e77-907a-4b69-8790-738dbfa81780/ef3bc797-c95d-4def-a919-b8b0d092580e/dm-facebook-ads.jpg",
+  "size": 77567,
+  "url": "/__l5e/assets-v1/ef3bc797-c95d-4def-a919-b8b0d092580e/dm-facebook-ads.jpg",
+  "version": 1
 }

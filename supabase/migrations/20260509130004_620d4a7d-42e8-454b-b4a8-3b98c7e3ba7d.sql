@@ -1,1 +1,0 @@
-ALTER TABLE public.service_packages ADD COLUMN IF NOT EXISTS short_description text;

@@ -1,11 +1,11 @@
 {
-  "version": 1,
   "asset_id": "4139358d-78cb-41df-a58a-67274b79b3af",
-  "project_id": "7ce1da27-525d-4f8c-abdd-abdd477e1b26",
-  "url": "/__l5e/assets-v1/4139358d-78cb-41df-a58a-67274b79b3af/shahed-it-compact-logo-transparent.png",
-  "r2_key": "a/v1/7ce1da27-525d-4f8c-abdd-abdd477e1b26/4139358d-78cb-41df-a58a-67274b79b3af/shahed-it-compact-logo-transparent.png",
-  "original_filename": "shahed-it-compact-logo-transparent.png",
-  "size": 32046,
   "content_type": "image/png",
-  "created_at": "2026-06-24T17:23:17Z"
+  "created_at": "2026-06-24T17:23:17Z",
+  "original_filename": "shahed-it-compact-logo-transparent.png",
+  "project_id": "a13b5e77-907a-4b69-8790-738dbfa81780",
+  "r2_key": "a/v1/a13b5e77-907a-4b69-8790-738dbfa81780/4139358d-78cb-41df-a58a-67274b79b3af/shahed-it-compact-logo-transparent.png",
+  "size": 32046,
+  "url": "/__l5e/assets-v1/4139358d-78cb-41df-a58a-67274b79b3af/shahed-it-compact-logo-transparent.png",
+  "version": 1
 }

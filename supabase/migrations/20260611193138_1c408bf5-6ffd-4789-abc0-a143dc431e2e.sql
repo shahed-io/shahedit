@@ -1,1 +1,0 @@
-UPDATE public.site_settings SET value = '/__l5e/assets-v1/52ff3ee9-8087-4e40-a6e8-fb3bddc4d3b7/shahed-it-logo.png' WHERE key = 'logo_url';
