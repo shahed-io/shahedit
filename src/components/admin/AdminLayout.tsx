@@ -119,7 +119,7 @@ const navGroups: NavGroup[] = [
       { label: "Hero Banners", icon: LayoutTemplate, href: "/ceo/banners", badge: "NEW", section: "banners" },
       { label: "Welcome Popups", icon: ImageIcon, href: "/ceo/welcome-popups", badge: "NEW", section: "welcome-popups" },
       { label: "Site Settings", icon: Settings, href: "/ceo/settings", section: "settings" },
-      { label: "Backup & Export", icon: Database, href: "/ceo/backup", badge: "NEW", section: "backup" },
+      { label: "Backup & Restore", icon: Database, href: "/ceo/backup", badge: "NEW", section: "backup" },
       { label: "Security Audit", icon: Shield, href: "/ceo/security-audit", badge: "NEW", section: "security-audit" },
       { label: "Advanced Tools", icon: Sparkles, href: "/ceo/advanced-tools", badge: "NEW", section: "advanced-tools" },
       { label: "Offers & Giveaways", icon: Gift, href: "/ceo/offers", badge: "NEW", section: "offers" },
