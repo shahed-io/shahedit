@@ -91,6 +91,9 @@ export default function AdminCategories() {
           </div>
         )}
       </GlassCard>
+        </TabsContent>
+      </Tabs>
+
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
