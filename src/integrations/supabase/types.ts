@@ -3283,6 +3283,7 @@ export type Database = {
         Row: {
           created_at: string
           description: string | null
+          icon: string | null
           id: string
           image_url: string | null
           is_active: boolean
@@ -3295,6 +3296,7 @@ export type Database = {
         Insert: {
           created_at?: string
           description?: string | null
+          icon?: string | null
           id?: string
           image_url?: string | null
           is_active?: boolean
@@ -3307,6 +3309,7 @@ export type Database = {
         Update: {
           created_at?: string
           description?: string | null
+          icon?: string | null
           id?: string
           image_url?: string | null
           is_active?: boolean
