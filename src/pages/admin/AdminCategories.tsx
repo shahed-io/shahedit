@@ -46,6 +46,9 @@ export default function AdminCategories() {
   };
 
   const parents = cats.filter((c: Row) => !c.parent_id);
+  const sorted = [...cats].sort(
+    (a: Row, b: Row) => (a.sort_order ?? 999) - (b.sort_order ?? 999) || String(a.name).localeCompare(String(b.name)),
+  );
 
   return (
     <AdminPage>
