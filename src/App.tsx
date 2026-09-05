@@ -257,7 +257,7 @@ const AdminRoutes = () => {
         <Route path="seo-tools" element={<RoleRoute section="seo-tools"><AdminSEOTools /></RoleRoute>} />
         <Route path="ranking-setup" element={<RoleRoute section="ranking-setup"><AdminRankingSetup /></RoleRoute>} />
 
-        <Route path="products" element={<RoleRoute section="products"><AdminProducts /></RoleRoute>} />
+        <Route path="products" element={<Navigate to="/ceo/service-packages" replace />} />
         <Route path="projects" element={<RoleRoute section="projects"><AdminProjects /></RoleRoute>} />
         <Route path="invoices" element={<RoleRoute section="invoices"><AdminInvoices /></RoleRoute>} />
         <Route path="expenses" element={<RoleRoute section="expenses"><AdminExpenses /></RoleRoute>} />
