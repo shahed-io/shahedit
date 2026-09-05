@@ -59,13 +59,6 @@ const navGroups: NavGroup[] = [
     ],
   },
   {
-    title: "Operations",
-    icon: ListChecks,
-    items: [
-
-    ],
-  },
-  {
     title: "Catalog",
     icon: Briefcase,
     items: [
@@ -87,12 +80,10 @@ const navGroups: NavGroup[] = [
     title: "Content & Marketing",
     icon: FileText,
     items: [
-      { label: "Blog Management", icon: FileText, href: "/ceo/blog-management", badge: "HUB", section: "blog-management" },
       { label: "Blog Posts", icon: FileText, href: "/ceo/blog", section: "blog" },
       { label: "Blog Categories", icon: FolderTree, href: "/ceo/blog-categories", section: "blog-categories" },
       { label: "Media Library", icon: ImageIcon, href: "/ceo/media", badge: "NEW", section: "media" },
       { label: "AI Writer", icon: Sparkles, href: "/ceo/ai-writer", badge: "AI", section: "ai-writer" },
-      { label: "Email System", icon: Mail, href: "/ceo/email-system", badge: "HUB", section: "email-system" },
       { label: "Email Campaigns", icon: Mail, href: "/ceo/campaigns", badge: "NEW", section: "campaigns" },
       { label: "Reviews", icon: Star, href: "/ceo/reviews", badge: "NEW", section: "reviews" },
       { label: "Testimonials", icon: Star, href: "/ceo/testimonials", section: "testimonials" },
@@ -109,7 +100,6 @@ const navGroups: NavGroup[] = [
     items: [
       { label: "SEO Panel", icon: Search, href: "/ceo/seo-panel", badge: "HUB", section: "seo-panel" },
       { label: "Ranking Setup (All Google)", icon: Globe, href: "/ceo/ranking-setup", badge: "NEW", section: "ranking-setup" },
-      { label: "SEO Manager", icon: Search, href: "/ceo/seo", section: "seo" },
       { label: "SEO Tools & Reports", icon: BarChart3, href: "/ceo/seo-tools", badge: "NEW", section: "seo-tools" },
       { label: "Sitemap & Robots", icon: Globe, href: "/ceo/sitemap", badge: "NEW", section: "sitemap" },
       { label: "Schema Builder", icon: Zap, href: "/ceo/schema", badge: "NEW", section: "schema" },
@@ -129,11 +119,8 @@ const navGroups: NavGroup[] = [
       { label: "Hero Banners", icon: LayoutTemplate, href: "/ceo/banners", badge: "NEW", section: "banners" },
       { label: "Welcome Popups", icon: ImageIcon, href: "/ceo/welcome-popups", badge: "NEW", section: "welcome-popups" },
       { label: "Site Settings", icon: Settings, href: "/ceo/settings", section: "settings" },
-      { label: "Settings Hub", icon: Settings, href: "/ceo/settings-hub", badge: "NEW", section: "settings-hub" },
       { label: "Backup & Export", icon: Database, href: "/ceo/backup", badge: "NEW", section: "backup" },
-      { label: "Backup & Maintenance", icon: Database, href: "/ceo/backup-maintenance", badge: "NEW", section: "backup-maintenance" },
       { label: "Security Audit", icon: Shield, href: "/ceo/security-audit", badge: "NEW", section: "security-audit" },
-      { label: "Security Center", icon: Shield, href: "/ceo/security-center", badge: "NEW", section: "security-center" },
       { label: "Advanced Tools", icon: Sparkles, href: "/ceo/advanced-tools", badge: "NEW", section: "advanced-tools" },
       { label: "Offers & Giveaways", icon: Gift, href: "/ceo/offers", badge: "NEW", section: "offers" },
       { label: "Copy Protection", icon: Shield, href: "/ceo/copy-protection", badge: "NEW", section: "copy-protection" },
