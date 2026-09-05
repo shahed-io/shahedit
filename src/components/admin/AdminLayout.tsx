@@ -62,11 +62,6 @@ const navGroups: NavGroup[] = [
     title: "Operations",
     icon: ListChecks,
     items: [
-      { label: "Projects & Tasks", icon: Briefcase, href: "/ceo/projects", badge: "NEW", section: "projects" },
-      { label: "Task Board (Kanban)", icon: ListChecks, href: "/ceo/task-board", badge: "NEW", section: "task-board" },
-      { label: "Expenses", icon: TrendingDown, href: "/ceo/expenses", badge: "NEW", section: "expenses" },
-      { label: "Knowledge Base", icon: BookOpen, href: "/ceo/knowledge-base", badge: "NEW", section: "knowledge-base" },
-      { label: "Newsletter", icon: Mail, href: "/ceo/newsletter", badge: "NEW", section: "newsletter" },
 
     ],
   },
@@ -86,11 +81,7 @@ const navGroups: NavGroup[] = [
     icon: Package,
     items: [
       { label: "Categories", icon: FolderTree, href: "/ceo/categories", badge: "NEW", section: "categories" },
-      { label: "Brands", icon: Building2, href: "/ceo/brands", badge: "NEW", section: "brands" },
-      { label: "Tags", icon: Tag, href: "/ceo/product-tags", badge: "NEW", section: "product-tags" },
       { label: "Digital Files", icon: Database, href: "/ceo/digital-files", badge: "NEW", section: "digital-files" },
-      { label: "License Keys", icon: Shield, href: "/ceo/license-keys", badge: "NEW", section: "license-keys" },
-      { label: "Bulk Import / Edit", icon: ListChecks, href: "/ceo/bulk-products", badge: "NEW", section: "bulk-products" },
     ],
   },
   {
