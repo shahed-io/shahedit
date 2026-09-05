@@ -70,10 +70,9 @@ const navGroups: NavGroup[] = [
     icon: Briefcase,
     items: [
       
-      { label: "Service Packages", icon: Package, href: "/ceo/service-packages", section: "service-packages" },
       { label: "Pricing", icon: DollarSign, href: "/ceo/pricing", section: "pricing" },
       { label: "Portfolio", icon: FolderOpen, href: "/ceo/portfolio", section: "portfolio" },
-      { label: "Products", icon: Package, href: "/ceo/products", badge: "NEW", section: "products" },
+      { label: "Products", icon: Package, href: "/ceo/service-packages", badge: "NEW", section: "service-packages" },
     ],
   },
   {

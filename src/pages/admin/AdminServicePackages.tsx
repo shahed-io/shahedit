@@ -104,7 +104,7 @@ export default function AdminServicePackages() {
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["admin-service-packages"] });
-      toast.success("প্যাকেজ সংরক্ষিত হয়েছে");
+      toast.success("প্রোডাক্ট সংরক্ষিত হয়েছে");
       resetForm();
     },
     onError: (e: Error) => toast.error(e.message),
@@ -118,7 +118,7 @@ export default function AdminServicePackages() {
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["admin-service-packages"] });
-      toast.success("প্যাকেজ মুছে ফেলা হয়েছে");
+      toast.success("প্রোডাক্ট মুছে ফেলা হয়েছে");
     },
   });
 
@@ -216,7 +216,7 @@ export default function AdminServicePackages() {
       setShowServiceForm(false);
       setEditingService(null);
       setServiceForm({ title: "", slug: "", short_description: "", icon: "🔧" });
-      toast.success(editingService ? "সার্ভিস আপডেট হয়েছে" : "নতুন সার্ভিস যোগ হয়েছে");
+      toast.success(editingService ? "ক্যাটাগরি আপডেট হয়েছে" : "নতুন ক্যাটাগরি যোগ হয়েছে");
     },
     onError: (e: Error) => toast.error(e.message),
   });
@@ -231,7 +231,7 @@ export default function AdminServicePackages() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["admin-services-list"] });
       qc.invalidateQueries({ queryKey: ["admin-service-packages"] });
-      toast.success("সার্ভিস মুছে ফেলা হয়েছে");
+      toast.success("ক্যাটাগরি মুছে ফেলা হয়েছে");
     },
     onError: (e: Error) => toast.error(e.message),
   });
@@ -246,14 +246,14 @@ export default function AdminServicePackages() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-white text-2xl font-bold">সার্ভিস প্যাকেজ</h1>
-          <p className="text-slate-400 text-sm mt-1">প্রতিটা সার্ভিসের জন্য প্যাকেজ/পণ্য যোগ করুন</p>
+          <h1 className="text-white text-2xl font-bold">প্রোডাক্ট (ক্যাটাগরি অনুযায়ী)</h1>
+          <p className="text-slate-400 text-sm mt-1">প্রতিটি ক্যাটাগরির অধীনে প্রোডাক্ট সাজান ও যোগ করুন</p>
         </div>
         <Button
           onClick={() => { setEditingService(null); setServiceForm({ title: "", slug: "", short_description: "", icon: "🔧" }); setShowServiceForm(true); }}
           className="bg-purple-600 hover:bg-purple-500 text-white gap-2"
         >
-          <Plus size={15} /> নতুন সার্ভিস যোগ
+          <Plus size={15} /> নতুন ক্যাটাগরি যোগ
         </Button>
       </div>
 
@@ -275,7 +275,7 @@ export default function AdminServicePackages() {
             >
               <div className="flex items-center justify-between">
                 <h3 className="text-white font-bold text-lg">
-                  {editingService ? "সার্ভিস এডিট করুন" : "নতুন সার্ভিস যোগ করুন"}
+                  {editingService ? "ক্যাটাগরি এডিট করুন" : "নতুন ক্যাটাগরি যোগ করুন"}
                 </h3>
                 <button onClick={() => setShowServiceForm(false)} className="text-slate-400 hover:text-white">
                   <X size={18} />
@@ -294,7 +294,7 @@ export default function AdminServicePackages() {
                     />
                   </div>
                   <div className="space-y-1 flex-1">
-                    <label className="text-slate-400 text-xs">সার্ভিসের নাম *</label>
+                    <label className="text-slate-400 text-xs">ক্যাটাগরির নাম *</label>
                     <Input
                       value={serviceForm.title}
                       onChange={e => setServiceForm(f => ({ ...f, title: e.target.value, slug: slugify(e.target.value) }))}
@@ -318,7 +318,7 @@ export default function AdminServicePackages() {
                   <Input
                     value={serviceForm.short_description}
                     onChange={e => setServiceForm(f => ({ ...f, short_description: e.target.value }))}
-                    placeholder="সার্ভিসের একটি সংক্ষিপ্ত পরিচয়..."
+                    placeholder="ক্যাটাগরির একটি সংক্ষিপ্ত পরিচয়..."
                     className="bg-slate-800 border-slate-700 text-white"
                   />
                 </div>
@@ -327,7 +327,7 @@ export default function AdminServicePackages() {
               <div className="flex gap-2 pt-1">
                 <Button
                   onClick={() => {
-                    if (!serviceForm.title.trim()) return toast.error("সার্ভিসের নাম দিন");
+                    if (!serviceForm.title.trim()) return toast.error("ক্যাটাগরির নাম দিন");
                     upsertService.mutate(editingService ? { ...serviceForm, id: editingService.id } : serviceForm);
                   }}
                   disabled={upsertService.isPending}
@@ -363,7 +363,7 @@ export default function AdminServicePackages() {
                   </div>
                   <div className="text-left">
                     <p className="text-white font-semibold">{service.title}</p>
-                    <p className="text-slate-500 text-xs">{pkgs.length} টি প্যাকেজ</p>
+                    <p className="text-slate-500 text-xs">{pkgs.length} টি প্রোডাক্ট</p>
                   </div>
                 </button>
                 <div className="flex items-center gap-1 ml-2">
@@ -375,7 +375,7 @@ export default function AdminServicePackages() {
                     <Pencil size={14} />
                   </button>
                   <button
-                    onClick={() => { if (confirm(`"${service.title}" এবং এর সকল প্যাকেজ মুছে ফেলতে চান?`)) deleteService.mutate(service.id); }}
+                    onClick={() => { if (confirm(`"${service.title}" এবং এর সকল প্রোডাক্ট মুছে ফেলতে চান?`)) deleteService.mutate(service.id); }}
                     className="p-1.5 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
                     title="ডিলিট"
                   >
@@ -473,11 +473,11 @@ export default function AdminServicePackages() {
                       {isAddingHere ? (
                         <div className="bg-slate-800/60 rounded-xl border border-slate-700 p-5 space-y-4">
                           <h3 className="text-white font-semibold text-sm">
-                            {editingPackage ? "প্যাকেজ এডিট করুন" : "নতুন প্যাকেজ যোগ করুন"}
+                            {editingPackage ? "প্রোডাক্ট এডিট করুন" : "নতুন প্রোডাক্ট যোগ করুন"}
                           </h3>
 
                           <div className="space-y-1">
-                            <label className="text-slate-400 text-xs">ক্যাটাগরি (সার্ভিস) *</label>
+                            <label className="text-slate-400 text-xs">ক্যাটাগরি *</label>
                             <select
                               value={selectedServiceId || service.id}
                               onChange={e => setSelectedServiceId(e.target.value)}
@@ -690,7 +690,7 @@ export default function AdminServicePackages() {
                           className="flex items-center gap-2 text-sm text-purple-400 hover:text-purple-300 border border-dashed border-purple-500/30 hover:border-purple-500/60 rounded-xl px-4 py-3 w-full justify-center transition-all"
                         >
                           <Plus size={16} />
-                          নতুন প্যাকেজ যোগ করুন
+                          নতুন প্রোডাক্ট যোগ করুন
                         </button>
                       )}
                     </div>
