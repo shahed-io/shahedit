@@ -29,6 +29,7 @@ export const useSaveCategory = () => {
       parent_id?: string | null;
       description?: string;
       image_url?: string;
+      icon?: string;
       sort_order?: number;
       is_active?: boolean;
     }) => {
