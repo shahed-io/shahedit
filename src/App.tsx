@@ -221,7 +221,7 @@ const AdminRoutes = () => {
         <Route path="payments" element={<RoleRoute section="payments"><AdminPayments /></RoleRoute>} />
         <Route path="bkash-pgw" element={<RoleRoute section="payments"><AdminBkashPGW /></RoleRoute>} />
         <Route path="orders" element={<RoleRoute section="orders"><AdminOrders /></RoleRoute>} />
-        <Route path="services" element={<RoleRoute section="services"><AdminServices /></RoleRoute>} />
+        <Route path="services" element={<Navigate to="/ceo/categories" replace />} />
         <Route path="service-packages" element={<RoleRoute section="service-packages"><AdminServicePackages /></RoleRoute>} />
         <Route path="portfolio" element={<RoleRoute section="portfolio"><AdminPortfolio /></RoleRoute>} />
         <Route path="blog" element={<RoleRoute section="blog"><AdminBlog /></RoleRoute>} />
