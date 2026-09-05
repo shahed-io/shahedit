@@ -11,8 +11,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { useProductCategories, useSaveCategory, useDeleteCategory } from "@/hooks/useProductMgmt";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import AdminServices from "./AdminServices";
 
 type Row = any;
 
