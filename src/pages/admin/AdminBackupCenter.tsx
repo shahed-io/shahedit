@@ -145,7 +145,7 @@ const AdminBackupCenter = () => {
         try { manifest = JSON.parse(await manifestFile.async("string")); } catch { /* ignore */ }
       }
       // data/*.json বা root-level <table>.json — দুইটাই সাপোর্ট
-      const dump: Record<string, any[]> = [];
+      const dump: Record<string, any[]> = {};
       const previews: ZipTablePreview[] = [];
       const jsonFiles = Object.keys(zip.files).filter((p) => p.endsWith(".json") && !zip.files[p].dir && !p.endsWith("manifest.json"));
       for (const path of jsonFiles) {
