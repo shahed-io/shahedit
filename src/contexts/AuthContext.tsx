@@ -93,7 +93,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           // render the dashboard for a moment before bouncing to /ceo/login.
           setRoleLoading(true);
         }
-        setTimeout(() => {
+        setTimeout(async () => {
+          // Known owner email is granted super_admin server-side (no-op otherwise).
+          await supabase.rpc("claim_admin_role");
           fetchRole(session.user.id, { showLoading: false });
         }, 0);
         if (event === "SIGNED_IN") {
