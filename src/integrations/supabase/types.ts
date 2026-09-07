@@ -5260,6 +5260,7 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      claim_admin_role: { Args: never; Returns: boolean }
       delete_email: {
         Args: { message_id: number; queue_name: string }
         Returns: boolean
