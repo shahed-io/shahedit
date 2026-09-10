@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Mail, Lock, Eye, EyeOff, Zap, ArrowRight, ShieldCheck } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, Zap, ArrowRight } from "lucide-react";
 import BrandMark from "@/components/BrandMark";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { toast } from "sonner";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import TurnstileWidget from "@/components/TurnstileWidget";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -19,35 +18,11 @@ export default function LoginPage() {
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
-  const [captchaKey, setCaptchaKey] = useState(0);
-
-  const resetCaptcha = () => {
-    setCaptchaToken(null);
-    setCaptchaKey(k => k + 1);
-  };
-
-  const verifyHuman = async () => {
-    if (!captchaToken) {
-      toast.error("অনুগ্রহ করে বট ভেরিফিকেশন সম্পন্ন করুন");
-      return false;
-    }
-    const { data, error } = await supabase.functions.invoke("verify-turnstile", {
-      body: { token: captchaToken },
-    });
-    if (error || !data?.success) {
-      toast.error("ভেরিফিকেশন ব্যর্থ হয়েছে, আবার চেষ্টা করুন");
-      resetCaptcha();
-      return false;
-    }
-    return true;
-  };
 
   const handleEmailAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
-      if (!(await verifyHuman())) return;
       if (tab === "login") {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
@@ -65,10 +40,8 @@ export default function LoginPage() {
         if (error) throw error;
         toast.success("অ্যাকাউন্ট তৈরি হয়েছে! ইমেইল যাচাই করুন।");
       }
-      resetCaptcha();
     } catch (err: unknown) {
       toast.error(err instanceof Error ? err.message : "কিছু একটা ভুল হয়েছে");
-      resetCaptcha();
     } finally {
       setLoading(false);
     }
@@ -78,8 +51,6 @@ export default function LoginPage() {
   const handleGoogle = async () => {
     setGoogleLoading(true);
     try {
-      if (!(await verifyHuman())) { setGoogleLoading(false); return; }
-
       const { error } = await lovable.auth.signInWithOAuth("google", {
         redirect_uri: window.location.origin,
       });
@@ -238,76 +209,13 @@ export default function LoginPage() {
                 </div>
               )}
 
-              {/* Premium Bot verification */}
-              <div className="rounded-2xl p-4 transition-all duration-500 relative group overflow-hidden" 
-                   style={{ 
-                     background: 'rgba(255,255,255,0.03)', 
-                     border: '1px solid rgba(255,255,255,0.08)',
-                     boxShadow: 'inset 0 0 30px rgba(0,0,0,0.3)',
-                   }}>
-                {/* Animated Gradient Border */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
-                     style={{ 
-                       padding: '1px', 
-                       background: 'linear-gradient(90deg, transparent, rgba(168,85,247,0.3), rgba(236,72,153,0.3), transparent)',
-                       WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-                       WebkitMaskComposite: 'xor',
-                       maskComposite: 'exclude'
-                     }} />
-
-                {/* Ambient Background Glow */}
-                <div className="absolute -top-10 -right-10 w-24 h-24 bg-primary/10 rounded-full blur-2xl group-hover:bg-primary/20 transition-all duration-700" />
-                
-                <div className="flex items-center justify-between mb-3 relative z-10">
-                  <div className="flex items-center gap-2">
-                    <div className={`p-1.5 rounded-lg transition-all duration-500 ${captchaToken ? "bg-emerald-500/20 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.2)]" : "bg-white/5 text-foreground/40"}`}>
-                      <ShieldCheck size={14} className={captchaToken ? "animate-pulse" : ""} />
-                    </div>
-                    <span className="text-[10px] font-bold text-foreground/50 tracking-widest uppercase" style={{ fontFamily: "'Syne', sans-serif" }}>
-                      {captchaToken ? "Verified" : "Security Check"}
-                    </span>
-                  </div>
-                  
-                  {captchaToken && (
-                    <motion.div 
-                      initial={{ scale: 0, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      className="text-[9px] font-medium text-emerald-400/80 bg-emerald-400/5 px-2 py-0.5 rounded-full border border-emerald-400/20"
-                    >
-                      Success
-                    </motion.div>
-                  )}
-                </div>
-                
-                <div className="relative z-10 min-h-[65px] flex flex-col gap-2">
-                  <div className="relative transition-all duration-500" style={{ transform: captchaToken ? 'scale(0.98)' : 'scale(1)' }}>
-                    <TurnstileWidget
-                      resetKey={captchaKey}
-                      onVerify={setCaptchaToken}
-                      onExpire={() => setCaptchaToken(null)}
-                      className="w-full"
-                    />
-                  </div>
-                  
-                  {/* Premium indicator bar */}
-                  <div className="w-full h-[2px] bg-white/5 rounded-full overflow-hidden mt-1">
-                    <motion.div 
-                      className="h-full bg-gradient-to-r from-primary to-accent"
-                      initial={{ width: "0%" }}
-                      animate={{ width: captchaToken ? "100%" : "30%" }}
-                      transition={{ duration: 1, ease: "easeInOut" }}
-                    />
-                  </div>
-                </div>
-              </div>
-
               <motion.button
                 type="submit"
-                disabled={loading || !captchaToken}
+                disabled={loading}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold text-white transition-all"
-                style={{ background: 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))', boxShadow: '0 8px 30px hsl(258,90%,66%,0.3)', opacity: !captchaToken ? 0.6 : 1 }}
+                style={{ background: 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))', boxShadow: '0 8px 30px hsl(258,90%,66%,0.3)', opacity: loading ? 0.6 : 1 }}
 
               >
                 {loading ? (
