@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Mail, Lock, Eye, EyeOff, Zap, ArrowRight, ShieldCheck } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, Zap, ArrowRight } from "lucide-react";
 import BrandMark from "@/components/BrandMark";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { toast } from "sonner";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import TurnstileWidget from "@/components/TurnstileWidget";
 
 export default function LoginPage() {
   const navigate = useNavigate();
