@@ -60,6 +60,7 @@ const SiteHeader = () => {
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const servicesTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const scrolledRef = useRef(false);
   const drawerRef = useRef<HTMLElement | null>(null);
