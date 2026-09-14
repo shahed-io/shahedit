@@ -19,6 +19,7 @@ import { ProductReviews } from "@/components/ProductReviews";
 import { useProductRating } from "@/hooks/useProductRatings";
 import { trackRecentlyViewed } from "@/hooks/useRecentlyViewed";
 import RecentlyViewedSection from "@/components/RecentlyViewedSection";
+import { PREMIUM_PACKAGE_COPY } from "@/data/premiumPackageCopy";
 
 export default function ProductDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -44,7 +45,8 @@ export default function ProductDetailsPage() {
       .maybeSingle();
 
     query.then(({ data }) => {
-      const row = data as ServicePackageRow | null;
+      const rawRow = data as ServicePackageRow | null;
+      const row = rawRow ? { ...rawRow, ...(PREMIUM_PACKAGE_COPY[rawRow.id] ?? {}) } : null;
       setPkg(row);
       if (row?.id) trackRecentlyViewed(row.id);
       setLoading(false);

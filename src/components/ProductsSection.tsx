@@ -1,4 +1,4 @@
-import { Star, ArrowRight, Zap, CreditCard, MessageCircle, X, Copy, Smartphone, Send, CheckCircle, ChevronRight, ChevronLeft, Info, PenLine, Search, User as UserIcon, Mail, Phone, Tag, ShieldCheck, Sparkles } from "lucide-react";
+import { Star, ArrowRight, Zap, CreditCard, MessageCircle, ShoppingCart, X, Copy, Smartphone, Send, CheckCircle, ChevronRight, ChevronLeft, Info, PenLine, Search, User as UserIcon, Mail, Phone, Tag, ShieldCheck, Sparkles } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { usePaymentMethods } from "@/hooks/usePaymentMethods";
 import { useWalletSettings } from "@/hooks/useWalletSettings";
@@ -11,6 +11,7 @@ import { sanitizeHtml } from "@/lib/sanitize";
 import { StarRating } from "@/components/StarRating";
 import { useProductRating } from "@/hooks/useProductRatings";
 import { useRealtimeSync } from "@/hooks/useRealtimeSync";
+import { PREMIUM_PACKAGE_COPY } from "@/data/premiumPackageCopy";
 
 
 export interface ServicePackageRow {
@@ -804,6 +805,19 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
     `হ্যালো! আমি "${pkg.title}" প্যাকেজটি অর্ডার করতে চাই।${pkg.price ? ` মূল্য: ৳${pkg.price.toLocaleString("en-IN")}` : ""} অনুগ্রহ করে আরও তথ্য দিন।`
   );
 
+  const handleAddToCart = () => {
+    try {
+      const current = JSON.parse(localStorage.getItem("shahedit-cart") || "[]") as Array<{ id: string; title: string; price: number | null; image_url: string | null }>;
+      if (!current.some(item => item.id === pkg.id)) {
+        current.push({ id: pkg.id, title: pkg.title, price: pkg.price, image_url: pkg.image_url });
+        localStorage.setItem("shahedit-cart", JSON.stringify(current));
+      }
+      toast.success("প্রোডাক্ট কার্টে যোগ হয়েছে");
+    } catch {
+      toast.error("কার্টে যোগ করা যায়নি");
+    }
+  };
+
   const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -828,11 +842,9 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
         }}
         whileTap={{ scale: 0.94, rotate: -0.4, transition: { type: "spring", stiffness: 500, damping: 18 } }}
         onClick={handleCardClick}
-        className="group relative rounded-[2.5rem] overflow-hidden cursor-pointer transition-all duration-500 flex flex-col backdrop-blur-2xl"
+        className="group relative rounded-[1.25rem] overflow-hidden cursor-pointer transition-all duration-500 flex flex-col bg-card border border-primary/20 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)]"
         style={{
-          background: `linear-gradient(165deg, ${c.color}15 0%, rgba(10,6,24,0.92) 50%, rgba(6,3,16,0.98) 100%)`,
-          border: `1px solid ${c.color}45`,
-          boxShadow: `0 20px 60px -15px rgba(0,0,0,0.6), 0 0 40px -10px ${c.color}25`,
+          borderColor: `${c.color}35`,
         }}
       >
         {/* Click ripple + flash */}
@@ -886,7 +898,7 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
         />
 
         {/* Top visual area */}
-        <div className="relative aspect-[4/3] w-full flex items-center justify-center overflow-hidden rounded-t-[2.5rem]"
+        <div className="relative aspect-square w-full flex items-center justify-center overflow-hidden rounded-t-[1.25rem]"
           style={{
             background: `radial-gradient(130% 100% at 50% 0%, ${c.color}35 0%, hsl(265,55%,6%) 55%, hsl(265,60%,4%) 100%)`,
             boxShadow: `inset 0 2px 0 rgba(255,255,255,0.08), inset 0 -40px 80px -20px ${c.color}45`,
@@ -996,13 +1008,13 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
         </div>
 
         {/* Content */}
-        <div className="p-4 flex flex-col flex-1 relative">
+        <div className="p-4 flex flex-col flex-1 relative text-foreground">
 
-          <p className="text-[10px] text-foreground/50 mb-1.5 font-semibold uppercase tracking-wider"
+          <p className="text-[10px] text-muted-foreground mb-1.5 font-semibold uppercase tracking-wider"
             style={{ color: `${c.color}CC` }}>
             {pkg.services?.title ?? ""}
           </p>
-          <h3 className="font-bold text-foreground text-[15px] mb-2 group-hover:text-white transition-colors leading-snug line-clamp-2"
+          <h3 className="font-bold text-foreground text-[15px] mb-2 group-hover:text-primary transition-colors leading-snug line-clamp-2"
             style={{ fontFamily: "'Syne', sans-serif" }}>
             {pkg.title}
           </h3>
@@ -1025,14 +1037,14 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
             }}>
             <div className="flex flex-col">
               {pkg.original_price && (
-                <span className="text-[10px] text-foreground/40 line-through leading-none">{formatPrice(pkg.original_price)}</span>
+                <span className="text-[10px] text-muted-foreground line-through leading-none">{formatPrice(pkg.original_price)}</span>
               )}
               {pkg.price ? (
                 <span className="text-xl font-black leading-tight" style={{ color: c.color, fontFamily: "'Syne', sans-serif" }}>
                   {formatPrice(pkg.price)}
                 </span>
               ) : (
-                <span className="text-sm font-semibold text-foreground/60">যোগাযোগ করুন</span>
+                <span className="text-sm font-semibold text-muted-foreground">Contact for pricing</span>
               )}
             </div>
             {pkg.price && (
@@ -1044,19 +1056,19 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
           </div>
 
           {/* Action buttons */}
-          <div className="flex gap-2" onClick={e => e.stopPropagation()}>
+          <div className="grid grid-cols-2 gap-2" onClick={e => e.stopPropagation()}>
             {/* Payment button */}
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               onClick={() => setShowPayment(true)}
-              className="flex-1 py-3 rounded-[1.25rem] text-xs font-black text-white glossy-btn flex items-center justify-center gap-2 transition-all duration-300 relative overflow-hidden"
+              className="col-span-2 py-3 rounded-full text-xs font-black text-white glossy-btn flex items-center justify-center gap-2 transition-all duration-300 relative overflow-hidden"
               style={{
                 background: `linear-gradient(135deg, ${c.color}, ${c.color}CC)`,
                 boxShadow: `0 12px 28px -6px ${c.color}70, inset 0 1px 0 rgba(255,255,255,0.3)`,
               }}
             >
-              <CreditCard size={13} /> পেমেন্ট
+              <CreditCard size={13} /> Buy Now
             </motion.button>
 
             {/* WhatsApp button */}
@@ -1066,7 +1078,7 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
               rel="noopener noreferrer"
               whileHover={{ scale: 1.05, rotate: 3 }}
               whileTap={{ scale: 0.95 }}
-              className="w-11 h-11 rounded-[1.25rem] flex items-center justify-center shrink-0 transition-all"
+              className="h-9 rounded-full flex items-center justify-center gap-1.5 transition-all text-[11px] font-semibold"
               style={{
                 background: 'linear-gradient(135deg, rgba(37,211,102,0.3), rgba(37,211,102,0.15))',
                 border: '1px solid rgba(37,211,102,0.6)',
@@ -1076,8 +1088,17 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
               title="WhatsApp-এ অর্ডার করুন"
               aria-label="WhatsApp-এ অর্ডার করুন"
             >
-              <MessageCircle size={16} aria-hidden="true" />
+              <MessageCircle size={14} aria-hidden="true" /> WhatsApp
             </motion.a>
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={handleAddToCart}
+              className="h-9 rounded-full flex items-center justify-center gap-1.5 text-[11px] font-semibold text-foreground bg-gradient-to-r from-primary/15 to-accent/15 border border-primary/30 transition-all"
+              title="কার্টে যোগ করুন"
+            >
+              <ShoppingCart size={14} aria-hidden="true" /> Cart
+            </motion.button>
           </div>
         </div>
       </motion.div>
@@ -1135,7 +1156,9 @@ const ProductsSection = () => {
       .then(({ data }) => {
         if (data) {
           const map = new Map<string, ServiceGroup>();
-          (data as ServicePackageRow[]).forEach(pkg => {
+          (data as ServicePackageRow[]).forEach(rawPkg => {
+            const copy = PREMIUM_PACKAGE_COPY[rawPkg.id];
+            const pkg = copy ? { ...rawPkg, ...copy } : rawPkg;
             const sid = pkg.service_id;
             const stitle = pkg.services?.title ?? "Other";
             if (!map.has(sid)) map.set(sid, { service_id: sid, service_title: stitle, packages: [] });
