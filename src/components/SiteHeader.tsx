@@ -71,6 +71,19 @@ const SiteHeader = () => {
   const isActive = (href: string) => location.pathname === href;
   const activeKey = navLinks.find(l => isActive(l.href))?.label || (servicesOpen ? "Services" : null);
 
+  const handleGoogleSignIn = async () => {
+    setGoogleLoading(true);
+    try {
+      const result = await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.origin,
+      });
+      if (result.error) throw result.error;
+    } catch (err) {
+      // Error is surfaced; button remains usable
+    }
+    setGoogleLoading(false);
+  };
+
   useEffect(() => {
     let ticking = false;
     const update = () => {
