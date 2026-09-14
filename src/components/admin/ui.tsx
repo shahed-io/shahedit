@@ -14,44 +14,7 @@ export const AdminPageHeader = ({
   title, subtitle, icon: Icon, actions,
 }: {
   title: string; subtitle?: string; icon?: LucideIcon; actions?: React.ReactNode;
-}) => (
-  <motion.div
-    initial={{ opacity: 0, y: -8 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.4, ease: "easeOut" }}
-    className="relative mb-8 overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-r from-card via-background to-accent/15 backdrop-blur-xl shadow-[0_12px_40px_-16px_hsl(var(--primary)/0.45)] text-foreground"
-  >
-    {/* ambient glow */}
-    <div className="pointer-events-none absolute -right-24 -top-24 w-72 h-72 rounded-full bg-primary/25 blur-[110px]" />
-    <div className="pointer-events-none absolute -left-20 -bottom-24 w-64 h-64 rounded-full bg-accent/20 blur-[110px]" />
-    {/* hairline top sheen */}
-    <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/70 to-transparent" />
-
-    <div className="relative flex flex-col md:flex-row md:items-center md:justify-between gap-5 p-6 md:p-7">
-      <div className="flex items-start gap-4">
-        {Icon && (
-          <motion.div
-            whileHover={{ rotate: 6, scale: 1.05 }}
-            transition={{ type: "spring", stiffness: 300, damping: 18 }}
-            className="relative w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-fuchsia-500 border border-violet-300 flex items-center justify-center shadow-[0_10px_30px_-10px_rgba(124,58,237,0.55),inset_0_1px_0_rgba(255,255,255,0.45)]"
-          >
-            <Icon className="w-6 h-6 text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]" />
-            <span className="absolute -inset-px rounded-2xl ring-1 ring-inset ring-white/10" />
-          </motion.div>
-        )}
-        <div className="min-w-0">
-          <h1 className="text-2xl md:text-3xl font-extrabold font-syne tracking-tight bg-gradient-to-r from-violet-700 via-fuchsia-500 to-violet-600 bg-clip-text text-transparent">
-            {title}
-          </h1>
-          {subtitle && (
-            <p className="text-sm text-slate-500 mt-1.5 font-medium">{subtitle}</p>
-          )}
-        </div>
-      </div>
-      {actions && <div className="flex items-center gap-2 flex-wrap">{actions}</div>}
-    </div>
-  </motion.div>
-);
+}) => null;
 
 export const GlassCard = ({
   children, className, hover = false,
