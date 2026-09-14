@@ -1280,7 +1280,7 @@ const ProductsSection = () => {
                     <div className="h-px flex-1 rounded-full" style={{ background: `linear-gradient(90deg, ${sc.accent}50, transparent)` }} />
                   </div>
 
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                     {group.packages.map((pkg, i) => (
                       <ProductCard key={pkg.id} pkg={pkg} index={i} />
                     ))}
