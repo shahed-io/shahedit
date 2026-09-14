@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import logoFallback from "@/assets/shahed-it-mark-sm.webp";
 import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable/index";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
