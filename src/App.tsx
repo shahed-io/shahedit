@@ -18,27 +18,24 @@ import ThemeAppearanceProvider from "@/components/ThemeAppearanceProvider";
 import SiteBackground from "@/components/SiteBackground";
 import { useAdminGlobals } from "@/hooks/useAdminGlobals";
 import { HoverSpotlight } from "@/components/ui/HoverSpotlight";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 
 // Optimized QueryClient with better caching to reduce reload times
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 5, // 5 minutes
-      gcTime: 1000 * 60 * 30, // 30 minutes
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 30,
       retry: 1,
       refetchOnWindowFocus: false,
     },
   },
 });
 
-// Eagerly loaded (most-visited / lightweight)
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
 // --- Lazy-loaded routes ---------------------------------------------------
-// Admin
-
 const AdminLayout = lazy(() => import("./components/admin/AdminLayout"));
 const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
@@ -117,7 +114,6 @@ const AdminCopyProtection = lazy(() => import("./pages/admin/AdminCopyProtection
 const AdminAIProviders = lazy(() => import("./pages/admin/AdminAIProviders"));
 const OfferPage = lazy(() => import("./pages/OfferPage"));
 
-
 // Auth / user pages
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const DashboardPage = lazy(() => import("./pages/DashboardPage"));
@@ -153,9 +149,16 @@ const TechDetailPage = lazy(() => import("./pages/TechDetailPage"));
 const UnsubscribePage = lazy(() => import("./pages/UnsubscribePage"));
 const TeamPage = lazy(() => import("./pages/TeamPage"));
 
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
 
-// QueryClient is now initialized above with optimized caching settings
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [pathname]);
 
+  return null;
+};
 
 const PageFallback = () => (
   <div className="min-h-screen flex items-center justify-center bg-background">
@@ -163,8 +166,6 @@ const PageFallback = () => (
   </div>
 );
 
-// Lighter, themed loader rendered INSIDE the admin layout so the sidebar/topbar
-// stay visible while the page chunk loads — no full-screen black flash.
 const AdminPageFallback = () => (
   <div className="min-h-[60vh] flex items-center justify-center">
     <div className="flex flex-col items-center gap-3">
@@ -174,13 +175,10 @@ const AdminPageFallback = () => (
   </div>
 );
 
-
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading, roleLoading, isAdmin } = useAuth();
   if (loading) return <PageFallback />;
   if (!user) return <Navigate to="/ceo/login" replace />;
-  // Wait for the role lookup to finish before deciding — otherwise we briefly
-  // see isAdmin=false right after sign-in and bounce the user out.
   if (roleLoading) return <PageFallback />;
   if (!isAdmin) return <Navigate to="/ceo/login" replace />;
   return <>{children}</>;
@@ -210,154 +208,144 @@ const RoleRoute = ({ section, children }: { section: AdminSection; children: Rea
 const AdminRoutes = () => {
   useAdminGlobals();
   return (
-  <ProtectedRoute>
-    <AdminLayout>
-      <Suspense fallback={<AdminPageFallback />}>
-      <Routes>
-        <Route path="" element={<RoleRoute section="dashboard"><AdminDashboard /></RoleRoute>} />
-        <Route path="leads" element={<RoleRoute section="leads"><AdminLeads /></RoleRoute>} />
-        <Route path="refunds" element={<RoleRoute section="refunds"><AdminRefunds /></RoleRoute>} />
-        <Route path="payments" element={<RoleRoute section="payments"><AdminPayments /></RoleRoute>} />
-        <Route path="bkash-pgw" element={<RoleRoute section="payments"><AdminBkashPGW /></RoleRoute>} />
-        <Route path="orders" element={<RoleRoute section="orders"><AdminOrders /></RoleRoute>} />
-        <Route path="services" element={<Navigate to="/ceo/categories" replace />} />
-        <Route path="service-packages" element={<RoleRoute section="service-packages"><AdminServicePackages /></RoleRoute>} />
-        <Route path="portfolio" element={<RoleRoute section="portfolio"><AdminPortfolio /></RoleRoute>} />
-        <Route path="blog" element={<RoleRoute section="blog"><AdminBlog /></RoleRoute>} />
-        <Route path="blog-categories" element={<RoleRoute section="blog-categories"><AdminBlogCategories /></RoleRoute>} />
-        <Route path="blog-management" element={<RoleRoute section="blog-management"><AdminBlogManagement /></RoleRoute>} />
-        <Route path="reviews" element={<RoleRoute section="reviews"><AdminReviews /></RoleRoute>} />
-        <Route path="seo-panel" element={<RoleRoute section="seo-panel"><AdminSEOPanel /></RoleRoute>} />
-        <Route path="email-system" element={<RoleRoute section="email-system"><AdminEmailSystem /></RoleRoute>} />
-        <Route path="media" element={<RoleRoute section="media"><AdminMedia /></RoleRoute>} />
-        <Route path="testimonials" element={<RoleRoute section="testimonials"><AdminTestimonials /></RoleRoute>} />
-        <Route path="team" element={<RoleRoute section="team"><AdminTeam /></RoleRoute>} />
-        <Route path="clients" element={<RoleRoute section="clients"><AdminClients /></RoleRoute>} />
-        <Route path="pricing" element={<RoleRoute section="pricing"><AdminPricing /></RoleRoute>} />
-        <Route path="faq" element={<RoleRoute section="faq"><AdminFAQ /></RoleRoute>} />
-        <Route path="tech-details" element={<RoleRoute section="tech-details"><AdminTechDetails /></RoleRoute>} />
-        <Route path="careers" element={<RoleRoute section="careers"><AdminCareers /></RoleRoute>} />
-        <Route path="ai-support" element={<RoleRoute section="ai-support"><AdminAISupport /></RoleRoute>} />
-        <Route path="settings" element={<RoleRoute section="settings"><AdminSettings /></RoleRoute>} />
-        <Route path="seo" element={<RoleRoute section="seo"><AdminSEO /></RoleRoute>} />
-        <Route path="users" element={<RoleRoute section="users"><AdminUsers /></RoleRoute>} />
-        <Route path="footer" element={<RoleRoute section="footer"><AdminFooterEditor /></RoleRoute>} />
-        <Route path="banners" element={<RoleRoute section="banners"><AdminBanners /></RoleRoute>} />
-        <Route path="welcome-popups" element={<RoleRoute section="welcome-popups"><AdminWelcomePopups /></RoleRoute>} />
-        <Route path="client-docs" element={<RoleRoute section="client-docs"><AdminClientDocuments /></RoleRoute>} />
-        <Route path="popular-searches" element={<RoleRoute section="popular-searches"><AdminPopularSearches /></RoleRoute>} />
-        <Route path="analytics" element={<RoleRoute section="analytics"><AdminAnalytics /></RoleRoute>} />
-        <Route path="activity" element={<RoleRoute section="activity"><AdminActivityLog /></RoleRoute>} />
-        <Route path="coupons" element={<RoleRoute section="coupons"><AdminCoupons /></RoleRoute>} />
-        <Route path="campaigns" element={<RoleRoute section="campaigns"><AdminEmailCampaigns /></RoleRoute>} />
-        <Route path="ai-writer" element={<RoleRoute section="ai-writer"><AdminAIWriter /></RoleRoute>} />
-        <Route path="redirects" element={<RoleRoute section="redirects"><AdminRedirects /></RoleRoute>} />
-        <Route path="sitemap" element={<RoleRoute section="sitemap"><AdminSitemap /></RoleRoute>} />
-        <Route path="schema" element={<RoleRoute section="schema"><AdminSchemaBuilder /></RoleRoute>} />
-        <Route path="seo-tools" element={<RoleRoute section="seo-tools"><AdminSEOTools /></RoleRoute>} />
-        <Route path="ranking-setup" element={<RoleRoute section="ranking-setup"><AdminRankingSetup /></RoleRoute>} />
+    <ProtectedRoute>
+      <AdminLayout>
+        <Suspense fallback={<AdminPageFallback />}>
+          <Routes>
+            <Route path="" element={<RoleRoute section="dashboard"><AdminDashboard /></RoleRoute>} />
+            <Route path="leads" element={<RoleRoute section="leads"><AdminLeads /></RoleRoute>} />
+            <Route path="refunds" element={<RoleRoute section="refunds"><AdminRefunds /></RoleRoute>} />
+            <Route path="payments" element={<RoleRoute section="payments"><AdminPayments /></RoleRoute>} />
+            <Route path="bkash-pgw" element={<RoleRoute section="payments"><AdminBkashPGW /></RoleRoute>} />
+            <Route path="orders" element={<RoleRoute section="orders"><AdminOrders /></RoleRoute>} />
+            <Route path="services" element={<Navigate to="/ceo/categories" replace />} />
+            <Route path="service-packages" element={<RoleRoute section="service-packages"><AdminServicePackages /></RoleRoute>} />
+            <Route path="portfolio" element={<RoleRoute section="portfolio"><AdminPortfolio /></RoleRoute>} />
+            <Route path="blog" element={<RoleRoute section="blog"><AdminBlog /></RoleRoute>} />
+            <Route path="blog-categories" element={<RoleRoute section="blog-categories"><AdminBlogCategories /></RoleRoute>} />
+            <Route path="blog-management" element={<RoleRoute section="blog-management"><AdminBlogManagement /></RoleRoute>} />
+            <Route path="reviews" element={<RoleRoute section="reviews"><AdminReviews /></RoleRoute>} />
+            <Route path="seo-panel" element={<RoleRoute section="seo-panel"><AdminSEOPanel /></RoleRoute>} />
+            <Route path="email-system" element={<RoleRoute section="email-system"><AdminEmailSystem /></RoleRoute>} />
+            <Route path="media" element={<RoleRoute section="media"><AdminMedia /></RoleRoute>} />
+            <Route path="testimonials" element={<RoleRoute section="testimonials"><AdminTestimonials /></RoleRoute>} />
+            <Route path="team" element={<RoleRoute section="team"><AdminTeam /></RoleRoute>} />
+            <Route path="clients" element={<RoleRoute section="clients"><AdminClients /></RoleRoute>} />
+            <Route path="pricing" element={<RoleRoute section="pricing"><AdminPricing /></RoleRoute>} />
+            <Route path="faq" element={<RoleRoute section="faq"><AdminFAQ /></RoleRoute>} />
+            <Route path="tech-details" element={<RoleRoute section="tech-details"><AdminTechDetails /></RoleRoute>} />
+            <Route path="careers" element={<RoleRoute section="careers"><AdminCareers /></RoleRoute>} />
+            <Route path="ai-support" element={<RoleRoute section="ai-support"><AdminAISupport /></RoleRoute>} />
+            <Route path="settings" element={<RoleRoute section="settings"><AdminSettings /></RoleRoute>} />
+            <Route path="seo" element={<RoleRoute section="seo"><AdminSEO /></RoleRoute>} />
+            <Route path="users" element={<RoleRoute section="users"><AdminUsers /></RoleRoute>} />
+            <Route path="footer" element={<RoleRoute section="footer"><AdminFooterEditor /></RoleRoute>} />
+            <Route path="banners" element={<RoleRoute section="banners"><AdminBanners /></RoleRoute>} />
+            <Route path="welcome-popups" element={<RoleRoute section="welcome-popups"><AdminWelcomePopups /></RoleRoute>} />
+            <Route path="client-docs" element={<RoleRoute section="client-docs"><AdminClientDocuments /></RoleRoute>} />
+            <Route path="popular-searches" element={<RoleRoute section="popular-searches"><AdminPopularSearches /></RoleRoute>} />
+            <Route path="analytics" element={<RoleRoute section="analytics"><AdminAnalytics /></RoleRoute>} />
+            <Route path="activity" element={<RoleRoute section="activity"><AdminActivityLog /></RoleRoute>} />
+            <Route path="coupons" element={<RoleRoute section="coupons"><AdminCoupons /></RoleRoute>} />
+            <Route path="campaigns" element={<RoleRoute section="campaigns"><AdminEmailCampaigns /></RoleRoute>} />
+            <Route path="ai-writer" element={<RoleRoute section="ai-writer"><AdminAIWriter /></RoleRoute>} />
+            <Route path="redirects" element={<RoleRoute section="redirects"><AdminRedirects /></RoleRoute>} />
+            <Route path="sitemap" element={<RoleRoute section="sitemap"><AdminSitemap /></RoleRoute>} />
+            <Route path="schema" element={<RoleRoute section="schema"><AdminSchemaBuilder /></RoleRoute>} />
+            <Route path="seo-tools" element={<RoleRoute section="seo-tools"><AdminSEOTools /></RoleRoute>} />
+            <Route path="ranking-setup" element={<RoleRoute section="ranking-setup"><AdminRankingSetup /></RoleRoute>} />
 
-        <Route path="products" element={<Navigate to="/ceo/service-packages" replace />} />
-        <Route path="projects" element={<RoleRoute section="projects"><AdminProjects /></RoleRoute>} />
-        <Route path="invoices" element={<RoleRoute section="invoices"><AdminInvoices /></RoleRoute>} />
-        <Route path="expenses" element={<RoleRoute section="expenses"><AdminExpenses /></RoleRoute>} />
-        <Route path="quotations" element={<RoleRoute section="quotations"><AdminQuotations /></RoleRoute>} />
-        <Route path="newsletter" element={<RoleRoute section="newsletter"><AdminNewsletter /></RoleRoute>} />
-        <Route path="knowledge-base" element={<RoleRoute section="knowledge-base"><AdminKnowledgeBase /></RoleRoute>} />
-        <Route path="custom-order" element={<RoleRoute section="custom-order"><AdminCustomOrder /></RoleRoute>} />
-        <Route path="wallets" element={<RoleRoute section="wallets"><AdminWallets /></RoleRoute>} />
-        <Route path="notifications" element={<RoleRoute section="notifications"><AdminNotificationCenter /></RoleRoute>} />
-        <Route path="kpi" element={<RoleRoute section="kpi"><AdminKpiTracker /></RoleRoute>} />
-        <Route path="task-board" element={<RoleRoute section="task-board"><AdminTaskBoard /></RoleRoute>} />
-        <Route path="backup" element={<RoleRoute section="backup"><AdminBackupCenter /></RoleRoute>} />
-
-        <Route path="backup" element={<RoleRoute section="backup"><AdminBackupCenter /></RoleRoute>} />
-        <Route path="categories" element={<RoleRoute section="categories"><AdminCategories /></RoleRoute>} />
-        <Route path="brands" element={<RoleRoute section="brands"><AdminBrands /></RoleRoute>} />
-        <Route path="product-tags" element={<RoleRoute section="product-tags"><AdminProductTags /></RoleRoute>} />
-        <Route path="digital-files" element={<RoleRoute section="digital-files"><AdminDigitalFiles /></RoleRoute>} />
-        <Route path="license-keys" element={<RoleRoute section="license-keys"><AdminLicenseKeys /></RoleRoute>} />
-        <Route path="bulk-products" element={<RoleRoute section="bulk-products"><AdminBulkProducts /></RoleRoute>} />
-        <Route path="security-audit" element={<RoleRoute section="security-audit"><AdminSecurityAudit /></RoleRoute>} />
-        <Route path="customers" element={<RoleRoute section="customers"><AdminCustomers /></RoleRoute>} />
-        <Route path="reports" element={<RoleRoute section="reports"><AdminReports /></RoleRoute>} />
-        <Route path="website-cms" element={<RoleRoute section="website-cms"><AdminWebsiteCms /></RoleRoute>} />
-        <Route path="staff-management" element={<RoleRoute section="staff-management"><AdminStaffManagement /></RoleRoute>} />
-        <Route path="security-center" element={<RoleRoute section="security-center"><AdminSecurityCenter /></RoleRoute>} />
-        <Route path="backup-maintenance" element={<RoleRoute section="backup-maintenance"><AdminBackupMaintenance /></RoleRoute>} />
-        <Route path="analytics-hub" element={<RoleRoute section="analytics-hub"><AdminAnalyticsHub /></RoleRoute>} />
-        <Route path="settings-hub" element={<RoleRoute section="settings-hub"><AdminSettingsHub /></RoleRoute>} />
-        <Route path="advanced-tools" element={<RoleRoute section="advanced-tools"><AdminAdvancedTools /></RoleRoute>} />
-        <Route path="offers" element={<RoleRoute section="offers"><AdminOffers /></RoleRoute>} />
-        <Route path="copy-protection" element={<RoleRoute section="copy-protection"><AdminCopyProtection /></RoleRoute>} />
-        <Route path="ai-providers" element={<RoleRoute section="ai-providers"><AdminAIProviders /></RoleRoute>} />
-
-      </Routes>
-      </Suspense>
-    </AdminLayout>
-  </ProtectedRoute>
+            <Route path="products" element={<Navigate to="/ceo/service-packages" replace />} />
+            <Route path="projects" element={<RoleRoute section="projects"><AdminProjects /></RoleRoute>} />
+            <Route path="invoices" element={<RoleRoute section="invoices"><AdminInvoices /></RoleRoute>} />
+            <Route path="expenses" element={<RoleRoute section="expenses"><AdminExpenses /></RoleRoute>} />
+            <Route path="quotations" element={<RoleRoute section="quotations"><AdminQuotations /></RoleRoute>} />
+            <Route path="newsletter" element={<RoleRoute section="newsletter"><AdminNewsletter /></RoleRoute>} />
+            <Route path="knowledge-base" element={<RoleRoute section="knowledge-base"><AdminKnowledgeBase /></RoleRoute>} />
+            <Route path="custom-order" element={<RoleRoute section="custom-order"><AdminCustomOrder /></RoleRoute>} />
+            <Route path="wallets" element={<RoleRoute section="wallets"><AdminWallets /></RoleRoute>} />
+            <Route path="notifications" element={<RoleRoute section="notifications"><AdminNotificationCenter /></RoleRoute>} />
+            <Route path="kpi" element={<RoleRoute section="kpi"><AdminKpiTracker /></RoleRoute>} />
+            <Route path="task-board" element={<RoleRoute section="task-board"><AdminTaskBoard /></RoleRoute>} />
+            <Route path="backup" element={<RoleRoute section="backup"><AdminBackupCenter /></RoleRoute>} />
+            <Route path="categories" element={<RoleRoute section="categories"><AdminCategories /></RoleRoute>} />
+            <Route path="brands" element={<RoleRoute section="brands"><AdminBrands /></RoleRoute>} />
+            <Route path="product-tags" element={<RoleRoute section="product-tags"><AdminProductTags /></RoleRoute>} />
+            <Route path="digital-files" element={<RoleRoute section="digital-files"><AdminDigitalFiles /></RoleRoute>} />
+            <Route path="license-keys" element={<RoleRoute section="license-keys"><AdminLicenseKeys /></RoleRoute>} />
+            <Route path="bulk-products" element={<RoleRoute section="bulk-products"><AdminBulkProducts /></RoleRoute>} />
+            <Route path="security-audit" element={<RoleRoute section="security-audit"><AdminSecurityAudit /></RoleRoute>} />
+            <Route path="customers" element={<RoleRoute section="customers"><AdminCustomers /></RoleRoute>} />
+            <Route path="reports" element={<RoleRoute section="reports"><AdminReports /></RoleRoute>} />
+            <Route path="website-cms" element={<RoleRoute section="website-cms"><AdminWebsiteCms /></RoleRoute>} />
+            <Route path="staff-management" element={<RoleRoute section="staff-management"><AdminStaffManagement /></RoleRoute>} />
+            <Route path="security-center" element={<RoleRoute section="security-center"><AdminSecurityCenter /></RoleRoute>} />
+            <Route path="backup-maintenance" element={<RoleRoute section="backup-maintenance"><AdminBackupMaintenance /></RoleRoute>} />
+            <Route path="analytics-hub" element={<RoleRoute section="analytics-hub"><AdminAnalyticsHub /></RoleRoute>} />
+            <Route path="settings-hub" element={<RoleRoute section="settings-hub"><AdminSettingsHub /></RoleRoute>} />
+            <Route path="advanced-tools" element={<RoleRoute section="advanced-tools"><AdminAdvancedTools /></RoleRoute>} />
+            <Route path="offers" element={<RoleRoute section="offers"><AdminOffers /></RoleRoute>} />
+            <Route path="copy-protection" element={<RoleRoute section="copy-protection"><AdminCopyProtection /></RoleRoute>} />
+            <Route path="ai-providers" element={<RoleRoute section="ai-providers"><AdminAIProviders /></RoleRoute>} />
+          </Routes>
+        </Suspense>
+      </AdminLayout>
+    </ProtectedRoute>
   );
 };
 
-
-// Root component that injects analytics on every page load
 const AppWithAnalytics = () => {
   useAnalyticsInjection();
   useApplyCopyProtection();
-  // Admin routes get a lightweight shell: no public SEO/Helmet churn,
-  // no animated site background, no welcome popup, no floating support widget.
   const { pathname } = useLocation();
   const isAdminRoute = pathname.startsWith("/ceo");
+
   return (
     <Suspense fallback={<PageFallback />}>
       {!isAdminRoute && <SEO />}
       {!isAdminRoute && <AutoStructuredData />}
       {!isAdminRoute && <SiteBackground />}
       <div className="relative z-10">
-      <Routes>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
 
-        {/* Auth Routes */}
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
-        {/* Public Routes */}
-        <Route path="/" element={<Index />} />
-        <Route path="/services" element={<ServicesPage />} />
-        <Route path="/services/:slug" element={<ServiceCategoryPage />} />
-        <Route path="/portfolio" element={<PortfolioPage />} />
-        <Route path="/blog" element={<BlogPage />} />
-        <Route path="/blog/:slug" element={<BlogPostPage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/team" element={<TeamPage />}/>
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/faq" element={<FAQPage />} />
-        <Route path="/pricing" element={<PricingPage />} />
-        <Route path="/careers" element={<CareersPage />} />
-        <Route path="/get-quote" element={<GetQuotePage />} />
-        <Route path="/terms" element={<TermsPage />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-        <Route path="/refund-policy" element={<RefundPolicyPage />} />
-        <Route path="/delivery-policy" element={<DeliveryPolicyPage />} />
-        <Route path="/complaint-policy" element={<ComplaintPolicyPage />} />
-        <Route path="/payment" element={<PaymentPage />} />
-        <Route path="/payment/bkash/callback" element={<BkashCallbackPage />} />
-        <Route path="/refund-request" element={<RefundRequestPage />} />
-        <Route path="/my-refunds" element={<MyRefundsPage />} />
-        <Route path="/product/:id" element={<ProductDetailsPage />} />
-        <Route path="/search" element={<SearchResultsPage />} />
-        <Route path="/ai-search" element={<AiSearchPage />} />
-        <Route path="/tech/:slug" element={<TechDetailPage />} />
-        <Route path="/unsubscribe" element={<UnsubscribePage />} />
-        <Route path="/offer/:slug" element={<OfferPage />} />
+          <Route path="/" element={<Index />} />
+          <Route path="/services" element={<ServicesPage />} />
+          <Route path="/services/:slug" element={<ServiceCategoryPage />} />
+          <Route path="/portfolio" element={<PortfolioPage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/:slug" element={<BlogPostPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/team" element={<TeamPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/faq" element={<FAQPage />} />
+          <Route path="/pricing" element={<PricingPage />} />
+          <Route path="/careers" element={<CareersPage />} />
+          <Route path="/get-quote" element={<GetQuotePage />} />
+          <Route path="/terms" element={<TermsPage />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+          <Route path="/refund-policy" element={<RefundPolicyPage />} />
+          <Route path="/delivery-policy" element={<DeliveryPolicyPage />} />
+          <Route path="/complaint-policy" element={<ComplaintPolicyPage />} />
+          <Route path="/payment" element={<PaymentPage />} />
+          <Route path="/payment/bkash/callback" element={<BkashCallbackPage />} />
+          <Route path="/refund-request" element={<RefundRequestPage />} />
+          <Route path="/my-refunds" element={<MyRefundsPage />} />
+          <Route path="/product/:id" element={<ProductDetailsPage />} />
+          <Route path="/search" element={<SearchResultsPage />} />
+          <Route path="/ai-search" element={<AiSearchPage />} />
+          <Route path="/tech/:slug" element={<TechDetailPage />} />
+          <Route path="/unsubscribe" element={<UnsubscribePage />} />
+          <Route path="/offer/:slug" element={<OfferPage />} />
 
-        {/* Admin Routes (mounted at /ceo) */}
-        <Route path="/ceo/login" element={<AdminLogin />} />
-        <Route path="/ceo/*" element={<AdminRoutes />} />
-        {/* /admin paths intentionally NOT mapped — show 404 to keep real admin path private */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+          <Route path="/ceo/login" element={<AdminLogin />} />
+          <Route path="/ceo/*" element={<AdminRoutes />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </div>
       {!isAdminRoute && <ThemeAppearanceProvider />}
       {!isAdminRoute && <GlobalSupport />}
@@ -375,7 +363,8 @@ const App = () => (
         <BrowserRouter>
           <ThemeProvider>
             <AuthProvider>
-        <HoverSpotlight />
+              <ScrollToTop />
+              <HoverSpotlight />
               <AppWithAnalytics />
             </AuthProvider>
           </ThemeProvider>

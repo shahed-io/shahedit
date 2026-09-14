@@ -10,6 +10,7 @@ import {
   History, BarChart3, ArrowLeftRight, ChevronDown, Crown, ExternalLink,
   Zap, RefreshCcw, Image as ImageIcon, FolderTree, BookOpen, ListChecks,
   Receipt, TrendingDown, ClipboardList, X, ChevronRight, Command, Wallet, Database, Gift,
+  Megaphone,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -19,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import BrandMark from "@/components/BrandMark";
+import AdminHeroHeader from "@/components/admin/AdminHeroHeader";
 
 import { canAccess, type AdminSection } from "@/lib/admin-permissions";
 
@@ -31,74 +33,78 @@ const navGroups: NavGroup[] = [
     icon: LayoutDashboard,
     items: [
       { label: "Dashboard", icon: LayoutDashboard, href: "/ceo", section: "dashboard" },
-      { label: "Analytics", icon: BarChart3, href: "/ceo/analytics", badge: "NEW", section: "analytics" },
-
     ],
   },
   {
-    title: "People",
-    icon: Users,
-    items: [
-      { label: "Customer Management", icon: Users, href: "/ceo/customers", badge: "NEW", section: "customers" },
-    ],
-  },
-  {
-    title: "Sales & CRM",
+    title: "Sales",
     icon: Inbox,
     items: [
-      { label: "Leads", icon: Inbox, href: "/ceo/leads", section: "leads" },
-      { label: "Refund Requests", icon: RefreshCcw, href: "/ceo/refunds", badge: "NEW", section: "refunds" },
+      { label: "Orders", icon: Package, href: "/ceo/orders", section: "orders" },
       { label: "Payments", icon: CreditCard, href: "/ceo/payments", section: "payments" },
       { label: "Wallets", icon: Wallet, href: "/ceo/wallets", badge: "NEW", section: "wallets" },
       { label: "bKash PGW", icon: Zap, href: "/ceo/bkash-pgw", badge: "NEW", section: "payments" },
-      { label: "Orders & Delivery", icon: Package, href: "/ceo/orders", section: "orders" },
+      { label: "Leads", icon: Inbox, href: "/ceo/leads", section: "leads" },
+      { label: "Refund Requests", icon: RefreshCcw, href: "/ceo/refunds", badge: "NEW", section: "refunds" },
+      { label: "Coupons", icon: Tag, href: "/ceo/coupons", badge: "NEW", section: "coupons" },
+      { label: "Invoices", icon: Receipt, href: "/ceo/invoices", badge: "NEW", section: "invoices" },
       { label: "Custom Order", icon: ClipboardList, href: "/ceo/custom-order", badge: "NEW", section: "custom-order" },
       { label: "Quotations", icon: FileText, href: "/ceo/quotations", badge: "NEW", section: "quotations" },
-      { label: "Invoices", icon: Receipt, href: "/ceo/invoices", badge: "NEW", section: "invoices" },
-      { label: "Coupons", icon: Tag, href: "/ceo/coupons", badge: "NEW", section: "coupons" },
     ],
   },
   {
     title: "Catalog",
     icon: Briefcase,
     items: [
-      
+      { label: "Products", icon: Package, href: "/ceo/service-packages", badge: "NEW", section: "service-packages" },
+      { label: "Categories", icon: FolderTree, href: "/ceo/categories", badge: "NEW", section: "categories" },
       { label: "Pricing", icon: DollarSign, href: "/ceo/pricing", section: "pricing" },
       { label: "Portfolio", icon: FolderOpen, href: "/ceo/portfolio", section: "portfolio" },
-      { label: "Products", icon: Package, href: "/ceo/service-packages", badge: "NEW", section: "service-packages" },
-    ],
-  },
-  {
-    title: "Product Management",
-    icon: Package,
-    items: [
-      { label: "Categories", icon: FolderTree, href: "/ceo/categories", badge: "NEW", section: "categories" },
       { label: "Digital Files", icon: Database, href: "/ceo/digital-files", badge: "NEW", section: "digital-files" },
     ],
   },
   {
-    title: "Content & Marketing",
+    title: "Customers",
+    icon: Users,
+    items: [
+      { label: "All Customers", icon: Users, href: "/ceo/customers", badge: "NEW", section: "customers" },
+      { label: "Admin Users", icon: Shield, href: "/ceo/users", section: "users" },
+      { label: "Staff Management", icon: Users, href: "/ceo/staff-management", badge: "NEW", section: "staff-management" },
+    ],
+  },
+  {
+    title: "Storefront",
+    icon: LayoutTemplate,
+    items: [
+      { label: "Pages", icon: LayoutTemplate, href: "/ceo/website-cms", badge: "NEW", section: "website-cms" },
+      { label: "Footer Settings", icon: LayoutTemplate, href: "/ceo/footer", section: "footer" },
+      { label: "Hero Banner", icon: LayoutTemplate, href: "/ceo/banners", badge: "NEW", section: "banners" },
+      { label: "Popup Banner", icon: ImageIcon, href: "/ceo/welcome-popups", badge: "NEW", section: "welcome-popups" },
+      { label: "Testimonials", icon: Star, href: "/ceo/testimonials", section: "testimonials" },
+      { label: "Clients", icon: Building2, href: "/ceo/clients", section: "clients" },
+      { label: "Team", icon: UserCheck, href: "/ceo/team", section: "team" },
+      { label: "Careers", icon: Users, href: "/ceo/careers", section: "careers" },
+    ],
+  },
+  {
+    title: "Marketing",
+    icon: Megaphone,
+    items: [
+      { label: "Offers & Giveaways", icon: Gift, href: "/ceo/offers", badge: "NEW", section: "offers" },
+      { label: "Email Campaigns", icon: Mail, href: "/ceo/campaigns", badge: "NEW", section: "campaigns" },
+      { label: "AI Writer", icon: Sparkles, href: "/ceo/ai-writer", badge: "AI", section: "ai-writer" },
+      { label: "Reviews", icon: Star, href: "/ceo/reviews", badge: "NEW", section: "reviews" },
+    ],
+  },
+  {
+    title: "Content & SEO",
     icon: FileText,
     items: [
       { label: "Blog Posts", icon: FileText, href: "/ceo/blog", section: "blog" },
       { label: "Blog Categories", icon: FolderTree, href: "/ceo/blog-categories", section: "blog-categories" },
       { label: "Media Library", icon: ImageIcon, href: "/ceo/media", badge: "NEW", section: "media" },
-      { label: "AI Writer", icon: Sparkles, href: "/ceo/ai-writer", badge: "AI", section: "ai-writer" },
-      { label: "Email Campaigns", icon: Mail, href: "/ceo/campaigns", badge: "NEW", section: "campaigns" },
-      { label: "Reviews", icon: Star, href: "/ceo/reviews", badge: "NEW", section: "reviews" },
-      { label: "Testimonials", icon: Star, href: "/ceo/testimonials", section: "testimonials" },
-      { label: "Clients", icon: Building2, href: "/ceo/clients", section: "clients" },
-      { label: "Team", icon: UserCheck, href: "/ceo/team", section: "team" },
-      { label: "Careers", icon: Users, href: "/ceo/careers", section: "careers" },
       { label: "FAQ", icon: HelpCircle, href: "/ceo/faq", section: "faq" },
       { label: "Tech Stack", icon: Sparkles, href: "/ceo/tech-details", badge: "NEW", section: "tech-details" },
-    ],
-  },
-  {
-    title: "SEO & Ranking",
-    icon: Globe,
-    items: [
-      { label: "SEO Panel", icon: Search, href: "/ceo/seo-panel", badge: "HUB", section: "seo-panel" },
+      { label: "SEO Manager", icon: Search, href: "/ceo/seo-panel", badge: "HUB", section: "seo-panel" },
       { label: "Ranking Setup (All Google)", icon: Globe, href: "/ceo/ranking-setup", badge: "NEW", section: "ranking-setup" },
       { label: "SEO Tools & Reports", icon: BarChart3, href: "/ceo/seo-tools", badge: "NEW", section: "seo-tools" },
       { label: "Sitemap & Robots", icon: Globe, href: "/ceo/sitemap", badge: "NEW", section: "sitemap" },
@@ -108,24 +114,30 @@ const navGroups: NavGroup[] = [
     ],
   },
   {
+    title: "Reports",
+    icon: BarChart3,
+    items: [
+      { label: "Analytics", icon: BarChart3, href: "/ceo/analytics", badge: "NEW", section: "analytics" },
+      { label: "Reports", icon: TrendingUp, href: "/ceo/reports", badge: "NEW", section: "reports" },
+    ],
+  },
+  {
+    title: "AI Tools",
+    icon: Sparkles,
+    items: [
+      { label: "AI Support", icon: MessageSquare, href: "/ceo/ai-support", section: "ai-support" },
+      { label: "AI Providers", icon: Sparkles, href: "/ceo/ai-providers", badge: "NEW", section: "ai-providers" },
+    ],
+  },
+  {
     title: "System",
     icon: Settings,
     items: [
-      { label: "AI Support", icon: MessageSquare, href: "/ceo/ai-support", section: "ai-support" },
-      { label: "Admin Users", icon: Shield, href: "/ceo/users", section: "users" },
-      { label: "Staff Management", icon: Users, href: "/ceo/staff-management", badge: "NEW", section: "staff-management" },
-      { label: "Website CMS", icon: LayoutTemplate, href: "/ceo/website-cms", badge: "NEW", section: "website-cms" },
-      { label: "Footer Editor", icon: LayoutTemplate, href: "/ceo/footer", section: "footer" },
-      { label: "Hero Banners", icon: LayoutTemplate, href: "/ceo/banners", badge: "NEW", section: "banners" },
-      { label: "Welcome Popups", icon: ImageIcon, href: "/ceo/welcome-popups", badge: "NEW", section: "welcome-popups" },
       { label: "Site Settings", icon: Settings, href: "/ceo/settings", section: "settings" },
       { label: "Backup & Restore", icon: Database, href: "/ceo/backup", badge: "NEW", section: "backup" },
       { label: "Security Audit", icon: Shield, href: "/ceo/security-audit", badge: "NEW", section: "security-audit" },
       { label: "Advanced Tools", icon: Sparkles, href: "/ceo/advanced-tools", badge: "NEW", section: "advanced-tools" },
-      { label: "Offers & Giveaways", icon: Gift, href: "/ceo/offers", badge: "NEW", section: "offers" },
       { label: "Copy Protection", icon: Shield, href: "/ceo/copy-protection", badge: "NEW", section: "copy-protection" },
-      { label: "AI Providers", icon: Sparkles, href: "/ceo/ai-providers", badge: "NEW", section: "ai-providers" },
-
     ],
   },
 ];
@@ -360,9 +372,9 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                 <span className="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-accent ring-2 ring-background animate-pulse" />
               </div>
               <div className="leading-tight">
-                <p className="text-foreground font-bold text-[15px] font-syne tracking-tight">SHAHED IT</p>
+                <p className="text-foreground font-bold text-[15px] font-syne tracking-tight">SHAHED STORE</p>
                 <p className="text-[10px] text-primary/90 mt-0.5 flex items-center gap-1 font-medium uppercase tracking-[0.12em]">
-                  <Crown size={9} className="text-accent" /> Admin Suite
+                  <Crown size={9} className="text-accent" /> Store Admin
                 </p>
               </div>
             </motion.div>
@@ -575,7 +587,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   );
 
   return (
-    <div data-admin-layout className="relative h-screen overflow-hidden font-inter text-foreground bg-[#0a0514]">
+    <div data-admin-layout className="admin-reference-theme relative h-screen overflow-hidden font-inter text-foreground bg-background">
       {/* Ambient background — matches the public site (SiteBackground) */}
       <div
         aria-hidden
@@ -778,6 +790,11 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           {/* Content */}
           <main ref={mainScrollRef as React.RefObject<HTMLElement>} className="flex-1 overflow-y-auto">
             <div className="p-4 md:p-7 max-w-[1600px] mx-auto">
+              <AdminHeroHeader
+                title={currentTitle}
+                section={currentGroup?.title ?? "Overview"}
+                Icon={currentItem?.icon ?? LayoutDashboard}
+              />
               {children}
             </div>
           </main>

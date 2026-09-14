@@ -97,7 +97,7 @@ const AdminLogin = () => {
               <BrandMark size={96} glow="strong" />
             </motion.div>
             <h1 className="text-2xl font-bold text-white mb-1 tracking-tight">Admin Panel</h1>
-            <p className="text-white/60 text-sm">Shahed IT — Secure Login</p>
+            <p className="text-white/60 text-sm">Shahed Store — Secure Admin Login</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -109,7 +109,7 @@ const AdminLogin = () => {
                   type="email"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
-                  placeholder="admin@shahedit.com"
+                  placeholder="admin@shahedstore.com"
                   className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/30 focus-visible:ring-purple-400 h-12 rounded-xl"
                 />
               </div>

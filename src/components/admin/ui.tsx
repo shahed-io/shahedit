@@ -19,13 +19,13 @@ export const AdminPageHeader = ({
     initial={{ opacity: 0, y: -8 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.4, ease: "easeOut" }}
-    className="relative mb-8 overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/[0.08] via-white/[0.02] to-accent/[0.06] backdrop-blur-xl shadow-[0_12px_40px_-16px_hsl(var(--primary)/0.45)]"
+    className="relative mb-8 overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-r from-card via-background to-accent/15 backdrop-blur-xl shadow-[0_12px_40px_-16px_hsl(var(--primary)/0.45)] text-foreground"
   >
     {/* ambient glow */}
     <div className="pointer-events-none absolute -right-24 -top-24 w-72 h-72 rounded-full bg-primary/25 blur-[110px]" />
     <div className="pointer-events-none absolute -left-20 -bottom-24 w-64 h-64 rounded-full bg-accent/20 blur-[110px]" />
     {/* hairline top sheen */}
-    <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
+    <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/70 to-transparent" />
 
     <div className="relative flex flex-col md:flex-row md:items-center md:justify-between gap-5 p-6 md:p-7">
       <div className="flex items-start gap-4">
@@ -33,18 +33,18 @@ export const AdminPageHeader = ({
           <motion.div
             whileHover={{ rotate: 6, scale: 1.05 }}
             transition={{ type: "spring", stiffness: 300, damping: 18 }}
-            className="relative w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/40 via-primary/15 to-accent/20 border border-primary/40 flex items-center justify-center shadow-[0_10px_30px_-10px_hsl(var(--primary)/0.7),inset_0_1px_0_hsl(var(--primary)/0.4)]"
+            className="relative w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-fuchsia-500 border border-violet-300 flex items-center justify-center shadow-[0_10px_30px_-10px_rgba(124,58,237,0.55),inset_0_1px_0_rgba(255,255,255,0.45)]"
           >
-            <Icon className="w-6 h-6 text-primary drop-shadow-[0_0_8px_hsl(var(--primary)/0.7)]" />
+            <Icon className="w-6 h-6 text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]" />
             <span className="absolute -inset-px rounded-2xl ring-1 ring-inset ring-white/10" />
           </motion.div>
         )}
         <div className="min-w-0">
-          <h1 className="text-2xl md:text-3xl font-extrabold font-syne tracking-tight bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+          <h1 className="text-2xl md:text-3xl font-extrabold font-syne tracking-tight bg-gradient-to-r from-violet-700 via-fuchsia-500 to-violet-600 bg-clip-text text-transparent">
             {title}
           </h1>
           {subtitle && (
-            <p className="text-sm text-muted-foreground mt-1.5 font-medium">{subtitle}</p>
+            <p className="text-sm text-slate-500 mt-1.5 font-medium">{subtitle}</p>
           )}
         </div>
       </div>
@@ -60,13 +60,13 @@ export const GlassCard = ({
     whileHover={hover ? { y: -3 } : undefined}
     transition={{ type: "spring", stiffness: 300, damping: 22 }}
     className={cn(
-      "group relative rounded-2xl border border-primary/15 bg-gradient-to-br from-white/[0.05] to-white/[0.01] backdrop-blur-xl shadow-[0_8px_32px_-12px_hsl(var(--primary)/0.25)] overflow-hidden",
-      hover && "transition-shadow hover:border-primary/30 hover:shadow-[0_18px_48px_-16px_hsl(var(--primary)/0.5)]",
+      "group relative rounded-2xl border border-primary/15 bg-card/80 backdrop-blur-xl shadow-[0_8px_24px_-14px_hsl(var(--primary)/0.45)] overflow-hidden text-foreground",
+      hover && "transition-shadow hover:border-primary/40 hover:shadow-[0_18px_40px_-16px_hsl(var(--primary)/0.45)]",
       className
     )}
   >
     {/* inner top highlight */}
-    <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent opacity-60" />
+    <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-violet-400/60 to-transparent opacity-70" />
     {children}
   </motion.div>
 );
@@ -98,7 +98,7 @@ export const KpiCard = ({
       <div className="relative flex items-start justify-between">
         <div className="min-w-0">
           <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-bold">{label}</p>
-          <p className="text-3xl font-extrabold font-syne mt-2 tracking-tight bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">
+          <p className="text-3xl font-extrabold font-syne mt-2 tracking-tight text-foreground">
             {value}
           </p>
           {delta && (
