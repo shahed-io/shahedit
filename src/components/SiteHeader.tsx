@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import logoFallback from "@/assets/shahed-it-mark-sm.webp";
 import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable/index";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -59,6 +60,7 @@ const SiteHeader = () => {
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const servicesTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const scrolledRef = useRef(false);
   const drawerRef = useRef<HTMLElement | null>(null);
@@ -68,6 +70,19 @@ const SiteHeader = () => {
 
   const isActive = (href: string) => location.pathname === href;
   const activeKey = navLinks.find(l => isActive(l.href))?.label || (servicesOpen ? "Services" : null);
+
+  const handleGoogleSignIn = async () => {
+    setGoogleLoading(true);
+    try {
+      const result = await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.origin,
+      });
+      if (result.error) throw result.error;
+    } catch (err) {
+      // Error is surfaced; button remains usable
+    }
+    setGoogleLoading(false);
+  };
 
   useEffect(() => {
     let ticking = false;
@@ -521,20 +536,46 @@ const SiteHeader = () => {
                 </motion.button>
               </>
             ) : (
-              <Link to="/login">
+              <>
                 <motion.button
+                  onClick={handleGoogleSignIn}
+                  disabled={googleLoading}
                   whileHover={{ y: -1, scale: 1.02 }}
                   whileTap={{ scale: 0.97 }}
-                  className="flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-semibold text-white"
+                  className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-semibold text-white/90"
                   style={{
                     background: "rgba(255, 255, 255, 0.05)",
                     border: "1px solid rgba(255, 255, 255, 0.12)",
                     boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)",
                   }}
                 >
-                  <LogIn size={14} /> Login
+                  {googleLoading ? (
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    <svg width="16" height="16" viewBox="0 0 48 48" className="shrink-0">
+                      <path fill="#4285F4" d="M47.5 24.5c0-1.6-.1-3.1-.4-4.6H24v8.7h13.2c-.6 3-2.3 5.5-4.9 7.2v6h7.9c4.6-4.2 7.3-10.5 7.3-17.3z" />
+                      <path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.9-6c-2.1 1.4-4.9 2.2-8 2.2-6.1 0-11.3-4.1-13.2-9.7H2.7v6.2C6.7 42.9 14.8 48 24 48z" />
+                      <path fill="#FBBC05" d="M10.8 28.7c-.5-1.4-.7-2.9-.7-4.7s.3-3.3.7-4.7V13H2.7C1 16.3 0 20 0 24s1 7.7 2.7 11l8.1-6.3z" />
+                      <path fill="#EA4335" d="M24 9.5c3.4 0 6.5 1.2 8.9 3.5l6.7-6.7C35.9 2.2 30.5 0 24 0 14.8 0 6.7 5.1 2.7 13l8.1 6.3C12.7 13.6 17.9 9.5 24 9.5z" />
+                    </svg>
+                  )}
+                  <span className="hidden md:inline">Google</span>
                 </motion.button>
-              </Link>
+                <Link to="/login">
+                  <motion.button
+                    whileHover={{ y: -1, scale: 1.02 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-semibold text-white"
+                    style={{
+                      background: "rgba(255, 255, 255, 0.05)",
+                      border: "1px solid rgba(255, 255, 255, 0.12)",
+                      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)",
+                    }}
+                  >
+                    <LogIn size={14} /> Login
+                  </motion.button>
+                </Link>
+              </>
             )}
 
             {/* CTA — Premium Quote button */}
