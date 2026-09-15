@@ -123,7 +123,7 @@ const BlogPostPage = () => {
 
               {post.featured_image && (
                 <div className="rounded-2xl overflow-hidden mb-8 border border-white/10">
-                  <img src={post.featured_image} alt={post.title} className="w-full h-auto object-cover" />
+                  <img src={post.featured_image} alt={post.title} loading="lazy" decoding="async" className="w-full h-auto object-cover" />
                 </div>
               )}
 
@@ -152,7 +152,7 @@ const BlogPostPage = () => {
                   <Link key={r.id} to={`/blog/${r.slug}`} className="group rounded-xl overflow-hidden border border-white/10 bg-white/5 hover:border-primary/40 transition-all">
                     <div className="h-32 bg-gradient-to-br from-primary/15 to-accent/10 overflow-hidden">
                       {r.featured_image
-                        ? <img src={r.featured_image} alt={r.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                        ? <img src={r.featured_image} alt={r.title} loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
                         : <div className="w-full h-full flex items-center justify-center text-4xl">📝</div>}
                     </div>
                     <div className="p-4">

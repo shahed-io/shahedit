@@ -366,10 +366,16 @@ const HeroBanner = () => {
   }, [index, isMobile, paused, slides.length, autoplayMs]);
 
   const bgStyle = useMemo(
-    () => current.background_image_url
-      ? { backgroundImage: `linear-gradient(rgba(10,5,20,0.78), rgba(10,5,20,0.92)), url(${current.background_image_url})`, backgroundSize: "cover", backgroundPosition: "center" }
-      : undefined,
-    [current.background_image_url]
+    () => {
+      if (isMobile) {
+        return { background: "linear-gradient(180deg, hsl(265, 50%, 5%) 0%, hsl(268, 50%, 4%) 100%)" };
+      }
+
+      return current.background_image_url
+        ? { backgroundImage: `linear-gradient(rgba(10,5,20,0.78), rgba(10,5,20,0.92)), url(${current.background_image_url})`, backgroundSize: "cover", backgroundPosition: "center" }
+        : undefined;
+    },
+    [current.background_image_url, isMobile]
   );
 
   return (
@@ -381,14 +387,14 @@ const HeroBanner = () => {
     >
       {/* Static mesh background — animations are CPU/GPU heavy on mobile */}
       <div
-        className="absolute inset-0 opacity-60 pointer-events-none"
+        className={`absolute inset-0 opacity-60 pointer-events-none ${isMobile ? "hidden" : ""}`}
         style={{
           background:
             "radial-gradient(at 15% 10%, hsla(270,92%,55%,0.45) 0px, transparent 50%), radial-gradient(at 85% 90%, hsla(320,90%,55%,0.40) 0px, transparent 55%)",
         }}
       />
       <div
-        className="absolute inset-0 opacity-30 pointer-events-none hidden md:block"
+        className={`absolute inset-0 opacity-30 pointer-events-none ${isMobile ? "hidden" : "hidden md:block"}`}
         style={{
           backgroundImage:
             "radial-gradient(circle at 2px 2px, rgba(255,255,255,0.06) 1px, transparent 0)",

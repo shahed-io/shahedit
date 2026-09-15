@@ -1,9 +1,9 @@
+@import url('https://fonts.cdnfonts.com/css/nasalization');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Syne:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://fonts.cdnfonts.com/css/nasalization');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Syne:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
 
 @layer base {
   :root {
@@ -272,17 +272,54 @@
     contain: strict;
   }
 
-  /* Mobile: smaller dot grid + repositioned glows (no fixed-attachment issues
-     because the pseudo-element is itself position:fixed). */
+  /* Mobile: simplify the fixed backdrop and disable motion-heavy effects.
+     This reduces paint/composite work on low-end devices without changing the
+     desktop experience. */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
   @media (max-width: 768px) {
+    html { scroll-behavior: auto; }
+
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+
+    .glass-card,
+    .glass-card-vivid,
+    .glossy-card,
+    .premium-card,
+    .product-card-premium,
+    [class*="backdrop-blur"] {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      box-shadow: none !important;
+    }
+
+    .glossy-card::before,
+    .glossy-card::after,
+    .premium-card::after,
+    .shimmer::after {
+      display: none !important;
+    }
+
     body::before {
       background-image:
-        radial-gradient(ellipse 80% 35% at 0% 0%, hsla(285, 95%, 65%, calc(0.32 * var(--glow-mult))) 0%, transparent 70%),
-        radial-gradient(ellipse 70% 40% at 100% 18%, hsla(320, 90%, 55%, calc(0.24 * var(--glow-mult))) 0%, transparent 70%),
-        radial-gradient(ellipse 90% 30% at 50% 100%, hsla(280, 95%, 60%, calc(0.18 * var(--glow-mult))) 0%, transparent 70%),
-        radial-gradient(circle, hsla(280, 100%, 75%, var(--dot-opacity)) 1px, transparent 1.5px),
-        linear-gradient(180deg, hsl(265, 50%, 5%) 0%, hsl(268, 50%, 4%) 50%, hsl(265, 50%, 5%) 100%);
-      background-size: 100% 60vh, 100% 60vh, 100% 60vh, 18px 18px, 100% 100%;
+        radial-gradient(ellipse 80% 25% at 0% 0%, hsla(285, 95%, 65%, calc(0.22 * var(--glow-mult))) 0%, transparent 70%),
+        radial-gradient(ellipse 75% 30% at 100% 18%, hsla(320, 90%, 55%, calc(0.18 * var(--glow-mult))) 0%, transparent 70%),
+        linear-gradient(180deg, hsl(265, 50%, 5%) 0%, hsl(268, 50%, 4%) 100%);
+      background-size: 100% 45vh, 100% 45vh, 100% 100%;
+      opacity: 0.9;
     }
   }
 

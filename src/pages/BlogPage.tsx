@@ -63,7 +63,7 @@ const BlogPage = () => {
                   <Link to={`/blog/${post.slug}`} className="block">
                     <div className="h-48 bg-gradient-to-br from-primary/10 to-accent/10 overflow-hidden">
                       {post.featured_image
-                        ? <img src={post.featured_image} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        ? <img src={post.featured_image} alt={post.title} loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                         : <div className="w-full h-full flex items-center justify-center text-5xl">📝</div>
                       }
                     </div>
