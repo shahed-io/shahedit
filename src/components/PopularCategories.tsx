@@ -3,95 +3,74 @@ import { Link } from "react-router-dom";
 import { Code2, Smartphone, Palette, BarChart3, Cloud, ShieldCheck } from "lucide-react";
 
 const categories = [
-  { name: "Web Development", icon: Code2, href: "/services/web-development", color: "hsl(270,92%,65%)" },
-  { name: "Website Maintenance", icon: Smartphone, href: "/services/website-maintenance", color: "hsl(217,89%,61%)" },
-  { name: "Graphics Design", icon: Palette, href: "/services/graphics-design", color: "hsl(315,80%,65%)" },
-  { name: "Digital Marketing", icon: BarChart3, href: "/services/digital-marketing", color: "hsl(320,90%,55%)" },
-  { name: "Facebook Services", icon: Cloud, href: "/services/facebook-services", color: "hsl(45,93%,58%)" },
-  { name: "Business Solutions", icon: ShieldCheck, href: "/services/business-solutions", color: "hsl(160,80%,55%)" },
+  { name: "Web Development", icon: Code2, href: "/services/web-development", color: "#8b5cf6", count: 18 },
+  { name: "Website Maintenance", icon: Smartphone, href: "/services/website-maintenance", color: "#60a5fa", count: 12 },
+  { name: "Graphics Design", icon: Palette, href: "/services/graphics-design", color: "#f472b6", count: 2 },
+  { name: "Digital Marketing", icon: BarChart3, href: "/services/digital-marketing", color: "#34d399", count: 8 },
+  { name: "Facebook Services", icon: Cloud, href: "/services/facebook-services", color: "#f59e0b", count: 1 },
+  { name: "Business Solutions", icon: ShieldCheck, href: "/services/business-solutions", color: "#2dd4bf", count: 1 },
 ];
 
 const PopularCategories = () => {
   return (
-    <section className="py-24 relative overflow-hidden">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse, hsl(270,92%,65%) 0%, transparent 70%)', opacity: 0.10 }} />
+    <section className="relative py-24 overflow-hidden">
+      <div className="absolute inset-x-0 top-0 h-[420px] bg-[radial-gradient(circle_at_center,_rgba(168,85,247,0.18),_transparent_65%)]" />
 
-      <div className="container mx-auto px-4 relative">
+      <div className="container relative mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="mb-10 text-center"
         >
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-foreground mt-2 tracking-tight">
+          <p className="text-xs font-semibold uppercase tracking-[0.32em] text-violet-200/80">
+            Popular Solutions
+          </p>
+          <h2 className="mt-4 text-4xl font-black tracking-tight text-white md:text-5xl">
             Explore Our <span className="gradient-text">Categories</span>
           </h2>
-          <p className="mt-5 text-base md:text-lg text-foreground/60 max-w-2xl mx-auto leading-relaxed">
-            World-class digital solutions crafted to elevate your brand and accelerate business growth.
-          </p>
-          <div className="mt-6 mx-auto w-24 h-[3px] rounded-full" style={{ background: 'linear-gradient(90deg, transparent, hsl(270,92%,65%), hsl(320,90%,55%), transparent)' }} />
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="premium-category-shell mx-auto max-w-3xl"
+        >
           {categories.map((cat, i) => (
             <motion.div
               key={cat.name}
-              initial={{ opacity: 0, y: 24, scale: 0.9 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              initial={{ opacity: 0, x: -16 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.07, type: "spring", stiffness: 140 }}
-              whileHover={{ y: -8 }}
-              whileTap={{ scale: 0.94 }}
+              transition={{ delay: i * 0.06 }}
             >
               <Link
                 to={cat.href}
                 aria-label={`Explore ${cat.name}`}
                 title={cat.name}
-                className="group flex flex-col items-center justify-center cursor-pointer relative py-6"
+                className="premium-category-item group"
               >
-                {/* Ambient glow */}
-                <div
-                  className="absolute inset-0 rounded-full blur-2xl opacity-0 group-hover:opacity-60 transition-opacity duration-500 pointer-events-none"
-                  style={{ background: `radial-gradient(circle, ${cat.color} 0%, transparent 65%)` }}
-                />
+                <div className="premium-category-main">
+                  <div
+                    className="premium-category-icon"
+                    style={{
+                      background: `linear-gradient(135deg, ${cat.color}22, ${cat.color}0d)`,
+                      borderColor: `${cat.color}66`,
+                      boxShadow: `inset 0 1px 0 rgba(255,255,255,0.18), 0 0 24px ${cat.color}25`,
+                    }}
+                  >
+                    <cat.icon size={18} strokeWidth={2.1} style={{ color: cat.color }} />
+                  </div>
 
-                {/* Icon orb */}
-                <motion.div
-                  whileHover={{ rotate: [0, -6, 6, 0], scale: 1.08 }}
-                  transition={{ duration: 0.6 }}
-                  className="relative w-24 h-24 md:w-28 md:h-28 rounded-full flex items-center justify-center"
-                  style={{
-                    background: `radial-gradient(circle at 30% 30%, ${cat.color}25, rgba(10,10,20,0.55) 70%)`,
-                    border: `1px solid ${cat.color}55`,
-                    boxShadow: `0 0 32px ${cat.color}30, inset 0 1px 0 ${cat.color}40, inset 0 -20px 40px rgba(0,0,0,0.4)`,
-                    backdropFilter: 'blur(10px)',
-                  }}
-                >
+                  <span className="premium-category-name">{cat.name}</span>
+                </div>
 
-
-                  <cat.icon
-                    size={44}
-                    strokeWidth={1.5}
-                    style={{ color: cat.color, filter: `drop-shadow(0 0 12px ${cat.color}90)` }}
-                  />
-                </motion.div>
-
-                {/* Minimal label */}
-                <h3
-                  className="mt-5 text-xs md:text-sm font-semibold uppercase tracking-[0.18em] text-center transition-colors duration-300"
-                  style={{ color: 'rgba(255,255,255,0.7)' }}
-                >
-                  {cat.name}
-                </h3>
-                <div
-                  className="mt-2 h-[2px] w-0 group-hover:w-10 transition-all duration-500 rounded-full"
-                  style={{ background: `linear-gradient(90deg, transparent, ${cat.color}, transparent)` }}
-                />
+                <span className="premium-category-count">{cat.count}</span>
               </Link>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

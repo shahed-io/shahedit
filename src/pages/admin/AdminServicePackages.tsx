@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { syncServiceCategoriesWithAdminCatalog } from "@/hooks/useProductMgmt";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -121,6 +122,13 @@ export default function AdminServicePackages() {
       return data as ServicePackage[];
     },
   });
+
+  useEffect(() => {
+    syncServiceCategoriesWithAdminCatalog().catch((error: any) => {
+      console.warn("Service category sync warning:", error);
+      toast.warning(error?.message ?? "Service category sync did not complete");
+    });
+  }, []);
 
   const upsertMutation = useMutation({
     mutationFn: async ({ pkg, serviceId }: { pkg: Partial<ServicePackage>; serviceId: string }) => {

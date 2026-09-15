@@ -399,6 +399,101 @@
     color: hsl(var(--product-card-accent));
     background: hsl(var(--product-card-image));
   }
+
+  .premium-category-shell {
+    display: grid;
+    gap: 0.9rem;
+    padding: 0.5rem;
+  }
+
+  .premium-category-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.95rem 1rem;
+    color: rgba(255,255,255,0.92);
+    background: linear-gradient(135deg, rgba(20, 14, 32, 0.92), rgba(16, 23, 40, 0.9));
+    border: 1px solid rgba(175, 156, 255, 0.18);
+    border-radius: 1.15rem;
+    box-shadow: 0 12px 22px rgba(10, 10, 18, 0.26), inset 0 1px 0 rgba(255,255,255,0.08);
+    transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+  }
+
+  .premium-category-item:hover {
+    transform: translateY(-1px);
+    border-color: rgba(175, 156, 255, 0.36);
+    box-shadow: 0 18px 28px rgba(112, 79, 202, 0.2), inset 0 1px 0 rgba(255,255,255,0.12);
+  }
+
+  .premium-category-main {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .premium-category-icon {
+    display: grid;
+    place-items: center;
+    width: 2.9rem;
+    height: 2.9rem;
+    flex-shrink: 0;
+    border-radius: 0.9rem;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.04);
+  }
+
+  .premium-category-name {
+    min-width: 0;
+    font-size: 0.96rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: rgba(255,255,255,0.94);
+    line-height: 1.3;
+  }
+
+  .premium-category-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.25rem;
+    height: 2.1rem;
+    padding: 0 0.7rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(167, 139, 250, 0.34);
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.28), rgba(236, 72, 153, 0.16));
+    color: #f5e8ff;
+    font-size: 0.76rem;
+    font-weight: 800;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
+  }
+
+  @media (max-width: 640px) {
+    .premium-category-shell {
+      gap: 0.7rem;
+      padding: 0.2rem 0;
+    }
+
+    .premium-category-item {
+      padding: 0.8rem 0.85rem;
+    }
+
+    .premium-category-main {
+      gap: 0.7rem;
+    }
+
+    .premium-category-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 0.8rem;
+    }
+
+    .premium-category-name {
+      font-size: 0.9rem;
+    }
+  }
 }
 
 @layer utilities {

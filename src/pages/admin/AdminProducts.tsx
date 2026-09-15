@@ -164,10 +164,21 @@ const AdminProducts = () => {
       meta_title: form.meta_title || null,
       meta_description: form.meta_description || null,
     };
+
     const q = editingId
       ? supabase.from("products" as any).update(payload).eq("id", editingId)
       : supabase.from("products" as any).insert(payload);
-    const { error } = await q;
+
+    let { error } = await q;
+
+    if (error && /gallery_urls.*(schema|column)|column.*gallery_urls/i.test(error.message)) {
+      delete payload.gallery_urls;
+      const fallbackQuery = editingId
+        ? supabase.from("products" as any).update(payload).eq("id", editingId)
+        : supabase.from("products" as any).insert(payload);
+      ({ error } = await fallbackQuery);
+    }
+
     setSaving(false);
     if (error) return toast.error(error.message);
     toast.success(editingId ? "Product updated" : "Product created");

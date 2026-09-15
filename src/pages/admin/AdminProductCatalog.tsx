@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Edit2, ImagePlus, Package, Plus, Search, Star, Trash2, Upload, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { syncServiceCategoriesWithAdminCatalog } from "@/hooks/useProductMgmt";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -42,6 +43,13 @@ export default function AdminProductCatalog() {
 
   const load = async () => {
     setLoading(true);
+    try {
+      await syncServiceCategoriesWithAdminCatalog();
+    } catch (error: any) {
+      console.warn("Catalog sync warning:", error);
+      toast.warning(error?.message ?? "Catalog sync did not complete");
+    }
+
     const [{ data: productRows, error: productError }, { data: categoryRows }, { data: serviceRows }] = await Promise.all([
       supabase.from("service_packages" as any).select("*").order("sort_order").order("created_at", { ascending: false }),
       supabase.from("product_categories").select("id,name,slug,icon").eq("is_active", true).order("sort_order"),
@@ -89,7 +97,8 @@ export default function AdminProductCatalog() {
     const category = categories.find(item => item.id === form.category_id);
     const service = services.find(item => item.slug === category?.slug);
     if (!form.category_id || !service) return toast.error("Select a category");
-    const payload = {
+
+    const payload: Record<string, any> = {
       title: form.title.trim(), slug: form.slug || slugify(form.title), short_description: form.short_description || null,
       description: form.description || null, price: form.price === null ? null : Number(form.price),
       original_price: form.original_price === null ? null : Number(form.original_price), currency: form.currency || "BDT",
@@ -101,10 +110,21 @@ export default function AdminProductCatalog() {
       meta_keywords: form.meta_keywords || null, canonical_url: form.canonical_url || null,
       gallery_urls: form.galleryText.split("\n").map(item => item.trim()).filter(Boolean),
     };
-    const query = editing
+
+    const mutation = editing
       ? supabase.from("service_packages" as any).update(payload).eq("id", editing.id)
       : supabase.from("service_packages" as any).insert(payload);
-    const { error } = await query;
+
+    let { error } = await mutation;
+
+    if (error && /gallery_urls.*(schema|column)|column.*gallery_urls/i.test(error.message)) {
+      delete payload.gallery_urls;
+      const fallbackQuery = editing
+        ? supabase.from("service_packages" as any).update(payload).eq("id", editing.id)
+        : supabase.from("service_packages" as any).insert(payload);
+      ({ error } = await fallbackQuery);
+    }
+
     if (error) return toast.error(error.message);
     toast.success(editing ? "Product updated" : "Product created");
     setOpen(false);

@@ -59,6 +59,89 @@ export const useDeleteCategory = () => {
   });
 };
 
+export const syncServiceCategoriesWithAdminCatalog = async () => {
+  const { data: services, error: serviceError } = await supabase
+    .from("services")
+    .select("id, slug, title, icon, image_url, sort_order")
+    .order("sort_order", { ascending: true });
+
+  if (serviceError) throw serviceError;
+
+  const serviceRows = (services ?? []).filter((service) => service.slug && service.title);
+  if (!serviceRows.length) return { created: 0, updated: 0, synced: 0 };
+
+  let created = 0;
+  let updated = 0;
+
+  for (const service of serviceRows) {
+    const { data: existingCategory, error: existingError } = await supabase
+      .from("product_categories")
+      .select("id, name, slug, icon, description, image_url, sort_order, is_active")
+      .eq("slug", service.slug)
+      .maybeSingle();
+
+    if (existingError) throw existingError;
+
+    const payload = {
+      name: service.title,
+      slug: service.slug,
+      description: `${service.title} service catalog`,
+      icon: service.icon ?? null,
+      image_url: service.image_url ?? null,
+      is_active: true,
+      sort_order: service.sort_order ?? 0,
+    };
+
+    if (existingCategory) {
+      const needsUpdate =
+        existingCategory.name !== payload.name ||
+        existingCategory.icon !== payload.icon ||
+        existingCategory.description !== payload.description ||
+        existingCategory.image_url !== payload.image_url ||
+        existingCategory.sort_order !== payload.sort_order ||
+        existingCategory.is_active !== payload.is_active;
+
+      if (needsUpdate) {
+        const { error } = await supabase.from("product_categories").update(payload).eq("id", existingCategory.id);
+        if (error) throw error;
+        updated += 1;
+      }
+    } else {
+      const { error } = await supabase.from("product_categories").insert(payload);
+      if (error) throw error;
+      created += 1;
+    }
+  }
+
+  const { data: categoryRows, error: categoryError } = await supabase
+    .from("product_categories")
+    .select("id, slug")
+    .eq("is_active", true);
+
+  if (categoryError) throw categoryError;
+
+  const categoryMap = new Map((categoryRows ?? []).map((category) => [category.slug, category.id]));
+
+  const { data: packageRows, error: packageError } = await supabase
+    .from("service_packages")
+    .select("id, service_id, category_id");
+
+  if (packageError) throw packageError;
+
+  for (const pkg of packageRows ?? []) {
+    const matchingService = serviceRows.find((service) => service.id === pkg.service_id);
+    if (!matchingService) continue;
+
+    const targetCategoryId = categoryMap.get(matchingService.slug);
+    if (!targetCategoryId || pkg.category_id === targetCategoryId) continue;
+
+    const { error } = await supabase.from("service_packages").update({ category_id: targetCategoryId }).eq("id", pkg.id);
+    if (error) throw error;
+  }
+
+  return { created, updated, synced: created + updated };
+};
+
 /* ---------- Brands ---------- */
 export const useProductBrands = () =>
   useQuery({
