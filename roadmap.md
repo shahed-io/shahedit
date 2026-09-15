@@ -1,0 +1,1 @@
+- [ ] Match product cards to the second screenshot, preserving full product images and button layout
