@@ -1,5 +1,4 @@
-@import url('https://fonts.cdnfonts.com/css/nasalization');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Syne:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -238,7 +237,7 @@
 
   body {
     @apply text-foreground antialiased;
-    font-family: 'Inter', 'Hind Siliguri', 'Noto Sans Bengali', 'SolaimanLipi', 'Kalpurush', system-ui, sans-serif;
+    font-family: 'Manrope', 'Inter', 'Hind Siliguri', 'Noto Sans Bengali', 'SolaimanLipi', 'Kalpurush', system-ui, sans-serif;
     background-color: hsl(265, 50%, 5%);
     min-height: 100vh;
     position: relative;
@@ -326,8 +325,8 @@
 
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Syne', 'Noto Sans Bengali', 'Hind Siliguri', 'SolaimanLipi', system-ui, sans-serif;
-    letter-spacing: -0.01em;
+    font-family: 'Sora', 'Manrope', 'Noto Sans Bengali', 'Hind Siliguri', 'SolaimanLipi', system-ui, sans-serif;
+    letter-spacing: -0.02em;
   }
 }
 

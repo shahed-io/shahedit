@@ -637,7 +637,7 @@ const DetailsModal = ({ pkg, onClose, onPay, c }: {
             <img src={pkg.image_url} alt={pkg.title} className="w-full h-full object-cover" />
           ) : (
             <div className="text-8xl font-black select-none opacity-10"
-              style={{ color: c.color, fontFamily: "'Syne', sans-serif" }}>
+              style={{ color: c.color, fontFamily: "'Sora', 'Manrope', sans-serif" }}>
               {pkg.title.charAt(0)}
             </div>
           )}

@@ -167,7 +167,7 @@ const SlideContent = ({ slide }: { slide: HeroSlide }) => {
           <motion.h1
             initial={isMobile ? false : { opacity: 0, y: 24 }} animate={isMobile ? undefined : { opacity: 1, y: 0 }} transition={isMobile ? undefined : { duration: 0.6, delay: 0.1 }}
             className="text-[2.25rem] xs:text-5xl sm:text-6xl lg:text-7xl xl:text-[88px] font-extrabold leading-[1.02] sm:leading-[0.95] tracking-tight text-white break-words"
-            style={{ fontFamily: "'Syne', sans-serif" }}
+            style={{ fontFamily: "'Sora', 'Manrope', sans-serif" }}
           >
             {slide.headline}
             {slide.highlight && (
@@ -232,7 +232,7 @@ const SlideContent = ({ slide }: { slide: HeroSlide }) => {
                 initial={isMobile ? false : { opacity: 0, y: 10 }} animate={isMobile ? undefined : { opacity: 1, y: 0 }} transition={isMobile ? undefined : { delay: 0.55 + i * 0.06 }}
                 className="space-y-1 min-w-0"
               >
-                <div className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white truncate" style={{ fontFamily: "'Syne', sans-serif" }}>
+                <div className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white truncate" style={{ fontFamily: "'Sora', 'Manrope', sans-serif" }}>
                   {s.value}
                 </div>
                 <div className="text-[10px] md:text-xs uppercase tracking-wider text-white/40 font-medium truncate">{s.label}</div>
@@ -293,7 +293,7 @@ const SlideContent = ({ slide }: { slide: HeroSlide }) => {
                       <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" strokeWidth={2.2} />
                     </div>
                     <div className="min-w-0">
-                      <h3 className="font-bold text-sm sm:text-base md:text-lg text-white leading-tight truncate" style={{ fontFamily: "'Syne', sans-serif" }}>
+                      <h3 className="font-bold text-sm sm:text-base md:text-lg text-white leading-tight truncate" style={{ fontFamily: "'Sora', 'Manrope', sans-serif" }}>
                         {card.title}
                       </h3>
                       {card.subtitle && <p className="text-[11px] text-white/40 mt-0.5">{card.subtitle}</p>}

@@ -42,7 +42,7 @@ export default function ForgotPasswordPage() {
                   style={{ background: 'linear-gradient(135deg, hsl(270,92%,65%), hsl(320,90%,48%))' }}>
                   <Zap size={20} className="text-white" fill="white" />
                 </div>
-                <span className="text-2xl font-black" style={{ fontFamily: "'Syne', sans-serif" }}>
+                <span className="text-2xl font-black" style={{ fontFamily: "'Sora', 'Manrope', sans-serif" }}>
                   <span className="gradient-text">Shahed</span>
                   <span className="text-foreground"> IT</span>
                 </span>

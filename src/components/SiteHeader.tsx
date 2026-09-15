@@ -288,7 +288,7 @@ const SiteHeader = () => {
                 <span
                   className="text-[14px] sm:text-[17px] md:text-[21px] font-extrabold whitespace-nowrap uppercase"
                   style={{
-                    fontFamily: "'Nasalization', 'Orbitron', sans-serif",
+                    fontFamily: "'Sora', 'Manrope', sans-serif",
                     fontWeight: 800,
                     letterSpacing: "0.04em",
                     background: "linear-gradient(135deg, #ffffff 0%, #e9d5ff 35%, #c4b5fd 60%, #f0abfc 100%)",
@@ -305,7 +305,7 @@ const SiteHeader = () => {
                 <span
                   className="hidden xs:flex items-center font-semibold whitespace-nowrap"
                   style={{
-                    fontFamily: "'Nasalization', 'Orbitron', sans-serif",
+                    fontFamily: "'Sora', 'Manrope', sans-serif",
                     fontSize: "clamp(7px, 0.9vw, 9px)",
                     letterSpacing: "0.22em",
                     textTransform: "uppercase",
@@ -766,7 +766,7 @@ const SiteHeader = () => {
                     </div>
                   </div>
                   <div className="leading-tight">
-                    <div className="text-[14px] font-extrabold text-white" style={{ fontFamily: "'Syne', sans-serif" }}>
+                    <div className="text-[14px] font-extrabold text-white" style={{ fontFamily: "'Sora', 'Manrope', sans-serif" }}>
                       Shahed <span style={{ background: "linear-gradient(135deg, #818cf8, #f0abfc)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>IT</span>
                     </div>
                     <div className="text-[8px] uppercase tracking-[0.22em] font-bold" style={{ color: "#a78bfa" }}>

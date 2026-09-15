@@ -89,7 +89,7 @@ export default function LoginPage() {
               <Link to="/">
                 <div className="flex items-center gap-2.5">
                   <BrandMark size={44} glow="strong" />
-                  <span className="text-2xl font-black" style={{ fontFamily: "'Syne', sans-serif" }}>
+                  <span className="text-2xl font-black" style={{ fontFamily: "'Sora', 'Manrope', sans-serif" }}>
                     <span className="gradient-text">Shahed</span>
                     <span className="text-foreground"> IT</span>
                   </span>

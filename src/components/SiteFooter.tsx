@@ -181,7 +181,7 @@ const SiteFooter = () => {
                 <BrandMark size={52} glow="soft" />
               </div>
               <div className="flex flex-col items-start">
-                <div className="flex items-baseline gap-2 text-3xl sm:text-4xl font-black tracking-tight" style={{ fontFamily: "'Syne', sans-serif" }}>
+                <div className="flex items-baseline gap-2 text-3xl sm:text-4xl font-black tracking-tight" style={{ fontFamily: "'Sora', 'Manrope', sans-serif" }}>
                   <span className="bg-gradient-to-r from-primary via-fuchsia-400 to-accent bg-clip-text text-transparent">Shahed</span>
                   <span className="bg-gradient-to-r from-accent to-cyan-300 bg-clip-text text-transparent">IT</span>
                 </div>
