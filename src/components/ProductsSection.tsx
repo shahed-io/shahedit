@@ -12,6 +12,7 @@ import { StarRating } from "@/components/StarRating";
 import { useProductRating } from "@/hooks/useProductRatings";
 import { useRealtimeSync } from "@/hooks/useRealtimeSync";
 import { PREMIUM_PACKAGE_COPY } from "@/data/premiumPackageCopy";
+import { Button } from "@/components/ui/button";
 
 
 export interface ServicePackageRow {
@@ -792,13 +793,10 @@ const DetailsModal = ({ pkg, onClose, onPay, c }: {
 
 // ─── Product Card ────────────────────────────────────────────────────────────
 const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) => {
-  const c = cardColors[index % cardColors.length];
-  const navigate = useNavigate();
   const discount = pkg.original_price && pkg.price
     ? Math.round((1 - pkg.price / pkg.original_price) * 100)
     : null;
   const [showPayment, setShowPayment] = useState(false);
-  const [ripple, setRipple] = useState<{ x: number; y: number; id: number } | null>(null);
   const { stat: ratingStat } = useProductRating(pkg.id);
 
   const waMessage = encodeURIComponent(
@@ -818,208 +816,57 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
     }
   };
 
-  const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    setRipple({ x, y, id: Date.now() });
-    // Let the ripple flash briefly before navigating
-    setTimeout(() => navigate(`/product/${pkg.slug || pkg.id}`), 280);
-  };
-
   return (
     <>
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ delay: index * 0.1, type: "spring", stiffness: 120 }}
-        whileHover={{ 
-          y: -15, 
-          scale: 1.04,
-          boxShadow: `0 40px 80px -20px ${c.color}60, inset 0 2px 0 rgba(255,255,255,0.15)`,
-          transition: { type: "spring", stiffness: 350, damping: 20 }
-        }}
-        whileTap={{ scale: 0.94, rotate: -0.4, transition: { type: "spring", stiffness: 500, damping: 18 } }}
-        onClick={handleCardClick}
-        className="group relative rounded-[1.25rem] overflow-hidden cursor-pointer transition-all duration-500 flex flex-col bg-card border border-primary/20 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)]"
-        style={{
-          borderColor: `${c.color}35`,
-        }}
+        transition={{ delay: Math.min(index * 0.06, 0.3), duration: 0.4 }}
+        whileHover={{ y: -6 }}
+        className="product-card-premium group relative overflow-hidden flex flex-col"
       >
-        {/* Click ripple + flash */}
-        <AnimatePresence>
-          {ripple && (
-            <>
-              <motion.span
-                key={`r-${ripple.id}`}
-                initial={{ scale: 0, opacity: 0.55 }}
-                animate={{ scale: 6, opacity: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-                onAnimationComplete={() => setRipple(null)}
-                className="pointer-events-none absolute rounded-full z-20"
-                style={{
-                  left: ripple.x - 60,
-                  top: ripple.y - 60,
-                  width: 120,
-                  height: 120,
-                  background: `radial-gradient(circle, ${c.color}aa 0%, ${c.color}55 40%, transparent 70%)`,
-                  mixBlendMode: "screen",
-                }}
-              />
-              <motion.span
-                key={`f-${ripple.id}`}
-                initial={{ opacity: 0.35 }}
-                animate={{ opacity: 0 }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-                className="pointer-events-none absolute inset-0 z-20"
-                style={{
-                  background: `radial-gradient(circle at ${ripple.x}px ${ripple.y}px, ${c.color}55, transparent 60%)`,
-                  mixBlendMode: "screen",
-                }}
-              />
-            </>
-          )}
-        </AnimatePresence>
-
-        {/* Animated gradient glow border */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-          style={{
-            background: `conic-gradient(from 0deg, transparent 0deg, ${c.color}55 90deg, transparent 180deg, ${c.color}55 270deg, transparent 360deg)`,
-            mask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
-            WebkitMask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
-            WebkitMaskComposite: 'xor',
-            maskComposite: 'exclude',
-            padding: '1px',
-          }}
-        />
-
-        {/* Top visual area */}
-        <div className="relative aspect-square w-full flex items-center justify-center overflow-hidden rounded-t-[1.25rem]"
-          style={{
-            background: `radial-gradient(130% 100% at 50% 0%, ${c.color}35 0%, hsl(265,55%,6%) 55%, hsl(265,60%,4%) 100%)`,
-            boxShadow: `inset 0 2px 0 rgba(255,255,255,0.08), inset 0 -40px 80px -20px ${c.color}45`,
-          }}>
-          {/* Hairline gradient border */}
-          <div className="pointer-events-none absolute inset-0 rounded-t-3xl"
-            style={{ background: `linear-gradient(180deg, ${c.color}40, transparent 60%)`, mask: 'linear-gradient(#000,#000) content-box, linear-gradient(#000,#000)', WebkitMask: 'linear-gradient(#000,#000) content-box, linear-gradient(#000,#000)', WebkitMaskComposite: 'xor', maskComposite: 'exclude', padding: '1px' }} />
-          {/* Shine sweep on hover */}
-          <div className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-[1400ms] ease-out"
-            style={{ background: 'linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.10) 50%, transparent 70%)' }} />
-
+        <Link
+          to={`/product/${pkg.slug || pkg.id}`}
+          className="product-card-image relative aspect-square w-full flex items-center justify-center overflow-hidden"
+          aria-label={`${pkg.title} বিস্তারিত দেখুন`}
+        >
           {pkg.image_url ? (
-            <div className="absolute inset-3 rounded-[22px] overflow-hidden z-10"
-              style={{
-                border: `1px solid ${c.color}35`,
-                boxShadow: `0 20px 50px -20px ${c.color}40, inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -20px 40px -20px rgba(0,0,0,0.5)`,
-              }}>
-              <img
-                src={pkg.image_url}
-                alt={pkg.title}
-                className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-110 group-hover:rotate-1"
-                onError={e => { (e.target as HTMLImageElement).style.display = "none"; }}
-              />
-              {/* Top sheen */}
-              <div className="pointer-events-none absolute inset-0"
-                style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.08) 0%, transparent 35%)' }} />
-              {/* Bottom vignette for text safety */}
-              <div className="pointer-events-none absolute inset-0"
-                style={{ background: 'linear-gradient(0deg, rgba(10,6,24,0.55) 0%, transparent 45%)' }} />
-              {/* Corner glow */}
-              <div className="pointer-events-none absolute -inset-px rounded-[22px] opacity-60"
-                style={{ boxShadow: `inset 0 0 28px ${c.color}25` }} />
-            </div>
+            <img
+              src={pkg.image_url}
+              alt={pkg.title}
+              loading="lazy"
+              className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.025]"
+              onError={e => { (e.target as HTMLImageElement).style.display = "none"; }}
+            />
           ) : (
-            <>
-              <motion.div
-                className="text-7xl font-black select-none"
-                style={{ color: `${c.color}20`, fontFamily: "'Syne', sans-serif" }}
-              >
-                {pkg.title.charAt(0)}
-              </motion.div>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-12 h-12 rounded-2xl flex items-center justify-center"
-                  style={{ background: `${c.color}18`, border: `1px solid ${c.color}30`, boxShadow: `0 0 25px ${c.color}20` }}>
-                  <Zap size={20} style={{ color: c.color }} />
-                </div>
-              </div>
-            </>
+            <div className="product-card-placeholder flex h-16 w-16 items-center justify-center rounded-2xl">
+              <Zap size={26} />
+            </div>
           )}
-
           {discount && discount > 0 && (
-            <motion.div
-              initial={{ scale: 0, rotate: -20 }}
-              animate={{ scale: 1, rotate: -8 }}
-              transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
-              className="absolute top-3 left-3 px-3 py-1.5 text-xs font-black rounded-full text-white shadow-lg"
-              style={{
-                background: 'linear-gradient(135deg, hsl(0,84%,60%), hsl(15,90%,55%))',
-                boxShadow: '0 6px 20px -4px hsl(0 84% 60% / 0.6), inset 0 1px 0 rgba(255,255,255,0.3)',
-              }}
-            >
-              -{discount}% OFF
-            </motion.div>
+            <span className="product-card-discount absolute bottom-0 left-0 rounded-tr-xl px-3 py-1.5 text-xs font-black">
+              -{discount}%
+            </span>
           )}
-          {pkg.badge === "hot" && (
-            <div className="absolute top-3 right-3 px-2.5 py-1 text-xs font-black rounded-full text-white badge-hot">
-              🔥 HOT
-            </div>
+          {pkg.badge && (
+            <span className="product-card-badge absolute left-3 top-3 rounded-full px-2.5 py-1 text-[10px] font-extrabold uppercase">
+              {pkg.badge}
+            </span>
           )}
-          {pkg.badge === "new" && (
-            <div className="absolute top-3 right-3 px-2.5 py-1 text-xs font-black rounded-full badge-new">
-              ✨ NEW
-            </div>
-          )}
+        </Link>
 
-          {/* Info hover hint */}
-          <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-            <div className="flex items-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-lg"
-              style={{ background: 'rgba(0,0,0,0.55)', color: c.color, backdropFilter: 'blur(6px)' }}>
-              <Info size={9} /> বিবরণ দেখুন
-            </div>
-          </div>
+        <div className="flex flex-1 flex-col p-4 text-[hsl(var(--product-card-foreground))]">
+          <Link to={`/product/${pkg.slug || pkg.id}`} className="block">
+            <p className="mb-2 text-[10px] font-bold uppercase text-[hsl(var(--product-card-muted))]">
+              {pkg.services?.title ?? "Digital Service"}
+            </p>
+            <h3 className="mb-3 line-clamp-2 min-h-10 text-[15px] font-extrabold leading-snug transition-colors group-hover:text-[hsl(var(--product-card-accent))]">
+              {pkg.title}
+            </h3>
+          </Link>
 
-        </div>
-
-
-        {/* Glass shelf divider — separates image area from content with premium glow */}
-        <div className="relative h-[14px] -mt-px pointer-events-none">
-          {/* Frosted glass strip */}
-          <div
-            className="absolute inset-x-0 inset-y-0 backdrop-blur-md"
-            style={{
-              background: `linear-gradient(180deg, rgba(255,255,255,0.06) 0%, ${c.color}14 50%, rgba(0,0,0,0.35) 100%)`,
-              borderTop: `1px solid ${c.color}40`,
-              borderBottom: `1px solid rgba(255,255,255,0.04)`,
-              boxShadow: `0 1px 0 rgba(255,255,255,0.06) inset, 0 -8px 18px -8px ${c.color}55, 0 6px 14px -6px rgba(0,0,0,0.6)`,
-            }}
-          />
-          {/* Center accent glow line */}
-          <div
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[1.5px] w-2/3 rounded-full opacity-80 group-hover:opacity-100 group-hover:w-[85%] transition-all duration-500"
-            style={{
-              background: `linear-gradient(90deg, transparent 0%, ${c.color}cc 50%, transparent 100%)`,
-              boxShadow: `0 0 12px ${c.color}90`,
-            }}
-          />
-        </div>
-
-        {/* Content */}
-        <div className="p-4 flex flex-col flex-1 relative text-foreground">
-
-          <p className="text-[10px] text-muted-foreground mb-1.5 font-semibold uppercase tracking-wider"
-            style={{ color: `${c.color}CC` }}>
-            {pkg.services?.title ?? ""}
-          </p>
-          <h3 className="font-bold text-foreground text-[15px] mb-2 group-hover:text-primary transition-colors leading-snug line-clamp-2"
-            style={{ fontFamily: "'Syne', sans-serif" }}>
-            {pkg.title}
-          </h3>
-
-          <div className="mb-3">
+          <div className="mb-4 min-h-4">
             <StarRating
               average={ratingStat.average}
               count={ratingStat.count}
@@ -1028,77 +875,44 @@ const ProductCard = ({ pkg, index }: { pkg: ServicePackageRow; index: number }) 
             />
           </div>
 
-          {/* Premium price chip */}
-          <div className="mb-4 mt-auto rounded-[1.25rem] px-4 py-3 flex items-center justify-between gap-3"
-            style={{
-              background: `linear-gradient(135deg, ${c.color}25, ${c.color}08)`,
-              border: `1px solid ${c.color}35`,
-              boxShadow: `inset 0 1px 0 rgba(255,255,255,0.04), 0 10px 30px -10px ${c.color}20`,
-            }}>
-            <div className="flex flex-col">
-              {pkg.original_price && (
-                <span className="text-[10px] text-muted-foreground line-through leading-none">{formatPrice(pkg.original_price)}</span>
-              )}
-              {pkg.price ? (
-                <span className="text-xl font-black leading-tight" style={{ color: c.color, fontFamily: "'Syne', sans-serif" }}>
-                  {formatPrice(pkg.price)}
-                </span>
-              ) : (
-                <span className="text-sm font-semibold text-muted-foreground">Contact for pricing</span>
-              )}
-            </div>
-            {pkg.price && (
-              <div className="text-[9px] font-bold uppercase tracking-wider opacity-70 text-right leading-tight"
-                style={{ color: c.color }}>
-                সেরা<br />অফার
-              </div>
+          <div className="mb-4 mt-auto flex items-baseline gap-2">
+            {pkg.price ? (
+              <span className="text-2xl font-black text-[hsl(var(--product-card-accent))]">{formatPrice(pkg.price)}</span>
+            ) : (
+              <span className="text-sm font-bold">Contact for pricing</span>
+            )}
+            {pkg.original_price && (
+              <span className="text-xs text-[hsl(var(--product-card-muted))] line-through">{formatPrice(pkg.original_price)}</span>
             )}
           </div>
 
-          {/* Action buttons */}
-          <div className="grid grid-cols-2 gap-2" onClick={e => e.stopPropagation()}>
-            {/* Payment button */}
-            <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
+          <div className="grid grid-cols-2 gap-2">
+            <Button
               onClick={() => setShowPayment(true)}
-              className="col-span-2 py-3 rounded-full text-xs font-black text-white glossy-btn flex items-center justify-center gap-2 transition-all duration-300 relative overflow-hidden"
-              style={{
-                background: `linear-gradient(135deg, ${c.color}, ${c.color}CC)`,
-                boxShadow: `0 12px 28px -6px ${c.color}70, inset 0 1px 0 rgba(255,255,255,0.3)`,
-              }}
+              className="product-card-buy col-span-2 h-11 rounded-full text-xs font-extrabold"
             >
               <CreditCard size={13} /> Buy Now
-            </motion.button>
+            </Button>
 
-            {/* WhatsApp button */}
-            <motion.a
-              href={`https://wa.me/8801820060046?text=${waMessage}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.05, rotate: 3 }}
-              whileTap={{ scale: 0.95 }}
-              className="h-9 rounded-full flex items-center justify-center gap-1.5 transition-all text-[11px] font-semibold"
-              style={{
-                background: 'linear-gradient(135deg, rgba(37,211,102,0.3), rgba(37,211,102,0.15))',
-                border: '1px solid rgba(37,211,102,0.6)',
-                color: '#25D366',
-                boxShadow: '0 8px 20px -6px rgba(37,211,102,0.5)',
-              }}
-              title="WhatsApp-এ অর্ডার করুন"
-              aria-label="WhatsApp-এ অর্ডার করুন"
-            >
-              <MessageCircle size={14} aria-hidden="true" /> WhatsApp
-            </motion.a>
-            <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
+            <Button asChild variant="outline" className="product-card-whatsapp h-10 rounded-full text-[11px] font-bold">
+              <a
+                href={`https://wa.me/8801820060046?text=${waMessage}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="WhatsApp-এ অর্ডার করুন"
+                aria-label="WhatsApp-এ অর্ডার করুন"
+              >
+                <MessageCircle size={14} aria-hidden="true" /> WhatsApp
+              </a>
+            </Button>
+            <Button
+              variant="outline"
               onClick={handleAddToCart}
-              className="h-9 rounded-full flex items-center justify-center gap-1.5 text-[11px] font-semibold text-foreground bg-gradient-to-r from-primary/15 to-accent/15 border border-primary/30 transition-all"
+              className="product-card-cart h-10 rounded-full text-[11px] font-bold"
               title="কার্টে যোগ করুন"
             >
               <ShoppingCart size={14} aria-hidden="true" /> Cart
-            </motion.button>
+            </Button>
           </div>
         </div>
       </motion.div>
