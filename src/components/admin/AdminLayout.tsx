@@ -790,11 +790,13 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           {/* Content */}
           <main ref={mainScrollRef as React.RefObject<HTMLElement>} className="flex-1 overflow-y-auto">
             <div className="p-4 md:p-7 max-w-[1600px] mx-auto">
-              <AdminHeroHeader
-                title={currentTitle}
-                section={currentGroup?.title ?? "Overview"}
-                Icon={currentItem?.icon ?? LayoutDashboard}
-              />
+              {!['/ceo/service-packages', '/ceo/categories'].includes(location.pathname) && (
+                <AdminHeroHeader
+                  title={currentTitle}
+                  section={currentGroup?.title ?? "Overview"}
+                  Icon={currentItem?.icon ?? LayoutDashboard}
+                />
+              )}
               {children}
             </div>
           </main>

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2, Package, ChevronDown, ChevronRight, ImagePlus, X, ToggleLeft, ToggleRight, Settings2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Package, ChevronDown, ChevronRight, ImagePlus, X, ToggleLeft, ToggleRight, Settings2, Globe, Wrench, Palette, Facebook, TrendingUp, BriefcaseBusiness, Code2, Smartphone, Cloud, BarChart3, ShieldCheck } from "lucide-react";
 import RichDescriptionEditor from "@/components/RichDescriptionEditor";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -18,9 +18,26 @@ interface Service {
   short_description?: string | null;
 }
 
+interface ProductCategory {
+  id: string;
+  name: string;
+  slug: string;
+  icon: string | null;
+}
+
+const categoryIcons: Record<string, typeof Package> = {
+  Globe, Wrench, Palette, Facebook, TrendingUp, BriefcaseBusiness, Code2, Smartphone, Cloud, BarChart3, ShieldCheck,
+};
+
+const CategoryIcon = ({ name }: { name: string | null }) => {
+  const Icon = categoryIcons[name ?? ""] ?? Package;
+  return <Icon size={17} className="text-purple-300" />;
+};
+
 interface ServicePackage {
   id: string;
   service_id: string;
+  category_id: string | null;
   title: string;
   slug: string | null;
   description: string | null;
@@ -59,6 +76,7 @@ export default function AdminServicePackages() {
   const [featureInput, setFeatureInput] = useState("");
   const [uploading, setUploading] = useState(false);
   const [selectedServiceId, setSelectedServiceId] = useState<string>("");
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string>("");
 
   // Service management state
   const [showServiceForm, setShowServiceForm] = useState(false);
@@ -72,6 +90,20 @@ export default function AdminServicePackages() {
         .from("services")
         .select("id, title, slug, icon, image_url, short_description")
         .order("sort_order");
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const { data: categories = [] } = useQuery<ProductCategory[]>({
+    queryKey: ["admin-product-categories"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("product_categories")
+        .select("id, name, slug, icon")
+        .eq("is_active", true)
+        .order("sort_order")
+        .order("name");
       if (error) throw error;
       return data;
     },
@@ -137,12 +169,14 @@ export default function AdminServicePackages() {
     setAddingFor(null);
     setFeatureInput("");
     setSelectedServiceId("");
+    setSelectedCategoryId("");
   };
 
   const handleEdit = (pkg: ServicePackage) => {
     setEditingPackage(pkg);
     setAddingFor(pkg.service_id);
     setSelectedServiceId(pkg.service_id);
+    setSelectedCategoryId(pkg.category_id ?? "");
     setForm({
       title: pkg.title,
       slug: pkg.slug ?? "",
@@ -165,7 +199,7 @@ export default function AdminServicePackages() {
     const targetServiceId = selectedServiceId || defaultServiceId;
     if (!targetServiceId) return toast.error("ক্যাটাগরি সিলেক্ট করুন");
     upsertMutation.mutate({
-      pkg: editingPackage ? { ...form, id: editingPackage.id, service_id: targetServiceId } : form,
+      pkg: editingPackage ? { ...form, id: editingPackage.id, service_id: targetServiceId, category_id: selectedCategoryId || null } : { ...form, category_id: selectedCategoryId || null },
       serviceId: targetServiceId,
     });
   };
@@ -196,6 +230,22 @@ export default function AdminServicePackages() {
 
   const packagesForService = (serviceId: string) =>
     packages.filter(p => p.service_id === serviceId);
+
+  const packagesForCategory = (category: ProductCategory) => {
+    const service = services.find(s => s.slug === category.slug);
+    return packages.filter(p => p.category_id === category.id || (!p.category_id && service?.id === p.service_id));
+  };
+
+  // The Products page is a flat product catalog. Categories are managed separately
+  // in /ceo/categories and remain available here only as an assignment field.
+  const categoryGroups = [{
+    id: "all-products",
+    title: "Products",
+    icon: null,
+    serviceId: services[0]?.id ?? "",
+    categoryId: "",
+    packages,
+  }];
 
   // Service CRUD mutations
   const slugify = (t: string) => t.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
@@ -246,8 +296,8 @@ export default function AdminServicePackages() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-white text-2xl font-bold">প্রোডাক্ট (ক্যাটাগরি অনুযায়ী)</h1>
-          <p className="text-slate-400 text-sm mt-1">প্রতিটি ক্যাটাগরির অধীনে প্রোডাক্ট সাজান ও যোগ করুন</p>
+          <h1 className="text-white text-2xl font-bold">Products</h1>
+          <p className="text-slate-400 text-sm mt-1">Manage products here. Assign each product to a category when creating or editing it.</p>
         </div>
         <Button
           onClick={() => { setEditingService(null); setServiceForm({ title: "", slug: "", short_description: "", icon: "🔧" }); setShowServiceForm(true); }}
@@ -345,37 +395,37 @@ export default function AdminServicePackages() {
       </AnimatePresence>
 
       <div className="space-y-3">
-        {services.map(service => {
-          const pkgs = packagesForService(service.id);
-          const isExpanded = expandedService === service.id;
-          const isAddingHere = addingFor === service.id;
+        {categoryGroups.map(category => {
+          const pkgs = category.packages;
+          const isExpanded = expandedService === category.id;
+          const isAddingHere = addingFor === category.id;
 
           return (
-            <div key={service.id} className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+            <div key={category.id} className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
               {/* Service header */}
               <div className="w-full flex items-center justify-between px-5 py-4 hover:bg-slate-800/30 transition-colors">
                 <button
                   className="flex items-center gap-3 flex-1 text-left"
-                  onClick={() => setExpandedService(isExpanded ? null : service.id)}
+                  onClick={() => setExpandedService(isExpanded ? null : category.id)}
                 >
                   <div className="w-8 h-8 rounded-lg bg-purple-600/20 flex items-center justify-center text-lg">
-                    {service.icon || <Package size={16} className="text-purple-400" />}
+                    <CategoryIcon name={category.icon} />
                   </div>
                   <div className="text-left">
-                    <p className="text-white font-semibold">{service.title}</p>
+                    <p className="text-white font-semibold">{category.title}</p>
                     <p className="text-slate-500 text-xs">{pkgs.length} টি প্রোডাক্ট</p>
                   </div>
                 </button>
                 <div className="flex items-center gap-1 ml-2">
                   <button
-                    onClick={() => openServiceEdit(service)}
+                    onClick={() => { const service = services.find(s => s.id === category.serviceId); if (service) openServiceEdit(service); }}
                     className="p-1.5 text-slate-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-colors"
                     title="এডিট"
                   >
                     <Pencil size={14} />
                   </button>
                   <button
-                    onClick={() => { if (confirm(`"${service.title}" এবং এর সকল প্রোডাক্ট মুছে ফেলতে চান?`)) deleteService.mutate(service.id); }}
+                    onClick={() => { if (category.serviceId && confirm(`"${category.title}" এবং এর সকল প্রোডাক্ট মুছে ফেলতে চান?`)) deleteService.mutate(category.serviceId); }}
                     className="p-1.5 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
                     title="ডিলিট"
                   >
@@ -383,7 +433,7 @@ export default function AdminServicePackages() {
                   </button>
                   <button
                     className="p-1.5 text-slate-400 ml-1"
-                    onClick={() => setExpandedService(isExpanded ? null : service.id)}
+                    onClick={() => setExpandedService(isExpanded ? null : category.id)}
                   >
                     {isExpanded ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
                   </button>
@@ -479,13 +529,17 @@ export default function AdminServicePackages() {
                           <div className="space-y-1">
                             <label className="text-slate-400 text-xs">ক্যাটাগরি *</label>
                             <select
-                              value={selectedServiceId || service.id}
-                              onChange={e => setSelectedServiceId(e.target.value)}
+                              value={selectedCategoryId || category.categoryId}
+                              onChange={e => {
+                                const next = categories.find(c => c.id === e.target.value);
+                                setSelectedCategoryId(e.target.value);
+                                setSelectedServiceId(services.find(s => s.slug === next?.slug)?.id ?? category.serviceId);
+                              }}
                               className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-sm focus:outline-none focus:border-purple-500"
                             >
-                              {services.map(s => (
-                                <option key={s.id} value={s.id}>
-                                  {s.icon ?? "📦"} {s.title}
+                              {categories.map(c => (
+                                <option key={c.id} value={c.id}>
+                                  {c.icon ?? "📦"} {c.name}
                                 </option>
                               ))}
                             </select>
@@ -673,7 +727,7 @@ export default function AdminServicePackages() {
 
                           <div className="flex gap-3 pt-2">
                             <Button
-                              onClick={() => handleSubmit(service.id)}
+                              onClick={() => handleSubmit(category.serviceId)}
                               disabled={upsertMutation.isPending}
                               className="bg-purple-600 hover:bg-purple-700 text-white"
                             >
@@ -686,7 +740,7 @@ export default function AdminServicePackages() {
                         </div>
                       ) : (
                         <button
-                          onClick={() => { setAddingFor(service.id); setEditingPackage(null); setForm(emptyForm()); setSelectedServiceId(service.id); }}
+                          onClick={() => { setAddingFor(category.id); setEditingPackage(null); setForm(emptyForm()); setSelectedServiceId(category.serviceId); setSelectedCategoryId(category.categoryId); }}
                           className="flex items-center gap-2 text-sm text-purple-400 hover:text-purple-300 border border-dashed border-purple-500/30 hover:border-purple-500/60 rounded-xl px-4 py-3 w-full justify-center transition-all"
                         >
                           <Plus size={16} />

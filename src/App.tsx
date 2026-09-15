@@ -43,7 +43,7 @@ const AdminLeads = lazy(() => import("./pages/admin/AdminLeads"));
 const AdminRefunds = lazy(() => import("./pages/admin/AdminRefunds"));
 const AdminSettings = lazy(() => import("./pages/admin/AdminSettings"));
 const AdminAISupport = lazy(() => import("./pages/admin/AdminAISupport"));
-const AdminServicePackages = lazy(() => import("./pages/admin/AdminServicePackages"));
+const AdminServicePackages = lazy(() => import("./pages/admin/AdminProductCatalog"));
 const AdminPayments = lazy(() => import("./pages/admin/AdminPayments"));
 const AdminBkashPGW = lazy(() => import("./pages/admin/AdminBkashPGW"));
 const AdminWallets = lazy(() => import("./pages/admin/AdminWallets"));
@@ -94,7 +94,7 @@ const AdminNotificationCenter = lazy(() => import("./pages/admin/AdminNotificati
 const AdminKpiTracker = lazy(() => import("./pages/admin/AdminKpiTracker"));
 const AdminTaskBoard = lazy(() => import("./pages/admin/AdminTaskBoard"));
 const AdminBackupCenter = lazy(() => import("./pages/admin/AdminBackupCenter"));
-const AdminCategories = lazy(() => import("./pages/admin/AdminCategories"));
+const AdminCategories = lazy(() => import("./pages/admin/AdminCategoryCatalog"));
 const AdminBrands = lazy(() => import("./pages/admin/AdminBrands"));
 const AdminProductTags = lazy(() => import("./pages/admin/AdminProductTags"));
 const AdminDigitalFiles = lazy(() => import("./pages/admin/AdminDigitalFiles"));
